@@ -1,27 +1,28 @@
 @extends("frontend.layouts.master")
-    @section("content")
+@section("content")
 
-    <section class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 p-0">
-                <div class="carousel-inner mb-3">
-                    <div class="row d-flex">
-                        <div
-                            class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                            <img src="{{ asset('image/house3.png') }}" alt="" srcset=""
-                                class="imagecontroller imagecontrollerheight">
-                            <div class="flex bannercontentheight">
-                                <div class="bannercontentinnerheight ">
-                                    <h4 class="lg-text1">properties</h4>
-                                    <h5 class="md-text1">home <i class="fa-solid fa-angle-right "></i>
-                                        <span class="highlight">properties</span>
-                                    </h5>
-                                </div>
+
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 p-0">
+            <div class="carousel-inner mb-3">
+                <div class="row d-flex">
+                    <div
+                        class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
+                        <img src="{{ asset('image/house3.png') }}" alt="" srcset=""
+                            class="imagecontroller imagecontrollerheight">
+                        <div class="flex bannercontentheight">
+                            <div class="bannercontentinnerheight ">
+                                <h4 class="lg-text1">properties</h4>
+                                <h5 class="md-text1">home <i class="fa-solid fa-angle-right "></i>
+                                    <span class="highlight">properties</span>
+                                </h5>
                             </div>
                         </div>
                     </div>
                 </div>
-    </section>
+            </div>
+</section>
 
 
 
@@ -29,7 +30,7 @@
 {{-- form --}}
 <section class="container-fluid py-4 propertiesfinder">
     <div class="container">
-      
+
         <h1 class="lg-text1 text-center searchhide" onclick="funsearchingon()">
             <i class="fa-brands fa-searchengin customicons"></i> Find your properties
         </h1>
@@ -54,68 +55,72 @@
                 <label for="" class="md-text1 des-text">Price</label>
                 <input type="text" class="input bannerinput">
             </div>
-         <div class="d-flex flex-column col-md-3">
+            <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Search</label>
                 <button class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
             </div>
-       
-    </div>
+
+        </div>
     </div>
 </section>
 
 
 
 
-{{-- 
+{{--
 
 <!-- project page-->
 <!-- hero section -->
 <section class="container-fluid">
     <div class="row">
-      <div class="col-md-12 p-0">
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner mb-3">
-            <!-- First Carousel Item -->
-            <div class="carousel-item active">
-              <div class="row d-flex">
-                <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                  <img src="{{ asset('image/house1.png') }}" alt="" srcset="" class="imagecontroller">
-                  <div class="flex bannercontent">
-                    <div class="bannercontentinner">
-                      <p class="sm-text1 mb-3 text-center forhidden">More than <span class="highlight">1000+</span> houses
-                        available for
-                        sale &
-                        rent in the country</p>
-                      <h4 class="lg-text1 mb-4">Find Your Dream Home</h4>
-                      <div class="d-flex justify-content-center mb-1">
-                        <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
-                        <div class="btn-buttongreen mx-2">Rent</div>
-                      </div>
-                      <div class="formsection d-flex flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
-                        <div class="d-flex flex-wrap  gap-md-3">
-                        <input type="text" class="input bannerinput" placeholder="List type">
-                        <input type="text" class="input bannerinput" placeholder="property type">
-                        <input type="text" class="input bannerinput" placeholder="Location">
-                        <input type="text" class="input bannerinput" placeholder="Price">
-                        <input type="text" class="input bannerinput" placeholder="Bedroom">
-                        <button class="btn-buttongreen bannerinput ">Search</button>                
-                        </div>                       
-                      </div>
+        <div class="col-md-12 p-0">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner mb-3">
+                    <!-- First Carousel Item -->
+                    <div class="carousel-item active">
+                        <div class="row d-flex">
+                            <div
+                                class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
+                                <img src="{{ asset('image/house1.png') }}" alt="" srcset="" class="imagecontroller">
+                                <div class="flex bannercontent">
+                                    <div class="bannercontentinner">
+                                        <p class="sm-text1 mb-3 text-center forhidden">More than <span
+                                                class="highlight">1000+</span> houses
+                                            available for
+                                            sale &
+                                            rent in the country</p>
+                                        <h4 class="lg-text1 mb-4">Find Your Dream Home</h4>
+                                        <div class="d-flex justify-content-center mb-1">
+                                            <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
+                                            <div class="btn-buttongreen mx-2">Rent</div>
+                                        </div>
+                                        <div
+                                            class="formsection d-flex flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
+                                            <div class="d-flex flex-wrap  gap-md-3">
+                                                <input type="text" class="input bannerinput" placeholder="List type">
+                                                <input type="text" class="input bannerinput"
+                                                    placeholder="property type">
+                                                <input type="text" class="input bannerinput" placeholder="Location">
+                                                <input type="text" class="input bannerinput" placeholder="Price">
+                                                <input type="text" class="input bannerinput" placeholder="Bedroom">
+                                                <button class="btn-buttongreen bannerinput ">Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+
                 </div>
-              </div>
             </div>
 
-          </div>
         </div>
-
-      </div>
 
     </div>
 
 
-  </section>
+</section>
 --}}
 
 <!-- multiple properties section -->
@@ -140,180 +145,47 @@
             </div>
             <div class="col-md-12 py-3">
                 <div class="row">
-                    <div class="col-md-4 my-2">
-                        <div class="card">
-                            <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                            <div class="sell_rent_button d-flex justify-content-between ">
-                                <div class="btn-buttonxs btn-buttonxsyellow ">feature</div>
-                                <div class="status d-flex justify-content-between">
-                                    <div class="btn-buttonxs  btn-buttonxsgreen mx-1">For Sell</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">Sold</div>
+                    @foreach ($services as $service)
+                        <div class="col-md-4 my-2">
+                            <div class="card">
+                                <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
+                                <div class="sell_rent_button d-flex justify-content-between ">
+                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$service->subtittle}}</div>
+                                    <div class="status d-flex justify-content-between">
+                                        <div class="btn-buttonxs  btn-buttonxsgreen mx-1">{{$service->subtittle}}</div>
+                                        <div class="btn-buttonxs btn-buttonxsgreen">{{$service->subtittle}}</div>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="md-text">Modern Office For Rent</h5>
-                                <div class=" d-flex gap-3 flex-wrap ">
-                                    <h2 class="sm-text"><span class="mx-1">12</span>bedroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">2</span>bathroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">22 meter</span>size</h2>
-                                </div>
-                                <div class="price-person ">
-                                    <div class="d-flex justify-content-between align-content-center">
-                                        <div class=" sm-text"> <span class="md-text">$1111 /</span>months </div>
-                                        <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                            class="feature-smallimg feature-smallimgdup">
+                                <div class="card-body">
+                                    <h5 class="md-text">{{ $service-> title}}</h5>
+                                    <div class=" d-flex gap-3 flex-wrap ">
+                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span> {{ $service-> titwle}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span>{{ $service-> titwle}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span>{{ $service-> titwle}}</h2>
+                                    </div>
+                                    <div class="price-person ">
+                                        <div class="d-flex justify-content-between align-content-center">
+                                            <div class=" sm-text"> <span class="md-text">{{ $service-> titwle}}  /</span>{{ $service-> titwle}} </div>
+                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
+                                                class="feature-smallimg feature-smallimgdup">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 my-2">
-                        <div class="card">
-                            <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                            <div class="sell_rent_button d-flex justify-content-between ">
-                                <div class="btn-buttonxs btn-buttonxsyellow ">feature</div>
-                                <div class="status d-flex justify-content-between">
-                                    <div class="btn-buttonxs  btn-buttonxsgreen mx-1">For Sell</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">Sold</div>
 
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="md-text">Modern Office For Rent</h5>
-                                <div class=" d-flex gap-3 flex-wrap ">
-                                    <h2 class="sm-text"><span class="mx-1">12</span>bedroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">2</span>bathroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">22 meter</span>size</h2>
-                                </div>
-                                <div class="price-person ">
-                                    <div class="d-flex justify-content-between align-content-center">
-                                        <div class=" sm-text"> <span class="md-text">$1111 /</span>months </div>
-                                        <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                            class="feature-smallimg feature-smallimgdup">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 my-2">
-                        <div class="card">
-                            <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                            <div class="sell_rent_button d-flex justify-content-between ">
-                                <div class="btn-buttonxs btn-buttonxsyellow ">feature</div>
-                                <div class="status d-flex justify-content-between">
-                                    <div class="btn-buttonxs  btn-buttonxsgreen mx-1">For Sell</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">Sold</div>
+                       
 
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="md-text">Modern Office For Rent</h5>
-                                <div class=" d-flex gap-3 flex-wrap ">
-                                    <h2 class="sm-text"><span class="mx-1">12</span>bedroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">2</span>bathroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">22 meter</span>size</h2>
-                                </div>
-                                <div class="price-person ">
-                                    <div class="d-flex justify-content-between align-content-center">
-                                        <div class=" sm-text"> <span class="md-text">$1111 /</span>months </div>
-                                        <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                            class="feature-smallimg feature-smallimgdup">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 my-2">
-                        <div class="card">
-                            <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                            <div class="sell_rent_button d-flex justify-content-between ">
-                                <div class="btn-buttonxs btn-buttonxsyellow ">feature</div>
-                                <div class="status d-flex justify-content-between">
-                                    <div class="btn-buttonxs  btn-buttonxsgreen mx-1">For Sell</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">Sold</div>
+                    @endforeach
 
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="md-text">Modern Office For Rent</h5>
-                                <div class=" d-flex gap-3 flex-wrap ">
-                                    <h2 class="sm-text"><span class="mx-1">12</span>bedroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">2</span>bathroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">22 meter</span>size</h2>
-                                </div>
-                                <div class="price-person ">
-                                    <div class="d-flex justify-content-between align-content-center">
-                                        <div class=" sm-text"> <span class="md-text">$1111 /</span>months </div>
-                                        <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                            class="feature-smallimg feature-smallimgdup">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 my-2">
-                        <div class="card">
-                            <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                            <div class="sell_rent_button d-flex justify-content-between ">
-                                <div class="btn-buttonxs btn-buttonxsyellow ">feature</div>
-                                <div class="status d-flex justify-content-between">
-                                    <div class="btn-buttonxs  btn-buttonxsgreen mx-1">Rent</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">Sold</div>
-
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="md-text">Modern Office For Rent</h5>
-                                <div class=" d-flex gap-3 flex-wrap ">
-                                    <h2 class="sm-text"><span class="mx-1">12</span>bedroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">2</span>bathroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">22 meter</span>size</h2>
-                                </div>
-                                <div class="price-person ">
-                                    <div class="d-flex justify-content-between align-content-center">
-                                        <div class=" sm-text"> <span class="md-text">$1111 /</span>months </div>
-                                        <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                            class="feature-smallimg feature-smallimgdup">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 my-2">
-                        <div class="card">
-                            <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                            <div class="sell_rent_button d-flex justify-content-between ">
-                                <div class="btn-buttonxs btn-buttonxsyellow ">feature</div>
-                                <div class="status d-flex justify-content-between">
-                                    <div class="btn-buttonxs  btn-buttonxsgreen mx-1">For Sell</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">Active</div>
-
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="md-text">Modern Office For Rent</h5>
-                                <div class=" d-flex gap-3 flex-wrap ">
-                                    <h2 class="sm-text"><span class="mx-1">12</span>bedroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">2</span>bathroom</h2>
-                                    <h2 class="sm-text"><span class="mx-1">22 meter</span>size</h2>
-                                </div>
-                                <div class="price-person ">
-                                    <div class="d-flex justify-content-between align-content-center">
-                                        <div class=" sm-text"> <span class="md-text">$1111 /</span>months </div>
-                                        <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                            class="feature-smallimg feature-smallimgdup">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
 
 <!-- nextpage section -->
 <section class="container-fluid ">
@@ -339,55 +211,39 @@
 
 
 
-  <script>
-    function funsearchingon(){
-      const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
-      if(hiddenformdata.style.display==="block"){
-        hiddenformdata.style.display="none";
-      }
-      hiddenformdata.style.display="block";
+<script>
+    function funsearchingon() {
+        const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
+        if (hiddenformdata.style.display === "block") {
+            hiddenformdata.style.display = "none";
+        }
+        hiddenformdata.style.display = "block";
 
-     }
-  
-    
+    }
+
+
     function changepage(element) {
         const pageli = document.getElementsByClassName("nextli");
-      for (let i = 0; i < pageli.length; i++) {
-        pageli[i].classList.remove("activeli");
+        for (let i = 0; i < pageli.length; i++) {
+            pageli[i].classList.remove("activeli");
 
-      }
+        }
 
-      element.classList.add("activeli")
+        element.classList.add("activeli")
     }
 
 
 
     function funmenu() {
-            const burmenu = document.getElementById("bur-menu");
-           
-            if (burmenu.style.display === "block") {
-                burmenu.style.display = "none";
-            } else {
-                burmenu.style.display = "block";
-              
-            }
+        const burmenu = document.getElementById("bur-menu");
+
+        if (burmenu.style.display === "block") {
+            burmenu.style.display = "none";
+        } else {
+            burmenu.style.display = "block";
+
         }
+    }
 
 
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</script>

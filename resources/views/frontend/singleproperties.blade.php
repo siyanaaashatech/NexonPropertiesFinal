@@ -5,22 +5,22 @@
         <div class="row">
             <div class="col-12">
                 <div class="row">
-                    <div class="col-md-8 pb-2">
+                    <div class="col-md-8 py-2 m-0 p-0">
                         <img src="{{ asset('image/bighouse.png') }}" alt="" class="imagecontroller">
                     </div>
                     <!-- Property Images -->
                     <div class="col-md-4">
                         <div class="row">
-                            <div class="col-md-12 mb-3 pt-0 mt-0">
+                            <div class="col-md-12 p-0 m-0">
                                 <div class="propertype-subimage">
                                     <img src="{{asset('image/bighouse.png')}}" alt="Beautiful house"
-                                        class="img-fluid rounded">
+                                        class="img-fluid rounded"/>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="propertype-subimage">
+                            <div class="col-md-12 p-0 m-0">
+                                <div class="propertype-subimage ">
                                     <img src="{{asset('image/bighouse.png')}}" alt="Spacious home"
-                                        class="img-fluid rounded">
+                                        class="img-fluid rounded"/>
                                 </div>
                             </div>
                         </div>

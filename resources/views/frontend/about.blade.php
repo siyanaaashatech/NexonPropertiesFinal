@@ -1,3 +1,4 @@
+
 @extends("frontend.layouts.master")
 @section("content")
 
@@ -33,7 +34,7 @@
                 <div class="col-md-5">
                     <h1 class="md-text text-center">more about us </h1>
                     <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
-                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
+                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
                 </div>
                 <div class="col-md-12">
                     <div class="row d-flex  align-items-center justify-content-center gap-1">
@@ -42,28 +43,28 @@
                             <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge
                                 of
                                 the luxury waterfront markets, Simone serves an extensive and elite worldwide client
-                                base. </p>
+                                base. </p>
                         </div>
                         <div class="col-md-5">
                             <h1 class="md-text text-center">0ur Mission </h1>
                             <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge
                                 of
                                 the luxury waterfront markets, Simone serves an extensive and elite worldwide client
-                                base. </p>
+                                base. </p>
                         </div>
                         <div class="col-md-5">
                             <h1 class="md-text text-center">our Values</h1>
                             <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge
                                 of
                                 the luxury waterfront markets, Simone serves an extensive and elite worldwide client
-                                base. </p>
+                                base. </p>
                         </div>
                         <div class="col-md-5">
                             <h1 class="md-text text-center">our Resource </h1>
                             <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge
                                 of
                                 the luxury waterfront markets, Simone serves an extensive and elite worldwide client
-                                base. </p>
+                                base. </p>
                         </div>
                     </div>
 
@@ -84,7 +85,7 @@
                 <div class="col-lg-5">
                     <h1 class="md-text text-center">Core team member</h1>
                     <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
-                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
+                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
                 </div>
 
                 <div class="col-lg-12 extradiv">
@@ -132,7 +133,7 @@
                 <div class="col-lg-5">
                     <h1 class="md-text text-center"> our team member</h1>
                     <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
-                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
+                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
                 </div>
 
                 <div class="col-lg-12">
@@ -183,7 +184,7 @@
                 <div class="col-lg-5">
                     <h1 class="md-text text-center"> TESTIMONIALS</h1>
                     <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
-                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
+                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
                 </div>
 
                 <div class="col-md-12 ">
@@ -283,7 +284,7 @@
             <div class="col-lg-5">
                 <h1 class="md-text text-center"> Frequently Asked Questions</h1>
                 <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
-                    the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
+                    the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
             </div>
             <div class="col-lg-12">
                 <div class="row">
@@ -488,4 +489,3 @@
 
 
     </script>
-

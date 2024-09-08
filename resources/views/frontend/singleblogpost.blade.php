@@ -8,38 +8,36 @@
     <div class="row">
       <div class="col-md-8">
         <div class="row d-flex flex- col ">
-          @foreach ($services as $service)
-        <div class="col-md-12 mb-3">
-        <img src="{{asset('image/house1.png')}}" alt="" srcset="" class="imagecontroller imagecontrollermd">
-        <div class=" d-flex gap-3 py-3">
-          <div class="d-flex ">
-          <i class="fa-solid fa-person customiconssmall pt-1 mx-1"></i>
-          <h2 class="sm-text">Real</h2>
-          </div>
-          <div class="d-flex ">
-          <i class="fa-solid fa-calendar-days customiconssmall pt-1 mx-1"></i>
-          <h2 class="sm-text text-center">june 8,2024</h2>
-          </div>
-          <div class="d-flex">
-          <i class="fa-solid fa-building customiconssmall pt-1 mx-1"></i>
-          <h2 class="sm-text">type</h2>
+          <div class="col-md-12 mb-3">
+            <img src="{{asset('image/house1.png')}}" alt="" srcset="" class="imagecontroller imagecontrollermd">
+            <div class=" d-flex gap-3 py-3">
+              <div class="d-flex ">
+                <i class="fa-solid fa-person customiconssmall pt-1 mx-1"></i>
+                <h2 class="sm-text">Real</h2>
+              </div>
+              <div class="d-flex ">
+                <i class="fa-solid fa-calendar-days customiconssmall pt-1 mx-1"></i>
+                <h2 class="sm-text text-center">june 8,2024</h2>
+              </div>
+              <div class="d-flex">
+                <i class="fa-solid fa-building customiconssmall pt-1 mx-1"></i>
+                <h2 class="sm-text">type</h2>
+              </div>
+
+            </div>
+            <h5 class="md-text">Better SEO Blog Titles</h5>
+            <p class="sm-text py-1">make all the difference when it comes to a potential reader clicking on your
+              headline over the one right below (or above) your article in Google search rankings. Your blog post title
+              is crucial when it comes to nailing SEO best practices and giving your blog content a realistic chance of
+              ranking well in organic search engine rankings.
+            </p>
           </div>
 
-        </div>
-        <h5 class="md-text">{{$service -> title}}</h5>
-        <p class="sm-text py-1">{{$service -> description}}
-        </p>
-        <a href="{{ route('singleblogpost') }}" class="btn-buttonyellow">Read more</a>
-        </div>
-      @endforeach
         </div>
 
 
       </div>
       <div class="col-md-4 sidebar  ">
-        <div class="paddingbox">
-          <input type="text" name="" id="" class="input">
-        </div>
         <div class="paddingbox ">
           <h2 class="md-text1">Recent post</h2>
           <ul class="customui">

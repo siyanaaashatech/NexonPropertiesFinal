@@ -3,12 +3,12 @@
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
-      <a class="navbar-brand" href="#"> <img src="{{ asset('image/logo.png') }}" alt="Logo" /></a>
+      <a class="navbar-brand" href="#"> <img src="{{ asset('image/logo.png') }}" alt="Logo"  class="logoimg"/></a>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-2 mb-lg-0">
+        <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Introduction</a>
+            <a class="nav-link active" aria-current="page" href="/">Introduction</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{{route('properties')}}">Rent</a>
@@ -24,8 +24,9 @@
 
       </div>
       <div class="button-collection  flex-column ">
-        <button class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</button>
-        <button class="btn-buttonyellow reg-logbutton ">login</button>
+        <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</a>
+        <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton ">login</a>
+
       </div>
       <i class="fa-solid fa-bars customicons mx-4 " onclick="funmenu()"></i>
 
@@ -37,7 +38,7 @@
       <h2 class="navdestext pt-3">activities section</h2>
       <li class="nav-item">
         <i class="fa-solid fa-house customiconssmall "></i>
-        <a class="nav-link " aria-current="page" href="#">Introduction</a>
+        <a class="nav-link " aria-current="page" href="/">Introduction</a>
       </li>
       <li class="nav-item">
 
@@ -69,6 +70,7 @@
       <i class="fa-brands fa-facebook customicons mx-2"></i>
       <i class="fa-brands fa-linkedin customicons mx-2"></i>
       <i class="fa-brands fa-youtube customicons mx-2"></i>
+      
     </div>
   </div>
 </section>
