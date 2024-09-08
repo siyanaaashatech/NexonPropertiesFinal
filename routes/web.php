@@ -101,6 +101,9 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('services', ServiceController::class);
+    // Update your route definition to accept PUT requests
+Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
+
     Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
 
