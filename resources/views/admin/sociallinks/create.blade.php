@@ -8,7 +8,7 @@
     </div>
 
     <!-- Social Links creation form -->
-    <form action="{{ route('social-links.store') }}" method="POST" id="socialLinksForm">
+    <form action="{{ route('admin.social-links.store') }}" method="POST" id="socialLinksForm">
         @csrf
 
         <!-- Google Map Link -->
@@ -56,7 +56,7 @@
         <!-- Submit Button -->
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Create Social Links</button>
-            <a href="{{ route('social-links.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('admin.social-links.index') }}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 @endsection

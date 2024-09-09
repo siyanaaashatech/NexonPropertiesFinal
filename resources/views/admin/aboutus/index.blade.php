@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4>About Us List</h4>
-                    <a href="{{ route('aboutus.create') }}" class="btn btn-primary float-end">Add About Us</a>
+                    <a href="{{ route('admin.aboutus.create') }}" class="btn btn-primary float-end">Add About Us</a>
                 </div>
                 <div class="card-body">
                     <!-- Display success message -->
@@ -43,10 +43,10 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('aboutus.edit', $about->id) }}" class="btn btn-outline-primary btn-sm">
+                                            <a href="{{ route('admin.aboutus.edit', $about->id) }}" class="btn btn-outline-primary btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('aboutus.destroy', $about->id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('admin.aboutus.destroy', $about->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')">
@@ -69,7 +69,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('metadata.update', $about->metadata->id) }}" method="POST">
+                                                                <form action="{{ route('admin.metadata.update', $about->metadata->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('PUT')
 

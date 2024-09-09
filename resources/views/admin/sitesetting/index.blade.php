@@ -48,11 +48,11 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('sitesettings.edit', $setting->id) }}" class="btn btn-outline-primary btn-sm">
+                                            <a href="{{ route('admin.sitesettings.edit', $setting->id) }}" class="btn btn-outline-primary btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             
-                                            <form action="{{ route('sitesettings.destroy', $setting->id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('admin.sitesettings.destroy', $setting->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this setting?')">
@@ -75,7 +75,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('metadata.update', $setting->metadata->id) }}" method="POST">
+                                                                <form action="{{ route('admin.metadata.update', $setting->metadata->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('PUT')
 
@@ -125,7 +125,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('social-links.update', $setting->socialLinks->id) }}" method="POST">
+                <form action="{{ route('admin.social-links.update', $setting->socialLinks->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -181,7 +181,7 @@
                         </table>
                     @else
                         <div class="alert alert-info">
-                            No site settings available. <a href="{{ route('sitesettings.create') }}">Create a new setting</a>.
+                            No site settings available. <a href="{{ route('admin.sitesettings.create') }}">Create a new setting</a>.
                         </div>
                     @endif
                 </div>

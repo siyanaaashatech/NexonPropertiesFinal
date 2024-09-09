@@ -3,7 +3,7 @@
 @section('content')
     <div class="card-header">
         <h1 class="card-title">Social Links</h1>
-        <a href="{{ route('social-links.create') }}" class="btn btn-primary float-right">Add New Social Link</a>
+        <a href="{{ route('admin.social-links.create') }}" class="btn btn-primary float-right">Add New Social Link</a>
     </div>
 
     <!-- Table displaying social links -->
@@ -35,10 +35,10 @@
                         <td>{{ $link->embed_fbpage }}</td>
                         <td>
                          
-                            <a href="{{ route('social-links.edit',$link->id) }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ route('admin.social-links.edit',$link->id) }}" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('social-links.destroy', $link->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('admin.social-links.destroy', $link->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this sociallink?')">

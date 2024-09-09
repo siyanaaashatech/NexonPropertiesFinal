@@ -33,7 +33,7 @@
                     @endif
 
                     <!-- About Us update form -->
-                    <form action="{{ route('aboutus.update', $aboutUs->id) }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
+                    <form action="{{ route('admin.aboutus.update', $aboutUs->id) }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
                         @csrf
                         @method('PUT')
 
@@ -87,7 +87,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Update About Us</button>
-                            <a href="{{ route('aboutus.index') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('admin.aboutus.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

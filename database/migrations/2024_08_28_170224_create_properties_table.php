@@ -24,7 +24,7 @@ class CreatePropertiesTable extends Migration
             $table->integer('bathrooms');
             $table->integer('area');
             $table->boolean('status');
-            $table->string('main_image');
+            $table->longText('main_image');
             $table->enum('availability_status', ['available', 'sold', 'rental']);
             $table->string('rental_period')->nullable();
             $table->json('other_images')->nullable();

@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Edit Metadata</h1>
-    <form action="{{ route('metadata.update', $metadata->id) }}" method="POST">
+    <form action="{{ route('admin.metadata.update', $metadata->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">

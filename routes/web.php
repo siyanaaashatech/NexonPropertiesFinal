@@ -39,42 +39,56 @@ Route::get('/', function () {
     return view('frontend.welcome');
 })->name('/');
 
-Route::get("/properties",function(){
+Route::get("/properties", function () {
     return view("frontend.properties");
 
 })->name("properties");
-Route::get("/blog",function(){
+Route::get("/blog", function () {
     return view("frontend.blog");
 
 })->name("blog");
 
 
-Route::get("/member",function(){
+Route::get("/member", function () {
     return view("frontend.member");
 
 });
-Route::get("/contact",function(){
+Route::get("/contact", function () {
     return view("frontend.contact");
 })->name("contact");
 
 
-Route::get("/about",function(){
+Route::get("/about", function () {
     return view("frontend.about");
 })->name('about');
 
-Route::get("/service", function(){
+Route::get("/service", function () {
     return view("service");
 });
-Route::get("services", function () { return view('frontend.include.blog.php');});
-Route::get("services",function(){ return view("frontend.include.advantage.php");});
-Route::get("services",function(){ return view("frontend.include.indexbanner.php");});
+Route::get("services", function () {
+    return view('frontend.include.blog.php');
+});
+Route::get("services", function () {
+    return view("frontend.include.advantage.php");
+});
+Route::get("services", function () {
+    return view("frontend.include.indexbanner.php");
+});
 
-Route::get("services",function(){return view("frontend.include.about.blade.php");});
+Route::get("services", function () {
+    return view("frontend.include.about.blade.php");
+});
 
-Route::get("services",function(){return view("frontend.testimonial.blade.php");});
-Route::get("service", function(){ return view ("frontend.include.project.blade.php");});
+Route::get("services", function () {
+    return view("frontend.testimonial.blade.php");
+});
+Route::get("service", function () {
+    return view("frontend.include.project.blade.php");
+});
 
-Route::get("service", function(){ return view ("frontend.include.project.blade.php");});
+Route::get("service", function () {
+    return view("frontend.include.project.blade.php");
+});
 
 
 Route::get('/hello', function () {
@@ -86,14 +100,14 @@ Route::get('/', [FrontViewController::class, 'index'])->name('index');
 Auth::routes(['verify' => true]);
 
 Route::get('/email/verify', 'Auth\VerificationController@show')
-     ->name('verification.notice');
+    ->name('verification.notice');
 Route::post('/email/resend', 'Auth\VerificationController@resend')
-     ->name('verification.resend');
+    ->name('verification.resend');
 
-     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-     ->middleware(['auth', 'signed'])
-     ->name('verification.verify');
- 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
 
 
 
@@ -103,7 +117,8 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
     Route::resource('services', ServiceController::class);
     Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
-
+    Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
+    Route::resource('favicons', FaviconController::class);
 
     // User Routes
     Route::prefix('users')->name('users.')->group(function () {
@@ -143,31 +158,46 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
     Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
 });
 
-   // Testimonial Routes 
-   Route::resource('admin/testimonials', TestimonialController::class);
-   Route::resource('admin/property', PropertyController::class);
-   Route::resource('admin/categories', CategoryController::class);
-   Route::resource('admin/subcategories', SubCategoryController::class);
-   //MetaData Routes
-   Route::resource('metadata', MetadataController::class);
-   Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
+Route::resource('services', ServiceController::class);
+
+Route::resource('favicons', FaviconController::class);
+
+//AboutUs route
+Route::resource('aboutus', AboutUsController::class);
+
+//Sitesetting route
+Route::resource('sitesettings', SiteSettingController::class);
+
+Route::resource('property', PropertyController::class);
+
+//Sociallinks route
+Route::resource('social-links', SocialLinkController::class);
+
+// Testimonial Routes 
+Route::resource('admin/testimonials', TestimonialController::class);
+Route::resource('admin/property', PropertyController::class);
+Route::resource('admin/categories', CategoryController::class);
+Route::resource('admin/subcategories', SubCategoryController::class);
+//MetaData Routes
+Route::resource('metadata', MetadataController::class);
+Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
 //    Route::resource('services', ServiceController::class);
 
 
 
-   Route::resource('favicons', FaviconController::class);
+Route::resource('favicons', FaviconController::class);
 
-   //AboutUs route
-   Route::resource('aboutus', AboutUsController::class);
+//AboutUs route
+Route::resource('aboutus', AboutUsController::class);
 
-   //Sitesetting route
-   Route::resource('sitesettings', SiteSettingController::class);
+//Sitesetting route
+Route::resource('sitesettings', SiteSettingController::class);
 
-   //Sociallinks route
-   Route::resource('social-links', SocialLinkController::class);
+//Sociallinks route
+Route::resource('social-links', SocialLinkController::class);
 
-   
+
 Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
 Route::view("/member", "frontend.member")->name('member');
 Route::view("/contact", "frontend.contact")->name('contact');

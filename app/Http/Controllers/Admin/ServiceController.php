@@ -93,6 +93,11 @@ class ServiceController extends Controller
         return redirect()->route('services.index');
     }
 
+    public function show()
+    {
+        //
+    }
+
     /**
      * Show the form for editing the specified service.
      */
@@ -185,7 +190,7 @@ class ServiceController extends Controller
         // Flash success message and redirect
         session()->flash('success', 'Service updated successfully.');
     
-        return redirect()->route('services.index');
+        return redirect()->route('admin.services.index');
     }
     
 

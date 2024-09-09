@@ -8,7 +8,7 @@
         <!-- /.card-header -->
 
         <!-- form start -->
-        <form method="POST" action="{{ route('testimonials.store') }}">
+        <form method="POST" action="{{ route('admin.testimonials.store') }}">
             @csrf
             <div class="card-body">
                 <div class="form-group">

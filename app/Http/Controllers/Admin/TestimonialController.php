@@ -49,7 +49,7 @@ class TestimonialController extends Controller
         // Create a new testimonial
         Testimonial::create($request->all());
 
-        return redirect()->route('testimonials.index')
+        return redirect()->route('admin.testimonials.index')
                          ->with('success', 'Testimonial created successfully.');
     }
 
@@ -102,7 +102,7 @@ class TestimonialController extends Controller
         $testimonial = Testimonial::findOrFail($id);
         $testimonial->delete();
 
-        return redirect()->route('testimonials.index')
+        return redirect()->route('admin.testimonials.index')
                          ->with('success', 'Testimonial deleted successfully.');
     }
 }

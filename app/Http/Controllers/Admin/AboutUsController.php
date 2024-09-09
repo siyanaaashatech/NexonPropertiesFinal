@@ -70,7 +70,7 @@ class AboutUsController extends Controller
             }
         }
 
-        $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
+        //$slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
 
         // Create a new metadata entry
         $metadata = Metadata::create([
@@ -93,7 +93,7 @@ class AboutUsController extends Controller
 
         session()->flash('success', 'AboutUs created successfully.');
 
-        return redirect()->route('aboutus.index');
+        return redirect()->route('admin.aboutus.index');
     }
 
     /**
@@ -187,7 +187,7 @@ class AboutUsController extends Controller
         // Flash success message and redirect
         session()->flash('success', 'AboutUs updated successfully.');
     
-        return redirect()->route('aboutus.index');
+        return redirect()->route('admin.aboutus.index');
     }
     
 
@@ -208,6 +208,6 @@ class AboutUsController extends Controller
 
         $aboutUs->delete();
 
-        return redirect()->route('aboutus.index')->with('success', 'AboutUs deleted successfully.');
+        return redirect()->route('admin.aboutus.index')->with('success', 'AboutUs deleted successfully.');
     }
 }

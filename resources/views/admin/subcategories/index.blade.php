@@ -6,91 +6,79 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Services List</h4>
-                    <a href="{{ route('admin.services.create') }}" class="btn btn-primary float-end">Add New Service</a>
+                    <h4>SubCategories List</h4>
+                    <a href="{{ route('admin.subcategories.create') }}" class="btn btn-primary float-end">Add New SubCategory</a>
                 </div>
                 <div class="card-body">
-                    <!-- Display success message -->
                     @if(session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
                     @endif
 
-                    <!-- Check if there are any services -->
-                    @if($services->count() > 0)
+                    @if($subCategories->count() > 0)
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>S.N</th> 
+                                    <th>S.N</th>
                                     <th>Title</th>
-                                    <th>Subtitle</th>
-                                    <th>Status</th>
+                                    <th>Category</th>
+                                    <th>Meta Title</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($services as $service)
+                                @foreach($subCategories as $subCategory)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $service->title }}</td>
-                                        <td>{{ $service->subtitle }}</td>
+                                        <td>{{ $subCategory->title }}</td>
+                                        <td>{{ $subCategory->category->title }}</td>
+                                        <td>{{ $subCategory->metadata ? $subCategory->metadata->meta_title : 'No Metadata' }}</td>
                                         <td>
-                                            @if($service->status)
-                                                <span class="badge bg-success">Active</span>
-                                            @else
-                                                <span class="badge bg-danger">Inactive</span>
-                                            @endif
-                                        </td>
-                                        <td> 
-                                            <a href="{{ route('admin.services.edit', $service->id) }}" class="btn btn-outline-primary btn-sm">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" style="display:inline;">
+                                            <a href="{{ route('admin.subcategories.edit', $subCategory->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('admin.subcategories.destroy', $subCategory->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this subcategory?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this service?')">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                             </form>
 
                                             <!-- Button to trigger Metadata Modal -->
-                                            @if($service->metadata)
-                                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#metadataModal{{ $service->id }}">
+                                            @if($subCategory->metadata)
+                                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#metadataModal{{ $subCategory->id }}">
                                                     M
                                                 </button>
 
-                                                <!-- Metadata Modal with Edit Form -->
-                                                <div class="modal fade" id="metadataModal{{ $service->id }}" tabindex="-1" aria-labelledby="metadataModalLabel{{ $service->id }}" aria-hidden="true">
+                                                <!-- Metadata Modal -->
+                                                <div class="modal fade" id="metadataModal{{ $subCategory->id }}" tabindex="-1" aria-labelledby="metadataModalLabel{{ $subCategory->id }}" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="metadataModalLabel{{ $service->id }}">Edit Metadata Details</h5>
+                                                                <h5 class="modal-title" id="metadataModalLabel{{ $subCategory->id }}">Edit Metadata Details</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('metadata.update', $service->metadata->id) }}" method="POST">
+                                                                <form action="{{ route('admin.metadata.update', $subCategory->metadata->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('PUT')
 
                                                                     <div class="form-group mb-3">
                                                                         <label for="meta_title">Meta Title</label>
-                                                                        <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ old('meta_title', $service->metadata->meta_title) }}" required>
+                                                                        <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ old('meta_title', $subCategory->metadata->meta_title) }}" required>
                                                                     </div>
 
                                                                     <div class="form-group mb-3">
                                                                         <label for="meta_description">Meta Description</label>
-                                                                        <textarea name="meta_description" id="meta_description" class="form-control" rows="3" required>{{ old('meta_description', $service->metadata->meta_description) }}</textarea>
+                                                                        <textarea name="meta_description" id="meta_description" class="form-control" rows="3" required>{{ old('meta_description', $subCategory->metadata->meta_description) }}</textarea>
                                                                     </div>
 
                                                                     <div class="form-group mb-3">
                                                                         <label for="meta_keywords">Meta Keywords</label>
-                                                                        <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $service->metadata->meta_keywords) }}</textarea>
+                                                                        <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $subCategory->metadata->meta_keywords) }}</textarea>
                                                                     </div>
 
                                                                     <div class="form-group mb-3">
                                                                         <label for="slug">Slug</label>
-                                                                        <input type="text" name="slug" id="slug" class="form-control" value="{{ old('slug', $service->metadata->slug) }}" required>
+                                                                        <input type="text" name="slug" id="slug" class="form-control" value="{{ old('slug', $subCategory->metadata->slug) }}" required>
                                                                     </div>
 
                                                                     <div class="form-group">
@@ -110,7 +98,7 @@
                         </table>
                     @else
                         <div class="alert alert-info">
-                            No services available. <a href="{{ route('admin.services.create') }}">Create a new service</a>.
+                            No subcategories available. <a href="{{ route('admin.subcategories.create') }}">Create a new subcategory</a>.
                         </div>
                     @endif
                 </div>
