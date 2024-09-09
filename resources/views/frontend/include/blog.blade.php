@@ -19,7 +19,7 @@
               @endphp
               @if (!empty($images))
                 @foreach ($images as $image)
-                  <img class="card-img-top img-fluid" src="{{ asset('/strorage/' . $image) }}" alt="Blog image">
+                  <img class="card-img-top img-fluid" src="{{ asset('storage/blog_images/' . basename($image)) }}" alt="Blog image">
                 @endforeach
               @else
                 <p>No images available</p>
