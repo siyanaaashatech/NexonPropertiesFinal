@@ -12,7 +12,6 @@
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         @foreach ($blogs as $blog)
-        @foreach ($blogs as $blog)
           <div class="swiper-slide">
             <div class="card my-1">
               @php
@@ -30,7 +29,7 @@
                 <p class="sm-text">
                   {{ strlen($blog->description) > 150 ? substr($blog->description, 0, 150) . '...' : $blog->description }}
                 </p>
-                <a href="{{ route('singleblogpost', ['slug' => $blog->slug]) }}" class="btn-buttonyellow">Read more</a>
+                <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttonyellow">Read more</a>
               </div>
             </div>
           </div>
