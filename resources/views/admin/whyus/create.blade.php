@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+</head>
+<body>
 @extends('admin.layouts.master')
 
 @section('content')
@@ -6,7 +13,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h4>Edit Service</h4>
+                    <h4>Create New Why Us Entry</h4>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -32,45 +39,36 @@
                         </div>
                     @endif
 
-                    <!-- Service update form -->
-                    <form action="{{ route('services.update', $service->id) }}" method="POST" enctype="multipart/form-data"
-                        id="serviceForm">
+                    <!-- Why Us creation form -->
+                    <form action="{{ route('whyus.store') }}" method="POST" enctype="multipart/form-data" id="whyUsForm">
                         @csrf
-                        @method('PUT')
 
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
-                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $service->title) }}"
-                                required>
+                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label for="subtitle">Subtitle</label>
-                            <input type="text" name="subtitle" id="subtitle" class="form-control"
-                                value="{{ old('subtitle', $service->subtitle) }}" required>
-                        </div>
 
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="5"
-                                required>{{ old('description', $service->description) }}</textarea>
+                            <textarea name="description" id="description" class="form-control summernote" rows="5" required>{{ old('description') }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
-                            <textarea name="keywords" id="keywords" class="form-control" rows="5"
-                                required>{{ old('keywords', $service->keywords) }}</textarea>
+                            <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords') }}</textarea>
                         </div>
 
-                        <!-- Image Upload with Cropper.js -->
                         <div class="form-group mb-3">
-                            <label for="image">Upload New Image</label>
-                            <input type="file" id="image" class="form-control" accept="image/*" multiple>
+                            <label for="image">Image</label>
+                            <input type="file" id="image" class="form-control" required>
                         </div>
 
-                        <!-- Hidden Inputs for Base64 Image -->
-                        <input type="hidden" name="image[]" id="croppedImage">
+                        <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
+                        
+                        <!-- Hidden input to simulate array submission -->
+                        <input type="hidden" name="image[]" id="croppedImage"> 
 
                         <!-- Cropped Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
@@ -81,20 +79,19 @@
                         <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
-                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input" 
-                                       {{ old('status', $service->status) == '1' ? 'checked' : '' }} required>
+                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
                                 <label for="status_active" class="form-check-label">Active</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" 
-                                       {{ old('status', $service->status) == '0' ? 'checked' : '' }} required>
+                                <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
 
+
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Update Service</button>
-                            <a href="{{ route('services.index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Create Why Us</button>
+                            <a href="{{ route('whyus.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -112,7 +109,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="max-width: 150%; max-height: 150%; display: none;">
+                <img id="image-preview" style="width: 100%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -123,8 +120,8 @@
 </div>
 
 <!-- Include Cropper.js -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <script>
     let cropper;
@@ -156,6 +153,8 @@
 
     // Save cropped image data and update hidden input fields
     document.getElementById('saveCrop').addEventListener('click', function () {
+        if (!cropper) return;
+
         const cropData = cropper.getData();
         document.getElementById('cropData').value = JSON.stringify({
             width: Math.round(cropData.width),
@@ -164,17 +163,32 @@
             y: Math.round(cropData.y)
         });
 
-        const base64Image = cropper.getCroppedCanvas().toDataURL('image/png');
-        document.getElementById('croppedImage').value = base64Image; // Store the base64 string
+        cropper.getCroppedCanvas().toBlob((blob) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                document.getElementById('croppedImage').value = reader.result;
 
-        // Set cropped image preview
-        const croppedImagePreview = document.getElementById('cropped-image-preview');
-        croppedImagePreview.src = base64Image;
-        document.getElementById('cropped-preview-container').style.display = 'block';
+                // Set cropped image preview
+                const croppedImagePreview = document.getElementById('cropped-image-preview');
+                croppedImagePreview.src = reader.result;
+                document.getElementById('cropped-preview-container').style.display = 'block';
+            };
 
-        // Close modal after saving crop
-        const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
-        cropModal.hide();
+            // Close modal after saving crop
+            const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
+            cropModal.hide();
+        }, 'image/png');
+    });
+
+    // Initialize Summernote
+    $(document).ready(function() {
+        $('.summernote').summernote({
+            height: 300,
+            minHeight: null,
+            maxHeight: null,
+            focus: true
+        });
     });
 
     // Show toast message after form submission
@@ -186,3 +200,5 @@
     });
 </script>
 @endsection
+</body>
+</html>

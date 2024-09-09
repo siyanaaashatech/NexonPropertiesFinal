@@ -40,7 +40,7 @@ class BlogController extends Controller
             'cropData' => 'nullable|string',
         ]);
 
-       
+
         $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
         $images = [];
 
@@ -60,14 +60,14 @@ class BlogController extends Controller
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
-                $relativeImagePath = 'uploads/images/blogs/' . $imageName;
+                $relativeImagePath = '/uploads/images/blogs/' . $imageName;
                 $images[] = $relativeImagePath;
             }
         }
 
         // Create metadata entry
         $metadata = Metadata::create([
-            'meta_title' => $request->title,    
+            'meta_title' => $request->title,
             'meta_description' => $request->description,
             'meta_keywords' => $request->keywords,
             'slug' => Str::slug($request->title)
@@ -95,7 +95,6 @@ class BlogController extends Controller
         return view('admin.blogs.update', compact('blog', 'metadata'));
     }
 
-    // Update blog in the database
    // Update blog in the database
 public function update(Request $request, Blog $blog)
 {
@@ -168,7 +167,6 @@ public function update(Request $request, Blog $blog)
 
     return redirect()->route('admin.blogs.index');
 }
-
 
     // Delete a blog from the database
     public function destroy(Blog $blog)

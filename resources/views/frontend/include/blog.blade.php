@@ -1,4 +1,3 @@
-
 <section class="container-fluid gapbetweensection">
   <div class="container">
     <div class="row mb-4">
@@ -9,31 +8,33 @@
         </div>
       </div>
     </div>
-
     <div class="swiper">
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
-        @foreach ($services as $service)
+        @foreach ($blogs as $blog)
           <div class="swiper-slide">
             <div class="card my-1">
-              <img class="card-img-top img-fluid" src="{{ asset('image/house1.png') }}" alt="Blog image">
+              @php
+                $images = json_decode($blog->image, true); // Decode the JSON array into a PHP array
+              @endphp
+              @if (!empty($images))
+                @foreach ($images as $image)
+                  <img class="card-img-top img-fluid" src="{{ asset('/strorage/' . $image) }}" alt="Blog image">
+                @endforeach
+              @else
+                <p>No images available</p>
+              @endif
               <div class="card-body">
-                <h5 class="md-text">{{ $service->title }}</h5>
+                <h5 class="md-text">{{ $blog->title }}</h5>
                 <p class="sm-text">
-                  {{ strlen($service->description) > 150 ? substr($service->description, 0, 150) . '...' : $service->description }}
+                  {{ strlen($blog->description) > 150 ? substr($blog->description, 0, 150) . '...' : $blog->description }}
                 </p>
-                <a href="{{ route('singleblogpost') }}" class="btn-buttonyellow">Read more</a>
-
+                <a href="{{ route('singleblogpost', ['slug' => $blog->slug]) }}" class="btn-buttonyellow">Read more</a>
               </div>
             </div>
           </div>
         @endforeach
       </div>
-      
-
     </div>
   </div>
 </section>
-
-
- 

@@ -147,6 +147,17 @@
                             </div>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <!-- Top-level link for WhyUs -->
+                        <a class="nav-link {{ Request::is('admin/whyus*') ? 'active' : '' }}"
+                           href="{{ route('whyus.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                <span class="nav-link-text ps-1">Why Us</span>
+                            </div>
+                        </a>
+                    </li>
                 
 
                 <li class="nav-item">

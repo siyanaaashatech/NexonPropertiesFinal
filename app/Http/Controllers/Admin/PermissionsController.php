@@ -141,8 +141,6 @@ class PermissionsController extends Controller
     public function destroy($id)
     {
         abort_unless(Gate::allows('hasPermission','delete_permissions'),403);
-
-
         try {
 
             $permission=Permission::find($id);
