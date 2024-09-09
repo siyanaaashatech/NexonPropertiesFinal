@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Blog;
@@ -13,7 +11,6 @@ class FrontViewController extends Controller
 {
     public function index()
     {
-      
         $services = Service::latest()->get()->take(4);
         $blogs = Blog::latest()->get();
         $aboutuss =AboutUs::latest()->get()->take(1);
@@ -31,3 +28,23 @@ class FrontViewController extends Controller
     //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
     // }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

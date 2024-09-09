@@ -3,40 +3,41 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Service;
+use App\Models\Whyus;
 use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
-class ServiceController extends Controller
+class WhyusController extends Controller
 {
     /**
-     * Display a listing of the services.
+     * Display a listing of the whyus.
      */
     public function index()
     {
-        $services = Service::with('metadata')->latest()->get();
-        return view('admin.services.index', compact('services'));
+        $WhyUs = Whyus::with('metadata')->latest()->get();
+        return view('admin.whyus.index', compact('WhyUs'));
     }
 
     /**
-     * Show the form for creating a new service.
+     * Show the form for creating a new WhyUs.
      */
     public function create()
+    
     {
         $metadata = Metadata::all();
-        return view('admin.services.create', compact('metadata'));
+        return view('admin.whyus.create', compact('metadata'));
     }
 
     /**
-     * Store a newly created service in storage.
+     * Store a newly created WhyUs in storage.
      */
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'keywords' => 'nullable|string',
             'image' => 'required|array',
@@ -55,7 +56,7 @@ class ServiceController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/uploads/images/services');
+                $destinationPath = storage_path('app/uploads/images/whyus');
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
@@ -64,10 +65,12 @@ class ServiceController extends Controller
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
-                $relativeImagePath = 'uploads/images/services/' . $imageName;
+                $relativeImagePath = 'uploads/images/whyus/' . $imageName;
                 $images[] = $relativeImagePath;
             }
         }
+
+        $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
 
         // Create a new metadata entry
         $metadata = Metadata::create([
@@ -77,10 +80,9 @@ class ServiceController extends Controller
             'slug' => Str::slug($request->title)
         ]);
 
-        // Create new service record and associate with metadata
-        Service::create([
+        // Create new whyus record and associate with metadata
+        Whyus::create([
             'title' => $request->title,
-            'subtitle' => $request->subtitle,
             'description' => $request->description,
             'keywords' => $request->keywords,
             'image' => json_encode($images),
@@ -88,34 +90,28 @@ class ServiceController extends Controller
             'metadata_id' => $metadata->id, // Link newly created metadata
         ]);
 
-        session()->flash('success', 'Service created successfully.');
+        session()->flash('success', 'WhyUs created successfully.');
 
-        return redirect()->route('services.index');
-    }
-
-    public function show()
-    {
-        //
+        return redirect()->route('whyus.index');
     }
 
     /**
-     * Show the form for editing the specified service.
+     * Show the form for editing the specified whyus
      */
-    public function edit(Service $service)
+    public function edit($id)
     {
-        $metadata = Metadata::all();
-        return view('admin.services.update', compact('service', 'metadata'));
+        $WhyUs = Whyus::findOrFail($id); 
+        return view('admin.whyus.update', compact('WhyUs'));
     }
-
     /**
-     * Update the specified service in storage.
+     * Update the specified whyus in storage.
      */
-    public function update(Request $request, Service $service)
+    public function update(Request $request,  $id)
     {
         // Validate the request inputs
+        $WhyUs = Whyus::findOrFail($id);
         $request->validate([
             'title' => 'required|string|max:255',
-            'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'keywords' => 'nullable|string',
             'image' => 'sometimes|array',
@@ -126,7 +122,7 @@ class ServiceController extends Controller
     
         // Initialize the crop data and existing images
         $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
-        $images = !empty($service->image) ? json_decode($service->image, true) : [];
+        $images = !empty($WhyUs->image) ? json_decode($WhyUs->image, true) : [];
     
         // Handle new images if provided
         if ($request->has('image')) {
@@ -135,7 +131,7 @@ class ServiceController extends Controller
                 if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
                     $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
                     $decodedImage = base64_decode($base64Image);
-    
+     
                     if ($decodedImage === false) {
                         continue; // Skip invalid base64 string
                     }
@@ -144,12 +140,11 @@ class ServiceController extends Controller
                     if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
                         continue; // Skip unsupported image types
                     }
-    
                     // Create image resource from decoded data
                     $imageResource = imagecreatefromstring($decodedImage);
                     if ($imageResource !== false) {
                         $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/uploads/images/services');
+                        $destinationPath = storage_path('app/uploads/images/whyus');
     
                         // Ensure the directory exists
                         if (!File::exists($destinationPath)) {
@@ -162,7 +157,7 @@ class ServiceController extends Controller
                         imagedestroy($imageResource);
     
                         // Store the relative path
-                        $relativeImagePath = 'uploads/images/services/' . $imageName;
+                        $relativeImagePath = 'uploads/images/whyus/' . $imageName;
                         $images[] = $relativeImagePath;
                     }
                 }
@@ -170,17 +165,16 @@ class ServiceController extends Controller
         }
     
         // Update metadata record
-        $service->metadata()->updateOrCreate([], [
+        $WhyUs->metadata()->updateOrCreate([], [
             'meta_title' => $request->title,
             'meta_description' => $request->description,
             'meta_keywords' => $request->keywords,
             'slug' => Str::slug($request->title)
         ]);
     
-        // Update service record
-        $service->update([
+        // Update whyusrecord
+        $WhyUs->update([
             'title' => $request->title,
-            'subtitle' => $request->subtitle,
             'description' => $request->description,
             'keywords' => $request->keywords,
             'image' => json_encode($images), // Store updated images as JSON
@@ -188,18 +182,18 @@ class ServiceController extends Controller
         ]);
     
         // Flash success message and redirect
-        session()->flash('success', 'Service updated successfully.');
+        session()->flash('success', 'WhyUs updated successfully.');
     
-        return redirect()->route('admin.services.index');
+        return redirect()->route('whyus.index');
     }
     
 
     /**
-     * Remove the specified service from storage.
+     * Remove the specified whyus from storage.
      */
-    public function destroy(Service $service)
+    public function destroy(Whyus $WhyUs)
     {
-        $images = json_decode($service->image, true);
+        $images = json_decode($WhyUs->image, true);
         if ($images) {
             foreach ($images as $image) {
                 $filePath = storage_path('app/' . $image);
@@ -209,8 +203,8 @@ class ServiceController extends Controller
             }
         }
 
-        $service->delete();
+        $WhyUs->delete();
 
-        return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
+        return redirect()->route('whyus.index')->with('success', 'Whyus deleted successfully.');
     }
 }

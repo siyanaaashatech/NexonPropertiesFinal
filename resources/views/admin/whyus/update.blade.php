@@ -6,7 +6,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h4>Edit Service</h4>
+                    <h4>Edit Why Us Entry</h4>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -32,40 +32,30 @@
                         </div>
                     @endif
 
-                    <!-- Service update form -->
-                    <form action="{{ route('services.update', $service->id) }}" method="POST" enctype="multipart/form-data"
-                        id="serviceForm">
+                    <!-- About Us update form -->
+                    <form action="{{ route('whyus.update', $WhyUs->id) }}" method="POST" enctype="multipart/form-data" id="whyUsForm">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
-                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $service->title) }}"
-                                required>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="subtitle">Subtitle</label>
-                            <input type="text" name="subtitle" id="subtitle" class="form-control"
-                                value="{{ old('subtitle', $service->subtitle) }}" required>
+                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $WhyUs->title) }}" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="5"
-                                required>{{ old('description', $service->description) }}</textarea>
+                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description', $WhyUs->description) }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
-                            <textarea name="keywords" id="keywords" class="form-control" rows="5"
-                                required>{{ old('keywords', $service->keywords) }}</textarea>
+                            <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords', $WhyUs->keywords) }}</textarea>
                         </div>
 
                         <!-- Image Upload with Cropper.js -->
                         <div class="form-group mb-3">
                             <label for="image">Upload New Image</label>
-                            <input type="file" id="image" class="form-control" accept="image/*" multiple>
+                            <input type="file" id="image" class="form-control" accept="image/*">
                         </div>
 
                         <!-- Hidden Inputs for Base64 Image -->
@@ -81,20 +71,18 @@
                         <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
-                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input" 
-                                       {{ old('status', $service->status) == '1' ? 'checked' : '' }} required>
+                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status', $WhyUs->status) == '1' ? 'checked' : '' }} required>
                                 <label for="status_active" class="form-check-label">Active</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" 
-                                       {{ old('status', $service->status) == '0' ? 'checked' : '' }} required>
+                                <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status', $WhyUs->status) == '0' ? 'checked' : '' }} required>
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Update Service</button>
-                            <a href="{{ route('services.index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Update About Us</button>
+                            <a href="{{ route('whyus.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

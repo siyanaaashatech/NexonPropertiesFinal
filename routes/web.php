@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\WhyusController;
 use App\Http\Controllers\Auth\VerificationController;
 
 Auth::routes();
@@ -99,7 +100,11 @@ Route::post('/email/resend', 'Auth\VerificationController@resend')
 Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
+    // Route::resource('services', ServiceController::class);
     Route::resource('services', ServiceController::class);
+    // Update your route definition to accept PUT requests
+Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
+
     Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
 
@@ -151,14 +156,15 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
    Route::resource('metadata', MetadataController::class);
    Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
-//    Route::resource('services', ServiceController::class);
-
-
+   Route::resource('services', ServiceController::class);
 
    Route::resource('favicons', FaviconController::class);
 
    //AboutUs route
    Route::resource('aboutus', AboutUsController::class);
+
+   //WhyUs route
+   Route::resource('whyus', WhyusController::class);
 
    //Sitesetting route
    Route::resource('sitesettings', SiteSettingController::class);
@@ -167,7 +173,7 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
    Route::resource('social-links', SocialLinkController::class);
 
    
-Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
+// Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
 Route::view("/member", "frontend.member")->name('member');
 Route::view("/contact", "frontend.contact")->name('contact');
 Route::get('/about', [SingleController::class, 'render_about'])->name('about');
@@ -191,11 +197,4 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
     Route::post('/update/info', [App\Http\Controllers\ProfilesController::class, 'updateInfo'])->name('update.info');
     Route::post('/update/password', [App\Http\Controllers\ProfilesController::class, 'updatePassword'])->name('update.password');
 });
-Route::prefix('services')->name('services.')->group(function () {
-    Route::get('/', [ServiceController::class, 'index'])->name('index');
-    Route::get('create', [ServiceController::class, 'create'])->name('create');
-    Route::post('store', [ServiceController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [ServiceController::class, 'edit'])->name('edit');
-    Route::post('update', [ServiceController::class, 'update'])->name('update');
-    Route::get('delete/{id}', [ServiceController::class, 'destroy'])->name('destroy');
-});
+

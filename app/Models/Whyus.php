@@ -1,16 +1,17 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class Whyus extends Model
 {
-    use HasFactory;
+
+    protected $table = 'whyus';
 
     protected $fillable = [
         'title',
-        'subtitle',
         'description',
         'keywords',
         'image',
@@ -27,4 +28,18 @@ class Service extends Model
     {
         return $this->belongsTo(Metadata::class);
     }
+    // /**
+    //  * Return the sluggable configuration array for this model.
+    //  *
+    //  * @return array
+    //  */
+    // public function sluggable(): array
+    // {
+    //     return [
+    //         'slug' => [
+    //             'source' => 'title',
+    //         ],
+    //     ];
+    // }
+
 }
