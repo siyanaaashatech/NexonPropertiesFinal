@@ -34,8 +34,8 @@
         <div class="col-md-3 col-sm-12  py-1">
           <h1 class="md-text1 highlight">Message us</h1>
           <input type="text" class="input" placeholder="Your email id here">
-          <textarea name="" id="" rows="1" cols="" class="textarea my-1" placeholder="Your message"></textarea>
-          <a href="{{ route('login') }}" class="btn-buttonyellow footer-button">send the message</a>
+          <textarea name="" id="" rows="1" cols="" class="textarea my-1"></textarea>
+          <a href="{{ route('login') }}" class="btn-buttonyellow footer-button">login/register</a>
 
 
         </div>

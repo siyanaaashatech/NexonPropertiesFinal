@@ -6,12 +6,12 @@
       </div>
       <div class="content-body d-md-flex justify-content-center align-items-center pt-3">
         <div class="col-md-8">
-          @foreach ($testimonials as $testimonial )
+          @foreach ($services as $service )
           <div class="card flex-md-row box-shadow  py-4 testimonialcard" id="grabcard">
             <div class="row px-4 rounded">
             <div class="img-container col-md-5">
               <img  data-src="holder.js/200x250?theme=thumb" alt=""
-                src="{{ asset($testimonial->image)}}" />
+                src="{{asset('image/bighouse.png')}}" />
             </div>
             <div class="card-body d-flex flex-column col-md-6">
               <strong class="mb-2 text-success">
@@ -19,18 +19,17 @@
 
               </strong>
               <h3 class="mb-0 md-text">
-                {{$testimonial ->title}}
+                {{$service -> title}}
               </h3>
               <p class="sm-text mb-auto ">
-              {{ strlen($testimonial -> review)>200 ? substr($testimonial ->review, 0,300) ."..." : ($testimonial ->review)}}
+              {{ strlen($service -> description)>200 ? substr($service -> description, 0,300) ."..." : ($service -> description)}}
               </p>
               <div class="d-flex  pt-2">
-                <img class=" " data-src="holder.js/200x250?theme=thumb" alt="" src="{{asset($testimonial->image)}}"
+                <img class=" " data-src="holder.js/200x250?theme=thumb" alt="" src="{{asset('image/blog.png')}}"
                   style="height:10vh; width:80px ;border-radius:8px;" />
-                  
                 <div class="mx-4">
-                  <div class="md-text media-md-text ">{{$testimonial -> title}}</div>
-                  <div class="sm-text">{{$testimonial -> title}}</div>
+                  <div class="md-text media-md-text ">{{$service -> title}}</div>
+                  <div class="sm-text">{{$service -> title}}</div>
                 </div>
               </div>
 

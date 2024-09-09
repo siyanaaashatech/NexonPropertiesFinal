@@ -11,9 +11,6 @@
       <a href="" class="btn-buttonyellow  py-1">View More</a>
     </div>
     <div class="row py-1 property-body">
-    @foreach ($services as  $service )
-    
-    @endforeach
       <div class="col-md-6 pb-1">
         <div class="property-container">
           <img src="{{asset('image/bighouse.png')}}" alt="Property Image" class="imagecontroller imagecontrollerheight imagecontrollermd ">
@@ -42,14 +39,12 @@
         </div>
       </div>
 
-      
-
       <div class="col-md-6 sub-image-content">
         <div class="row">
           @foreach ($services as $service)
         <div class="col-md-6 pb-1">
         <div class="property-container">
-          <img src="{{asset($service -> image)}}" alt="Property Image" class="property-image">
+          <img src="{{asset('image/bighouse.png')}}" alt="Property Image" class="property-image">
           <div class="property-details">
           <div class="md-text1 p-0 m-0">{{ $service->title }}</div>
           <div class="sm-text highlight text-center p-0 m-0">{{ $service->subtitle }}</div>

@@ -6,9 +6,6 @@
 <section class="singlepage pt-4">
   <div class="container">
     <div class="row">
-
-
-
       <div class="col-md-8">
         <div class="row d-flex flex- col ">
           <div class="col-md-12 mb-3">
@@ -26,47 +23,70 @@
                 <i class="fa-solid fa-building customiconssmall pt-1 mx-1"></i>
                 <h2 class="sm-text">type</h2>
               </div>
+
             </div>
-            <h5 class="md-text"> {{$blogs->title}} </h5>
-            <p class="sm-text py-1">{{$blogs->description}}
+            <h5 class="md-text">Better SEO Blog Titles</h5>
+            <p class="sm-text py-1">make all the difference when it comes to a potential reader clicking on your
+              headline over the one right below (or above) your article in Google search rankings. Your blog post title
+              is crucial when it comes to nailing SEO best practices and giving your blog content a realistic chance of
+              ranking well in organic search engine rankings.
             </p>
           </div>
 
         </div>
 
+
       </div>
-
-
       <div class="col-md-4 sidebar  ">
         <div class="paddingbox ">
           <h2 class="md-text1">Recent post</h2>
           <ul class="customui">
+            <li class="py-1"><a href="" class="md-text"> <i
+                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
+                When should I open your gift?</a></li>
+            <li class="py-1"><a href="" class="md-text"> <i
+                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
+                Are you supporting England,</a></li>
+            <li class="py-1"><a href="" class="md-text"> <i
+                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
+                When should I open your gift?</a></li>
+            <li class="py-1"><a href="" class="md-text"> <i
+                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
+                Are you supporting England, </a></li>
 
-            @foreach ($relatedPosts as $blog)
-        <li class="py-1"><a href="" class="md-text"> <i
-            class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
-          {{$blog->title}}
-          </a></li>
-
-      @endforeach
           </ul>
 
         </div>
         <div class="paddingbox nobackground">
           <h2 class="md-text">feature list</h2>
           <div class="featurelist-body">
-            @foreach ($services as $service)
-        <div class="featurelist-content d-flex py-1">
-          <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-          src="{{asset('image/bighouse.png')}}" />
-          <div class="featurlist-description mx-3">
-          <h3 class="sm-text">{{$service->title}}</h3>
-          <p class="sm-text highlight"> $130000</p>
+            <div class="featurelist-content d-flex py-1">
+              <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
+                src="{{asset('image/bighouse.png')}}" />
+              <div class="featurlist-description mx-3">
+                <h3 class="sm-text">luxury house in greenville</h3>
+                <p class="sm-text highlight"> $130000</p>
 
-          </div>
-        </div>
+              </div>
+            </div>
+            <div class="featurelist-content d-flex  py-1">
+              <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
+                src="{{asset('image/bighouse.png')}}" />
+              <div class="featurlist-description mx-3">
+                <h3 class="sm-text">luxury house in greenville</h3>
+                <p class="sm-text highlight"> $1900000</p>
 
-      @endforeach
+              </div>
+            </div>
+            <div class="featurelist-content d-flex  py-1">
+              <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
+                src="{{asset('image/bighouse.png')}}" />
+              <div class="featurlist-description mx-3">
+                <h3 class="sm-text">luxury house in greenville</h3>
+                <p class="sm-text highlight"> $130000</p>
+
+              </div>
+            </div>
 
 
           </div>

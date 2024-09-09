@@ -141,11 +141,12 @@
                     </div>
 
                 </div>
+
             </div>
             <div class="col-md-12 py-3">
                 <div class="row">
                     @foreach ($services as $service)
-                        <a class="col-md-4 my-2" href="{{route('singleproperties',['id'=>$service->id])}}">
+                        <div class="col-md-4 my-2">
                             <div class="card">
                                 <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
                                 <div class="sell_rent_button d-flex justify-content-between ">
@@ -159,20 +160,20 @@
                                 <div class="card-body">
                                     <h5 class="md-text">{{ $service-> title}}</h5>
                                     <div class=" d-flex gap-3 flex-wrap ">
-                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> title}}</span> {{ $service-> title}}</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> title}}</span>{{ $service-> title}}</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titlee}}</span>{{ $service-> title}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span> {{ $service-> titwle}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span>{{ $service-> titwle}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span>{{ $service-> titwle}}</h2>
                                     </div>
                                     <div class="price-person ">
                                         <div class="d-flex justify-content-between align-content-center">
-                                            <div class=" sm-text"> <span class="md-text">{{ $service-> title}}  /</span>{{ $service-> title}} </div>
+                                            <div class=" sm-text"> <span class="md-text">{{ $service-> titwle}}  /</span>{{ $service-> titwle}} </div>
                                             <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
                                                 class="feature-smallimg feature-smallimgdup">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-</a>
+                        </div>
 
                        
 
