@@ -12,6 +12,7 @@
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         @foreach ($blogs as $blog)
+        @foreach ($blogs as $blog)
           <div class="swiper-slide">
             <div class="card my-1">
               @php
@@ -33,7 +34,7 @@
               </div>
             </div>
           </div>
-        @endforeach
+    @endforeach
       </div>
     </div>
   </div>

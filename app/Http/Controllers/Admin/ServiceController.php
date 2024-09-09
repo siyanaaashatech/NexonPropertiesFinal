@@ -190,7 +190,7 @@ class ServiceController extends Controller
         // Flash success message and redirect
         session()->flash('success', 'Service updated successfully.');
     
-        return redirect()->route('services.index');
+        return redirect()->route('admin.services.index');
     }
     
 

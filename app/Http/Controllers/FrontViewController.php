@@ -5,6 +5,8 @@ use App\Models\Service;
 use App\Models\Blog;
 use App\Models\AboutUs;
 use App\Models\Testimonial;
+
+
 class FrontViewController extends Controller
 {
     public function index()
@@ -13,6 +15,8 @@ class FrontViewController extends Controller
         $blogs = Blog::latest()->get();
         $aboutuss =AboutUs::latest()->get()->take(1);
         $testimonials =Testimonial::latest()->get();
+
+
         return view('frontend.welcome',  compact([
             'services','blogs','aboutuss','testimonials'
         ]));
