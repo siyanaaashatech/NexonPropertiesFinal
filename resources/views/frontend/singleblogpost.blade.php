@@ -56,15 +56,17 @@
           <h2 class="md-text">feature list</h2>
           <div class="featurelist-body">
             @foreach ($services as $service)
-        <div class="featurelist-content d-flex py-1">
+        <a class="featurelist-content d-flex py-1" href="{{route('singleproperties', ['id' => $service->id])}}">
           <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
           src="{{asset('image/bighouse.png')}}" />
           <div class="featurlist-description mx-3">
           <h3 class="sm-text">{{$service->title}}</h3>
           <p class="sm-text highlight"> $130000</p>
-
           </div>
-        </div>
+        </a>
+
+
+
 
       @endforeach
 

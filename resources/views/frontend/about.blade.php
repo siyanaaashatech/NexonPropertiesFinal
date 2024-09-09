@@ -199,7 +199,7 @@
                                 {{ $testimonial->title}}
                             </h3>
                             <p class="sm-text mb-auto ">
-                                {{ strlen($testimonial->description) >400 ? substr($testimonial->description, 0, 400) . "..." : $testimonial->description}}
+                                {{ strlen($testimonial->review) >400 ? substr($testimonial->review, 0, 400) . "..." : $testimonial->review}}
                             </p>
 
                             <div class="d-flex  pt-2">
