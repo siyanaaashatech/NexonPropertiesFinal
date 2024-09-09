@@ -1,4 +1,3 @@
-
 <section class="container-fluid gapbetweensection">
   <div class="container">
     <div class="row mb-4">
@@ -13,27 +12,28 @@
     <div class="swiper">
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
-        @foreach ($services as $service)
+        @foreach ($blogs as $blog)
           <div class="swiper-slide">
             <div class="card my-1">
-              <img class="card-img-top img-fluid" src="{{ asset('image/house1.png') }}" alt="Blog image">
-              <div class="card-body">
-                <h5 class="md-text">{{ $service->title }}</h5>
-                <p class="sm-text">
-                  {{ strlen($service->description) > 150 ? substr($service->description, 0, 150) . '...' : $service->description }}
-                </p>
-                <a href="{{ route('singleblogpost') }}" class="btn-buttonyellow">Read more</a>
+            <img src="{{ asset(urlencode($blog->image)) }}" alt="Property Image" class="property-image">
 
-              </div>
+            <div class="card-body">
+              <h5 class="md-text">{{ $blog->title }}</h5>
+              <p class="sm-text">
+              {{ strlen($blog->description) > 150 ? substr($blog->description, 0, 150) . '...' : $blog->description }}
+              </p>
+          <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttonyellow">Read more</a>
+     
+        <!-- <p>Slug is missing</p> -->
+
+
+            </div>
             </div>
           </div>
-        @endforeach
+    @endforeach
       </div>
-      
+
 
     </div>
   </div>
 </section>
-
-
- 
