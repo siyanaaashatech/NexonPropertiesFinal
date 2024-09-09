@@ -3,9 +3,11 @@
 
 
 {{-- <!-- about --> --}}
+
 <section class="container-fluid container-fluid-background about gapbetweensection">
     <div class="container d-flex flex-column justify-content-center align-items-center">
       <div class="row">
+        
         <div class="col-md-6 d-flex ">
           <div class="image col-md-6 first">
             <img class="" data-src="" alt="" src="{{asset('image/bighouse.png')}}" />

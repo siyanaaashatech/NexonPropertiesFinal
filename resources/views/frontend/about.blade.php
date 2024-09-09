@@ -178,106 +178,64 @@
     </section>
     <!-- testimonial -->
 
-    <section class="container-fluid  py-5 mb-4 teammember ">
-        <div class="container">
-            <div class="row d-flex flex-column justify-content-center align-items-center">
-                <div class="col-lg-5">
-                    <h1 class="md-text text-center"> TESTIMONIALS</h1>
-                    <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
-                        the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
-                </div>
-
-                <div class="col-md-12 ">
-                    <div class="row d-flex justify-content-center align-items-center py-2 gap-2">
-                        <div class="d-flex flex-column col-md-3 customcard card">
-                            <strong class="mb-2 text-success">
-                                <img src="{{asset('image/dash.png')}}" alt="">
-
-                            </strong>
-                            <h3 class="mb-0 md-text">
-                                proffesional $ personal
-                            </h3>
-                            <p class="sm-text mb-auto ">TWe wanted to take a moment to tell you what a pleasure it has
-                                been to work
-                                with you and your team at Al Asar. Your team professionalism has been by far beyond
-                                industry Firms and
-                                even ourexpectations.
-                                It's a pleasure to work with a firm which not only understands and commodes customers
-                                request but a</p>
-                            <div class="d-flex  pt-2">
-                                <img class=" " data-src="holder.js/200x250?theme=thumb" alt=""
-                                    src="{{asset('image/blog.png')}}"
-                                    style="height:10vh; width:80px ;border-radius:8px;" />
-                                <div class="mx-4">
-                                    <div class="md-text media-md-text ">Anil Thapa Magar</div>
-                                    <div class="sm-text">software developer</div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="d-flex flex-column col-md-3 customcard card">
-                            <strong class="mb-2 text-success">
-                                <img src="{{asset('image/dash.png')}}" alt="">
-
-                            </strong>
-                            <h3 class="mb-0 md-text">
-                                proffesional $ personal
-                            </h3>
-                            <p class="sm-text mb-auto ">TWe wanted to take a moment to tell you what a pleasure it has
-                                been to work
-                                with you and your team at Al Asar. Your team professionalism has been by far beyond
-                                industry Firms and
-                                even ourexpectations.
-                                It's a pleasure to work with a firm which not only understands and commodes customers
-                                request but a</p>
-                            <div class="d-flex  pt-2">
-                                <img class=" " data-src="holder.js/200x250?theme=thumb" alt=""
-                                    src="{{asset('image/blog.png')}}"
-                                    style="height:10vh; width:80px ;border-radius:8px;" />
-                                <div class="mx-4">
-                                    <div class="md-text media-md-text ">Anil Thapa Magar</div>
-                                    <div class="sm-text">software developer</div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="d-flex flex-column col-md-3 customcard card">
-                            <strong class="mb-2 text-success">
-                                <img src="{{asset('image/dash.png')}}" alt="">
-
-                            </strong>
-                            <h3 class="mb-0 md-text">
-                                proffesional $ personal
-                            </h3>
-                            <p class="sm-text mb-auto ">TWe wanted to take a moment to tell you what a pleasure it has
-                                been to work
-                                with you and your team at Al Asar. Your team professionalism has been by far beyond
-                                industry Firms and
-                                even ourexpectations.
-                                It's a pleasure to work with a firm which not only understands and commodes customers
-                                request but a</p>
-                            <div class="d-flex  pt-2">
-                                <img class=" " data-src="holder.js/200x250?theme=thumb" alt=""
-                                    src="{{asset('image/blog.png')}}"
-                                    style="height:10vh; width:80px ;border-radius:8px;" />
-                                <div class="mx-4">
-                                    <div class="md-text media-md-text ">Anil Thapa Magar</div>
-                                    <div class="sm-text">software developer</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                </div>
-
+    <section class="container-fluid teammember py-5 my-4">
+    <div class="container">
+        <div class="row d-flex flex-column justify-content-center align-items-center">
+            <div class="col-lg-5">
+                <h1 class="md-text text-center"> TESTIMONIALS</h1>
+                <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
+                    the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
             </div>
+            <div class="swiper">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    @foreach ($testimonials as $testimonial)
+                        <div class="swiper-slide">
+                            <div class="card  customcard col-md-12 ">
+                                <strong class="mb-2 text-success">
+                                    <img src="{{asset('image/dash.png')}}" alt="">
+                                </strong>
+                                <h3 class="mb-0 md-text">
+                                {{ $testimonial->title}}
+                            </h3>
+                            <p class="sm-text mb-auto ">
+                                {{ strlen($testimonial->description) >400 ? substr($testimonial->description, 0, 400) . "..." : $testimonial->description}}
+                            </p>
 
+                            <div class="d-flex  pt-2">
+                                <img class=" " data-src="holder.js/200x250?theme=thumb" alt=""
+                                    src="{{asset('image/blog.png')}}" style="height:10vh; width:80px ;border-radius:8px;" />
+                                <div class="mx-4">
+                                    <div class="md-text media-md-text "> {{ $testimonial->title}}</div>
+                                    <div class="sm-text"> {{ $testimonial->stitle}}</div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <section class="container-fluid py-5 ">
         <div class="container d-flex flex-column justify-content-center align-items-center">
