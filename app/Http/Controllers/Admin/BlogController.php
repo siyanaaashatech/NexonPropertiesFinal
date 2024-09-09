@@ -154,6 +154,24 @@ class BlogController extends Controller
     return redirect()->route('admin.blogs.index');
 }
 
+ // Delete a blog from the database
+ public function destroy(Blog $blog)
+ {
+     $images = json_decode($blog->image, true);
+     if ($images) {
+         foreach ($images as $image) {
+             $filePath = storage_path('app/' . $image);
+             if (file_exists($filePath)) {
+                 unlink($filePath);
+             }
+         }
+     }
+
+     $blog->delete();
+
+     return redirect()->route('admin.blogs.index')->with('success', 'Blog deleted successfully.');
+ }
+
     // Upload image via AJAX
     public function uploadImage(Request $request)
     {
