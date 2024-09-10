@@ -13,7 +13,7 @@
                             $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
                          @endphp
 
-                        <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller rounded">
+                        <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller rounded ">
 
 
 
