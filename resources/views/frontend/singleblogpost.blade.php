@@ -12,7 +12,16 @@
       <div class="col-md-8">
         <div class="row d-flex flex- col ">
           <div class="col-md-12 mb-3">
-            <img src="{{asset('image/house1.png')}}" alt="" srcset="" class="imagecontroller imagecontrollermd">
+            @php
+                $images = json_decode($blogs->image, true); // Decode the JSON array into a PHP array
+              @endphp
+              @if (!empty($images))
+                @foreach ($images as $image)
+                  <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}" alt="Blog image">
+                @endforeach
+              @else
+                <p>No images available</p>
+              @endif
             <div class=" d-flex gap-3 py-3">
               <div class="d-flex ">
                 <i class="fa-solid fa-person customiconssmall pt-1 mx-1"></i>
