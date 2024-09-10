@@ -67,22 +67,22 @@
     <div class="row">
       <div class="col-md-12">
         <div class="owl-carousel custom-carousel owl-theme advantage">
-          @foreach ($services as $index => $service)
+          @foreach ($whyuss as $index => $whyus)
             <div class="item {{ $index === 0 ? 'active' : '' }}">
           
               @php
-                $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
+                $images = json_decode($whyus->image, true); // Decode the JSON array into a PHP array
               @endphp
               @if (!empty($images))
                 @foreach ($images as $image)
-                  <img class="item-image" src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
+                  <img class="item-image" src="{{ asset('storage/whyus/' . basename($image)) }}" alt="Blog image">
                 @endforeach
               @else
                 <p>No images available</p>
               @endif
               <div class="item-desc mx-1">
-                <h3 class="md-text1 mb-2">{{ $service->title }}</h3>
-                <p class="extra-small-text1">{{ $service->description }}</p>
+                <h3 class="md-text1 mb-2">{{ $whyus->title }}</h3>
+                <p class="extra-small-text1">{{ $whyus->description }}</p>
               </div>
             </div>
           @endforeach

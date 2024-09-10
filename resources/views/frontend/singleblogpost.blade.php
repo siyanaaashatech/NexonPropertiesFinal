@@ -14,7 +14,7 @@
           <div class="col-md-12 mb-3">
             @php
         $images = json_decode($blogs->image, true); // Decode the JSON array into a PHP array
-        @endphp
+      @endphp
             @if (!empty($images))
         @foreach ($images as $image)
       <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}"

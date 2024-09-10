@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,11 +25,12 @@ class CreatePropertiesTable extends Migration
             $table->integer('bathrooms');
             $table->integer('area');
             $table->boolean('status');
-            $table->string('main_image');
+            $table->longText('main_image');
             $table->enum('availability_status', ['available', 'sold', 'rental']);
             $table->string('rental_period')->nullable();
             $table->json('other_images')->nullable();
             $table->foreignId('metadata_id')->constrained('metadata')->onDelete('cascade');
+            $table->timestamp('update_time')->nullable(); // New update_time field added
             $table->timestamps();
         });
     }

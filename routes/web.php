@@ -36,18 +36,18 @@ use App\Http\Controllers\Auth\VerificationController;
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('frontend.welcome');
-})->name('/');
+// Route::get('/', function () {
+//     return view('frontend.welcome');
+// })->name('/');
 
-Route::get("/properties",function(){
-    return view("frontend.properties");
+// Route::get("/properties",function(){
+//     return view("frontend.properties");
 
-})->name("properties");
-Route::get("/blog",function(){
-    return view("frontend.blog");
+// })->name("properties");
+// Route::get("/blog",function(){
+//     return view("frontend.blog");
 
-})->name("blog");
+// })->name("blog");
 
 
 Route::get("/member",function(){
@@ -67,11 +67,9 @@ Route::get("/service", function(){
     return view("service");
 });
 Route::get("services", function () { return view('frontend.include.blog.php');});
-Route::get("blogs",function(){ return view("frontend.include.advantage.php");});
-Route::get("services",function(){ return view("frontend.include.indexbanner.php");});
-
+Route::get("whyuss",function(){ return view("frontend.include.advantage.php");});
 Route::get("aboutuss",function(){return view("frontend.include.about.blade.php");});
-
+Route::get("services",function(){ return view("frontend.include.indexbanner.php");});
 Route::get("testimonials",function(){return view("frontend.testimonial.blade.php");});
 Route::get("service", function(){ return view ("frontend.include.project.blade.php");});
 
@@ -165,6 +163,7 @@ Route::put('/services/update', [ServiceController::class, 'update'])->name('serv
 
    //WhyUs route
    Route::resource('whyus', WhyusController::class);
+   Route::resource('property', PropertyController::class);
 
    //Sitesetting route
    Route::resource('sitesettings', SiteSettingController::class);
@@ -173,22 +172,15 @@ Route::put('/services/update', [ServiceController::class, 'update'])->name('serv
    Route::resource('social-links', SocialLinkController::class);
 
    
-// Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
+
+
+// Frontend Routes
 Route::view("/member", "frontend.member")->name('member');
 Route::view("/contact", "frontend.contact")->name('contact');
 Route::get('/about', [SingleController::class, 'render_about'])->name('about');
 Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
 Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
-Route::view("/singleproperties", "frontend.singleproperties")->name('singleproperties');
-
-// Frontend Routes
-Route::view("/properties", "frontend.properties")->name('properties');
-Route::view("/blog", "frontend.blog")->name('blog');
-Route::get('/blog', [SingleController::class,'render_blog'])->name('blog');
-Route::view("/member", "frontend.member")->name('member');
-Route::view("/contact", "frontend.contact")->name('contact');
-Route::get('/blog', [SingleController::class,'render_blog'])->name('blog');
-Route::get('/properties', [SingleController::class, 'render_service'])->name('properties');
+Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
 Route::get('/singleproperties/{id}', [SingleController::class,'render_singleProperties'])->name('singleproperties');
 
 
