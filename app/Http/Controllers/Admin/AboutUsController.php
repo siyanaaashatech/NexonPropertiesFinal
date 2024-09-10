@@ -33,68 +33,66 @@ class AboutUsController extends Controller
     /**
      * Store a newly created AboutUs in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'required|string|max:255',
-            'description' => 'required|string',
-            'keywords' => 'nullable|string',
-            'image' => 'required|array',
-            'image.*' => 'required|string', // Validate as string since it's base64
-            'status' => 'required|boolean',
-            'cropData' => 'required|string',
-        ]);
+    
+    
+     public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'subtitle' => 'required|string|max:255',
+        'description' => 'required|string',
+        'keywords' => 'nullable|string',
+        'croppedImage' => 'required|json',
+        'cropData' => 'required|json',
+        'status' => 'required|boolean',
+    ]);
 
-        $cropData = json_decode($request->input('cropData'), true);
-        $images = [];
+    $croppedImages = json_decode($request->input('croppedImage'), true);
+    $cropData = json_decode($request->input('cropData'), true);
 
-        foreach ($request->input('image') as $base64Image) {
-            $image = explode(',', $base64Image);
-            $decodedImage = base64_decode($image[1]);
-            $imageResource = imagecreatefromstring($decodedImage);
+    $images = [];
 
-            if ($imageResource !== false) {
-                $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/public/aboutus');
+    foreach ($croppedImages as $index => $base64Image) {
+        $image = explode(',', $base64Image);
+        $imageData = base64_decode($image[1]);
 
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0755, true, true);
-                }
+        $imageName = time() . '-' . Str::uuid() . '.webp';
+        $destinationPath = storage_path('app/public/aboutus');
 
-                $savedPath = $destinationPath . '/' . $imageName;
-                imagewebp($imageResource, $savedPath);
-                imagedestroy($imageResource);
-                $relativeImagePath = 'storage/aboutus/' . $imageName;
-                $images[] = $relativeImagePath;
-            }
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true, true);
         }
 
-        // $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
+        $savedPath = $destinationPath . '/' . $imageName;
+        file_put_contents($savedPath, $imageData);
 
-        // Create a new metadata entry
-        $metadata = Metadata::create([
-            'meta_title' => $request->title,
-            'meta_description' => $request->description,
-            'meta_keywords' => $request->keywords,
-            'slug' => Str::slug($request->title)
-        ]);
-
-        // Create new aboutus record and associate with metadata
-        AboutUs::create([
-            'title' => $request->title,
-            'subtitle' => $request->subtitle,
-            'description' => $request->description,
-            'keywords' => $request->keywords,
-            'image' => json_encode($images),
-            'status' => $request->status,
-            'metadata_id' => $metadata->id, // Link newly created metadata
-        ]);
-
-        session()->flash('success', 'AboutUs created successfully.');
-
-        return redirect()->route('aboutus.index');
+        $relativeImagePath = 'storage/aboutus/' . $imageName;
+        $images[] = $relativeImagePath;
     }
+
+    // Create metadata and AboutUs entries as before
+    $metadata = Metadata::create([
+        'meta_title' => $request->title,
+        'meta_description' => $request->description,
+        'meta_keywords' => $request->keywords,
+        'slug' => Str::slug($request->title),
+    ]);
+
+    AboutUs::create([
+        'title' => $request->title,
+        'subtitle' => $request->subtitle,
+        'description' => $request->description,
+        'keywords' => $request->keywords,
+        'image' => json_encode($images),
+        'status' => $request->status,
+        'metadata_id' => $metadata->id,
+    ]);
+
+    session()->flash('success', 'AboutUs created successfully.');
+
+    return redirect()->route('aboutus.index');
+}
+    
 
     /**
      * Show the form for editing the specified aboutus

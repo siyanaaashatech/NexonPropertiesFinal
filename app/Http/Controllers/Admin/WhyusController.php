@@ -56,7 +56,7 @@ class WhyusController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/uploads/images/whyus');
+                $destinationPath = storage_path('app/public/whyus');
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
@@ -65,12 +65,12 @@ class WhyusController extends Controller
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
-                $relativeImagePath = 'uploads/images/whyus/' . $imageName;
+                $relativeImagePath = 'storage/whyus/' . $imageName;
                 $images[] = $relativeImagePath;
             }
         }
 
-        $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
+        // $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
 
         // Create a new metadata entry
         $metadata = Metadata::create([
@@ -144,7 +144,7 @@ class WhyusController extends Controller
                     $imageResource = imagecreatefromstring($decodedImage);
                     if ($imageResource !== false) {
                         $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/uploads/images/whyus');
+                        $destinationPath = storage_path('app/public/whyus');
     
                         // Ensure the directory exists
                         if (!File::exists($destinationPath)) {
@@ -157,7 +157,7 @@ class WhyusController extends Controller
                         imagedestroy($imageResource);
     
                         // Store the relative path
-                        $relativeImagePath = 'uploads/images/whyus/' . $imageName;
+                        $relativeImagePath = 'storage/whyus/' . $imageName;
                         $images[] = $relativeImagePath;
                     }
                 }
@@ -192,19 +192,20 @@ class WhyusController extends Controller
      * Remove the specified whyus from storage.
      */
     public function destroy(Whyus $WhyUs)
-    {
-        $images = json_decode($WhyUs->image, true);
-        if ($images) {
-            foreach ($images as $image) {
-                $filePath = storage_path('app/' . $image);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
+{
+    $images = json_decode($WhyUs->image, true);
+    if ($images) {
+        foreach ($images as $image) {
+            $filePath = storage_path('app/' . $image);
+            if (file_exists($filePath)) {
+                unlink($filePath);
             }
         }
-
-        $WhyUs->delete();
-
-        return redirect()->route('whyus.index')->with('success', 'Whyus deleted successfully.');
     }
+
+    $WhyUs->delete();
+
+    return redirect()->route('whyus.index')->with('success', 'WhyUs deleted successfully.');
+}
+
 }
