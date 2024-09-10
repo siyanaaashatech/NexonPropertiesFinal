@@ -55,7 +55,7 @@ class ServiceController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/uploads/images/services');
+                $destinationPath = storage_path('app/public/services');
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
@@ -64,7 +64,7 @@ class ServiceController extends Controller
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
-                $relativeImagePath = 'uploads/images/services/' . $imageName;
+                $relativeImagePath = 'storage/services/' . $imageName;
                 $images[] = $relativeImagePath;
             }
         }
@@ -149,7 +149,7 @@ class ServiceController extends Controller
                     $imageResource = imagecreatefromstring($decodedImage);
                     if ($imageResource !== false) {
                         $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/uploads/images/services');
+                        $destinationPath = storage_path('app/public/services');
     
                         // Ensure the directory exists
                         if (!File::exists($destinationPath)) {
@@ -162,7 +162,7 @@ class ServiceController extends Controller
                         imagedestroy($imageResource);
     
                         // Store the relative path
-                        $relativeImagePath = 'uploads/images/services/' . $imageName;
+                        $relativeImagePath = 'storage/services/' . $imageName;
                         $images[] = $relativeImagePath;
                     }
                 }

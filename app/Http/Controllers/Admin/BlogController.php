@@ -176,7 +176,7 @@ class BlogController extends Controller
      $images = json_decode($blog->image, true);
      if ($images) {
          foreach ($images as $image) {
-             $filePath = storage_path('app/' . $image);
+             $filePath = storage_path('app/public/blog_images');
              if (file_exists($filePath)) {
                  unlink($filePath);
              }
