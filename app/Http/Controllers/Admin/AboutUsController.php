@@ -120,49 +120,29 @@ class AboutUsController extends Controller
             'cropData' => 'sometimes|string', // Optional crop data for images
         ]);
     
-        // Initialize the crop data and existing images
-        $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
-        $images = !empty($aboutUs->image) ? json_decode($aboutUs->image, true) : [];
+        $croppedImages = json_decode($request->input('croppedImage'), true);
+        $cropData = json_decode($request->input('cropData'), true);
     
-        // Handle new images if provided
-        if ($request->has('image')) {
-            foreach ($request->input('image') as $base64Image) {
-                // Ensure the base64 string is valid and has a valid header
-                if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
-                    $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-                    $decodedImage = base64_decode($base64Image);
-     
-                    if ($decodedImage === false) {
-                        continue; // Skip invalid base64 string
-                    }
+        $images = [];
     
-                    $imageType = strtolower($type[1]); // jpeg, png, gif, etc.
-                    if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                        continue; // Skip unsupported image types
-                    }
-                    // Create image resource from decoded data
-                    $imageResource = imagecreatefromstring($decodedImage);
-                    if ($imageResource !== false) {
-                        $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/public/aboutus');
+        foreach ($croppedImages as $index => $base64Image) {
+            $image = explode(',', $base64Image);
+            $imageData = base64_decode($image[1]);
     
-                        // Ensure the directory exists
-                        if (!File::exists($destinationPath)) {
-                            File::makeDirectory($destinationPath, 0755, true, true);
-                        }
+            $imageName = time() . '-' . Str::uuid() . '.webp';
+            $destinationPath = storage_path('app/public/aboutus');
     
-                        // Save the image and destroy the resource
-                        $savedPath = $destinationPath . '/' . $imageName;
-                        imagewebp($imageResource, $savedPath);
-                        imagedestroy($imageResource);
-    
-                        // Store the relative path
-                        $relativeImagePath = 'storage/aboutus/' . $imageName;
-                        $images[] = $relativeImagePath;
-                    }
-                }
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
             }
+    
+            $savedPath = $destinationPath . '/' . $imageName;
+            file_put_contents($savedPath, $imageData);
+    
+            $relativeImagePath = 'storage/aboutus/' . $imageName;
+            $images[] = $relativeImagePath;
         }
+    
     
         // Update metadata record
         $aboutUs->metadata()->updateOrCreate([], [
