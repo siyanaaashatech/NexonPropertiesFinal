@@ -94,7 +94,7 @@
                                 value="{{ old('meta_keywords', $siteSetting->metadata->meta_keywords ?? '') }}">
                         </div>
 
-                        <!-- Image Upload with Cropper.js -->
+                        {{-- <!-- Image Upload with Cropper.js -->
                         <div class="form-group mb-3">
                             <label for="main_logo">Main Logo</label>
                             <input type="file" name="main_logo" id="main_logo" class="form-control">
@@ -113,9 +113,9 @@
                                     <img src="{{ asset('storage/' . $siteSetting->side_logo) }}" alt="Current Side Logo" style="max-width: 100%; height: auto;">
                                 </div>
                             @endif
-                        </div>
+                        </div> --}}
 
-                        <!-- Crop Data Hidden Field -->
+                        {{-- <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
 
                         <!-- Hidden input to simulate array submission -->
@@ -125,7 +125,7 @@
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Image Preview:</label>
                             <img id="cropped-image-preview" style="max-width: 100%; max-height: 200px; display: block;">
-                        </div>
+                        </div> --}}
 
                         <div class="form-group mb-3">
                             <label for="status">Status</label>
@@ -150,7 +150,7 @@
     </div>
 </div>
 
-<!-- Modal for Image Cropping -->
+{{-- <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -231,5 +231,5 @@
             toast.show();
         }
     });
-</script>
+</script> --}}
 @endsection

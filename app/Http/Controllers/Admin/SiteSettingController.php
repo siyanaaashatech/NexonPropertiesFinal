@@ -53,10 +53,10 @@ class SiteSettingController extends Controller
             'office_description' => 'nullable|string',
             'established_year' => 'nullable|string',
             'slogan' => 'nullable|string',
-            'image' => 'sometimes|array',
-            'image.*' => 'sometimes|required|string',
+            // 'image' => 'sometimes|array',
+            // 'image.*' => 'sometimes|required|string',
             'status' => 'required|boolean',
-            'cropData' => 'sometimes|string',
+            // 'cropData' => 'sometimes|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
@@ -73,44 +73,49 @@ class SiteSettingController extends Controller
             'embed_fbpage' => 'nullable|string',
         ]);
     
-        // Decode the existing images
-        $images = !empty($siteSetting->image) ? json_decode($siteSetting->image, true) : [];
+        // $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
+        // $images = !empty($siteSetting->image) ? json_decode($siteSetting->image, true) : [];
     
-        // Handle new images if provided
-        if ($request->has('image')) {
-            foreach ($request->input('image') as $base64Image) {
-                if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
-                    $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-                    $decodedImage = base64_decode($base64Image);
+        // // Handle new images if provided
+        // if ($request->has('image')) {
+        //     foreach ($request->input('image') as $base64Image) {
+        //         // Ensure the base64 string is valid and has a valid header
+        //         if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+        //             $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+        //             $decodedImage = base64_decode($base64Image);
     
-                    if ($decodedImage === false) {
-                        continue; // Skip invalid base64 string
-                    }
+        //             if ($decodedImage === false) {
+        //                 continue; // Skip invalid base64 string
+        //             }
     
-                    $imageType = strtolower($type[1]); 
-                    if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                        continue; // Skip unsupported image types
-                    }
+        //             $imageType = strtolower($type[1]); // jpeg, png, gif, etc.
+        //             if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
+        //                 continue; // Skip unsupported image types
+        //             }
     
-                    $imageResource = imagecreatefromstring($decodedImage);
-                    if ($imageResource !== false) {
-                        $imageName = time() . '-' . Str::uuid() . '.webp'; 
-                        $destinationPath = storage_path('app/public/sitesettings');
+        //             // Create image resource from decoded data
+        //             $imageResource = imagecreatefromstring($decodedImage);
+        //             if ($imageResource !== false) {
+        //                 $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
+        //                 $destinationPath = storage_path('app/public/services');
     
-                        if (!File::exists($destinationPath)) {
-                            File::makeDirectory($destinationPath, 0755, true, true);
-                        }
+        //                 // Ensure the directory exists
+        //                 if (!File::exists($destinationPath)) {
+        //                     File::makeDirectory($destinationPath, 0755, true, true);
+        //                 }
     
-                        $savedPath = $destinationPath . '/' . $imageName;
-                        imagewebp($imageResource, $savedPath);
-                        imagedestroy($imageResource);
+        //                 // Save the image and destroy the resource
+        //                 $savedPath = $destinationPath . '/' . $imageName;
+        //                 imagewebp($imageResource, $savedPath);
+        //                 imagedestroy($imageResource);
     
-                        $relativeImagePath = 'storage/sitesettings/' . $imageName;
-                        $images[] = $relativeImagePath;
-                    }
-                }
-            }
-        }
+        //                 // Store the relative path
+        //                 $relativeImagePath = 'storage/services/' . $imageName;
+        //                 $images[] = $relativeImagePath;
+        //             }
+        //         }
+        //     }
+        // }
     
         // Update Site Setting record
         $siteSetting->update([
@@ -121,7 +126,7 @@ class SiteSettingController extends Controller
             'office_description' => $validatedData['office_description'],
             'established_year' => $validatedData['established_year'],
             'slogan' => $validatedData['slogan'],
-            'image' => json_encode($images),
+            // 'image' => json_encode($images),
             'status' => $validatedData['status'],
         ]);
     
