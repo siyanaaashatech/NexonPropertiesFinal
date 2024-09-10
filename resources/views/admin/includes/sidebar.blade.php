@@ -63,7 +63,7 @@
                                 <a class="nav-link {{ Request::segment(2) == 'site-settings' ? 'active' : '' }}"
                                     href="{{ route('admin.site-settings.index') }}">
                                     <div class="d-flex align-items-center">
-                                        <i class="fa fa-angle-double-right"></i> Site Setting
+                                    <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Site Setting</span>
                                     </div>
                                 </a>
                             </li>
@@ -72,7 +72,7 @@
                             <a class="nav-link {{ Request::segment(2) == 'favicons' ? 'active' : '' }}"
                                 href="{{ route('admin.favicon.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <i class="fa fa-angle-double-right"></i> Favicon
+                                <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Favicon</span>
                                 </div>
                             </a>
                         </li>
@@ -80,7 +80,7 @@
                             <a class="nav-link {{ Request::segment(2) == 'social-links' ? 'active' : '' }}"
                                 href="{{ route('admin.social-links.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <i class="fa fa-angle-double-right"></i> Social Links
+                                <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Social Links</span>
                                 </div>
                             </a>
                         </li>
@@ -95,6 +95,16 @@
                             </div>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <!-- Top-level link for AboutUs -->
+                        <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
+                           href="{{ route('admin.whyus.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                <span class="nav-link-text ps-1">Why Us</span>
+                            </div>
+                        </a>
+                        </li>
                     </ul>
                 </li>
 

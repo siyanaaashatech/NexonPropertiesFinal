@@ -120,7 +120,7 @@ class BlogController extends Controller
                 $imageResource = imagecreatefromstring($decodedImage);
                 if ($imageResource !== false) {
                     $imageName = time() . '-' . Str::uuid() . '.webp';
-                    $destinationPath = storage_path('app/public/blog_images'); // Fixed path to save images
+                    $destinationPath = storage_path('app/public/blog_images');// Fixed path to save images
 
                     if (!File::exists($destinationPath)) {
                         File::makeDirectory($destinationPath, 0755, true, true);

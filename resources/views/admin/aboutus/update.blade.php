@@ -57,20 +57,20 @@
                             <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords', $aboutUs->keywords) }}</textarea>
                         </div>
 
-                        <!-- Image Upload with Cropper.js -->
                         <div class="form-group mb-3">
-                            <label for="image">Upload New Image</label>
-                            <input type="file" id="image" class="form-control" accept="image/*">
+                            <label for="image">Images</label>
+                            <input type="file" name="image[]" id="image" class="form-control" multiple required>
                         </div>
 
-                        <!-- Hidden Inputs for Base64 Image -->
-                        <input type="hidden" name="image[]" id="croppedImage">
+                        <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
-
+                        
+                        <!-- Hidden input to simulate array submission -->
+                        <input type="hidden" name="croppedImage" id="croppedImage">
                         <!-- Cropped Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Image Preview:</label>
-                            <img id="cropped-image-preview" style="max-width: 150%; max-height: 200%; display: block;">
+                            <div id="cropped-images-preview"></div>
                         </div>
 
                         <div class="form-group mb-3">
@@ -105,7 +105,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="max-width: 150%; max-height: 150%; display: none;">
+                <img id="image-preview" style="width: 100%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -116,66 +116,101 @@
 </div>
 
 <!-- Include Cropper.js -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script>
-    let cropper;
-    let currentFile;
 
-    // Image file input change event
-    document.getElementById('image').addEventListener('change', function (e) {
-        const files = e.target.files;
-        if (files && files.length > 0) {
-            currentFile = files[0];
-            const url = URL.createObjectURL(currentFile);
-            const imagePreview = document.getElementById('image-preview');
-            imagePreview.src = url;
-            imagePreview.style.display = 'block';
+let cropper;
+let imagesToProcess = [];
+let processedImages = [];
+let cropDataArray = [];
 
-            // Show the crop modal
-            const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
-            cropModal.show();
+document.getElementById('image').addEventListener('change', function (e) {
+    imagesToProcess = Array.from(e.target.files);
+    processedImages = [];
+    cropDataArray = [];
+    if (imagesToProcess.length > 0) {
+        processNextImage();
+    }
+});
 
-            if (cropper) {
-                cropper.destroy();
-            }
-            cropper = new Cropper(imagePreview, {
-                aspectRatio: 16 / 9,
-                viewMode: 1,
-            });
-        }
+function processNextImage() {
+    if (imagesToProcess.length === 0) {
+        document.getElementById('cropped-preview-container').style.display = 'block';
+        return;
+    }
+
+    const file = imagesToProcess.shift();
+    const url = URL.createObjectURL(file);
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.src = url;
+    imagePreview.style.display = 'block';
+
+    const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+    cropModal.show();
+
+    if (cropper) {
+        cropper.destroy();
+    }
+    cropper = new Cropper(imagePreview, {
+        aspectRatio: 16 / 9,
+        viewMode: 1,
     });
 
-    // Save cropped image data and update hidden input fields
-    document.getElementById('saveCrop').addEventListener('click', function () {
+    document.getElementById('saveCrop').onclick = function () {
+        if (!cropper) return;
+
         const cropData = cropper.getData();
-        document.getElementById('cropData').value = JSON.stringify({
+        cropDataArray.push(JSON.stringify({
             width: Math.round(cropData.width),
             height: Math.round(cropData.height),
             x: Math.round(cropData.x),
             y: Math.round(cropData.y)
-        });
+        }));
 
-        const base64Image = cropper.getCroppedCanvas().toDataURL('image/png');
-        document.getElementById('croppedImage').value = base64Image; // Store the base64 string
+        cropper.getCroppedCanvas().toBlob((blob) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                processedImages.push(reader.result);
 
-        // Set cropped image preview
-        const croppedImagePreview = document.getElementById('cropped-image-preview');
-        croppedImagePreview.src = base64Image;
-        document.getElementById('cropped-preview-container').style.display = 'block';
+                // Show cropped image preview
+                const croppedImagesPreview = document.getElementById('cropped-images-preview');
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.style.maxWidth = '150px';
+                img.style.maxHeight = '200px';
+                croppedImagesPreview.appendChild(img);
 
-        // Close modal after saving crop
-        const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
-        cropModal.hide();
-    });
+                cropModal.hide();
+                
+                // Process next image or finish
+                if (imagesToProcess.length > 0) {
+                    processNextImage();
+                } else {
+                    finishImageProcessing();
+                }
+            };
+        }, 'image/png');
+    };
+}
 
-    // Show toast message after form submission
-    document.addEventListener('DOMContentLoaded', function () {
-        if (document.querySelector('.toast')) {
-            const toast = new bootstrap.Toast(document.querySelector('.toast'));
-            toast.show();
-        }
-    });
+function finishImageProcessing() {
+    document.getElementById('cropData').value = JSON.stringify(cropDataArray);
+    document.getElementById('croppedImage').value = JSON.stringify(processedImages);
+    document.getElementById('cropped-preview-container').style.display = 'block';
+}
+
+// Form submission
+document.getElementById('aboutUsForm').addEventListener('submit', function(e) {
+    if (imagesToProcess.length > 0) {
+        e.preventDefault();
+        alert('Please finish cropping all images before submitting.');
+        return;
+    }
+    // Form will submit normally if all images are processed
+});
 </script>
 @endsection
+</body>
+</html>

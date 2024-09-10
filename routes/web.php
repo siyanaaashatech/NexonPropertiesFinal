@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\WhyusController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -99,14 +100,19 @@ Route::get('/', [FrontViewController::class, 'index'])->name('index');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/email/verify', 'Auth\VerificationController@show')
-    ->name('verification.notice');
-Route::post('/email/resend', 'Auth\VerificationController@resend')
-    ->name('verification.resend');
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
 
+// Route to handle the verification when the user clicks the link in the email
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
     ->middleware(['auth', 'signed'])
     ->name('verification.verify');
+
+// Route to resend the verification email
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
 
 
 
@@ -152,28 +158,25 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
         Route::post('update', [PermissionsController::class, 'update'])->name('update');
         Route::get('delete/{id}', [PermissionsController::class, 'destroy'])->name('destroy');
     });
+    Route::resource('services', ServiceController::class);
 
-    // Blog Routes
-    Route::resource('blogs', BlogController::class);
-    Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
-});
+    Route::resource('favicons', FaviconController::class);
 
-Route::resource('services', ServiceController::class);
+    //AboutUs route
+    Route::resource('aboutus', AboutUsController::class);
 
-Route::resource('favicons', FaviconController::class);
+    //Sitesetting route
+    Route::resource('sitesettings', SiteSettingController::class);
 
-//AboutUs route
-Route::resource('aboutus', AboutUsController::class);
+    Route::resource('property', PropertyController::class);
 
-//Sitesetting route
-Route::resource('sitesettings', SiteSettingController::class);
+    //Sociallinks route
+    Route::resource('social-links', SocialLinkController::class);
 
-Route::resource('property', PropertyController::class);
+    Route::resource('property', PropertyController::class);
+    Route::resource('whyus', WhyusController::class);
 
-//Sociallinks route
-Route::resource('social-links', SocialLinkController::class);
 
-// Testimonial Routes 
 Route::resource('admin/testimonials', TestimonialController::class);
 Route::resource('admin/property', PropertyController::class);
 Route::resource('admin/categories', CategoryController::class);
@@ -182,20 +185,21 @@ Route::resource('admin/subcategories', SubCategoryController::class);
 Route::resource('metadata', MetadataController::class);
 Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
+    // Blog Routes
+    Route::resource('blogs', BlogController::class);
+    Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
+});
+
+
+
+// Testimonial Routes 
+
+
 //    Route::resource('services', ServiceController::class);
 
 
 
-Route::resource('favicons', FaviconController::class);
 
-//AboutUs route
-Route::resource('aboutus', AboutUsController::class);
-
-//Sitesetting route
-Route::resource('sitesettings', SiteSettingController::class);
-
-//Sociallinks route
-Route::resource('social-links', SocialLinkController::class);
 
 
 Route::get('/services', [SingleController::class, 'render_service'])->name('properties');

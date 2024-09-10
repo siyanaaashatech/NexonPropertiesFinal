@@ -8,7 +8,7 @@ use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+
 
 class AboutUsController extends Controller
 {
@@ -33,68 +33,66 @@ class AboutUsController extends Controller
     /**
      * Store a newly created AboutUs in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'required|string|max:255',
-            'description' => 'required|string',
-            'keywords' => 'nullable|string',
-            'image' => 'required|array',
-            'image.*' => 'required|string', // Validate as string since it's base64
-            'status' => 'required|boolean',
-            'cropData' => 'required|string',
-        ]);
+    
+    
+     public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'subtitle' => 'required|string|max:255',
+        'description' => 'required|string',
+        'keywords' => 'nullable|string',
+        'croppedImage' => 'required|json',
+        'cropData' => 'required|json',
+        'status' => 'required|boolean',
+    ]);
 
-        $cropData = json_decode($request->input('cropData'), true);
-        $images = [];
+    $croppedImages = json_decode($request->input('croppedImage'), true);
+    $cropData = json_decode($request->input('cropData'), true);
 
-        foreach ($request->input('image') as $base64Image) {
-            $image = explode(',', $base64Image);
-            $decodedImage = base64_decode($image[1]);
-            $imageResource = imagecreatefromstring($decodedImage);
+    $images = [];
 
-            if ($imageResource !== false) {
-                $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/uploads/images/aboutus');
+    foreach ($croppedImages as $index => $base64Image) {
+        $image = explode(',', $base64Image);
+        $imageData = base64_decode($image[1]);
 
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0755, true, true);
-                }
+        $imageName = time() . '-' . Str::uuid() . '.webp';
+        $destinationPath = storage_path('app/public/aboutus');
 
-                $savedPath = $destinationPath . '/' . $imageName;
-                imagewebp($imageResource, $savedPath);
-                imagedestroy($imageResource);
-                $relativeImagePath = 'uploads/images/aboutus/' . $imageName;
-                $images[] = $relativeImagePath;
-            }
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true, true);
         }
 
-        //$slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
+        $savedPath = $destinationPath . '/' . $imageName;
+        file_put_contents($savedPath, $imageData);
 
-        // Create a new metadata entry
-        $metadata = Metadata::create([
-            'meta_title' => $request->title,
-            'meta_description' => $request->description,
-            'meta_keywords' => $request->keywords,
-            'slug' => Str::slug($request->title)
-        ]);
-
-        // Create new aboutus record and associate with metadata
-        AboutUs::create([
-            'title' => $request->title,
-            'subtitle' => $request->subtitle,
-            'description' => $request->description,
-            'keywords' => $request->keywords,
-            'image' => json_encode($images),
-            'status' => $request->status,
-            'metadata_id' => $metadata->id, // Link newly created metadata
-        ]);
-
-        session()->flash('success', 'AboutUs created successfully.');
-
-        return redirect()->route('admin.aboutus.index');
+        $relativeImagePath = 'storage/aboutus/' . $imageName;
+        $images[] = $relativeImagePath;
     }
+
+    // Create metadata and AboutUs entries as before
+    $metadata = Metadata::create([
+        'meta_title' => $request->title,
+        'meta_description' => $request->description,
+        'meta_keywords' => $request->keywords,
+        'slug' => Str::slug($request->title),
+    ]);
+
+    AboutUs::create([
+        'title' => $request->title,
+        'subtitle' => $request->subtitle,
+        'description' => $request->description,
+        'keywords' => $request->keywords,
+        'image' => json_encode($images),
+        'status' => $request->status,
+        'metadata_id' => $metadata->id,
+    ]);
+
+    session()->flash('success', 'AboutUs created successfully.');
+
+    return redirect()->route('admin.aboutus.index');
+}
+    
 
     /**
      * Show the form for editing the specified aboutus
@@ -122,49 +120,29 @@ class AboutUsController extends Controller
             'cropData' => 'sometimes|string', // Optional crop data for images
         ]);
     
-        // Initialize the crop data and existing images
-        $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
-        $images = !empty($aboutUs->image) ? json_decode($aboutUs->image, true) : [];
+        $croppedImages = json_decode($request->input('croppedImage'), true);
+        $cropData = json_decode($request->input('cropData'), true);
     
-        // Handle new images if provided
-        if ($request->has('image')) {
-            foreach ($request->input('image') as $base64Image) {
-                // Ensure the base64 string is valid and has a valid header
-                if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
-                    $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-                    $decodedImage = base64_decode($base64Image);
-     
-                    if ($decodedImage === false) {
-                        continue; // Skip invalid base64 string
-                    }
+        $images = [];
     
-                    $imageType = strtolower($type[1]); // jpeg, png, gif, etc.
-                    if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                        continue; // Skip unsupported image types
-                    }
-                    // Create image resource from decoded data
-                    $imageResource = imagecreatefromstring($decodedImage);
-                    if ($imageResource !== false) {
-                        $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/uploads/images/aboutus');
+        foreach ($croppedImages as $index => $base64Image) {
+            $image = explode(',', $base64Image);
+            $imageData = base64_decode($image[1]);
     
-                        // Ensure the directory exists
-                        if (!File::exists($destinationPath)) {
-                            File::makeDirectory($destinationPath, 0755, true, true);
-                        }
+            $imageName = time() . '-' . Str::uuid() . '.webp';
+            $destinationPath = storage_path('app/public/aboutus');
     
-                        // Save the image and destroy the resource
-                        $savedPath = $destinationPath . '/' . $imageName;
-                        imagewebp($imageResource, $savedPath);
-                        imagedestroy($imageResource);
-    
-                        // Store the relative path
-                        $relativeImagePath = 'uploads/images/aboutus/' . $imageName;
-                        $images[] = $relativeImagePath;
-                    }
-                }
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
             }
+    
+            $savedPath = $destinationPath . '/' . $imageName;
+            file_put_contents($savedPath, $imageData);
+    
+            $relativeImagePath = 'storage/aboutus/' . $imageName;
+            $images[] = $relativeImagePath;
         }
+    
     
         // Update metadata record
         $aboutUs->metadata()->updateOrCreate([], [

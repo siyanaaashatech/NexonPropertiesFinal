@@ -15,7 +15,7 @@ class CreateCustomerUsertable extends Migration
     {
         Schema::create('customer_usertable', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('name'); // User's name
+            $table->string('name'); // User's full name
             $table->string('email')->unique(); // User's email, must be unique
             $table->timestamp('email_verified_at')->nullable(); // Email verification timestamp
             $table->string('password'); // Password field

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'is_active' => 1,
             'role' => 1,
+            'email_verified_at' => Carbon::now(), // Set email verification timestamp
         ]);
 
         User::create([
@@ -28,7 +30,8 @@ class UserSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
             'is_active' => 1,
-            'role' => 2
+            'role' => 2,
+            'email_verified_at' => Carbon::now(), // Set email verification timestamp
         ]);
 
         User::create([
@@ -36,8 +39,8 @@ class UserSeeder extends Seeder
             'email' => 'user@user.com',
             'password' => Hash::make('password'),
             'is_active' => 1,
-            'role' => 3
+            'role' => 3,
+            'email_verified_at' => Carbon::now(), // Set email verification timestamp
         ]);
-
     }
 }

@@ -110,7 +110,7 @@
                         </table>
                     @else
                         <div class="alert alert-info">
-                            No About Us entries available. <a href="{{ route('aboutus.create') }}">Create an About Us entry</a>.
+                            No About Us entries available. <a href="{{ route('admin.aboutus.create') }}">Create an About Us entry</a>.
                         </div>
                     @endif
                 </div>

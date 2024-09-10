@@ -103,7 +103,7 @@
   
      <li class="nav-item d-none d-sm-block">
         <a class="nav-link px-0" href="#">
-          {{ $user = Auth::user()->name}}
+        <span class="nav-link-text ps-1">{{ $user = Auth::user()->name}}</span>
         </a>
       </li> 
     
@@ -127,7 +127,7 @@
 
 
             {{-- <a class="dropdown-item" href="pages/user/settings.html">Settings</a> --}}
-            <a class="dropdown-item" href="">Change Password</a>
+            <a class="dropdown-item" href="">  <span class="nav-link-text ps-1">Change Password</span></a>
 
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -140,4 +140,11 @@
         </div>
       </li>
     </ul>
+    <script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </script>
 </nav>

@@ -64,20 +64,19 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="image">Image</label>
-                            <input type="file" id="image" class="form-control" required>
+                            <label for="image">Images</label>
+                            <input type="file" name="image[]" id="image" class="form-control" multiple required>
                         </div>
 
                         <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
                         
                         <!-- Hidden input to simulate array submission -->
-                        <input type="hidden" name="image[]" id="croppedImage"> 
-
+                        <input type="hidden" name="croppedImage" id="croppedImage">
                         <!-- Cropped Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Image Preview:</label>
-                            <img id="cropped-image-preview" style="max-width: 150%; max-height: 200%; display: block;">
+                            <div id="cropped-images-preview"></div>
                         </div>
 
                         <div class="form-group mb-3">
@@ -91,7 +90,6 @@
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
-
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create About Us</button>
@@ -126,82 +124,98 @@
 <!-- Include Cropper.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
 <script>
-    let cropper;
-    let currentFile;
 
-    // Image file input change event
-    document.getElementById('image').addEventListener('change', function (e) {
-        const files = e.target.files;
-        if (files && files.length > 0) {
-            currentFile = files[0];
-            const url = URL.createObjectURL(currentFile);
-            const imagePreview = document.getElementById('image-preview');
-            imagePreview.src = url;
-            imagePreview.style.display = 'block';
+let cropper;
+let imagesToProcess = [];
+let processedImages = [];
+let cropDataArray = [];
 
-            // Show the crop modal
-            const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
-            cropModal.show();
+document.getElementById('image').addEventListener('change', function (e) {
+    imagesToProcess = Array.from(e.target.files);
+    processedImages = [];
+    cropDataArray = [];
+    if (imagesToProcess.length > 0) {
+        processNextImage();
+    }
+});
 
-            if (cropper) {
-                cropper.destroy();
-            }
-            cropper = new Cropper(imagePreview, {
-                aspectRatio: 16 / 9,
-                viewMode: 1,
-            });
-        }
+function processNextImage() {
+    if (imagesToProcess.length === 0) {
+        document.getElementById('cropped-preview-container').style.display = 'block';
+        return;
+    }
+
+    const file = imagesToProcess.shift();
+    const url = URL.createObjectURL(file);
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.src = url;
+    imagePreview.style.display = 'block';
+
+    const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+    cropModal.show();
+
+    if (cropper) {
+        cropper.destroy();
+    }
+    cropper = new Cropper(imagePreview, {
+        aspectRatio: 16 / 9,
+        viewMode: 1,
     });
 
-    // Save cropped image data and update hidden input fields
-    document.getElementById('saveCrop').addEventListener('click', function () {
+    document.getElementById('saveCrop').onclick = function () {
         if (!cropper) return;
 
         const cropData = cropper.getData();
-        document.getElementById('cropData').value = JSON.stringify({
+        cropDataArray.push(JSON.stringify({
             width: Math.round(cropData.width),
             height: Math.round(cropData.height),
             x: Math.round(cropData.x),
             y: Math.round(cropData.y)
-        });
+        }));
 
         cropper.getCroppedCanvas().toBlob((blob) => {
             const reader = new FileReader();
             reader.readAsDataURL(blob);
             reader.onloadend = function () {
-                document.getElementById('croppedImage').value = reader.result;
+                processedImages.push(reader.result);
 
-                // Set cropped image preview
-                const croppedImagePreview = document.getElementById('cropped-image-preview');
-                croppedImagePreview.src = reader.result;
-                document.getElementById('cropped-preview-container').style.display = 'block';
+                // Show cropped image preview
+                const croppedImagesPreview = document.getElementById('cropped-images-preview');
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.style.maxWidth = '150px';
+                img.style.maxHeight = '200px';
+                croppedImagesPreview.appendChild(img);
+
+                cropModal.hide();
+                
+                // Process next image or finish
+                if (imagesToProcess.length > 0) {
+                    processNextImage();
+                } else {
+                    finishImageProcessing();
+                }
             };
-
-            // Close modal after saving crop
-            const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
-            cropModal.hide();
         }, 'image/png');
-    });
+    };
+}
 
-    // Initialize Summernote
-    $(document).ready(function() {
-        $('.summernote').summernote({
-            height: 300,
-            minHeight: null,
-            maxHeight: null,
-            focus: true
-        });
-    });
+function finishImageProcessing() {
+    document.getElementById('cropData').value = JSON.stringify(cropDataArray);
+    document.getElementById('croppedImage').value = JSON.stringify(processedImages);
+    document.getElementById('cropped-preview-container').style.display = 'block';
+}
 
-    // Show toast message after form submission
-    document.addEventListener('DOMContentLoaded', function () {
-        if (document.querySelector('.toast')) {
-            const toast = new bootstrap.Toast(document.querySelector('.toast'));
-            toast.show();
-        }
-    });
+// Form submission
+document.getElementById('aboutUsForm').addEventListener('submit', function(e) {
+    if (imagesToProcess.length > 0) {
+        e.preventDefault();
+        alert('Please finish cropping all images before submitting.');
+        return;
+    }
+    // Form will submit normally if all images are processed
+});
 </script>
 @endsection
 </body>

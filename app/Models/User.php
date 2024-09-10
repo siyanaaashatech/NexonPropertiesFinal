@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Registration;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,10 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'district_id'
+        'name', 'email', 'password', 'is_active', 'role', 'email_verified_at',
     ];
 
     /**
@@ -33,8 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -45,54 +37,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function roles()
-    {
-        return $this->belongsTo(Role::class, 'role');
-    }
-
-    public static function isAdmin()
-    {
-        if (Auth::user()->role == 2) {
-            return true;
-        } else return false;
-    }
-
-    public static function isSuperAdmin()
-    {
-        if (Auth::user()->role == 1) {
-            return true;
-        } else return false;
-    }
-
-    public function registration()
-    {
-        return $this->hasMany(Registration::class);
-    }
-
-    public function applicants()
-    {
-        return $this->hasMany(Applicant::class);
-    }
-
-    public function offenders()
-    {
-        return $this->hasMany(Offender::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
-    /**
-        * Getting the district that the user belongs to.
-    */
-    public function district()
-    {
-        return $this->belongsTo(District::class);
-    }
-
-    
-    use SoftDeletes;
 }
