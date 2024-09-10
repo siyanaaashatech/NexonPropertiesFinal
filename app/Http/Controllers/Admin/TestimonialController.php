@@ -45,10 +45,8 @@ class TestimonialController extends Controller
         'designation' => 'nullable|string|max:255',
         'review' => 'required|string',
         'rating' => 'required|integer|min:1|max:5',
-        // 'image' => 'required|array',
         'image.*' => 'required|string', // Validate each image as a base64 string
         'status' => 'required|boolean',
-        'cropData' => 'nullable|string',
     ]);
 
     $images = [];
@@ -64,7 +62,7 @@ class TestimonialController extends Controller
             $image_base64 = base64_decode($image_parts[1]);
 
             // Generate unique image name
-            $imageName = time() . '-' . Str::uuid() . '.webp';
+            $imageName = time() . '-' . Str::uuid() . '.' . $image_type;
             $destinationPath = storage_path('app/public/testimonials');
 
             // Check if the directory exists, if not, create it
@@ -75,10 +73,21 @@ class TestimonialController extends Controller
             // Define full path where the image will be stored
             $savedPath = $destinationPath . '/' . $imageName;
 
-            // Save image in webp format
+            // Save image in its original format
             $imageResource = imagecreatefromstring($image_base64);
             if ($imageResource !== false) {
-                imagewebp($imageResource, $savedPath);
+                switch ($image_type) {
+                    case 'jpeg':
+                    case 'jpg':
+                        imagejpeg($imageResource, $savedPath);
+                        break;
+                    case 'png':
+                        imagepng($imageResource, $savedPath);
+                        break;
+                    case 'gif':
+                        imagegif($imageResource, $savedPath);
+                        break;
+                }
                 imagedestroy($imageResource);
 
                 // Store the relative path for database storage
@@ -98,7 +107,6 @@ class TestimonialController extends Controller
     return redirect()->route('testimonials.index')
                      ->with('success', 'Testimonial created successfully.');
 }
-
 
     /**
      * Show the form for editing the specified testimonial.
