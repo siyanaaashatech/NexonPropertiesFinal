@@ -8,29 +8,16 @@
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
             <div class="row d-flex">
                 <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2">
-                    <img src="{{ asset($service -> image) }}" alt="" class="imagecontroller">
-
-
                     @php
                 $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
               @endphp
               @if (!empty($images))
                 @foreach ($images as $image)
-                  <img class="imagecontroller" src="{{ asset('storage/blog_images/' . basename($image)) }}" alt="Blog image">
+                  <img class="imagecontroller" src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
                 @endforeach
               @else
                 <p>No images available</p>
               @endif
-
-
-
-
-
-
-
-
-
-
                     <div class="flex bannercontent">
                         <div class="bannercontentinner">
                             <p class="sm-text1 mb-3 text-center forhidden">
@@ -68,7 +55,25 @@
       <div class="col-md-12 p-0 ">
         @foreach ($services as  $service )
         <div class="property-container mx-2 subbanner-hidden " >
-          <img src="{{ asset($service -> image) }}" alt="Property Image" class="property-image  property-imageheight">
+          @php
+                $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
+              @endphp
+              @if (!empty($images))
+                @foreach ($images as $image)
+                  <img class="property-image  property-imageheight" src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
+                @endforeach
+              @else
+                <p>No images available</p>
+              @endif
+
+
+
+
+
+
+
+
+
           <div class="property-details">
             <div class="md-text1">{{$service->title}}</div>
             <div class="sm-text highlight text-center p-0 m-0">{{$service->subtitle}}</div>

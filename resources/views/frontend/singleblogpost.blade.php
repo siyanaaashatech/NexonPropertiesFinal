@@ -13,15 +13,16 @@
         <div class="row d-flex flex- col ">
           <div class="col-md-12 mb-3">
             @php
-                $images = json_decode($blogs->image, true); // Decode the JSON array into a PHP array
-              @endphp
-              @if (!empty($images))
-                @foreach ($images as $image)
-                  <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}" alt="Blog image">
-                @endforeach
-              @else
-                <p>No images available</p>
-              @endif
+        $images = json_decode($blogs->image, true); // Decode the JSON array into a PHP array
+        @endphp
+            @if (!empty($images))
+        @foreach ($images as $image)
+      <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}"
+        alt="Blog image">
+    @endforeach
+      @else
+    <p>No images available</p>
+  @endif
             <div class=" d-flex gap-3 py-3">
               <div class="d-flex ">
                 <i class="fa-solid fa-person customiconssmall pt-1 mx-1"></i>
@@ -65,17 +66,23 @@
           <h2 class="md-text">feature list</h2>
           <div class="featurelist-body">
             @foreach ($services as $service)
-        <a class="featurelist-content d-flex py-1" href="{{route('singleproperties', ['id' => $service->id])}}">
-          <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-          src="{{asset('image/bighouse.png')}}" />
-          <div class="featurlist-description mx-3">
-          <h3 class="sm-text">{{$service->title}}</h3>
-          <p class="sm-text highlight"> $130000</p>
-          </div>
-        </a>
-
-
-
+              <a class="featurelist-content d-flex py-1" href="{{route('singleproperties', ['id' => $service->id])}}">
+                @php
+            $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
+        @endphp
+                @if (!empty($images))
+          @foreach ($images as $image)
+        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb"
+        src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
+      @endforeach
+        @else
+      <p>No images available</p>
+    @endif
+                <div class="featurlist-description mx-3">
+                <h3 class="sm-text">{{$service->title}}</h3>
+                <p class="sm-text highlight"> $130000</p>
+                </div>
+              </a>
 
       @endforeach
 

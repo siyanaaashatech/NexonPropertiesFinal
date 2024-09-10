@@ -19,7 +19,8 @@
         @endforeach
         
 --}}
-<section class="container-fluid cardslider1 gapbetweensection">
+{{--
+<!-- <section class="container-fluid cardslider1 gapbetweensection">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -33,6 +34,8 @@
       <div class="col-12">
         <div class="owl-carousel custom-carousel owl-theme">
           @foreach ($services as $index => $service)
+
+          <img src="{{asset('images/blogs/one.jpg')}}" alt="">
             <div class="item {{ $index === 0 ? 'active' : '' }}" style="background-image: url('{{asset($service->image)}}');">
               <div class="item-desc">
                 <h3 class="md-text1 mb-2">{{$service->title}}</h3>
@@ -44,14 +47,51 @@
       </div>
     </div>
   </div>
+</section> -->
+
+
+
+--}}
+
+
+<section class="container-fluid cardslider1 gapbetweensection">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="title">
+          <div class="xs-text1 dashline">Trusted Real estate Care</div>
+          <div class="lg-text">Company Advantage</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="owl-carousel custom-carousel owl-theme advantage">
+          @foreach ($services as $index => $service)
+            <div class="item {{ $index === 0 ? 'active' : '' }}">
+          
+              @php
+                $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
+              @endphp
+              @if (!empty($images))
+                @foreach ($images as $image)
+                  <img class="item-image" src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
+                @endforeach
+              @else
+                <p>No images available</p>
+              @endif
+              <div class="item-desc mx-1">
+                <h3 class="md-text1 mb-2">{{ $service->title }}</h3>
+                <p class="extra-small-text1">{{ $service->description }}</p>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 
-
-
-
-
-
-  <!-- jQuery -->
 
    

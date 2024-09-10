@@ -204,7 +204,7 @@
 
                             <div class="d-flex  pt-2">
                                 <img class=" " data-src="holder.js/200x250?theme=thumb" alt=""
-                                    src="{{asset('image/blog.png')}}" style="height:10vh; width:80px ;border-radius:8px;" />
+                                    src="{{asset('image/blog.png')}}" style="height:12vh; width:100px ;border-radius:8px;" />
                                 <div class="mx-4">
                                     <div class="md-text media-md-text "> {{ $testimonial->title}}</div>
                                     <div class="sm-text"> {{ $testimonial->stitle}}</div>
