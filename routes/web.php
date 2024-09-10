@@ -216,13 +216,14 @@ Route::view("/singleproperties", "frontend.singleproperties")->name('singleprope
 // Route::get('/system-history/', [HistoriesController::class, 'system_index'])->name('system-history');
 
 // Frontend Routes
-Route::view("/properties", "frontend.properties")->name('properties');
-Route::view("/blog", "frontend.blog")->name('blog');
+   
+// Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
 Route::view("/member", "frontend.member")->name('member');
 Route::view("/contact", "frontend.contact")->name('contact');
-Route::view("/about", "frontend.about")->name('about');
+Route::get('/about', [SingleController::class, 'render_about'])->name('about');
+Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
+Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
 Route::view("/singleproperties", "frontend.singleproperties")->name('singleproperties');
-Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {

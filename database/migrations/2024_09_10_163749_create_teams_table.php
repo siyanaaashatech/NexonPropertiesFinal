@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
+            $table->longText('image')->nullable(); // Column to store image data, cannot be null
+            $table->string('full_name'); // Column to store the full name
+            $table->string('designation'); // Column to store the designation
+            $table->json('social_links')->nullable(); // Column to store social links in an array format
             $table->timestamps();
         });
     }
