@@ -138,7 +138,7 @@ class SiteSettingController extends Controller
                 $imageResource = imagecreatefromstring($decodedImage);
                 if ($imageResource !== false) {
                     $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                    $destinationPath = storage_path('app/uploads/images/sitesetting');
+                    $destinationPath = storage_path('app/public/sitesettings');
 
                     // Ensure the directory exists
                     if (!File::exists($destinationPath)) {
@@ -151,7 +151,7 @@ class SiteSettingController extends Controller
                     imagedestroy($imageResource);
 
                     // Store the relative path
-                    $relativeImagePath = 'uploads/images/sitesetting/' . $imageName;
+                    $relativeImagePath = 'storage/sitesettings/' . $imageName;
                     $images[] = $relativeImagePath;
                 }
             }

@@ -51,6 +51,7 @@
                                                     <i class="far fa-trash-alt"></i>
                                                 </button>
                                             </form>
+                                            
 
                                             <!-- Button to trigger Metadata Modal -->
                                             @if($why->metadata)
