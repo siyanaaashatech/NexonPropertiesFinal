@@ -8,7 +8,7 @@ use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+
 
 class AboutUsController extends Controller
 {
@@ -56,7 +56,7 @@ class AboutUsController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/uploads/images/aboutus');
+                $destinationPath = storage_path('app/public/aboutus');
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
@@ -65,12 +65,12 @@ class AboutUsController extends Controller
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
-                $relativeImagePath = 'uploads/images/aboutus/' . $imageName;
+                $relativeImagePath = 'storage/aboutus/' . $imageName;
                 $images[] = $relativeImagePath;
             }
         }
 
-        $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
+        // $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
 
         // Create a new metadata entry
         $metadata = Metadata::create([
@@ -146,7 +146,7 @@ class AboutUsController extends Controller
                     $imageResource = imagecreatefromstring($decodedImage);
                     if ($imageResource !== false) {
                         $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/uploads/images/aboutus');
+                        $destinationPath = storage_path('app/public/aboutus');
     
                         // Ensure the directory exists
                         if (!File::exists($destinationPath)) {
@@ -159,7 +159,7 @@ class AboutUsController extends Controller
                         imagedestroy($imageResource);
     
                         // Store the relative path
-                        $relativeImagePath = 'uploads/images/aboutus/' . $imageName;
+                        $relativeImagePath = 'storage/aboutus/' . $imageName;
                         $images[] = $relativeImagePath;
                     }
                 }
