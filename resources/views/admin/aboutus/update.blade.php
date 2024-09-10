@@ -49,7 +49,7 @@
 
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description', $aboutUs->description) }}</textarea>
+                            <textarea name="description" id="description" class="form-control summernote" rows="5" required>{{ old('description', $aboutUs->description) }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
@@ -59,7 +59,7 @@
 
                         <div class="form-group mb-3">
                             <label for="image">Images</label>
-                            <input type="file" name="image[]" id="image" class="form-control" multiple required>
+                            <input type="file" name="image[]" id="image" class="form-control" multiple>
                         </div>
 
                         <!-- Crop Data Hidden Field -->
@@ -67,9 +67,18 @@
                         
                         <!-- Hidden input to simulate array submission -->
                         <input type="hidden" name="croppedImage" id="croppedImage">
+
                         <!-- Cropped Image Preview -->
-                        <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
-                            <label>Cropped Image Preview:</label>
+                        <div class="form-group mb-3" id="cropped-preview-container">
+                            <label>Current Images:</label>
+                            <div id="current-images-preview">
+                                @if($aboutUs->image)
+                                    @foreach(json_decode($aboutUs->image) as $image)
+                                        <img src="{{ asset($image) }}" alt="Current Image" style="max-width: 150px; max-height: 200px; margin-right: 10px;">
+                                    @endforeach
+                                @endif
+                            </div>
+                            <label>New Cropped Images:</label>
                             <div id="cropped-images-preview"></div>
                         </div>
 
@@ -96,6 +105,7 @@
     </div>
 </div>
 
+
 <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -105,7 +115,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="width: 100%; display: none;">
+                <img id="image-preview" style="max-width: 150%; max-height: 150%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

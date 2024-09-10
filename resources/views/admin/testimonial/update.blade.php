@@ -63,11 +63,16 @@
                 </div>
             <!-- /.card-body -->
 
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Update Testimonial</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Update Service</button>
+                <a href="{{ route('services.index') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
+</div>
+
+
+
 
     <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">

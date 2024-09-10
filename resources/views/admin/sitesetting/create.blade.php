@@ -41,24 +41,70 @@
                             <input type="text" name="office_title" id="office_title" class="form-control" value="{{ old('office_title') }}" required>
                         </div>
 
+                        <!-- Office Address -->
                         <div class="form-group mb-3">
                             <label for="office_address">Office Address</label>
-                            <textarea name="office_address" id="office_address" class="form-control" rows="3"
-                                required>{{ old('office_address') }}</textarea>
+                            <div id="office_address_container">
+                                @if(old('office_address'))
+                                    @foreach(old('office_address') as $address)
+                                        <div class="d-flex mb-2">
+                                            <input type="text" name="office_address[]" class="form-control" value="{{ $address }}" required>
+                                            <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="d-flex mb-2">
+                                        <input type="text" name="office_address[]" class="form-control" required>
+                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>
+                                    </div>
+                                @endif
+                            </div>
+                            <button type="button" class="btn btn-info btn-sm" id="add_address">Add More Address</button>
                         </div>
 
+                        <!-- Office Contact -->
                         <div class="form-group mb-3">
                             <label for="office_contact">Office Contact</label>
-                            <textarea name="office_contact" id="office_contact" class="form-control" rows="3"
-                                required>{{ old('office_contact') }}</textarea>
+                            <div id="office_contact_container">
+                                @if(old('office_contact'))
+                                    @foreach(old('office_contact') as $contact)
+                                        <div class="d-flex mb-2">
+                                            <input type="text" name="office_contact[]" class="form-control" value="{{ $contact }}" required>
+                                            <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="d-flex mb-2">
+                                        <input type="text" name="office_contact[]" class="form-control" required>
+                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>
+                                    </div>
+                                @endif
+                            </div>
+                            <button type="button" class="btn btn-info btn-sm" id="add_contact">Add More Contact</button>
                         </div>
 
+                        <!-- Office Email -->
                         <div class="form-group mb-3">
                             <label for="office_email">Office Email</label>
-                            <textarea name="office_email" id="office_email" class="form-control" rows="3"
-                                >{{ old('office_email') }}</textarea>
+                            <div id="office_email_container">
+                                @if(old('office_email'))
+                                    @foreach(old('office_email') as $email)
+                                        <div class="d-flex mb-2">
+                                            <input type="email" name="office_email[]" class="form-control" value="{{ $email }}">
+                                            <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="d-flex mb-2">
+                                        <input type="email" name="office_email[]" class="form-control">
+                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>
+                                    </div>
+                                @endif
+                            </div>
+                            <button type="button" class="btn btn-info btn-sm" id="add_email">Add More Email</button>
                         </div>
 
+                        <!-- Office Description -->
                         <div class="form-group mb-3">
                             <label for="office_description">Office Description</label>
                             <textarea name="office_description" id="office_description" class="form-control" rows="5"
@@ -151,75 +197,91 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="width: 100%; display: none;">
+                <div id="cropper-container" style="width: 100%; max-height: 500px;"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="saveCrop" class="btn btn-primary">Save Crop</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="cropImageBtn">Crop Image</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+@endsection
+
+@push('scripts')
+<!-- JavaScript to dynamically add/remove fields -->
 <script>
-    let cropper;
-    let currentFile;
-
-    document.getElementById('main_logo').addEventListener('change', function (e) {
-        const files = e.target.files;
-        if (files && files.length > 0) {
-            currentFile = files[0];
-            const url = URL.createObjectURL(currentFile);
-            const imagePreview = document.getElementById('image-preview');
-            imagePreview.src = url;
-            imagePreview.style.display = 'block';
-
-            const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
-            cropModal.show();
-
-            if (cropper) {
-                cropper.destroy();
-            }
-            cropper = new Cropper(imagePreview, {
-                aspectRatio: 16 / 9,
-                viewMode: 1,
-            });
+    document.addEventListener('DOMContentLoaded', function () {
+        function addNewField(containerId, nameAttr) {
+            const container = document.getElementById(containerId);
+            const field = document.createElement('div');
+            field.className = 'd-flex mb-2';
+            field.innerHTML = `<input type="text" name="${nameAttr}" class="form-control" required>
+                               <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">Remove</button>`;
+            container.appendChild(field);
         }
-    });
 
-    document.getElementById('saveCrop').addEventListener('click', function () {
-        if (!cropper) return;
-
-        const cropData = cropper.getData();
-        document.getElementById('cropData').value = JSON.stringify({
-            width: Math.round(cropData.width),
-            height: Math.round(cropData.height),
-            x: Math.round(cropData.x),
-            y: Math.round(cropData.y)
+        document.getElementById('add_address').addEventListener('click', function () {
+            addNewField('office_address_container', 'office_address[]');
         });
 
-        cropper.getCroppedCanvas().toBlob((blob) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function () {
-                document.getElementById('croppedImage').value = reader.result;
+        document.getElementById('add_contact').addEventListener('click', function () {
+            addNewField('office_contact_container', 'office_contact[]');
+        });
 
-                const croppedImagePreview = document.getElementById('cropped-image-preview');
-                croppedImagePreview.src = reader.result;
-                document.getElementById('cropped-preview-container').style.display = 'block';
-            };
+        document.getElementById('add_email').addEventListener('click', function () {
+            addNewField('office_email_container', 'office_email[]');
+        });
 
-            const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
-            cropModal.hide();
-        }, 'image/png');
-    });
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-field')) {
+                event.target.parentElement.remove();
+            }
+        });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        if (document.querySelector('.toast')) {
-            const toast = new bootstrap.Toast(document.querySelector('.toast'));
+        // Initialize Bootstrap Toast
+        const toastElement = document.getElementById('toastMessage');
+        if (toastElement) {
+            const toast = new bootstrap.Toast(toastElement);
             toast.show();
         }
+
+        // Image Cropper logic
+        let cropper;
+        const imageInput = document.getElementById('main_logo');
+        const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+        const cropperContainer = document.getElementById('cropper-container');
+
+        imageInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file && /^image\/(jpe?g|png|gif)$/i.test(file.type)) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    cropperContainer.innerHTML = `<img id="imageToCrop" src="${event.target.result}" style="max-width: 100%; max-height: 500px;">`;
+                    const image = document.getElementById('imageToCrop');
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                    });
+                    cropModal.show();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a valid image file.');
+            }
+        });
+
+        document.getElementById('cropImageBtn').addEventListener('click', function () {
+            if (cropper) {
+                const croppedCanvas = cropper.getCroppedCanvas();
+                const croppedImageURL = croppedCanvas.toDataURL('image/png');
+                document.getElementById('cropData').value = croppedImageURL;
+                document.getElementById('cropped-image-preview').src = croppedImageURL;
+                document.getElementById('cropped-preview-container').style.display = 'block';
+                cropModal.hide();
+            }
+        });
     });
 </script>
-@endsection
+@endpush
