@@ -5,6 +5,8 @@ use App\Models\Service;
 use App\Models\Blog;
 use App\Models\AboutUs;
 use App\Models\Testimonial;
+use App\Models\Whyus;
+use App\Models\Property;
 
 
 class FrontViewController extends Controller
@@ -13,12 +15,14 @@ class FrontViewController extends Controller
     {
         $services = Service::latest()->get()->take(4);
         $blogs = Blog::latest()->get();
-        $aboutuss =AboutUs::latest()->get()->take(1);
         $testimonials =Testimonial::latest()->get();
+        $whyuss=Whyus::latest()->get();
+        $aboutuss =AboutUs::latest()->get()->take(1);
+        $properties=Property::latest()->get()->take(6);
 
 
         return view('frontend.welcome',  compact([
-            'services','blogs','aboutuss','testimonials'
+            'services','blogs','aboutuss','testimonials','whyuss','properties',
         ]));
     }
     // public function singlePost($slug)

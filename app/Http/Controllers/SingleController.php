@@ -1,15 +1,19 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Service;
+use App\Models\Property;
 use App\Models\Blog;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 class SingleController extends Controller
 {
-    public function render_service()
+
+
+    
+    public function render_properties()
     {
-        $services = Service::latest()->get();
-        return view('frontend.properties', compact( 'services'));
+        $properties = Property::latest()->get();
+        return view('frontend.properties', compact( 'properties'));
     }
 
     public function render_about()
@@ -34,10 +38,11 @@ class SingleController extends Controller
 
     public function render_singleProperties($id)
     {
-        $services = Service::where('id', $id)->firstOrFail();
-        $relatedService = Service::where('id', '!=', $services->id)->get();
-        return view('frontend.singleproperties', compact('services','relatedService'));
+        $properties = Property::where('id', $id)->firstOrFail();
+        $relatedService = Property::where('id', '!=', $properties->id)->get();
+        return view('frontend.singleproperties', compact('properties','relatedService'));
     }
+
     
     
 }

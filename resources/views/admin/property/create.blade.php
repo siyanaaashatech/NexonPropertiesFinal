@@ -36,11 +36,11 @@
                     <form action="{{ route('property.store') }}" method="POST" enctype="multipart/form-data" id="propertyForm">
                         @csrf
                         <input type="hidden" name="cropData" id="cropData">
-                        <input type="hidden" name="main_image[]" id="croppedImage">
+                        <input type="hidden" name="main_image_cropped" id="croppedImage">
 
                         <!-- Title -->
                         <div class="form-group mb-3">
-                            <label for="title">Property Title</label>
+                            <label for="title">Title</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
                         </div>
 
@@ -69,7 +69,7 @@
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
                                 @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" data-keywords="{{ $subCategory->meta_keywords }}" {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
+                                    <option value="{{ $subCategory->id }}" {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
                                         {{ $subCategory->title }}
                                     </option>
                                 @endforeach
@@ -97,7 +97,7 @@
                         <!-- Post Code -->
                         <div class="form-group mb-3">
                             <label for="post_code">Post Code</label>
-                            <input type="text" name="post_code" id="post_code" class="form-control" value="{{ old('post_code') }}" required>
+                            <input type="number" name="post_code" id="post_code" min="0" minlength="4" class="form-control" value="{{ old('post_code') }}" required>
                         </div>
 
                         <!-- Country -->
@@ -109,7 +109,7 @@
                         <!-- Price -->
                         <div class="form-group mb-3">
                             <label for="price">Price</label>
-                            <input type="number" name="price" id="price" class="form-control" value="{{ old('price') }}" required>
+                            <input type="number" name="price" id="price" class="form-control" min="0" value="{{ old('price') }}" required>
                         </div>
 
                         <!-- Price Type -->
@@ -125,29 +125,33 @@
                         <!-- Bedrooms -->
                         <div class="form-group mb-3">
                             <label for="bedrooms">Bedrooms</label>
-                            <input type="number" name="bedrooms" id="bedrooms" class="form-control" value="{{ old('bedrooms') }}" required>
+                            <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0" value="{{ old('bedrooms') }}" required>
                         </div>
 
                         <!-- Bathrooms -->
                         <div class="form-group mb-3">
                             <label for="bathrooms">Bathrooms</label>
-                            <input type="number" name="bathrooms" id="bathrooms" class="form-control" value="{{ old('bathrooms') }}" required>
+                            <input type="number" name="bathrooms" id="bathrooms" class="form-control" min="0" value="{{ old('bathrooms') }}" required>
                         </div>
 
                         <!-- Area -->
                         <div class="form-group mb-3">
                             <label for="area">Area (sq ft)</label>
-                            <input type="number" name="area" id="area" class="form-control" value="{{ old('area') }}" required>
+                            <input type="number" name="area" id="area" class="form-control" min="0" value="{{ old('area') }}" required>
                         </div>
 
                         <!-- Status -->
                         <div class="form-group mb-3">
-                            <label for="status">Status</label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                            </select>
-                        </div>
+    <label for="status">Status</label>
+    <div class="form-check">
+        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
+        <label for="status_active" class="form-check-label">Active</label>
+    </div>
+    <div class="form-check">
+        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
+        <label for="status_inactive" class="form-check-label">Inactive</label>
+    </div>
+</div>
 
                         <!-- Availability Status -->
                         <div class="form-group mb-3">
@@ -165,12 +169,14 @@
                             <input type="text" name="rental_period" id="rental_period" class="form-control" value="{{ old('rental_period') }}">
                         </div>
 
-                        <!-- Main Image Upload with Cropper.js -->
-                        <div class="form-group mb-3">
-                            <label for="main_image">Main Image</label>
-                            <input type="file" id="main_image" class="form-control" required>
-                        </div>
+                     <!-- Main Image Upload -->
+<div class="form-group mb-3">
+    <label for="main_image">Main Image</label>
+    <input type="file" id="main_image" class="form-control" required>
+</div>
 
+<!-- Hidden input to store the base64 string of the main image -->
+<input type="hidden" name="main_image[0]" id="main_image_base64" required>
                         <!-- Cropped Main Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Main Image Preview:</label>
@@ -188,13 +194,17 @@
                             <label>Selected Other Images Preview:</label>
                             <div id="other-images-preview" style="display: flex; flex-wrap: wrap;"></div>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="keywords">Keywords</label>
+                            <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
+                                >
+                        </div>
 
-                        <!-- Metadata Hidden Inputs -->
-                        <input type="hidden" name="meta_title" id="meta_title" value="{{ old('meta_title') }}">
-                        <input type="hidden" name="meta_description" id="meta_description" value="{{ old('meta_description') }}">
-                        <input type="hidden" name="meta_keywords" id="meta_keywords" value="{{ old('meta_keywords') }}">
+                        <div class="form-group mb-3">
+    <label for="update_time">Update Time</label>
+    <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y - F - d') }}" readonly>
+</div>
 
-                        <!-- Submit Button -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
                             <a href="{{ route('property.index') }}" class="btn btn-secondary">Cancel</a>
@@ -230,7 +240,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 <script>
-    let cropper;
+       let cropper;
     let currentFile;
 
     // Main image input change event
@@ -273,7 +283,8 @@
             const reader = new FileReader();
             reader.readAsDataURL(blob);
             reader.onloadend = function () {
-                document.getElementById('croppedImage').value = reader.result;
+                // Set the base64 string of the cropped image into the hidden input
+                document.getElementById('main_image_base64').value = reader.result;
 
                 // Set cropped image preview
                 const croppedImagePreview = document.getElementById('cropped-image-preview');
@@ -286,6 +297,7 @@
             cropModal.hide();
         }, 'image/png');
     });
+
 
     // Preview for other images
     document.getElementById('other_images').addEventListener('change', function (e) {
@@ -316,25 +328,5 @@
             toast.show();
         }
     });
-
-    // Update metadata fields based on property title input
-    document.getElementById('title').addEventListener('input', updateMetadataFields);
-
-    // Update metadata fields based on selected subcategory
-    document.getElementById('sub_category_id').addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-        const metaKeywords = selectedOption.getAttribute('data-keywords');
-        document.getElementById('meta_keywords').value = metaKeywords;
-    });
-
-    function updateMetadataFields() {
-        const title = document.getElementById('title').value;
-        const metaTitle = document.getElementById('meta_title');
-        const metaDescription = document.getElementById('meta_description');
-
-        // Set metadata fields dynamically
-        metaTitle.value = title;
-        metaDescription.value = `Description for ${title}`;
-    }
 </script>
 @endsection
