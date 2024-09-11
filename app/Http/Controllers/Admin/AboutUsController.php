@@ -136,7 +136,7 @@ class AboutUsController extends Controller
         'metadata_id' => $metadata->id,
     ]);
 
-    session()->flash('success', 'AboutUs created successfully.');
+  
     session()->flash('success', 'AboutUs created successfully.');
 
     return redirect()->route('aboutus.index');
