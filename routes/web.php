@@ -36,6 +36,7 @@ use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Admin\AboutDescriptionController;
 
 
 Auth::routes();
@@ -182,14 +183,16 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
     Route::resource('whyus', WhyusController::class);
     Route::resource('faqs', FAQController::class);
 
+    Route::resource('about_descriptions', AboutDescriptionController::class);
 
-Route::resource('admin/testimonials', TestimonialController::class);
-Route::resource('admin/property', PropertyController::class);
-Route::resource('admin/categories', CategoryController::class);
-Route::resource('admin/subcategories', SubCategoryController::class);
-//MetaData Routes
-Route::resource('metadata', MetadataController::class);
-Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
+
+    Route::resource('admin/testimonials', TestimonialController::class);
+    Route::resource('admin/property', PropertyController::class);
+    Route::resource('admin/categories', CategoryController::class);
+    Route::resource('admin/subcategories', SubCategoryController::class);
+    //MetaData Routes
+    Route::resource('metadata', MetadataController::class);
+    Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
     // Blog Routes
     Route::resource('blogs', BlogController::class);
@@ -222,7 +225,7 @@ Route::view("/singleproperties", "frontend.singleproperties")->name('singleprope
 // Route::get('/system-history/', [HistoriesController::class, 'system_index'])->name('system-history');
 
 // Frontend Routes
-   
+
 // Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
 Route::view("/member", "frontend.member")->name('member');
 Route::view("/contact", "frontend.contact")->name('contact');

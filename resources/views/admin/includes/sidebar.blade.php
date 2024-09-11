@@ -129,6 +129,16 @@
                                 </div>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/about_descriptions*') ? 'active' : '' }}"
+                                href="{{ route('admin.about_descriptions.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">Our Policy</span>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
