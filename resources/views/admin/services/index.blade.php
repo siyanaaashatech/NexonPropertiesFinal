@@ -69,7 +69,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('admin.metadata.update', $service->metadata->id) }}" method="POST">
+                                                                <form action="{{ route('metadata.update', $service->metadata->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('PUT')
 

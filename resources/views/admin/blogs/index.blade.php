@@ -60,12 +60,12 @@
                                         <td>
                                             <div style="display: flex; flex-direction: row; gap: 5px;">
                                                 <!-- Edit Button -->
-                                                <a href="{{ route('admin.blogs.edit', ['blog' => $blog->id]) }}" class="btn btn-outline-primary btn-sm">
+                                                <a href="{{ route('blogs.edit', ['blog' => $blog->id]) }}" class="btn btn-outline-primary btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             
                                                 <!-- Delete Button -->
-                                                <form action="{{ route('admin.blogs.destroy', ['blog' => $blog->id]) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('blogs.destroy', ['blog' => $blog->id]) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -88,7 +88,7 @@
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form action="{{ route('admin.metadata.update', $blog->metadata->id) }}" method="POST">
+                                                                    <form action="{{ route('metadata.update', $blog->metadata->id) }}" method="POST">
                                                                         @csrf
                                                                         @method('PUT')
 

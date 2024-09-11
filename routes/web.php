@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\WhyusController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\TestimonialController;

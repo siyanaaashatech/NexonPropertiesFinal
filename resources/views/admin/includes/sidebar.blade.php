@@ -1,8 +1,8 @@
 <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
     <style>
-        .nav-link-text,.nav-link-icon{
+        /* .nav-link-text,.nav-link-icon{
             color: #000000;
-        }
+        } */
     </style>
     <script>
         var navbarStyle = localStorage.getItem("navbarStyle");
@@ -76,19 +76,19 @@
                                 </div>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link {{ Request::segment(2) == 'social-links' ? 'active' : '' }}"
                                 href="{{ route('admin.social-links.index') }}">
                                 <div class="d-flex align-items-center">
                                 <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Social Links</span>
                                 </div>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
                         <!-- Top-level link for AboutUs -->
                         <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
-                           href="{{ route('admin.aboutus.index') }}">
+                           href="{{ route('aboutus.index') }}">
                             <div class="d-flex align-items-center">
                                 <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
                                 <span class="nav-link-text ps-1">About Us</span>
@@ -280,21 +280,21 @@
                 <!-- Property, Categories, Subcategories -->
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('admin/property*') ? 'active' : '' }}"
-                        href="{{ route('admin.property.index') }}">
+                        href="{{ route('property.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"><i class="fas fa-users"></i></span>
                             <span class="nav-link-text ps-1">Property</span>
                         </div>
                     </a>
                     <a class="nav-link {{ Request::is('admin/categories*') ? 'active' : '' }}"
-                        href="{{ route('admin.categories.index') }}">
+                        href="{{ route('categories.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"><i class="fas fa-users"></i></span>
                             <span class="nav-link-text ps-1">Category</span>
                         </div>
                     </a>
                     <a class="nav-link {{ Request::is('admin/subcategories*') ? 'active' : '' }}"
-                        href="{{ route('admin.subcategories.index') }}">
+                        href="{{ route('subcategories.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"><i class="fas fa-users"></i></span>
                             <span class="nav-link-text ps-1">Subcategories</span>

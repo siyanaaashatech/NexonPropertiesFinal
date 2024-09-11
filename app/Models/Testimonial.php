@@ -21,8 +21,6 @@ class Testimonial extends Model
         'image' => 'array', // Handle multi-image upload as an array
     ];
 
-    protected $casts = [
-        'image' => 'array', // Handle multi-image upload as an array
-    ];
+
 
 }

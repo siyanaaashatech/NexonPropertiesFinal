@@ -7,15 +7,10 @@ use App\Models\Property;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Metadata;
-use App\Models\Property;
-use App\Models\Category;
-use App\Models\SubCategory;
-use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+
 
 class PropertyController extends Controller
 {
@@ -27,8 +22,7 @@ class PropertyController extends Controller
     {
         $properties = Property::with('metadata')->latest()->get();
         return view('admin.property.index', compact('properties'));
-        $properties = Property::with('metadata')->latest()->get();
-        return view('admin.property.index', compact('properties'));
+       
     }
 
     /**
@@ -37,10 +31,7 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $subCategories = SubCategory::all();
-        $metadata = Metadata::all();
-        return view('admin.property.create', compact('categories', 'subCategories', 'metadata'));
+   
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $metadata = Metadata::all();
@@ -275,41 +266,6 @@ private function handleBase64Images(array $base64Images, $folder, $existingImage
     return $images;
 }
 
-
-   /**
- * Handle uploaded image files and convert them to WEBP.
- */
-private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
-{
-    // Initialize with existing images if any
-    $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
-
-    if ($uploadedFiles) {
-        foreach ($uploadedFiles as $file) {
-            // Generate a unique name for each image
-            $imageName = time() . '-' . Str::uuid() . '.webp';
-            // Correct destination path for storage
-            $destinationPath = storage_path("app/public/$folder");
-
-            // Create the directory if it does not exist
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            // Convert the uploaded image to WEBP format
-            $imageResource = imagecreatefromstring(file_get_contents($file));
-            $savedPath = $destinationPath . '/' . $imageName;
-            imagewebp($imageResource, $savedPath);
-            imagedestroy($imageResource);
-
-            // Correctly formatted relative path for storage link
-            $relativeImagePath = "storage/$folder/$imageName";
-            $images[] = $relativeImagePath;
-        }
-    }
-
-    return $images;
-}
 
 
     /**

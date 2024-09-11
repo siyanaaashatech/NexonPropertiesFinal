@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Testimonial;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
+
 
 class TestimonialController extends Controller
 {
@@ -105,8 +104,7 @@ class TestimonialController extends Controller
 
     // Create a new testimonial
     Testimonial::create($testimonialData);
-    // Create a new testimonial
-    Testimonial::create($testimonialData);
+   
 
     return redirect()->route('testimonials.index')
                      ->with('success', 'Testimonial created successfully.');
@@ -133,17 +131,7 @@ class TestimonialController extends Controller
      */
     public function update(Request $request, $id)
 {
-    // Validate the input
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'designation' => 'nullable|string|max:255',
-        'review' => 'required|string',
-        'rating' => 'required|integer|min:1|max:5',
-        'image.*' => 'nullable|string',
-        'status' => 'required|boolean',
-        'cropData' => 'nullable|string',
-    ]);
-{
+  
     // Validate the input
     $request->validate([
         'title' => 'required|string|max:255',
@@ -190,45 +178,7 @@ class TestimonialController extends Controller
     }
 
     $testimonial->update($testimonialData);
-    // Find the testimonial and update it
-    $testimonial = Testimonial::findOrFail($id);
-    
-    // Prepare testimonial data
-    $testimonialData = $request->except('image'); // Exclude raw image input
-    
-    if ($request->has('image')) {
-        $images = [];
-        foreach ($request->input('image') as $base64Image) {
-            // Handle base64 image as before
-            if (strpos($base64Image, 'data:image') === 0) {
-                $image_parts = explode(',', $base64Image);
-                $image_base64 = base64_decode($image_parts[1]);
-
-                $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/public/testimonials');
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0755, true, true);
-                }
-
-                $savedPath = $destinationPath . '/' . $imageName;
-                $imageResource = imagecreatefromstring($image_base64);
-                if ($imageResource !== false) {
-                    imagewebp($imageResource, $savedPath);
-                    imagedestroy($imageResource);
-
-                    $relativeImagePath = 'storage/testimonials/' . $imageName;
-                    $images[] = $relativeImagePath;
-                }
-            }
-        }
-        $testimonialData['image'] = json_encode($images); // Store paths as JSON
-    }
-
-    $testimonial->update($testimonialData);
-
-    return redirect()->route('testimonials.index')
-                     ->with('success', 'Testimonial updated successfully.');
-}
+   
 
     return redirect()->route('testimonials.index')
                      ->with('success', 'Testimonial updated successfully.');

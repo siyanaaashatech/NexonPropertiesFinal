@@ -23,6 +23,7 @@ class BlogController extends Controller
     // Store new blog in the database
     public function store(Request $request)
 {
+   
     $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
@@ -36,33 +37,14 @@ class BlogController extends Controller
 
     $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
     $images = [];
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'author' => 'nullable|string|max:255',
-        'keywords' => 'nullable|string',
-        'image' => 'required|array',
-        'image.*' => 'required|string',
-        'status' => 'required|boolean',
-        'cropData' => 'nullable|string',
-    ]);
 
-    $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
-    $images = [];
-
-    foreach ($request->input('image') as $base64Image) {
-        $image = explode(',', $base64Image);
-        $decodedImage = base64_decode($image[1]);
-        $imageResource = imagecreatefromstring($decodedImage);
+    
     foreach ($request->input('image') as $base64Image) {
         $image = explode(',', $base64Image);
         $decodedImage = base64_decode($image[1]);
         $imageResource = imagecreatefromstring($decodedImage);
 
-        if ($imageResource !== false) {
-            $imageName = time() . '-' . Str::uuid() . '.webp';
-            $destinationPath = storage_path('app/public/blog_images'); // Fixed path to save images
+     
         if ($imageResource !== false) {
             $imageName = time() . '-' . Str::uuid() . '.webp';
             $destinationPath = storage_path('app/public/blog_images'); // Fixed path to save images
@@ -71,20 +53,8 @@ class BlogController extends Controller
             if (!File::exists($destinationPath)) {
                 File::makeDirectory($destinationPath, 0755, true, true);
             }
-            // Create the directory if it doesn't exist
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
+      
 
-            $savedPath = $destinationPath . '/' . $imageName;
-            imagewebp($imageResource, $savedPath);
-            imagedestroy($imageResource);
-
-            // Use relative path to access the image
-            $relativeImagePath = 'storage/blog_images/' . $imageName;
-            $images[] = $relativeImagePath;
-        }
-    }
             $savedPath = $destinationPath . '/' . $imageName;
             imagewebp($imageResource, $savedPath);
             imagedestroy($imageResource);
@@ -102,13 +72,7 @@ class BlogController extends Controller
         'meta_keywords' => $request->keywords,
         'slug' => Str::slug($request->title)
     ]);
-    // Create metadata entry
-    $metadata = Metadata::create([
-        'meta_title' => $request->title,
-        'meta_description' => $request->description,
-        'meta_keywords' => $request->keywords,
-        'slug' => Str::slug($request->title)
-    ]);
+  
 
     // Create new blog record and associate with metadata
     Blog::create([
@@ -119,24 +83,13 @@ class BlogController extends Controller
         'status' => $request->status,
         'metadata_id' => $metadata->id,
     ]);
-    // Create new blog record and associate with metadata
-    Blog::create([
-        'title' => $request->title,
-        'description' => $request->description,
-        'author' => $request->author,
-        'image' => json_encode($images), // Store images as JSON
-        'status' => $request->status,
-        'metadata_id' => $metadata->id,
-    ]);
+  
 
     session()->flash('success', 'Blog created successfully.');
     return redirect()->route('admin.blogs.index');
 }
 
-    session()->flash('success', 'Blog created successfully.');
-    return redirect()->route('admin.blogs.index');
-}
-
+  
 
     // Show form to edit the blog
     public function edit(Blog $blog)
@@ -145,8 +98,6 @@ class BlogController extends Controller
         return view('admin.blogs.update', compact('blog', 'metadata'));
     }
 
-   // Update blog in the database
-   public function update(Request $request, Blog $blog)
    public function update(Request $request, Blog $blog)
 {
     $request->validate([
@@ -225,10 +176,7 @@ class BlogController extends Controller
      }
 
      $blog->delete();
-     $blog->delete();
 
-     return redirect()->route('admin.blogs.index')->with('success', 'Blog deleted successfully.');
- }
      return redirect()->route('admin.blogs.index')->with('success', 'Blog deleted successfully.');
  }
 
