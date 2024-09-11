@@ -17,6 +17,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\NoTransactionPurposeController;
 use App\Http\Controllers\OffenderController;
+
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TranPurposeController;
 use App\Http\Controllers\TranProofController;
@@ -27,12 +28,15 @@ use App\Models\Testimonial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
+use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\WhyusController;
+use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Auth\VerificationController;
+
 
 Auth::routes();
 
@@ -145,20 +149,34 @@ Route::put('/services/update', [ServiceController::class, 'update'])->name('serv
         Route::post('update', [PermissionsController::class, 'update'])->name('update');
         Route::get('delete/{id}', [PermissionsController::class, 'destroy'])->name('destroy');
     });
+    Route::resource('services', ServiceController::class);
 
-    // Blog Routes
-    Route::resource('blogs', BlogController::class);
-    Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
-});
+    Route::resource('favicons', FaviconController::class);
 
-   // Testimonial Routes 
-   Route::resource('admin/testimonials', TestimonialController::class);
-   Route::resource('admin/property', PropertyController::class);
-   Route::resource('admin/categories', CategoryController::class);
-   Route::resource('admin/subcategories', SubCategoryController::class);
-   //MetaData Routes
-   Route::resource('metadata', MetadataController::class);
-   Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
+    //AboutUs route
+    Route::resource('aboutus', AboutUsController::class);
+
+    //Sitesetting route
+    Route::resource('sitesettings', SiteSettingController::class);
+
+    Route::resource('property', PropertyController::class);
+
+    //Sociallinks route
+    Route::resource('social-links', SocialLinkController::class);
+
+    Route::resource('property', PropertyController::class);
+    Route::resource('team', TeamController::class);
+    Route::resource('whyus', WhyusController::class);
+    Route::resource('faqs', FAQController::class);
+
+
+Route::resource('admin/testimonials', TestimonialController::class);
+Route::resource('admin/property', PropertyController::class);
+Route::resource('admin/categories', CategoryController::class);
+Route::resource('admin/subcategories', SubCategoryController::class);
+//MetaData Routes
+Route::resource('metadata', MetadataController::class);
+Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
    Route::resource('services', ServiceController::class);
 
