@@ -33,7 +33,7 @@
                     @endif
 
                     <!-- About Us update form -->
-                    <form action="{{ route('aboutus.update', $aboutUs->id) }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
+                    <form action="{{ route('admin.aboutus.update', $aboutUs->id) }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
                         @csrf
                         @method('PUT')
 
@@ -62,6 +62,7 @@
                             <input type="file" name="image[]" id="image" class="form-control" multiple>
                         </div>
 
+                        <!-- Crop Data Hidden Field -->
                         <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
                         
@@ -96,7 +97,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Update About Us</button>
-                            <a href="{{ route('aboutus.index') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('admin.aboutus.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -115,7 +116,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="max-width: 150%; max-height: 150%; display: none;">
+                <img id="image-preview" style="width: 100%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -128,7 +129,13 @@
 <!-- Include Cropper.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script>
+
+let cropper;
+let imagesToProcess = [];
+let processedImages = [];
+let cropDataArray = [];
 
 let cropper;
 let imagesToProcess = [];
@@ -155,7 +162,29 @@ function processNextImage() {
     const imagePreview = document.getElementById('image-preview');
     imagePreview.src = url;
     imagePreview.style.display = 'block';
+document.getElementById('image').addEventListener('change', function (e) {
+    imagesToProcess = Array.from(e.target.files);
+    processedImages = [];
+    cropDataArray = [];
+    if (imagesToProcess.length > 0) {
+        processNextImage();
+    }
+});
 
+function processNextImage() {
+    if (imagesToProcess.length === 0) {
+        document.getElementById('cropped-preview-container').style.display = 'block';
+        return;
+    }
+
+    const file = imagesToProcess.shift();
+    const url = URL.createObjectURL(file);
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.src = url;
+    imagePreview.style.display = 'block';
+
+    const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+    cropModal.show();
     const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
     cropModal.show();
 
@@ -169,15 +198,69 @@ function processNextImage() {
 
     document.getElementById('saveCrop').onclick = function () {
         if (!cropper) return;
+    if (cropper) {
+        cropper.destroy();
+    }
+    cropper = new Cropper(imagePreview, {
+        aspectRatio: 16 / 9,
+        viewMode: 1,
+    });
+
+    document.getElementById('saveCrop').onclick = function () {
+        if (!cropper) return;
 
         const cropData = cropper.getData();
+        cropDataArray.push(JSON.stringify({
         cropDataArray.push(JSON.stringify({
             width: Math.round(cropData.width),
             height: Math.round(cropData.height),
             x: Math.round(cropData.x),
             y: Math.round(cropData.y)
         }));
+        }));
 
+        cropper.getCroppedCanvas().toBlob((blob) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                processedImages.push(reader.result);
+
+                // Show cropped image preview
+                const croppedImagesPreview = document.getElementById('cropped-images-preview');
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.style.maxWidth = '150px';
+                img.style.maxHeight = '200px';
+                croppedImagesPreview.appendChild(img);
+
+                cropModal.hide();
+                
+                // Process next image or finish
+                if (imagesToProcess.length > 0) {
+                    processNextImage();
+                } else {
+                    finishImageProcessing();
+                }
+            };
+        }, 'image/png');
+    };
+}
+
+function finishImageProcessing() {
+    document.getElementById('cropData').value = JSON.stringify(cropDataArray);
+    document.getElementById('croppedImage').value = JSON.stringify(processedImages);
+    document.getElementById('cropped-preview-container').style.display = 'block';
+}
+
+// Form submission
+document.getElementById('aboutUsForm').addEventListener('submit', function(e) {
+    if (imagesToProcess.length > 0) {
+        e.preventDefault();
+        alert('Please finish cropping all images before submitting.');
+        return;
+    }
+    // Form will submit normally if all images are processed
+});
         cropper.getCroppedCanvas().toBlob((blob) => {
             const reader = new FileReader();
             reader.readAsDataURL(blob);

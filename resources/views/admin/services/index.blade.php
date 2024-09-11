@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4>Services List</h4>
-                    <a href="{{ route('services.create') }}" class="btn btn-primary float-end">Add New Service</a>
+                    <a href="{{ route('admin.services.create') }}" class="btn btn-primary float-end">Add New Service</a>
                 </div>
                 <div class="card-body">
                     <!-- Display success message -->
@@ -43,10 +43,10 @@
                                             @endif
                                         </td>
                                         <td> 
-                                            <a href="{{ route('services.edit', $service->id) }}" class="btn btn-outline-primary btn-sm">
+                                            <a href="{{ route('admin.services.edit', $service->id) }}" class="btn btn-outline-primary btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('services.destroy', $service->id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this service?')">
@@ -69,7 +69,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('metadata.update', $service->metadata->id) }}" method="POST">
+                                                                <form action="{{ route('admin.metadata.update', $service->metadata->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('PUT')
 
@@ -110,7 +110,7 @@
                         </table>
                     @else
                         <div class="alert alert-info">
-                            No services available. <a href="{{ route('services.create') }}">Create a new service</a>.
+                            No services available. <a href="{{ route('admin.services.create') }}">Create a new service</a>.
                         </div>
                     @endif
                 </div>

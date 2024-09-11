@@ -72,7 +72,7 @@
                     @endif
                 </td> --}}
                 <td>
-                    <a href="{{ route('favicons.edit', $icon->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                    <a href="{{ route('admin.favicon.edit', $icon->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
                 </td>
             </tr>
         @endforeach

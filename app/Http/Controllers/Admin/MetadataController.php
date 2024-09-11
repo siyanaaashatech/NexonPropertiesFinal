@@ -51,12 +51,12 @@ class MetadataController extends Controller
 
     $metadata->update($request->all());
 
-    return redirect()->route('metadata.index')->with('success', 'Metadata updated successfully!');
+    return redirect()->route('admin.metadata.index')->with('success', 'Metadata updated successfully!');
 }
 
     public function destroy(Metadata $metadata)
     {
         $metadata->delete();
-        return redirect()->route('metadata.index')->with('success', 'Metadata deleted successfully.');
+        return redirect()->route('admin.metadata.index')->with('success', 'Metadata deleted successfully.');
     }
 }

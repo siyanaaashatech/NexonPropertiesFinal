@@ -7,8 +7,9 @@
         <div class="xs-text1 dashline">Trusted Real Estate Care</div>
         <div class="lg-text">Latest Project on Sale</div>
       </div>
-      <a href="" class="btn-buttonyellow  py-1">View More</a>
+      <a href="" class="btn-buttonyellow py-1">View More</a>
     </div>
+
     <div class="row py-1 property-body">
       <div class="col-md-6 pb-1">
         <div class="property-container rounded">

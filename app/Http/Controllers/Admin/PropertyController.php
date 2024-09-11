@@ -7,7 +7,13 @@ use App\Models\Property;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Metadata;
+use App\Models\Property;
+use App\Models\Category;
+use App\Models\SubCategory;
+use App\Models\Metadata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
@@ -15,14 +21,18 @@ class PropertyController extends Controller
 {
     /**
      * Display a listing of the properties.
+     * Display a listing of the properties.
      */
     public function index()
     {
         $properties = Property::with('metadata')->latest()->get();
         return view('admin.property.index', compact('properties'));
+        $properties = Property::with('metadata')->latest()->get();
+        return view('admin.property.index', compact('properties'));
     }
 
     /**
+     * Show the form for creating a new property.
      * Show the form for creating a new property.
      */
     public function create()
@@ -31,9 +41,14 @@ class PropertyController extends Controller
         $subCategories = SubCategory::all();
         $metadata = Metadata::all();
         return view('admin.property.create', compact('categories', 'subCategories', 'metadata'));
+        $categories = Category::all();
+        $subCategories = SubCategory::all();
+        $metadata = Metadata::all();
+        return view('admin.property.create', compact('categories', 'subCategories', 'metadata'));
     }
 
     /**
+     * Store a newly created property in storage.
      * Store a newly created property in storage.
      */
     public function store(Request $request)
@@ -119,6 +134,7 @@ class PropertyController extends Controller
 
     /**
      * Show the form for editing the specified property.
+     * Show the form for editing the specified property.
      */
     public function edit(Property $property)
     {
@@ -129,6 +145,7 @@ class PropertyController extends Controller
     }
 
     /**
+     * Update the specified property in storage.
      * Update the specified property in storage.
      */
     public function update(Request $request, Property $property)

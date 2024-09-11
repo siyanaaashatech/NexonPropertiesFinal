@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Metadata;
+use App\Models\Category;
+use App\Models\Metadata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -17,6 +20,8 @@ class CategoryController extends Controller
     {
         $categories = Category::with('metadata')->get();
         return view('admin.categories.index', compact('categories'));
+        $categories = Category::with('metadata')->get();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -24,6 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        return view('admin.categories.create');
         return view('admin.categories.create');
     }
 
@@ -61,6 +67,8 @@ class CategoryController extends Controller
     {
         $category = Category::with('metadata')->findOrFail($id);
         return view('admin.categories.show', compact('category'));
+        $category = Category::with('metadata')->findOrFail($id);
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -68,6 +76,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
+        $category = Category::with('metadata')->findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
         $category = Category::with('metadata')->findOrFail($id);
         return view('admin.categories.edit', compact('category'));
     }

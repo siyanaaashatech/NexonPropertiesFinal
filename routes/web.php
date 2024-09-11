@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\WhyusController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -50,20 +51,20 @@ Auth::routes();
 // })->name("blog");
 
 
-Route::get("/member",function(){
+Route::get("/member", function () {
     return view("frontend.member");
 
 });
-Route::get("/contact",function(){
+Route::get("/contact", function () {
     return view("frontend.contact");
 })->name("contact");
 
 
-Route::get("/about",function(){
+Route::get("/about", function () {
     return view("frontend.about");
 })->name('about');
 
-Route::get("/service", function(){
+Route::get("/service", function () {
     return view("service");
 });
 Route::get("services", function () { return view('frontend.include.blog.php');});
@@ -83,15 +84,20 @@ Route::get('/', [FrontViewController::class, 'index'])->name('index');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/email/verify', 'Auth\VerificationController@show')
-     ->name('verification.notice');
-Route::post('/email/resend', 'Auth\VerificationController@resend')
-     ->name('verification.resend');
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
 
-     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-     ->middleware(['auth', 'signed'])
-     ->name('verification.verify');
- 
+// Route to handle the verification when the user clicks the link in the email
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+// Route to resend the verification email
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
+
 
 
 
@@ -105,7 +111,8 @@ Route::put('/services/update', [ServiceController::class, 'update'])->name('serv
 
     Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
-
+    Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
+    Route::resource('favicons', FaviconController::class);
 
     // User Routes
     Route::prefix('users')->name('users.')->group(function () {

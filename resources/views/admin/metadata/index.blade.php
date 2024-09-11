@@ -52,10 +52,10 @@
                             <td>{{ \Illuminate\Support\Str::limit($meta->meta_keywords, 50) }}</td>
                             <td>{{ $meta->slug }}</td>
                             <td>
-                                <a href="{{ route('metadata.edit', $meta->id) }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route('admin.metadata.edit', $meta->id) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('metadata.destroy', $meta->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('admin.metadata.destroy', $meta->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this metadata?')">

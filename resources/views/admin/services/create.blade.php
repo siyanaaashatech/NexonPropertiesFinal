@@ -39,7 +39,7 @@
                     @endif
 
                     <!-- Service creation form -->
-                    <form action="{{ route('services.store') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('admin.services.store') }}" method="POST" enctype="multipart/form-data"
                         id="serviceForm">
                         @csrf
 
@@ -102,7 +102,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Service</button>
-                            <a href="{{ route('services.index') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('admin.services.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

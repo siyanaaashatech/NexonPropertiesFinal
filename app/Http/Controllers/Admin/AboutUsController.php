@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 
+
 class AboutUsController extends Controller
 {
     /**
@@ -46,7 +47,24 @@ class AboutUsController extends Controller
         'cropData' => 'required|json',
         'status' => 'required|boolean',
     ]);
+    
+    
+     public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'subtitle' => 'required|string|max:255',
+        'description' => 'required|string',
+        'keywords' => 'nullable|string',
+        'croppedImage' => 'required|json',
+        'cropData' => 'required|json',
+        'status' => 'required|boolean',
+    ]);
 
+    $croppedImages = json_decode($request->input('croppedImage'), true);
+    $cropData = json_decode($request->input('cropData'), true);
+
+    $images = [];
     $croppedImages = json_decode($request->input('croppedImage'), true);
     $cropData = json_decode($request->input('cropData'), true);
 
@@ -55,10 +73,18 @@ class AboutUsController extends Controller
     foreach ($croppedImages as $index => $base64Image) {
         $image = explode(',', $base64Image);
         $imageData = base64_decode($image[1]);
+    foreach ($croppedImages as $index => $base64Image) {
+        $image = explode(',', $base64Image);
+        $imageData = base64_decode($image[1]);
 
         $imageName = time() . '-' . Str::uuid() . '.webp';
         $destinationPath = storage_path('app/public/aboutus');
+        $imageName = time() . '-' . Str::uuid() . '.webp';
+        $destinationPath = storage_path('app/public/aboutus');
 
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true, true);
+        }
         if (!File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true, true);
         }
@@ -69,7 +95,20 @@ class AboutUsController extends Controller
         $relativeImagePath = 'storage/aboutus/' . $imageName;
         $images[] = $relativeImagePath;
     }
+        $savedPath = $destinationPath . '/' . $imageName;
+        file_put_contents($savedPath, $imageData);
 
+        $relativeImagePath = 'storage/aboutus/' . $imageName;
+        $images[] = $relativeImagePath;
+    }
+
+    // Create metadata and AboutUs entries as before
+    $metadata = Metadata::create([
+        'meta_title' => $request->title,
+        'meta_description' => $request->description,
+        'meta_keywords' => $request->keywords,
+        'slug' => Str::slug($request->title),
+    ]);
     // Create metadata and AboutUs entries as before
     $metadata = Metadata::create([
         'meta_title' => $request->title,
@@ -87,7 +126,17 @@ class AboutUsController extends Controller
         'status' => $request->status,
         'metadata_id' => $metadata->id,
     ]);
+    AboutUs::create([
+        'title' => $request->title,
+        'subtitle' => $request->subtitle,
+        'description' => $request->description,
+        'keywords' => $request->keywords,
+        'image' => json_encode($images),
+        'status' => $request->status,
+        'metadata_id' => $metadata->id,
+    ]);
 
+    session()->flash('success', 'AboutUs created successfully.');
     session()->flash('success', 'AboutUs created successfully.');
 
     return redirect()->route('aboutus.index');
@@ -194,6 +243,6 @@ class AboutUsController extends Controller
 
         $aboutUs->delete();
 
-        return redirect()->route('aboutus.index')->with('success', 'AboutUs deleted successfully.');
+        return redirect()->route('admin.aboutus.index')->with('success', 'AboutUs deleted successfully.');
     }
 }

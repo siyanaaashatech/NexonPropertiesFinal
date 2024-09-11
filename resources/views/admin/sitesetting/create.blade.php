@@ -32,7 +32,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('sitesettings.store') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('admin.sitesettings.store') }}" method="POST" enctype="multipart/form-data"
                         id="siteSettingsForm">
                         @csrf
 
@@ -179,7 +179,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Site Setting</button>
-                            <a href="{{ route('sitesettings.index') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('admin.sitesettings.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -14,8 +14,13 @@ class Testimonial extends Model
         'review',
         'rating',
         'image',
+        'image',
         'status'
     ];
+    protected $casts = [
+        'image' => 'array', // Handle multi-image upload as an array
+    ];
+
     protected $casts = [
         'image' => 'array', // Handle multi-image upload as an array
     ];

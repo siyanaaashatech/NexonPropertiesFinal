@@ -32,7 +32,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('sitesettings.update', $siteSetting->id) }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('admin.sitesettings.update', $siteSetting->id) }}" method="POST" enctype="multipart/form-data"
                         id="siteSettingsForm">
                         @csrf
                         @method('PUT')

@@ -8,7 +8,7 @@
         <!-- /.card-header -->
 
         <!-- form start -->
-        <form method="POST" action="{{ route('testimonials.update', $testimonial->id) }}">
+        <form method="POST" action="{{ route('admin.testimonials.update', $testimonial->id) }}">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -49,7 +49,35 @@
                 </div>
 
                 <div class="form-group mb-3">
+                <!-- Image Upload with Cropper.js -->
+                <div class="form-group mb-3">
+                    <label for="image">Upload New Image</label>
+                    <input type="file" id="image" class="form-control" accept="image/*" multiple>
+                </div>
+
+                <!-- Hidden Inputs for Base64 Image -->
+                <input type="hidden" name="image[]" id="croppedImage">
+                <input type="hidden" name="cropData" id="cropData">
+
+                <!-- Cropped Image Preview -->
+                <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
+                    <label>Cropped Image Preview:</label>
+                    <img id="cropped-image-preview" style="max-width: 150%; max-height: 200%; display: block;">
+                </div>
+
+                <div class="form-group mb-3">
                     <label for="status">Status</label>
+                    <div class="form-check">
+                        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" 
+                               {{ old('status', $testimonial->status) == '1' ? 'checked' : '' }} required>
+                        <label for="status_active" class="form-check-label">Active</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" 
+                               {{ old('status', $testimonial->status) == '0' ? 'checked' : '' }} required>
+                        <label for="status_inactive" class="form-check-label">Inactive</label>
+                    </div>
+                </div>
                     <div class="form-check">
                         <input type="radio" name="status" id="status_active" value="1" class="form-check-input" 
                                {{ old('status', $testimonial->status) == '1' ? 'checked' : '' }} required>

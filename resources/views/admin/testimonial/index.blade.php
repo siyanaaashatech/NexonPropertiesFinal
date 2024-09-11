@@ -27,7 +27,7 @@
     <div class="card">
         <div class="card-header">
             <!-- Add Testimonial Button -->
-            <a href="{{ route('testimonials.create') }}" style="text-decoration:none;">
+            <a href="{{ route('admin.testimonials.create') }}" style="text-decoration:none;">
                 <button type="button" class="btn btn-block btn-success btn-lg" style="width:auto;">
                     Add Testimonial <i class="fas fa-plus-circle"></i>
                 </button>
@@ -59,12 +59,12 @@
                             <td>{{ $testimonial->status ? 'Active' : 'Inactive' }}</td>
                             <td>
                                 <!-- Edit Button -->
-                                <a href="{{ route('testimonials.edit', $testimonial->id) }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route('admin.testimonials.edit', $testimonial->id) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
 
                                 <!-- Delete Button -->
-                                <form action="{{ route('testimonials.destroy', $testimonial->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('admin.testimonials.destroy', $testimonial->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this testimonial?')">

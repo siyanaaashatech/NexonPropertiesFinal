@@ -40,7 +40,7 @@
                     @endif
 
                     <!-- About Us creation form -->
-                    <form action="{{ route('aboutus.store') }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
+                    <form action="{{ route('admin.aboutus.store') }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
                         @csrf
 
                         <div class="form-group mb-3">
@@ -93,7 +93,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create About Us</button>
-                            <a href="{{ route('aboutus.index') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('admin.aboutus.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

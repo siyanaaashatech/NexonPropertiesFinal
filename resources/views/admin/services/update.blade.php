@@ -33,7 +33,7 @@
                     @endif
 
                     <!-- Service update form -->
-                    <form action="{{ route('services.update', $service->id) }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('admin.services.update', $service->id) }}" method="POST" enctype="multipart/form-data"
                         id="serviceForm">
                         @csrf
                         @method('PUT')

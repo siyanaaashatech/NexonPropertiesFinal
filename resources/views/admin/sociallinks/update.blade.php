@@ -8,7 +8,7 @@
     </div>
 
     <!-- Social Links update form -->
-    <form action="{{ route('social-links.update', $socialLink->id) }}" method="POST" id="socialLinksForm">
+    <form action="{{ route('admin.social-links.update', $socialLink->id) }}" method="POST" id="socialLinksForm">
         @csrf
         @method('PUT')
 
@@ -57,7 +57,7 @@
         <!-- Submit Button -->
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Update Social Links</button>
-            <a href="{{ route('social-links.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('admin.social-links.index') }}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 @endsection
