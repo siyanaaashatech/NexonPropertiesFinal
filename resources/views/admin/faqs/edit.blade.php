@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4>Edit FAQ</h4>
-                    <a href="{{ route('admin.faq.index') }}" class="btn btn-secondary float-end">Back to FAQs List</a>
+                    <a href="{{ route('admin.faqs.index') }}" class="btn btn-secondary float-end">Back to FAQs List</a>
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
@@ -20,7 +20,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.faq.update', $faq->id) }}" method="POST">
+                    <form action="{{ route('admin.faqs.update', $faq->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
