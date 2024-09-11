@@ -5,26 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use DOMDocument;
+use Illuminate\Support\Str;
 
 class SummernoteContent extends Model
 {
-    // Define the table associated with the model
-    protected $table = 'summernote_contents'; // Adjust this as needed
-
-    // Define the attributes that are mass assignable
+    protected $table = 'summernote_contents';
     protected $fillable = ['content'];
 
-    /**
-     * Process Summernote content to sanitize and handle file uploads.
-     *
-     * @param string $content
-     * @return string
-     */
     public function processContent(string $content): string
     {
         $dom = new DOMDocument();
-        libxml_use_internal_errors(true); // Suppress DOMDocument warnings
-        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_use_internal_errors(true);
+        $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         libxml_clear_errors();
 
         $images = $dom->getElementsByTagName('img');
@@ -36,7 +28,7 @@ class SummernoteContent extends Model
                 $data = base64_decode($data);
                 $extension = strtolower($type[1]);
 
-                $filename = uniqid() . '.' . $extension;
+                $filename = Str::random(20) . '.' . $extension;
                 $filePath = 'uploads/summernote/' . $filename;
 
                 Storage::disk('public')->put($filePath, $data);
@@ -48,27 +40,13 @@ class SummernoteContent extends Model
         return $dom->saveHTML();
     }
 
-    /**
-     * Get the content attribute with processing.
-     *
-     * @param string $value
-     * @return string
-     */
     public function getContentAttribute($value)
     {
-        // Process content if needed before returning
         return $value;
     }
 
-    /**
-     * Set the content attribute and process it.
-     *
-     * @param string $value
-     * @return void
-     */
     public function setContentAttribute($value)
     {
-        // Process content before saving
         $this->attributes['content'] = $this->processContent($value);
     }
 }

@@ -55,7 +55,7 @@
 
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control summernote" rows="5" required>{{ old('description') }}</textarea>
+                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
@@ -121,101 +121,113 @@
     </div>
 </div>
 
-<!-- Include Cropper.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<!-- Include jQuery, Bootstrap JS, and Summernote JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-
-let cropper;
-let imagesToProcess = [];
-let processedImages = [];
-let cropDataArray = [];
-
-document.getElementById('image').addEventListener('change', function (e) {
-    imagesToProcess = Array.from(e.target.files);
-    processedImages = [];
-    cropDataArray = [];
-    if (imagesToProcess.length > 0) {
-        processNextImage();
-    }
-});
-
-function processNextImage() {
-    if (imagesToProcess.length === 0) {
-        document.getElementById('cropped-preview-container').style.display = 'block';
-        return;
-    }
-
-    const file = imagesToProcess.shift();
-    const url = URL.createObjectURL(file);
-    const imagePreview = document.getElementById('image-preview');
-    imagePreview.src = url;
-    imagePreview.style.display = 'block';
-
-    const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
-    cropModal.show();
-
-    if (cropper) {
-        cropper.destroy();
-    }
-    cropper = new Cropper(imagePreview, {
-        aspectRatio: 16 / 9,
-        viewMode: 1,
+    // Initialize Summernote for description
+    $(document).ready(function() {
+        $('#description').summernote({
+            height: 200, 
+            tabsize: 2,
+            callbacks: {
+                onInit: function() {
+                    console.log('Summernote is initialized!');
+                }
+            }
+        });
     });
 
-    document.getElementById('saveCrop').onclick = function () {
-        if (!cropper) return;
+    let cropper;
+    let imagesToProcess = [];
+    let processedImages = [];
+    let cropDataArray = [];
 
-        const cropData = cropper.getData();
-        cropDataArray.push(JSON.stringify({
-            width: Math.round(cropData.width),
-            height: Math.round(cropData.height),
-            x: Math.round(cropData.x),
-            y: Math.round(cropData.y)
-        }));
+    document.getElementById('image').addEventListener('change', function (e) {
+        imagesToProcess = Array.from(e.target.files);
+        processedImages = [];
+        cropDataArray = [];
+        if (imagesToProcess.length > 0) {
+            processNextImage();
+        }
+    });
 
-        cropper.getCroppedCanvas().toBlob((blob) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function () {
-                processedImages.push(reader.result);
+    function processNextImage() {
+        if (imagesToProcess.length === 0) {
+            document.getElementById('cropped-preview-container').style.display = 'block';
+            return;
+        }
 
-                // Show cropped image preview
-                const croppedImagesPreview = document.getElementById('cropped-images-preview');
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.style.maxWidth = '150px';
-                img.style.maxHeight = '200px';
-                croppedImagesPreview.appendChild(img);
+        const file = imagesToProcess.shift();
+        const url = URL.createObjectURL(file);
+        const imagePreview = document.getElementById('image-preview');
+        imagePreview.src = url;
+        imagePreview.style.display = 'block';
 
-                cropModal.hide();
-                
-                // Process next image or finish
-                if (imagesToProcess.length > 0) {
-                    processNextImage();
-                } else {
-                    finishImageProcessing();
-                }
-            };
-        }, 'image/png');
-    };
-}
+        const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+        cropModal.show();
 
-function finishImageProcessing() {
-    document.getElementById('cropData').value = JSON.stringify(cropDataArray);
-    document.getElementById('croppedImage').value = JSON.stringify(processedImages);
-    document.getElementById('cropped-preview-container').style.display = 'block';
-}
+        if (cropper) {
+            cropper.destroy();
+        }
+        cropper = new Cropper(imagePreview, {
+            aspectRatio: 16 / 9,
+            viewMode: 1,
+        });
 
-// Form submission
-document.getElementById('aboutUsForm').addEventListener('submit', function(e) {
-    if (imagesToProcess.length > 0) {
-        e.preventDefault();
-        alert('Please finish cropping all images before submitting.');
-        return;
+        document.getElementById('saveCrop').onclick = function () {
+            if (!cropper) return;
+
+            const cropData = cropper.getData();
+            cropDataArray.push(JSON.stringify({
+                width: Math.round(cropData.width),
+                height: Math.round(cropData.height),
+                x: Math.round(cropData.x),
+                y: Math.round(cropData.y)
+            }));
+
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    processedImages.push(reader.result);
+
+                    // Show cropped image preview
+                    const croppedImagesPreview = document.getElementById('cropped-images-preview');
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.style.maxWidth = '150px';
+                    img.style.maxHeight = '200px';
+                    croppedImagesPreview.appendChild(img);
+
+                    cropModal.hide();
+                    
+                    // Process next image or finish
+                    if (imagesToProcess.length > 0) {
+                        processNextImage();
+                    } else {
+                        finishImageProcessing();
+                    }
+                };
+            });
+        };
     }
-    // Form will submit normally if all images are processed
-});
+
+    function finishImageProcessing() {
+        document.getElementById('croppedImage').value = JSON.stringify(processedImages);
+        document.getElementById('cropData').value = JSON.stringify(cropDataArray);
+    }
+
+    $('#aboutUsForm').on('submit', function(e) {
+        if (processedImages.length === 0) {
+            // Prevent form submission if no images are processed
+            e.preventDefault();
+            alert('Please crop and save all images before submitting.');
+        }
+    });
 </script>
 @endsection
 </body>

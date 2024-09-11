@@ -7,8 +7,11 @@
 require('./bootstrap');
 
 import $ from 'jquery';
-
 window.$ = window.jQuery = $;
+
+// Import Summernote JS and CSS
+import 'summernote/dist/summernote-bs4.min';
+import 'summernote/dist/summernote-bs4.min.css';
 
 window.Vue = require('vue').default;
 

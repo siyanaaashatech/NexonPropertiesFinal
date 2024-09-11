@@ -4,7 +4,7 @@
     @include('admin.includes.tables')
 
     <hr>
-    
+
     {{-- <a href="{{ route('metadata.create') }}" style="text-decoration:none;">
         <button type="button" class="btn btn-block btn-success btn-lg" style="width:auto;">
             Add Metadata <i class="fas fa-plus-circle"></i>
@@ -28,7 +28,7 @@
     </div>
 
     <hr>
-    
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Metadata</h3>
@@ -49,7 +49,18 @@
                         <tr>
                             <td>{{ $meta->meta_title }}</td>
                             <td>{{ \Illuminate\Support\Str::limit($meta->meta_description, 50) }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($meta->meta_keywords, 50) }}</td>
+                            <td>
+                                @php
+                                    // Decode JSON and ensure it's an array
+                                    $keywords = json_decode($meta->meta_keywords, true);
+                                    if (!is_array($keywords)) {
+                                        $keywords = [];
+                                    }
+                                @endphp
+                                @foreach($keywords as $keyword)
+                                    <div>{{ $keyword }}</div>
+                                @endforeach
+                            </td>
                             <td>{{ $meta->slug }}</td>
                             <td>
                                 <a href="{{ route('metadata.edit', $meta->id) }}" class="btn btn-outline-primary btn-sm">

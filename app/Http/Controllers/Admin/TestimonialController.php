@@ -45,18 +45,23 @@ class TestimonialController extends Controller
             'status' => 'required|boolean',
             'cropData' => 'required|string',
         ]);
+        
         $cropData = json_decode($request->input('cropData'), true);
         $images = [];
+
         foreach ($request->input('image') as $base64Image) {
             $image = explode(',', $base64Image);
             $decodedImage = base64_decode($image[1]);
             $imageResource = imagecreatefromstring($decodedImage);
+
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
                 $destinationPath = storage_path('app/public/testimonials');
+
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
                 }
+
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
@@ -64,6 +69,8 @@ class TestimonialController extends Controller
                 $images[] = $relativeImagePath;
             }
         }
+
+    
          // Create new service record and associate with metadata
          Testimonial::create([
             'title' => $request->title,
@@ -72,8 +79,11 @@ class TestimonialController extends Controller
             'rating' => $request->rating,
             'image' => json_encode($images),
             'status' => $request->status,
+           
         ]);
+
         session()->flash('success', 'Service created successfully.');
+
         return redirect()->route('testimonials.index');
     }
     /**

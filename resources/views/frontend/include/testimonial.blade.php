@@ -39,7 +39,7 @@
                 style="height:14vh; width:130px ;border-radius:8px;">
               @endforeach
               @else
-              <p>No images available</p>
+                <p>No images available</p>
               @endif
               
               <div class="mx-4">

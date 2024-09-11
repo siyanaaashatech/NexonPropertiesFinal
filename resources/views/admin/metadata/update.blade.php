@@ -15,8 +15,9 @@
         </div>
         <div class="mb-3">
             <label for="meta_keywords" class="form-label">Meta Keywords</label>
-            <textarea class="form-control" id="meta_keywords" name="meta_keywords" rows="3" required>{{ $metadata->meta_keywords }}</textarea>
+            <textarea name="meta_keywords" rows="3">{{ old('meta_keywords', $metadata->meta_keywords) }}</textarea>
         </div>
+        
         <div class="mb-3">
             <label for="slug" class="form-label">Slug</label>
             <input type="text" class="form-control" id="slug" name="slug" value="{{ $metadata->slug }}" required>
