@@ -7,14 +7,12 @@
   <div class="container">
     <div class="row">
 
-
-
       <div class="col-md-8">
         <div class="row d-flex flex- col ">
           <div class="col-md-12 mb-3">
             @php
         $images = json_decode($blogs->image, true); // Decode the JSON array into a PHP array
-      @endphp
+        @endphp
             @if (!empty($images))
         @foreach ($images as $image)
       <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}"
@@ -65,25 +63,23 @@
         <div class="paddingbox nobackground">
           <h2 class="md-text">feature list</h2>
           <div class="featurelist-body">
-            @foreach ($services as $service)
-              <a class="featurelist-content d-flex py-1" href="{{route('singleproperties', ['id' => $service->id])}}">
+            @foreach ($properties as $property)
+              <a class="featurelist-content d-flex py-1" href="{{route('singleproperties', ['id' => $property->id])}}">
+
+
+
                 @php
-            $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
-        @endphp
-                @if (!empty($images))
-          @foreach ($images as $image)
-        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb"
-        src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
-      @endforeach
-        @else
-      <p>No images available</p>
-    @endif
+            $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+            $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+         @endphp
+                <img src="{{ $mainImage }}" alt="Property Image" class="feature-smallimg"
+                data-src="holder.js/200x250?theme=thumb" />
+
                 <div class="featurlist-description mx-3">
-                <h3 class="sm-text">{{$service->title}}</h3>
-                <p class="sm-text highlight"> $130000</p>
+                <h3 class="sm-text">{{$property->title}}</h3>
+                <p class="sm-text highlight"> {{$property->price}}</p>
                 </div>
               </a>
-
       @endforeach
 
 

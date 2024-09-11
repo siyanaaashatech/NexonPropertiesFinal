@@ -145,37 +145,33 @@
             <div class="col-md-12 py-3">
                 <div class="row">
                     @foreach ($properties as $property)
-                        <a class="col-md-4 my-2" href="{{route('singleproperties',['id'=>$property->id])}}">
+                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
                             <div class="card">
                                 <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
                                 <div class="sell_rent_button d-flex justify-content-between ">
-                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->subtittle}}</div>
-                                    <div class="status d-flex justify-content-between">
-                                        <div class="btn-buttonxs  btn-buttonxsgreen mx-1">{{$property->subtittle}}</div>
-                                        <div class="btn-buttonxs btn-buttonxsgreen">{{$property->subtittle}}</div>
+                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
+                                    <div class="btn-buttonxs btn-buttonxsgreen">{{$property->availability_status}}</div>
 
-                                    </div>
+
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="md-text">{{ $property-> title}}</h5>
+                                    <h5 class="md-text">{{ $property->title}}</h5>
                                     <div class=" d-flex gap-3 flex-wrap ">
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property-> title}}</span> {{ $property-> title}}</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property-> title}}</span>{{ $property-> title}}</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property-> titlee}}</span>{{ $property-> title}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
                                     </div>
                                     <div class="price-person ">
                                         <div class="d-flex justify-content-between align-content-center">
-                                            <div class=" sm-text"> <span class="md-text">{{ $property-> title}}  /</span>{{ $property-> title}} </div>
+                                            <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
+                                                    /</span>{{ $property->rental_period}} </div>
                                             <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
                                                 class="feature-smallimg feature-smallimgdup">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-</a>
-
-                       
-
+                        </a>
                     @endforeach
 
                 </div>
@@ -191,13 +187,13 @@
     <div class="container">
         <div class="row  nextpage ">
             <ul class="nextui d-flex gap-1">
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text"><i
-                            class="fa-solid fa-arrow-right"></i></a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
+                        <i class="fa-solid fa-arrow-right"></i></a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">1</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">2</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">3</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text"><i
-                            class="fa-solid fa-arrow-left"></i></a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
+                        <i class="fa-solid fa-arrow-left"></i></a></li>
             </ul>
         </div>
     </div>
@@ -223,25 +219,13 @@
 
     function changepage(element) {
         const pageli = document.getElementsByClassName("nextli");
+        
         for (let i = 0; i < pageli.length; i++) {
             pageli[i].classList.remove("activeli");
 
         }
 
         element.classList.add("activeli")
-    }
-
-
-
-    function funmenu() {
-        const burmenu = document.getElementById("bur-menu");
-
-        if (burmenu.style.display === "block") {
-            burmenu.style.display = "none";
-        } else {
-            burmenu.style.display = "block";
-
-        }
     }
 
 

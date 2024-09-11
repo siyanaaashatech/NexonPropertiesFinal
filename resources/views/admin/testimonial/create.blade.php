@@ -1,5 +1,4 @@
 @extends('admin.layouts.master')
-
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -21,7 +20,6 @@
                             </div>
                         </div>
                     @endif
-
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -31,7 +29,6 @@
                             </ul>
                         </div>
                     @endif
-
                     <!-- Testimonial creation form -->
                     <form method="POST" action="{{ route('testimonials.store') }}" enctype="multipart/form-data" id="testimonialForm">
                         @csrf
@@ -39,17 +36,14 @@
                             <label for="title">Title</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="designation">Designation</label>
                             <input type="text" name="designation" id="designation" class="form-control" value="{{ old('designation') }}">
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="review">Review</label>
                             <textarea name="review" id="review" class="form-control" rows="4" required>{{ old('review') }}</textarea>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="rating">Rating</label>
                             <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" value="{{ old('rating') }}" required>
@@ -85,7 +79,6 @@
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Testimonial</button>
                             <a href="{{ route('testimonials.index') }}" class="btn btn-secondary">Cancel</a>
@@ -96,7 +89,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -107,6 +99,7 @@
             </div>
             <div class="modal-body">
                 <img id="image-preview" style="width: 10%; height: 10%; display: none;">
+                <img id="image-preview" style="width: 10%; height: 10%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -115,11 +108,9 @@
         </div>
     </div>
 </div>
-
 <!-- Include Cropper.js -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
 <script>
     let cropper;
     let currentFile;

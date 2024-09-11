@@ -1,6 +1,6 @@
+{{--
 
-
- <section class="container-fluid">
+<section class="container-fluid">
   <div class="container gapbetweensection">
     <div class="d-flex justify-content-between">
       <div class="title">
@@ -12,7 +12,8 @@
     <div class="row py-1 property-body">
       <div class="col-md-6 pb-1">
         <div class="property-container rounded">
-          <img src="{{asset('image/bighouse.png')}}" alt="Property Image" class="imagecontroller imagecontrollerheight imagecontrollermd ">
+          <img src="{{asset('image/bighouse.png')}}" alt="Property Image"
+            class="imagecontroller imagecontrollerheight imagecontrollermd ">
           <div class="property-details">
             <div class="md-text1 p-0 m-0">Hello</div>
             <div class="md-text highlight text-center p-0 m-0">North road 435673Kth street</div>
@@ -38,61 +39,60 @@
         </div>
       </div>
 
-      
+
 
       <div class="col-md-6 sub-image-content">
         <div class="row">
-        @foreach ($properties as $property)
-        <div class="col-md-6 pb-1">
-        <a class="col-md-4 mb-4" href="{{route('singleproperties',['id'=>$property->id])}}">
-        <div class="property-container rounded ">
-        @php
-           $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-           $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
-         @endphp
+          @foreach ($properties as $property)
+          <div class="col-md-6 pb-1">
+            <a class="col-md-4 mb-4" href="{{route('singleproperties',['id'=>$property->id])}}">
+              <div class="property-container rounded ">
+                @php
+                $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+                $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                @endphp
 
-         <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
-          <div class="property-details">
-          <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-          <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
-          <div class="d-flex justify-content-between gap-3 p-0 mx-4">
-            <p class="detail-item sm-text1">
-            <span class="sm-text1">{{ $property->bedrooms }}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
-            </p>
-            <p class="detail-item sm-text1">
-            <span class="detail-number">{{ $property->bathrooms}}</span><br />
-            <i class="fa-solid fa-bath detail-icon"></i>
-            </p>
-            <p class="detail-item sm-text1">
-            <span class="sm-text1">{{ $property->area }}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
-            </p>
+                <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
+                <div class="property-details">
+                  <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
+                  <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
+                  <div class="d-flex justify-content-between gap-3 p-0 mx-4">
+                    <p class="detail-item sm-text1">
+                      <span class="sm-text1">{{ $property->bedrooms }}</span><br />
+                      <i class="fa-solid fa-bed detail-icon"></i>
+                    </p>
+                    <p class="detail-item sm-text1">
+                      <span class="detail-number">{{ $property->bathrooms}}</span><br />
+                      <i class="fa-solid fa-bath detail-icon"></i>
+                    </p>
+                    <p class="detail-item sm-text1">
+                      <span class="sm-text1">{{ $property->area }}</span><br />
+                      <i class="fa-solid fa-bed detail-icon"></i>
+                    </p>
+                  </div>
+                  <p class="extra-small-text1 px-2 text-center">
+                    {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." :
+                    $property->description}}
+                  </p>
+                </div>
+              </div>
+            </a>
           </div>
-          <p class="extra-small-text1 px-2 text-center">
-            {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." : $property->description}}
-          </p>
-          </div>
-        </div>
-</a>
-        </div>
 
-      @endforeach
+          @endforeach
         </div>
       </div>
     </div>
-   
+
 
   </div>
-</section> 
+</section>
 
-
-
-<p class="my-4">s</p>
+--}}
 
 <section class="container-fluid">
   <div class="container gapbetweensection">
-  <div class=" d-flex flex-column justify-content-center align-items-center title pb-2  ">
+    <div class=" d-flex flex-column justify-content-center align-items-center title pb-2  ">
       <div class="xs-text1 dashline">Trusted Real Estate Care</div>
       <div class="lg-text">Latest Project on Sale</div>
       <p class=" extra-small-text text-center col-md-7">Utilizing her exceptional experience and knowledge of
@@ -101,7 +101,8 @@
     <div class="row py-1 property-body">
       <div class="col-md-6 pb-1">
         <div class="property-container rounded">
-          <img src="{{asset('image/bighouse.png')}}" alt="Property Image" class="imagecontroller imagecontrollerheight imagecontrollermd ">
+          <img src="{{asset('image/bighouse.png')}}" alt="Property Image"
+            class="imagecontroller imagecontrollerheight imagecontrollermd ">
           <div class="property-details">
             <div class="md-text1 p-0 m-0">Hello</div>
             <div class="md-text highlight text-center p-0 m-0">North road 435673Kth street</div>
@@ -127,55 +128,55 @@
         </div>
       </div>
 
-      
+
 
       <div class="col-md-6 sub-image-content">
-        <div class="row">
-        @foreach ($properties as $property)
-        <div class="col-md-6 pb-1">
-        <a class="col-md-4 mb-4" href="{{route('singleproperties',['id'=>$property->id])}}">
-        <div class="property-container rounded ">
-        @php
-           $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-           $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+        <div class="row ">
+          @foreach ($properties as $property)
+            <div class="col-md-6 mb-1 gap-sm-1">
+            <a class="col-md-4 mb-4" href="{{route('singleproperties', ['id' => $property->id])}}">
+              <div class="property-container rounded ">
+              @php
+        $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+        $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
          @endphp
 
-         <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
-          <div class="property-details">
-          <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-          <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
-          <div class="d-flex justify-content-between gap-3 p-0 mx-4">
-            <p class="detail-item sm-text1">
-            <span class="sm-text1">{{ $property->bedrooms }}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
-            </p>
-            <p class="detail-item sm-text1">
-            <span class="detail-number">{{ $property->bathrooms}}</span><br />
-            <i class="fa-solid fa-bath detail-icon"></i>
-            </p>
-            <p class="detail-item sm-text1">
-            <span class="sm-text1">{{ $property->area }}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
-            </p>
-          </div>
-          <p class="extra-small-text1 px-2 text-center">
-            {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." : $property->description}}
-          </p>
-          </div>
-        </div>
-</a>
-        </div>
+              <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
+              <div class="property-details">
+                <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
+                <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
+                <div class="d-flex justify-content-between gap-3 p-0 mx-4">
+                <p class="detail-item sm-text1">
+                  <span class="sm-text1">{{ $property->bedrooms }}</span><br />
+                  <i class="fa-solid fa-bed detail-icon"></i>
+                </p>
+                <p class="detail-item sm-text1">
+                  <span class="detail-number">{{ $property->bathrooms}}</span><br />
+                  <i class="fa-solid fa-bath detail-icon"></i>
+                </p>
+                <p class="detail-item sm-text1">
+                  <span class="sm-text1">{{ $property->area }}</span><br />
+                  <i class="fa-solid fa-bed detail-icon"></i>
+                </p>
+                </div>
+                <p class="extra-small-text1 px-2 text-center">
+                {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." : $property->description}}
+                </p>
+              </div>
+              </div>
+            </a>
+            </div>
 
       @endforeach
         </div>
       </div>
     </div>
-   
-    <p class="d-flex justify-content-end pt-3 ">
+
+    <!-- <p class="d-flex justify-content-end pt-3 ">
     <a href="{{ route('properties') }}" class="btn-buttonyellow py-1">View More</a>
-    </p>
+    </p> -->
   </div>
-</section> 
+</section>
 
 
 
@@ -209,48 +210,42 @@
     </div>
     <div class="row align-items-center justify-content-center">
       @foreach ($properties as $property)
-        <a class="col-md-4 mb-4" href="{{route('singleproperties',['id'=>$property->id])}}">
+      <a class="col-md-4 mb-4" href="{{route('singleproperties',['id'=>$property->id])}}">
         <div class="property-container rounded ">
-        @php
-           $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-           $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
-         @endphp
+          @php
+          $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+          $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+          @endphp
 
-         <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
+          <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
           <div class="property-details">
-          <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-          <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
-          <div class="d-flex justify-content-between gap-3 p-0 mx-4">
-            <p class="detail-item sm-text1">
-            <span class="sm-text1">{{ $property->bedrooms }}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
+            <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
+            <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
+            <div class="d-flex justify-content-between gap-3 p-0 mx-4">
+              <p class="detail-item sm-text1">
+                <span class="sm-text1">{{ $property->bedrooms }}</span><br />
+                <i class="fa-solid fa-bed detail-icon"></i>
+              </p>
+              <p class="detail-item sm-text1">
+                <span class="detail-number">{{ $property->bathrooms}}</span><br />
+                <i class="fa-solid fa-bath detail-icon"></i>
+              </p>
+              <p class="detail-item sm-text1">
+                <span class="sm-text1">{{ $property->area }}</span><br />
+                <i class="fa-solid fa-bed detail-icon"></i>
+              </p>
+            </div>
+            <p class="extra-small-text1 px-2 text-center">
+              {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." :
+              $property->description}}
             </p>
-            <p class="detail-item sm-text1">
-            <span class="detail-number">{{ $property->bathrooms}}</span><br />
-            <i class="fa-solid fa-bath detail-icon"></i>
-            </p>
-            <p class="detail-item sm-text1">
-            <span class="sm-text1">{{ $property->area }}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
-            </p>
-          </div>
-          <p class="extra-small-text1 px-2 text-center">
-            {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." : $property->description}}
-          </p>
           </div>
         </div>
-</a>
-
-
-
-        
-
-    @endforeach
+      </a>
+      @endforeach
     </div>
-
-
     <p class="d-flex justify-content-end ">
-    <a href="{{ route('properties') }}" class="btn-buttonyellow py-1">View More</a>
+      <a href="{{ route('properties') }}" class="btn-buttonyellow py-1">View More</a>
     </p>
 
   </div>
@@ -304,37 +299,38 @@
 
     <div class="row py-1 property-body">
       @foreach ($properties as $property)
-        <div class="col-md-6 pb-1">
-          <div class="property-container">
-            @php
-           
-              $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-              $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
-            @endphp
+      <div class="col-md-6 pb-1">
+        <div class="property-container">
+          @php
 
-            <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller imagecontrollerheight imagecontrollermd">
-            
-            <div class="property-details">
-              <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-              <div class="md-text highlight text-center p-0 m-0">{{ $property->street }}, {{ $property->suburb }}</div>
-              <div class="d-flex justify-content-between gap-3 p-0 mx-4">
-                <p class="detail-item sm-text1">
-                  <span class="sm-text1">{{ $property->bedrooms }}</span><br />
-                  <i class="fa-solid fa-bed detail-icon"></i>
-                </p>
-                <p class="detail-item sm-text1">
-                  <span class="detail-number">{{ $property->bathrooms }}</span><br />
-                  <i class="fa-solid fa-bath detail-icon"></i>
-                </p>
-                <p class="detail-item sm-text1">
-                  <span class="sm-text1">{{ $property->area }} sq ft</span><br />
-                  <i class="fa-solid fa-ruler-combined detail-icon"></i>
-                </p>
-              </div>
-              <p class="extra-small-text1 px-2">{{ Str::limit($property->description, 150, '...') }}</p>
+          $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+          $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+          @endphp
+
+          <img src="{{ $mainImage }}" alt="Property Image"
+            class="imagecontroller imagecontrollerheight imagecontrollermd">
+
+          <div class="property-details">
+            <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
+            <div class="md-text highlight text-center p-0 m-0">{{ $property->street }}, {{ $property->suburb }}</div>
+            <div class="d-flex justify-content-between gap-3 p-0 mx-4">
+              <p class="detail-item sm-text1">
+                <span class="sm-text1">{{ $property->bedrooms }}</span><br />
+                <i class="fa-solid fa-bed detail-icon"></i>
+              </p>
+              <p class="detail-item sm-text1">
+                <span class="detail-number">{{ $property->bathrooms }}</span><br />
+                <i class="fa-solid fa-bath detail-icon"></i>
+              </p>
+              <p class="detail-item sm-text1">
+                <span class="sm-text1">{{ $property->area }} sq ft</span><br />
+                <i class="fa-solid fa-ruler-combined detail-icon"></i>
+              </p>
             </div>
+            <p class="extra-small-text1 px-2">{{ Str::limit($property->description, 150, '...') }}</p>
           </div>
         </div>
+      </div>
       @endforeach
     </div>
   </div>

@@ -156,7 +156,8 @@ a {
 .btn-buttonxsgreen {
     background: var(--offgreen);
 }
-.minuspadding{
+
+.minuspadding {
     margin-left: -1rem;
 }
 
@@ -183,7 +184,6 @@ a {
 }
 
 @media (max-width: 500px) {
-
     .lg-text,
     .lg-text1 {
         font-size: 24px;
@@ -223,6 +223,10 @@ a {
     font-weight: 400;
     padding: 2px 0;
     z-index: 2;
+}
+
+.sm-text:first-letter {
+    text-transform: capitalize;
 }
 
 .sm-text1 {
@@ -277,9 +281,10 @@ a {
     font-size: 16px;
 }
 
-.title{
+.title {
     padding: 0.3rem 0;
 }
+
 /* for input */
 
 .input,
@@ -396,13 +401,11 @@ a {
     }
 }
 
-
-
 .reg-logbutton {
     height: 24px;
     width: 70px;
     border-radius: 4px;
-    font-size: 14px
+    font-size: 14px;
 }
 
 .reg-logbutton-white {
@@ -411,30 +414,18 @@ a {
     border: none;
 }
 
-
-@media (max-width:990px) {
+@media (max-width: 990px) {
     .reg-logbutton {
         height: 30px;
         width: 100px;
         border-radius: 4px;
-        font-size: 18px
+        font-size: 18px;
     }
 
     .button-collection {
         display: none;
     }
-
-
 }
-
-
-
-
-
-
-
-
-
 
 /* footer */
 
@@ -454,9 +445,9 @@ a {
     text-transform: capitalize;
 }
 
-.customui li a:hover{
+.customui li a:hover {
     text-decoration: none;
-    color:var(--yellow);
+    color: var(--yellow);
     font-size: 18px;
     text-transform: capitalize;
 }
@@ -547,8 +538,6 @@ a {
     .formsection {
         display: none;
     }
-
-
 }
 
 /* properties section */
@@ -576,9 +565,9 @@ a {
 
 .propertype-subimage img {
     width: 100%;
-    height:36.5vh;
+    height: 36.5vh;
     object-fit: cover;
-} 
+}
 
 .property-subname-more {
     position: absolute;
@@ -603,28 +592,28 @@ a {
 .property-container {
     position: relative;
     overflow: hidden;
-
-
-
 }
 
 /* Keyframes for fade-in animation */
 /* Keyframes for fade-in animation */
 @keyframes fadein {
     0% {
-       
         opacity: 0;
     }
+
     25% {
         opacity: 0.2;
     }
+
     50% {
         opacity: 0.5;
     }
+
     75% {
         opacity: 0.8;
     }
-    100%{
+
+    100% {
         opacity: 1;
     }
 }
@@ -634,16 +623,20 @@ a {
     0% {
         opacity: 1;
     }
+
     25% {
         opacity: 0.8;
     }
+
     50% {
         opacity: 0.5;
     }
+
     75% {
         opacity: 0.2;
     }
-    100%{
+
+    100% {
         opacity: 0;
     }
 }
@@ -654,10 +647,10 @@ a {
     margin: 0;
     opacity: 0;
     position: absolute;
-    overflow: hidden; 
-    width: 97%; 
+    overflow: hidden;
+    width: 97%;
     /* animation: fadeout 10s ease-out;  */
-    animation-fill-mode: both; 
+    animation-fill-mode: both;
 }
 
 /* Visible state with animation */
@@ -666,9 +659,9 @@ a {
     height: auto;
     overflow: hidden;
     margin: 0 0 0.5rem 0;
-    width: 97%; 
+    width: 97%;
     /* animation: fadein 3s ease-in;  */
-    animation-fill-mode: both; 
+    animation-fill-mode: both;
 }
 
 .property-image {
@@ -677,11 +670,10 @@ a {
     /* Adjust based on your design */
     display: block;
     object-fit: cover;
-
 }
-.property-imageheight{
-    height: 28vh;
 
+.property-imageheight {
+    height: 25.1vh;
 }
 
 .property-details {
@@ -716,17 +708,12 @@ a {
     opacity: 1;
 }
 
-
-
 .property-container:hover .property-more-details {
     opacity: 1;
     transform: translateY(70%);
 }
 
-
-
 /* for bannersection */
-
 
 /* Section Styling */
 .connect {
@@ -778,7 +765,7 @@ a {
 }
 
 .imagecontroller {
-    height:86.2vh;
+    height: 86.2vh;
     width: 100%;
     object-fit: cover;
 }
@@ -836,11 +823,9 @@ a {
     margin: 0.6rem 0;
 }
 
-
-
 .card {
     position: relative;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .card:hover {
@@ -851,20 +836,8 @@ a {
     position: absolute;
     top: 4%;
     left: 4%;
-}
-
-.status {
-    padding-left: 100px;
     display: flex;
     justify-content: space-between;
-}
-
-@media (max-width: 550px) {
-    .status {
-        padding-left: 1.1rem;
-        display: flex;
-        justify-content: space-between;
-    }
 }
 
 /* nextapge css */
@@ -949,17 +922,15 @@ a {
     height: 48vh;
     width: 100%;
     object-fit: cover;
-    border-radius:var(--border-radius);
-   
+    border-radius: var(--border-radius);
 }
-.img-fluid{
-    height: 30vh;
-    width:94%;
-    border-radius:8px !important;
-    object-fit: cover;
-    margin:0.8rem;
-  
 
+.img-fluid {
+    height: 30vh;
+    width: 94%;
+    border-radius: 8px !important;
+    object-fit: cover;
+    margin: 0.8rem;
 }
 
 @media (max-width: 550px) {
@@ -976,47 +947,45 @@ a {
     width: 100%;
     position: relative;
 }
+
 .image img {
     width: 100%;
     height: 50vh;
     border-radius: var(--border-radius);
 }
 
-
-
-.first img{
-    transition: transform 0.5s ease; 
-    animation: first 24s ease-in-out infinite; 
-
+.first img {
+    transition: transform 0.5s ease;
+    animation: first 24s ease-in-out infinite;
 }
-.second img{
-    transition: transform 0.5s ease; 
-    animation:  second 24s ease-in-out infinite; 
 
+.second img {
+    transition: transform 0.5s ease;
+    animation: second 24s ease-in-out infinite;
 }
-@media(max-width:660px)
-{
-    .first img{
-        transition:none; 
-        animation:none; 
-    
+
+@media (max-width: 660px) {
+    .first img {
+        transition: none;
+        animation: none;
     }
-    .second img{
-        transition:none; 
-        animation:  none; 
+
+    .second img {
+        transition: none;
+        animation: none;
         margin-top: 1rem;
-    
     }
-
 }
 
 @keyframes first {
     0% {
-        transform: translateY(50px); 
+        transform: translateY(50px);
     }
+
     50% {
-        transform: translateY(70px); 
+        transform: translateY(70px);
     }
+
     100% {
         transform: translateY(70px);
     }
@@ -1024,17 +993,17 @@ a {
 
 @keyframes second {
     0% {
-        transform: translateY(80px); 
+        transform: translateY(80px);
     }
+
     50% {
-        transform: translateY(20px); 
+        transform: translateY(20px);
     }
+
     100% {
         transform: translateY(80px);
     }
 }
-
-
 
 @media (max-width: 600px) {
     .image img {
@@ -1095,17 +1064,15 @@ a {
     left: 6%;
 }
 
-.teamimagerow>.member-container:nth-child(even) {
+.teamimagerow > .member-container:nth-child(even) {
     margin-top: 10rem;
 }
 
-@media (max-width:660px) {
-    .teamimagerow>.member-container:nth-child(even) {
+@media (max-width: 660px) {
+    .teamimagerow > .member-container:nth-child(even) {
         margin-top: 0;
     }
-
 }
-
 
 .singlequestion {
     display: flex;
@@ -1174,12 +1141,13 @@ a {
     width: 20%;
 }
 
- .font-collection .customicons {
+.font-collection .customicons {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     padding: 0.6rem;
     border-radius: var(--border-radius);
 }
- .font-collection :hover {
+
+.font-collection :hover {
     box-shadow: 0px 4px 8px var(--off-white);
     border-radius: var(--border-radius);
     z-index: 1;
@@ -1210,7 +1178,6 @@ a {
     padding: 0.1rem 0;
 }
 
-
 .propertiesfinder {
     position: relative;
     bottom: 5rem;
@@ -1220,7 +1187,6 @@ a {
 
 .propertiesfinderhome {
     bottom: 0rem;
-
 }
 
 .searchhide {
@@ -1231,7 +1197,6 @@ a {
     .searchhide {
         display: block;
     }
-
 }
 
 .hiddenform {
@@ -1242,11 +1207,10 @@ a {
     display: none;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
     .hiddenform {
         display: none;
     }
-
 
     .showform {
         display: none;
@@ -1255,116 +1219,100 @@ a {
     .propertiesfinderhome {
         display: block;
     }
-
-
-
 }
-
 
 .md-hidden {
     background: var(--green);
     padding: 1rem;
     border-radius: var(--border-radius);
-
-
-
 }
-
 
 .customcard {
     border: none;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem 0.5rem 1rem;
     border-right: 1px solid var(--off-white);
     background: var(--freegreen);
-    min-height:480px;
- cursor:pointer
-
-
+    height: 500px;
+    cursor: pointer;
 }
 
 .customcard:hover {
     background: var(--off-white);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
 }
 
-
-
+@media (max-width: 400px) {
+    .customcard {
+        height: 600px;
+    }
+}
 
 .nav-button-collection {
     display: none;
 }
 
-@media (max-width:990px) {
+@media (max-width: 990px) {
     .nav-button-collection {
         display: flex;
-
     }
 
     .coloryellow {
         background: var(--green);
         color: white;
     }
-
-
 }
 
-
-   /* Navigation buttons styles */
-   .swiper-button-next,
-   .swiper-button-prev {
-     display: none;
-   }
-  
-
-  
-
-   .swiper-slide:nth-child(odd) .customcard {
-    background: var(--off-yellow) !important; 
-  }
-  
-
-
-
-.gapbetweensection{
-     margin:60px auto;
-     padding:20px auto;
+/* Navigation buttons styles */
+.swiper-button-next,
+.swiper-button-prev {
+    display: none;
 }
 
+.swiper-slide:nth-child(odd) .customcard {
+    background: var(--off-yellow) !important;
+}
 
+.gapbetweensection {
+    margin: 60px auto;
+    padding: 20px auto;
+}
 
 .clear {
     clear: both;
-  }
- 
-  .line-title {
+}
+
+.line-title {
     position: relative;
     width: 400px;
-  }
-  .line-title::before,
-  .line-title::after {
+}
+
+.line-title::before,
+.line-title::after {
     content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     height: 4px;
     border-radius: 2px;
-  }
-  .line-title::before {
+}
+
+.line-title::before {
     width: 100%;
     background: #f2f2f2;
-  }
-  .line-title::after {
+}
+
+.line-title::after {
     width: 32px;
     background: #e73700;
-  }
-  /* Middle section CSS */
-  .cardslider1 .owl-stage {
+}
 
+/* Middle section CSS */
+.cardslider1 .owl-stage {
     display: flex;
     display: -webkit-flex;
-  }
-  .cardslider1 .item {
+}
+
+.cardslider1 .item {
     margin: 0 15px 60px;
     width: 300px;
     height: 300px;
@@ -1379,11 +1327,13 @@ a {
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
     cursor: pointer;
-  }
-  .cardslider1 .item.active {
+}
+
+.cardslider1 .item.active {
     width: 350px;
-  }
-  .cardslider1 .item:after {
+}
+
+.cardslider1 .item:after {
     content: "";
     display: block;
     position: absolute;
@@ -1392,8 +1342,9 @@ a {
     left: 0;
     top: 0;
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-  }
-  .cardslider1 .item-desc {
+}
+
+.cardslider1 .item-desc {
     padding: 0 24px 12px;
     color: #fff;
     position: relative;
@@ -1403,118 +1354,125 @@ a {
     -webkit-transform: translateY(calc(100% - 54px));
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
-  }
-  .cardslider1 .item.active .item-desc {
+}
+
+.cardslider1 .item.active .item-desc {
     transform: none;
     -webkit-transform: none;
-  }
-  .cardslider1 .item-desc p {
+}
+
+.cardslider1 .item-desc p {
     opacity: 0;
     -webkit-transform: translateY(32px);
     transform: translateY(32px);
     transition: all 0.4s ease-in-out 0.2s;
     -webkit-transition: all 0.4s ease-in-out 0.2s;
-  }
-  .cardslider1 .item.active .item-desc p {
+}
+
+.cardslider1 .item.active .item-desc p {
     opacity: 1;
     -webkit-transform: translateY(0);
     transform: translateY(0);
-  }
-  /* .cardslider1 .owl-theme.custom-carousel .owl-dots {
+}
+
+/* .cardslider1 .owl-theme.custom-carousel .owl-dots {
     margin-top: -20px;
     position: relative;
     z-index: 5;
   } */
-  /* Responsive Design */
-  @media (min-width: 992px) and (max-width: 1199px) {
+/* Responsive Design */
+@media (min-width: 992px) and (max-width: 1199px) {
     .cardslider1.item {
-      margin: 0 12px 60px;
-      width: 260px;
-      height: 360px;
+        margin: 0 12px 60px;
+        width: 260px;
+        height: 360px;
     }
+
     .cardslider1 .item.active {
-      width: 400px;
+        width: 400px;
     }
+
     .cardslider1 .item-desc {
-      transform: translateY(calc(100% - 46px));
-      -webkit-transform: translateY(calc(100% - 46px));
+        transform: translateY(calc(100% - 46px));
+        -webkit-transform: translateY(calc(100% - 46px));
     }
-  }
-  @media (min-width: 768px) and (max-width: 991px) {
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
     h2 {
-      margin-bottom: 32px;
+        margin-bottom: 32px;
     }
+
     h3 {
-      margin: 0 0 8px;
-      font-size: 24px;
-      line-height: 32px;
+        margin: 0 0 8px;
+        font-size: 24px;
+        line-height: 32px;
     }
+
     .line-title {
-      width: 330px;
+        width: 330px;
     }
+
     .cardslider1 {
-      padding: 0px 30px 40px;
+        padding: 0px 30px 40px;
     }
+
     .cardslider1 .item {
-      margin: 0 12px 60px;
-      width: 240px;
-      height: 330px;
+        margin: 0 12px 60px;
+        width: 240px;
+        height: 330px;
     }
-    .cardslider1 .item.active {
-      width: 360px;
-    }
-    .cardslider1 .item-desc {
-      transform: translateY(calc(100% - 42px));
-      -webkit-transform: translateY(calc(100% - 42px));
-    }
-  }
-  @media (max-width:767px) {
 
-    .cardslider1{
-      padding: 30px 15px 20px;
+    .cardslider1 .item.active {
+        width: 360px;
     }
+
+    .cardslider1 .item-desc {
+        transform: translateY(calc(100% - 42px));
+        -webkit-transform: translateY(calc(100% - 42px));
+    }
+}
+
+@media (max-width: 767px) {
+    .cardslider1 {
+        padding: 30px 15px 20px;
+    }
+
     .cardslider1 .item {
-      margin: 0 10px 40px;
-      width: 200px;
-      height: 280px;
+        margin: 0 10px 40px;
+        width: 200px;
+        height: 280px;
     }
+
     .cardslider1 .item.active {
-      width: 270px;
-      box-shadow: 6px 10px 10px rgba(0, 0, 0, 0.25);
-      -webkit-box-shadow: 6px 10px 10px rgba(0, 0, 0, 0.25);
+        width: 270px;
+        box-shadow: 6px 10px 10px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 6px 10px 10px rgba(0, 0, 0, 0.25);
     }
+
     .cardslider1 .item-desc {
-      padding: 0 14px 5px;
-      transform: translateY(calc(100% - 42px));
-      -webkit-transform: translateY(calc(100% - 42px));
+        padding: 0 14px 5px;
+        transform: translateY(calc(100% - 42px));
+        -webkit-transform: translateY(calc(100% - 42px));
     }
-  }
-
-
+}
 
 /* advantage */
 
-
-
-
-
-  .advantage .custom-carousel{
+.advantage .custom-carousel {
     position: relative;
-  }
-.advantage .item-image{
-  position: absolute;
-  height: 40vh;
-  width:100%;
-  object-fit: cover;
-
 }
 
+.advantage .item-image {
+    position: absolute;
+    height: 40vh;
+    width: 100%;
+    object-fit: cover;
+}
 
-.advantage .items-desc{
-  position: absolute;
-  z-index: 50;
-  bottom: 5rem;
-  background-color: black;
-
-
+.advantage .items-desc {
+    position: absolute;
+    z-index: 50;
+    bottom: 5rem;
+    background-color: black;
 }

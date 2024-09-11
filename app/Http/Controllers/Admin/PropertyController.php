@@ -259,7 +259,7 @@ private function handleBase64Images(array $base64Images, $folder, $existingImage
 }
 
 
-   /**
+   /**.
  * Handle uploaded image files and convert them to WEBP.
  */
 private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
