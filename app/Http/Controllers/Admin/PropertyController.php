@@ -10,6 +10,7 @@ use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PropertyController extends Controller
 {
@@ -61,8 +62,8 @@ class PropertyController extends Controller
             'rental_period' => 'nullable|string',
             'keywords' => 'nullable|string',
             'other_images' => 'required|array', // Ensure other_images is an array
-            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048', 
-            
+            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
+
         ]);
 
         // Handle the main image upload (base64 images)
@@ -202,6 +203,77 @@ class PropertyController extends Controller
 
         return redirect()->route('admin.property.index');
     }
+    private function handleBase64Images(array $base64Images, $folder, $existingImages = [])
+    {
+        // Initialize with existing images if provided
+        $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
+
+        foreach ($base64Images as $base64Image) {
+            // Extract base64 encoded part and decode it
+            $image = explode(',', $base64Image);
+            $decodedImage = base64_decode($image[1]);
+            $imageResource = imagecreatefromstring($decodedImage);
+
+            if ($imageResource !== false) {
+                // Generate unique image name
+                $imageName = time() . '-' . Str::uuid() . '.webp';
+                // Correct destination path
+                $destinationPath = storage_path("app/public/$folder");
+
+                // Create the directory if it does not exist
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true, true);
+                }
+
+                // Save the image in WEBP format
+                $savedPath = $destinationPath . '/' . $imageName;
+                imagewebp($imageResource, $savedPath);
+                imagedestroy($imageResource);
+
+                // Correctly formatted relative path for storage link
+                $relativeImagePath = "storage/$folder/$imageName";
+                $images[] = $relativeImagePath;
+            }
+        }
+
+        return $images;
+    }
+
+
+    /**
+     * Handle uploaded image files and convert them to WEBP.
+     */
+    private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
+    {
+        // Initialize with existing images if any
+        $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
+
+        if ($uploadedFiles) {
+            foreach ($uploadedFiles as $file) {
+                // Generate a unique name for each image
+                $imageName = time() . '-' . Str::uuid() . '.webp';
+                // Correct destination path for storage
+                $destinationPath = storage_path("app/public/$folder");
+
+                // Create the directory if it does not exist
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true, true);
+                }
+
+                // Convert the uploaded image to WEBP format
+                $imageResource = imagecreatefromstring(file_get_contents($file));
+                $savedPath = $destinationPath . '/' . $imageName;
+                imagewebp($imageResource, $savedPath);
+                imagedestroy($imageResource);
+
+                // Correctly formatted relative path for storage link
+                $relativeImagePath = "storage/$folder/$imageName";
+                $images[] = $relativeImagePath;
+            }
+        }
+
+        return $images;
+    }
 
     /**
      * Remove the specified property from storage.
@@ -209,102 +281,42 @@ class PropertyController extends Controller
     public function destroy(Property $property)
     {
         // Delete main images
-        $this->deleteImages(json_decode($property->main_image, true));
+        $this->deleteImages(json_decode($property->main_image, true), 'property/');
 
         // Delete other images
-        $this->deleteImages(json_decode($property->other_images, true));
+        $this->deleteImages(json_decode($property->other_images, true), 'property/other-images/');
 
+        // Delete the property from the database
         $property->delete();
 
         return redirect()->route('admin.property.index')->with('success', 'Property deleted successfully.');
     }
 
     /**
- * Handle base64 image uploads and conversions to WEBP.
- */
-private function handleBase64Images(array $base64Images, $folder, $existingImages = [])
-{
-    // Initialize with existing images if provided
-    $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
-
-    foreach ($base64Images as $base64Image) {
-        // Extract base64 encoded part and decode it
-        $image = explode(',', $base64Image);
-        $decodedImage = base64_decode($image[1]);
-        $imageResource = imagecreatefromstring($decodedImage);
-
-        if ($imageResource !== false) {
-            // Generate unique image name
-            $imageName = time() . '-' . Str::uuid() . '.webp';
-            // Correct destination path
-            $destinationPath = storage_path("app/public/$folder");
-
-            // Create the directory if it does not exist
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            // Save the image in WEBP format
-            $savedPath = $destinationPath . '/' . $imageName;
-            imagewebp($imageResource, $savedPath);
-            imagedestroy($imageResource);
-
-            // Correctly formatted relative path for storage link
-            $relativeImagePath = "storage/$folder/$imageName";
-            $images[] = $relativeImagePath;
-        }
-    }
-
-    return $images;
-}
-
-
-   /**
- * Handle uploaded image files and convert them to WEBP.
- */
-private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
-{
-    // Initialize with existing images if any
-    $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
-
-    if ($uploadedFiles) {
-        foreach ($uploadedFiles as $file) {
-            // Generate a unique name for each image
-            $imageName = time() . '-' . Str::uuid() . '.webp';
-            // Correct destination path for storage
-            $destinationPath = storage_path("app/public/$folder");
-
-            // Create the directory if it does not exist
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            // Convert the uploaded image to WEBP format
-            $imageResource = imagecreatefromstring(file_get_contents($file));
-            $savedPath = $destinationPath . '/' . $imageName;
-            imagewebp($imageResource, $savedPath);
-            imagedestroy($imageResource);
-
-            // Correctly formatted relative path for storage link
-            $relativeImagePath = "storage/$folder/$imageName";
-            $images[] = $relativeImagePath;
-        }
-    }
-
-    return $images;
-}
-
-
-    /**
-     * Delete images from storage.
+     * Deletes images from the specified path.
+     *
+     * @param array|string|null $images
+     * @param string $folderPath
      */
-    private function deleteImages($images)
+    private function deleteImages($images, $folderPath)
     {
-        if ($images) {
+        // If $images is a string, convert it to an array
+        if (is_string($images)) {
+            $images = [$images];
+        }
+
+        // If $images is an array, iterate through each image
+        if (is_array($images)) {
             foreach ($images as $image) {
-                $filePath = storage_path('app/' . $image);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
+                // Check if image is not empty
+                if (!empty($image)) {
+                    // Extract the basename of the image path
+                    $imagePath = storage_path('app/public/' . $folderPath . basename($image));
+
+                    // Check if the image exists and delete it
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
                 }
             }
         }

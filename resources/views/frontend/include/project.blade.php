@@ -13,10 +13,12 @@
         <div class="col-md-6 pb-1">
           <div class="property-container">
             @php
-              // Fetch and decode the main images from the property
-              $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-              // Fetch the first image from the main images or fallback to a placeholder
-              $mainImage = !empty($mainImages) ? asset('/' . $mainImages[0]) : asset('images/default-placeholder.png');
+              // Decode the JSON encoded images from the property
+              $mainImages = !empty($property->other_images) ? json_decode($property->other_images, true) : [];
+              // Fetch the first image from the array or fallback to a placeholder if empty
+              $mainImage = !empty($mainImages) 
+                  ? asset('storage/property/other-images/' . $mainImages[0]) 
+                  : asset('images/default-placeholder.png');
             @endphp
 
             <!-- Display the main image of the property -->

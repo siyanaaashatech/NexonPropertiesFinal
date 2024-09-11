@@ -1,6 +1,7 @@
 <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
     <style>
-        .nav-link-text,.nav-link-icon{
+        .nav-link-text,
+        .nav-link-icon {
             color: #000000;
         }
     </style>
@@ -63,7 +64,8 @@
                                 <a class="nav-link {{ Request::segment(2) == 'site-settings' ? 'active' : '' }}"
                                     href="{{ route('admin.site-settings.index') }}">
                                     <div class="d-flex align-items-center">
-                                    <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Site Setting</span>
+                                        <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Site
+                                            Setting</span>
                                     </div>
                                 </a>
                             </li>
@@ -72,7 +74,8 @@
                             <a class="nav-link {{ Request::segment(2) == 'favicons' ? 'active' : '' }}"
                                 href="{{ route('admin.favicon.index') }}">
                                 <div class="d-flex align-items-center">
-                                <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Favicon</span>
+                                    <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i>
+                                        Favicon</span>
                                 </div>
                             </a>
                         </li>
@@ -80,30 +83,51 @@
                             <a class="nav-link {{ Request::segment(2) == 'social-links' ? 'active' : '' }}"
                                 href="{{ route('admin.social-links.index') }}">
                                 <div class="d-flex align-items-center">
-                                <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Social Links</span>
+                                    <span class="nav-link-text ps-1"><i class="fa fa-angle-double-right"></i> Social
+                                        Links</span>
                                 </div>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                        <!-- Top-level link for AboutUs -->
-                        <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
-                           href="{{ route('admin.aboutus.index') }}">
-                            <div class="d-flex align-items-center">
-                                <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
-                                <span class="nav-link-text ps-1">About Us</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <!-- Top-level link for AboutUs -->
-                        <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
-                           href="{{ route('admin.whyus.index') }}">
-                            <div class="d-flex align-items-center">
-                                <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
-                                <span class="nav-link-text ps-1">Why Us</span>
-                            </div>
-                        </a>
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
+                                href="{{ route('admin.aboutus.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">About Us</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/team*') ? 'active' : '' }}"
+                                href="{{ route('admin.team.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">Team</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
+                                href="{{ route('admin.whyus.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">Why Us</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/faqs*') ? 'active' : '' }}"
+                                href="{{ route('admin.faqs.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">FAQS</span>
+                                </div>
+                            </a>
                         </li>
                     </ul>
                 </li>

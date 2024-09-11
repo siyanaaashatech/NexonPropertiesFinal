@@ -18,6 +18,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\NoTransactionPurposeController;
 use App\Http\Controllers\OffenderController;
+
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TranPurposeController;
 use App\Http\Controllers\TranProofController;
@@ -28,11 +29,14 @@ use App\Models\Testimonial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
+use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Auth\VerificationController;
+
 
 Auth::routes();
 
@@ -174,7 +178,9 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
     Route::resource('social-links', SocialLinkController::class);
 
     Route::resource('property', PropertyController::class);
+    Route::resource('team', TeamController::class);
     Route::resource('whyus', WhyusController::class);
+    Route::resource('faqs', FAQController::class);
 
 
 Route::resource('admin/testimonials', TestimonialController::class);
