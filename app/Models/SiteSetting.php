@@ -32,9 +32,9 @@ class SiteSetting extends Model
     // Relationships
     public function metadata()
     {
-        return $this->belongsTo(Metadata::class);
+        return $this->belongsTo(Metadata::class, 'metadata_id');
     }
-
+    
     public function socialLinks()
     {
         return $this->belongsTo(SocialLink::class, 'social_links_id');

@@ -9,10 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
-
 class AboutUsController extends Controller
 {
-    /**
+    /** 
      * Display a listing of the aboutus.
      */
     public function index()

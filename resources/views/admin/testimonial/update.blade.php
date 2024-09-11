@@ -64,8 +64,8 @@
             <!-- /.card-body -->
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Update Service</button>
-                <a href="{{ route('services.index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update Testimonial</button>
+                <a href="{{ route('testimonials.index') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

@@ -17,9 +17,9 @@ class Metadata extends Model
 
     // Relationships
     public function siteSettings()
-    {
-        return $this->hasMany(SiteSetting::class);
-    }
+{
+    return $this->hasMany(SiteSetting::class, 'metadata_id');
+}
 
     public function aboutUs()
     {

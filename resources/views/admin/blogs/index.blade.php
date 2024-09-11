@@ -79,48 +79,53 @@
                                                         M
                                                     </button>
 
-                                                    <!-- Metadata Modal with Edit Form -->
-                                                    <div class="modal fade" id="metadataModal{{ $blog->id }}" tabindex="-1" aria-labelledby="metadataModalLabel{{ $blog->id }}" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="metadataModalLabel{{ $blog->id }}">Edit Metadata Details for {{ $blog->title }}</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form action="{{ route('metadata.update', $blog->metadata->id) }}" method="POST">
-                                                                        @csrf
-                                                                        @method('PUT')
+                                                  <!-- Metadata Modal with Edit Form -->
+                                                  <div class="modal fade" id="metadataModal{{ $blog->id }}" tabindex="-1" aria-labelledby="metadataModalLabel{{ $blog->id }}" aria-hidden="true">
+                                                  <div class="modal-dialog modal-lg">
+                                                  <div class="modal-content">
+                                                   <div class="modal-header">
+                                                <h5 class="modal-title" id="metadataModalLabel{{ $blog->id }}">Edit Metadata Details for {{ $blog->title }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                     <div class="modal-body">
+                                  <form action="{{ route('metadata.update', $blog->metadata->id) }}" method="POST">
+                                 @csrf
+                                @method('PUT')
 
-                                                                        <div class="form-group mb-3">
-                                                                            <label for="meta_title">Meta Title</label>
-                                                                            <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ old('meta_title', $blog->metadata->meta_title) }}" required>
-                                                                        </div>
+                               <div class="form-group mb-3">
+                               <label for="meta_title">Meta Title</label>
+                               <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ old('meta_title', $blog->metadata->meta_title) }}" required>
+                              </div>
 
-                                                                        <div class="form-group mb-3">
-                                                                            <label for="meta_description">Meta Description</label>
-                                                                            <textarea name="meta_description" id="meta_description" class="form-control" rows="3" required>{{ old('meta_description', $blog->metadata->meta_description) }}</textarea>
-                                                                        </div>
+                             <div class="form-group mb-3">
+                             <label for="meta_description">Meta Description</label>
+                             <textarea name="meta_description" id="meta_description" class="form-control" rows="3" required>{{ old('meta_description', $blog->metadata->meta_description) }}</textarea>
+                         </div>
 
-                                                                        <div class="form-group mb-3">
-                                                                            <label for="meta_keywords">Meta Keywords</label>
-                                                                            <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $blog->metadata->meta_keywords) }}</textarea>
-                                                                        </div>
+                        <div class="form-group mb-3">
+                        <label for="meta_keywords">Meta Keywords</label>
+                        @php
+                            // Decode JSON and prepare keywords for display
+                            $metaKeywords = json_decode($blog->metadata->meta_keywords, true);
+                            $metaKeywords = is_array($metaKeywords) ? implode("\n", $metaKeywords) : $blog->metadata->meta_keywords;
+                        @endphp
+                        <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $metaKeywords) }}</textarea>
+                    </div>
 
-                                                                        <div class="form-group mb-3">
-                                                                            <label for="slug">Slug</label>
-                                                                            <input type="text" name="slug" id="slug" class="form-control" value="{{ old('slug', $blog->metadata->slug) }}" required>
-                                                                        </div>
+                    <div class="form-group mb-3">
+                        <label for="slug">Slug</label>
+                        <input type="text" name="slug" id="slug" class="form-control" value="{{ old('slug', $blog->metadata->slug) }}" required>
+                    </div>
 
-                                                                        <div class="form-group">
-                                                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                            </form>
+                               </div>
+                                  </div>
+                                     </div>
+                                        </div>
                                                 @endif
                                             </div>
                                         </td>
