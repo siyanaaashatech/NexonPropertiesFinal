@@ -4,26 +4,23 @@
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner mb-2">
     <!-- Carousel Items -->
-    @foreach ($services as $index => $service)
+    @foreach ($properties as $index => $property)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
             <div class="row d-flex">
                 <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2">
-                    @php
-                $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
-              @endphp
-              @if (!empty($images))
-                @foreach ($images as $image)
-                  <img class="imagecontroller" src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
-                @endforeach
-              @else
-                <p>No images available</p>
-              @endif
+
+              @php
+           $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+           $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+         @endphp
+
+         <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller">
                     <div class="flex bannercontent">
                         <div class="bannercontentinner">
                             <p class="sm-text1 mb-3 text-center forhidden">
                                 More than <span class="highlight">1000+</span> houses available for sale & rent in the country
                             </p>
-                            <h4 class="lg-text1 mb-4">{{$service->title}}</h4>
+                            <h4 class="lg-text1 mb-4">{{$property->title}}</h4>
 
                             <div class="d-flex justify-content-center mb-1">
                                 <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
@@ -53,30 +50,17 @@
       <div class="col-md-3">
     <div class="row">
       <div class="col-md-12 p-0 ">
-        @foreach ($services as  $service )
-        <div class="property-container mx-2 subbanner-hidden " >
-          @php
-                $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
-              @endphp
-              @if (!empty($images))
-                @foreach ($images as $image)
-                  <img class="property-image  property-imageheight" src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
-                @endforeach
-              @else
-                <p>No images available</p>
-              @endif
-
-
-
-
-
-
-
-
-
+        @foreach ($properties as  $property )
+        <a href="{{route('singleproperties',['id'=>$property->id])}}">
+        <div class="property-container mx-2 subbanner-hidden "  >
+              @php
+           $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+           $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+         @endphp
+         <img src="{{ $mainImage }}" alt="Property Image" class="property-image  property-imageheight">
           <div class="property-details">
-            <div class="md-text1">{{$service->title}}</div>
-            <div class="sm-text highlight text-center p-0 m-0">{{$service->subtitle}}</div>
+            <div class="md-text1">{{$property ->title}}</div>
+            <div class="sm-text highlight text-center p-0 m-0">{{$property ->title}}</div>
             <div class="d-flex justify-content-between gap-3 p-0 mx-4">
               <p class="detail-item sm-text1">
                 <span class="sm-text1">13</span><br />
@@ -91,9 +75,12 @@
                 <i class="fa-solid fa-bed detail-icon"></i>
               </p>
             </div>
-            <p class="extra-small-text1 px-2">{{ strlen($service->description)>150 ? substr($service->description,0,150)."...": $service->description}}</p>
+            <p class="extra-small-text1 px-2">{{ strlen($property ->description)>150 ? substr($property ->description,0,150)."...": $property ->description}}</p>
           </div>
         </div>
+
+        </a>
+
         @endforeach
       </div>
     </div>

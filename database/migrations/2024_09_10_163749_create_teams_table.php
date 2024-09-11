@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->longText('image');
+            $table->string('position');
+            $table->json('social_media_links'); // Storing social media links as JSON
             $table->timestamps();
         });
     }

@@ -33,45 +33,27 @@ use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\WhyusController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Admin\FAQController;
+use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\AboutDescriptionController;
 
 Auth::routes();
-
-// Route::get('/', function () {
-//     return view('frontend.welcome');
-// })->name('/');
-
-// Route::get("/properties",function(){
-//     return view("frontend.properties");
-
-// })->name("properties");
-// Route::get("/blog",function(){
-//     return view("frontend.blog");
-
-// })->name("blog");
-
-
-Route::get("/member",function(){
+Route::get("/member", function () {
     return view("frontend.member");
 
 });
-Route::get("/contact",function(){
-    return view("frontend.contact");
-})->name("contact");
-
-
-Route::get("/about",function(){
-    return view("frontend.about");
-})->name('about');
-
-Route::get("/service", function(){
-    return view("service");
-});
-Route::get("services", function () { return view('frontend.include.blog.php');});
-Route::get("whyuss",function(){ return view("frontend.include.advantage.php");});
-Route::get("aboutuss",function(){return view("frontend.include.about.blade.php");});
-Route::get("services",function(){ return view("frontend.include.indexbanner.php");});
-Route::get("testimonials",function(){return view("frontend.testimonial.blade.php");});
-Route::get("service", function(){ return view ("frontend.include.project.blade.php");});
+Route::get("services", function () {
+    return view('frontend.include.blog.php'); });
+Route::get("whyuss", function () {
+    return view("frontend.include.advantage.php"); });
+Route::get("aboutuss", function () {
+    return view("frontend.include.about.blade.php"); });
+Route::get("services", function () {
+    return view("frontend.include.indexbanner.php"); });
+Route::get("testimonials", function () {
+    return view("frontend.testimonial.blade.php"); });
+Route::get("service", function () {
+    return view("frontend.include.project.blade.php"); });
 
 
 
@@ -84,14 +66,14 @@ Route::get('/', [FrontViewController::class, 'index'])->name('index');
 Auth::routes(['verify' => true]);
 
 Route::get('/email/verify', 'Auth\VerificationController@show')
-     ->name('verification.notice');
+    ->name('verification.notice');
 Route::post('/email/resend', 'Auth\VerificationController@resend')
-     ->name('verification.resend');
+    ->name('verification.resend');
 
-     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-     ->middleware(['auth', 'signed'])
-     ->name('verification.verify');
- 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
 
 
 
@@ -101,7 +83,7 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
     // Route::resource('services', ServiceController::class);
     Route::resource('services', ServiceController::class);
     // Update your route definition to accept PUT requests
-Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
+    Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
 
     Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
@@ -139,39 +121,45 @@ Route::put('/services/update', [ServiceController::class, 'update'])->name('serv
         Route::post('update', [PermissionsController::class, 'update'])->name('update');
         Route::get('delete/{id}', [PermissionsController::class, 'destroy'])->name('destroy');
     });
-
+    Route::resource('team', TeamController::class);
+    Route::resource('faqs', FAQController::class);
+    Route::resource('about_descriptions', AboutDescriptionController::class);
     // Blog Routes
     Route::resource('blogs', BlogController::class);
     Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
 });
 
-   // Testimonial Routes 
-   Route::resource('admin/testimonials', TestimonialController::class);
-   Route::resource('admin/property', PropertyController::class);
-   Route::resource('admin/categories', CategoryController::class);
-   Route::resource('admin/subcategories', SubCategoryController::class);
-   //MetaData Routes
-   Route::resource('metadata', MetadataController::class);
-   Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
+// Testimonial Routes 
+Route::resource('admin/testimonials', TestimonialController::class);
+Route::resource('admin/property', PropertyController::class);
+Route::resource('admin/categories', CategoryController::class);
+Route::resource('admin/subcategories', SubCategoryController::class);
+//MetaData Routes
+Route::resource('metadata', MetadataController::class);
+Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
-   Route::resource('services', ServiceController::class);
+Route::resource('services', ServiceController::class);
 
-   Route::resource('favicons', FaviconController::class);
+Route::resource('favicons', FaviconController::class);
 
-   //AboutUs route
-   Route::resource('aboutus', AboutUsController::class);
+//AboutUs route
+Route::resource('aboutus', AboutUsController::class);
 
-   //WhyUs route
-   Route::resource('whyus', WhyusController::class);
-   Route::resource('property', PropertyController::class);
+//WhyUs route
+Route::resource('whyus', WhyusController::class);
 
-   //Sitesetting route
-   Route::resource('sitesettings', SiteSettingController::class);
 
-   //Sociallinks route
-   Route::resource('social-links', SocialLinkController::class);
 
-   
+
+Route::resource('property', PropertyController::class);
+
+//Sitesetting route
+Route::resource('sitesettings', SiteSettingController::class);
+
+//Sociallinks route
+Route::resource('social-links', SocialLinkController::class);
+
+
 
 
 // Frontend Routes
@@ -181,7 +169,7 @@ Route::get('/about', [SingleController::class, 'render_about'])->name('about');
 Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
 Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
 Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
-Route::get('/singleproperties/{id}', [SingleController::class,'render_singleProperties'])->name('singleproperties');
+Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {
@@ -189,4 +177,5 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
     Route::post('/update/info', [App\Http\Controllers\ProfilesController::class, 'updateInfo'])->name('update.info');
     Route::post('/update/password', [App\Http\Controllers\ProfilesController::class, 'updatePassword'])->name('update.password');
 });
+
 

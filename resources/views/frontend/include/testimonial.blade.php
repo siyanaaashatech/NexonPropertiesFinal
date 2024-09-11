@@ -28,20 +28,20 @@
 
               </p>
               <div class="d-flex  pt-2">
-              {{--
+            
               @php
-              $images = json_decode($testimonials->image, true); // Decode the JSON array into a PHP array
+              $images = json_decode($testimonial->image, true); // Decode the JSON array into a PHP array
               @endphp
               @if (!empty($images))
               @foreach ($images as $image)
               <img class="" data-src="holder.js/200x250?theme=thumb"
                 src="{{ asset('storage/testimonials/' . basename($image)) }}" alt="Blog image"
-                style="height:10vh; width:80px ;border-radius:8px;">
+                style="height:14vh; width:130px ;border-radius:8px;">
               @endforeach
               @else
               <p>No images available</p>
               @endif
-              --}}
+              
               <div class="mx-4">
                 <div class="md-text media-md-text ">{{$testimonial->title}}</div>
                 <div class="sm-text">{{$testimonial->title}}</div>

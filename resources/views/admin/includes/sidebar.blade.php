@@ -158,6 +158,42 @@
                             </div>
                         </a>
                     </li>
+                    <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/team*') ? 'active' : '' }}"
+                                href="{{ route('admin.team.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">Team</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/faqs*') ? 'active' : '' }}"
+                                href="{{ route('admin.faqs.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">FAQS</span>
+                                </div>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <!-- Top-level link for AboutUs -->
+                            <a class="nav-link {{ Request::is('admin/about_descriptions*') ? 'active' : '' }}"
+                                href="{{ route('admin.about_descriptions.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-text ps-1">company description</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
                 
 
             <li class="nav-item">
