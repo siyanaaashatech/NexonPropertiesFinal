@@ -141,39 +141,38 @@
                     </div>
 
                 </div>
-
             </div>
             <div class="col-md-12 py-3">
                 <div class="row">
-                    @foreach ($services as $service)
-                        <div class="col-md-4 my-2">
+                    @foreach ($properties as $property)
+                        <a class="col-md-4 my-2" href="{{route('singleproperties',['id'=>$property->id])}}">
                             <div class="card">
                                 <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
                                 <div class="sell_rent_button d-flex justify-content-between ">
-                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$service->subtittle}}</div>
+                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->subtittle}}</div>
                                     <div class="status d-flex justify-content-between">
-                                        <div class="btn-buttonxs  btn-buttonxsgreen mx-1">{{$service->subtittle}}</div>
-                                        <div class="btn-buttonxs btn-buttonxsgreen">{{$service->subtittle}}</div>
+                                        <div class="btn-buttonxs  btn-buttonxsgreen mx-1">{{$property->subtittle}}</div>
+                                        <div class="btn-buttonxs btn-buttonxsgreen">{{$property->subtittle}}</div>
 
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="md-text">{{ $service-> title}}</h5>
+                                    <h5 class="md-text">{{ $property-> title}}</h5>
                                     <div class=" d-flex gap-3 flex-wrap ">
-                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span> {{ $service-> titwle}}</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span>{{ $service-> titwle}}</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $service-> titwle}}</span>{{ $service-> titwle}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $property-> title}}</span> {{ $property-> title}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $property-> title}}</span>{{ $property-> title}}</h2>
+                                        <h2 class="sm-text"><span class="mx-1">{{ $property-> titlee}}</span>{{ $property-> title}}</h2>
                                     </div>
                                     <div class="price-person ">
                                         <div class="d-flex justify-content-between align-content-center">
-                                            <div class=" sm-text"> <span class="md-text">{{ $service-> titwle}}  /</span>{{ $service-> titwle}} </div>
+                                            <div class=" sm-text"> <span class="md-text">{{ $property-> title}}  /</span>{{ $property-> title}} </div>
                                             <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
                                                 class="feature-smallimg feature-smallimgdup">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+</a>
 
                        
 

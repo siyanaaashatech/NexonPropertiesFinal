@@ -6,10 +6,23 @@
 <section class="singlepage pt-4">
   <div class="container">
     <div class="row">
+
+
+
       <div class="col-md-8">
         <div class="row d-flex flex- col ">
           <div class="col-md-12 mb-3">
-            <img src="{{asset('image/house1.png')}}" alt="" srcset="" class="imagecontroller imagecontrollermd">
+            @php
+        $images = json_decode($blogs->image, true); // Decode the JSON array into a PHP array
+      @endphp
+            @if (!empty($images))
+        @foreach ($images as $image)
+      <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}"
+        alt="Blog image">
+    @endforeach
+      @else
+    <p>No images available</p>
+  @endif
             <div class=" d-flex gap-3 py-3">
               <div class="d-flex ">
                 <i class="fa-solid fa-person customiconssmall pt-1 mx-1"></i>
@@ -23,70 +36,55 @@
                 <i class="fa-solid fa-building customiconssmall pt-1 mx-1"></i>
                 <h2 class="sm-text">type</h2>
               </div>
-
             </div>
-            <h5 class="md-text">Better SEO Blog Titles</h5>
-            <p class="sm-text py-1">make all the difference when it comes to a potential reader clicking on your
-              headline over the one right below (or above) your article in Google search rankings. Your blog post title
-              is crucial when it comes to nailing SEO best practices and giving your blog content a realistic chance of
-              ranking well in organic search engine rankings.
+            <h5 class="md-text"> {{$blogs->title}} </h5>
+            <p class="sm-text py-1">{{$blogs->description}}
             </p>
           </div>
 
         </div>
 
-
       </div>
+
+
       <div class="col-md-4 sidebar  ">
         <div class="paddingbox ">
           <h2 class="md-text1">Recent post</h2>
           <ul class="customui">
-            <li class="py-1"><a href="" class="md-text"> <i
-                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
-                When should I open your gift?</a></li>
-            <li class="py-1"><a href="" class="md-text"> <i
-                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
-                Are you supporting England,</a></li>
-            <li class="py-1"><a href="" class="md-text"> <i
-                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
-                When should I open your gift?</a></li>
-            <li class="py-1"><a href="" class="md-text"> <i
-                  class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
-                Are you supporting England, </a></li>
 
+            @foreach ($relatedPosts as $blog)
+        <li class="py-1"><a href="" class="md-text"> <i
+            class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
+          {{$blog->title}}
+          </a></li>
+
+      @endforeach
           </ul>
 
         </div>
         <div class="paddingbox nobackground">
           <h2 class="md-text">feature list</h2>
           <div class="featurelist-body">
-            <div class="featurelist-content d-flex py-1">
-              <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-                src="{{asset('image/bighouse.png')}}" />
-              <div class="featurlist-description mx-3">
-                <h3 class="sm-text">luxury house in greenville</h3>
+            @foreach ($services as $service)
+              <a class="featurelist-content d-flex py-1" href="{{route('singleproperties', ['id' => $service->id])}}">
+                @php
+            $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
+        @endphp
+                @if (!empty($images))
+          @foreach ($images as $image)
+        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb"
+        src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
+      @endforeach
+        @else
+      <p>No images available</p>
+    @endif
+                <div class="featurlist-description mx-3">
+                <h3 class="sm-text">{{$service->title}}</h3>
                 <p class="sm-text highlight"> $130000</p>
+                </div>
+              </a>
 
-              </div>
-            </div>
-            <div class="featurelist-content d-flex  py-1">
-              <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-                src="{{asset('image/bighouse.png')}}" />
-              <div class="featurlist-description mx-3">
-                <h3 class="sm-text">luxury house in greenville</h3>
-                <p class="sm-text highlight"> $1900000</p>
-
-              </div>
-            </div>
-            <div class="featurelist-content d-flex  py-1">
-              <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-                src="{{asset('image/bighouse.png')}}" />
-              <div class="featurlist-description mx-3">
-                <h3 class="sm-text">luxury house in greenville</h3>
-                <p class="sm-text highlight"> $130000</p>
-
-              </div>
-            </div>
+      @endforeach
 
 
           </div>

@@ -27,7 +27,8 @@
 }
 
 body {
-    background: #f0eeee5a !important;
+    /* background: #f0eeee5a !important; */
+    /* background-color: var(--freegreen); */
 }
 
 a {
@@ -688,7 +689,7 @@ a {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(200, 198, 198, 0.344);
     text-align: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
     height: 38.5vh;
@@ -714,7 +715,6 @@ a {
     transform: translateY(14%);
     opacity: 1;
 }
-
 
 
 
@@ -797,9 +797,10 @@ a {
 
 .sidebar {
     background: var(--off-white);
-    max-height: 120vh !important;
+    min-height: 100vh !important;
     background: white;
     border-radius: var(--border-radius);
+    margin-bottom: 1rem;
 }
 
 .paddingbox {
@@ -835,13 +836,15 @@ a {
     margin: 0.6rem 0;
 }
 
-.card:hover {
-    box-shadow: rgba(0, 0, 0, 0.178) 0px 4px 12px;
-}
+
 
 .card {
     position: relative;
     cursor:pointer;
+}
+
+.card:hover {
+    box-shadow: rgba(0, 0, 0, 0.178) 0px 4px 12px;
 }
 
 .sell_rent_button {
@@ -1417,11 +1420,11 @@ a {
     -webkit-transform: translateY(0);
     transform: translateY(0);
   }
-  .cardslider1 .owl-theme.custom-carousel .owl-dots {
+  /* .cardslider1 .owl-theme.custom-carousel .owl-dots {
     margin-top: -20px;
     position: relative;
     z-index: 5;
-  }
+  } */
   /* Responsive Design */
   @media (min-width: 992px) and (max-width: 1199px) {
     .cardslider1.item {
@@ -1486,3 +1489,32 @@ a {
       -webkit-transform: translateY(calc(100% - 42px));
     }
   }
+
+
+
+/* advantage */
+
+
+
+
+
+  .advantage .custom-carousel{
+    position: relative;
+  }
+.advantage .item-image{
+  position: absolute;
+  height: 40vh;
+  width:100%;
+  object-fit: cover;
+
+}
+
+
+.advantage .items-desc{
+  position: absolute;
+  z-index: 50;
+  bottom: 5rem;
+  background-color: black;
+
+
+}

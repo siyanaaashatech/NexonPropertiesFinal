@@ -40,4 +40,9 @@ class Metadata extends Model
     {
         return $this->hasMany(Blog::class);
     }
+
+    public function whyUs()
+    {
+        return $this->hasMany(whyUs::class);
+    }
 }

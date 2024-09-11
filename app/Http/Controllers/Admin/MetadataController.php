@@ -43,10 +43,10 @@ class MetadataController extends Controller
     $metadata = Metadata::findOrFail($id);
 
     $request->validate([
-        'meta_title' => 'required|string|max:255',
-        'meta_description' => 'required|string',
+        'meta_title' => 'required|string|max:60',
+        'meta_description' => 'required|string|max:160',
         'meta_keywords' => 'required|string',
-        'slug' => 'required|string|max:255|unique:metadata,slug,' . $metadata->id, 
+        'slug' => 'required|string|max:140|unique:metadata,slug,' . $metadata->id, 
     ]);
 
     $metadata->update($request->all());

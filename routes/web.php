@@ -31,22 +31,23 @@ use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\WhyusController;
 use App\Http\Controllers\Auth\VerificationController;
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('frontend.welcome');
-})->name('/');
+// Route::get('/', function () {
+//     return view('frontend.welcome');
+// })->name('/');
 
-Route::get("/properties",function(){
-    return view("frontend.properties");
+// Route::get("/properties",function(){
+//     return view("frontend.properties");
 
-})->name("properties");
-Route::get("/blog",function(){
-    return view("frontend.blog");
+// })->name("properties");
+// Route::get("/blog",function(){
+//     return view("frontend.blog");
 
-})->name("blog");
+// })->name("blog");
 
 
 Route::get("/member",function(){
@@ -66,15 +67,12 @@ Route::get("/service", function(){
     return view("service");
 });
 Route::get("services", function () { return view('frontend.include.blog.php');});
-Route::get("services",function(){ return view("frontend.include.advantage.php");});
+Route::get("whyuss",function(){ return view("frontend.include.advantage.php");});
+Route::get("aboutuss",function(){return view("frontend.include.about.blade.php");});
 Route::get("services",function(){ return view("frontend.include.indexbanner.php");});
-
-Route::get("services",function(){return view("frontend.include.about.blade.php");});
-
-Route::get("services",function(){return view("frontend.testimonial.blade.php");});
+Route::get("testimonials",function(){return view("frontend.testimonial.blade.php");});
 Route::get("service", function(){ return view ("frontend.include.project.blade.php");});
 
-Route::get("service", function(){ return view ("frontend.include.project.blade.php");});
 
 
 Route::get('/hello', function () {
@@ -100,7 +98,11 @@ Route::post('/email/resend', 'Auth\VerificationController@resend')
 Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
+    // Route::resource('services', ServiceController::class);
     Route::resource('services', ServiceController::class);
+    // Update your route definition to accept PUT requests
+Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
+
     Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
 
@@ -152,14 +154,16 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
    Route::resource('metadata', MetadataController::class);
    Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
-//    Route::resource('services', ServiceController::class);
-
-
+   Route::resource('services', ServiceController::class);
 
    Route::resource('favicons', FaviconController::class);
 
    //AboutUs route
    Route::resource('aboutus', AboutUsController::class);
+
+   //WhyUs route
+   Route::resource('whyus', WhyusController::class);
+   Route::resource('property', PropertyController::class);
 
    //Sitesetting route
    Route::resource('sitesettings', SiteSettingController::class);
@@ -168,27 +172,16 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
    Route::resource('social-links', SocialLinkController::class);
 
    
-Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
+
+
+// Frontend Routes
 Route::view("/member", "frontend.member")->name('member');
 Route::view("/contact", "frontend.contact")->name('contact');
 Route::get('/about', [SingleController::class, 'render_about'])->name('about');
 Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
-Route::get('/singleblogpost', [SingleController::class, 'render_singleblogpost'])->name('singleblogpost');
-Route::view("/singleproperties", "frontend.singleproperties")->name('singleproperties');
-
-
-// Routes for History
-// Route::get('/application-history/', [HistoriesController::class, 'application_index'])->name('application-history');
-// Route::get('/system-history/', [HistoriesController::class, 'system_index'])->name('system-history');
-
-// Frontend Routes
-Route::view("/properties", "frontend.properties")->name('properties');
-Route::view("/blog", "frontend.blog")->name('blog');
-Route::view("/member", "frontend.member")->name('member');
-Route::view("/contact", "frontend.contact")->name('contact');
-Route::view("/about", "frontend.about")->name('about');
-Route::view("/singleproperties", "frontend.singleproperties")->name('singleproperties');
-Route::get('/services', [SingleController::class, 'render_service'])->name('properties');
+Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
+Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
+Route::get('/singleproperties/{id}', [SingleController::class,'render_singleProperties'])->name('singleproperties');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {
@@ -196,11 +189,4 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
     Route::post('/update/info', [App\Http\Controllers\ProfilesController::class, 'updateInfo'])->name('update.info');
     Route::post('/update/password', [App\Http\Controllers\ProfilesController::class, 'updatePassword'])->name('update.password');
 });
-Route::prefix('services')->name('services.')->group(function () {
-    Route::get('/', [ServiceController::class, 'index'])->name('index');
-    Route::get('create', [ServiceController::class, 'create'])->name('create');
-    Route::post('store', [ServiceController::class, 'store'])->name('store');
-    Route::get('edit/{id}', [ServiceController::class, 'edit'])->name('edit');
-    Route::post('update', [ServiceController::class, 'update'])->name('update');
-    Route::get('delete/{id}', [ServiceController::class, 'destroy'])->name('destroy');
-});
+

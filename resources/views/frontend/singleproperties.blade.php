@@ -6,22 +6,57 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-8 py-2 m-0 p-0">
-                        <img src="{{ asset('image/bighouse.png') }}" alt="" class="imagecontroller">
+
+
+                        @php
+                            $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
+                            $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                         @endphp
+
+                        <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller rounded ">
+
+
+
+
+
+
                     </div>
                     <!-- Property Images -->
                     <div class="col-md-4">
                         <div class="row">
-                            <div class="col-md-12 p-0 m-0">
-                                <div class="propertype-subimage">
-                                    <img src="{{asset('image/bighouse.png')}}" alt="Beautiful house"
-                                        class="img-fluid rounded"/>
-                                </div>
+                            
+                            <div class="col-md-12 p-0 m-0 p-1">
+
+
+
+                                @php
+                                    $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
+                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                                 @endphp
+
+                                <img src="{{ $mainImage }}" alt="Property Image"
+                                    class="property-image  property-imageheight rounded">
+
                             </div>
-                            <div class="col-md-12 p-0 m-0">
-                                <div class="propertype-subimage ">
-                                    <img src="{{asset('image/bighouse.png')}}" alt="Spacious home"
-                                        class="img-fluid rounded"/>
-                                </div>
+                            <div class="col-md-12 p-0 m-0 p-1">
+                                @php
+                                    $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
+                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                                 @endphp
+
+                                <img src="{{ $mainImage }}" alt="Property Image"
+                                    class="property-image  property-imageheight rounded">
+
+                            </div>
+                            <div class="col-md-12 p-0 m-0 p-1">
+                                @php
+                                    $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
+                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                                 @endphp
+
+                                <img src="{{ $mainImage }}" alt="Property Image"
+                                    class="property-image  property-imageheight rounded">
+
                             </div>
                         </div>
                     </div>
@@ -31,7 +66,7 @@
                         <div class="btn-buttonxs  btn-buttonxsgreen mx-1">For Sell</div>
                         <div class="btn-buttonxs btn-buttonxsgreen">Active</div>
                     </div>
-                    <h3 class="md-text">Modern Office For Rent</h3>
+                    <h3 class="md-text">{{$properties->title}}</h3>
                     <h4 class="sm-text"><i class="fa-solid fa-location-dot"></i> <span>kathmandu ,nepal</span></h4>
                 </div>
                 <div class="col-md-12">
@@ -69,28 +104,14 @@
                             <div class="description-body">
                                 <h3 class="md-text greenhighlight">description</h3>
                                 <p class="sm-text">
-                                    Just steps away from QM2 express bus to Manhattan and local buses; only minutes from
-                                    the LIRR.
-                                    Walking
-                                    distance to the Bay Terrace Shopping Center, Baybridge Commons Shopping Center, pool
-                                    clubs, movie
-                                    theaters and tennis courts. 1.5 blocks away from elementary school PS 169 and Bell
-                                    Academy middle
-                                    school in the award-winning District 25. Don’t miss this opportunity!
+                                    {{$properties->description}}
                                 </p>
 
                             </div>
                             <div class="description-body">
                                 <h3 class="md-text greenhighlight">more information if any</h3>
                                 <p class="sm-text">
-                                    Just steps away from QM2 express bus to Manhattan and local buses; only minutes from
-                                    the LIRR.
-                                    Walking
-                                    distance to the Bay Terrace Shopping Center, Baybridge Commons Shopping Center, pool
-                                    clubs, movie
-                                    theaters and tennis courts. 1.5 blocks away from elementary school PS 169 and Bell
-                                    Academy middle
-                                    school in the award-winning District 25. Don’t miss this opportunity!
+                                    {{$properties->description}}
                                 </p>
                             </div>
 
@@ -109,31 +130,27 @@
                             <div class="paddingbox nobackground description-body">
                                 <h2 class="md-text">feature list</h2>
                                 <div class="featurelist-body">
-                                    <div class="featurelist-content d-flex py-1">
-                                        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-                                            src="{{asset('image/bighouse.png')}}" />
-                                        <div class="featurlist-description mx-3">
-                                            <h3 class="sm-text">luxury house in greenville</h3>
-                                            <p class="sm-text highlight"> $130000</p>
-                                        </div>
-                                    </div>
-                                    <div class="featurelist-content d-flex  py-1">
-                                        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-                                            src="{{asset('image/bighouse.png')}}" />
-                                        <div class="featurlist-description mx-3">
-                                            <h3 class="sm-text">luxury house in greenville</h3>
-                                            <p class="sm-text highlight"> $1900000</p>
+                                    @foreach ($relatedService as $service)
+                                                                            <a class="featurelist-content d-flex py-1"
+                                                                                href="{{route('singleproperties', ['id' => $service->id])}}">
+                                                                                @php
+                                                                                    $images = json_decode($service->image, true); // Decode the JSON array into a PHP array
+                                                                                @endphp
+                                                                                @if (!empty($images))
+                                                                                    @foreach ($images as $image)
+                                                                                        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb"
+                                                                                            src="{{ asset('storage/services/' . basename($image)) }}" alt="Blog image">
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <p>No images available</p>
+                                                                                @endif
+                                                                                <div class="featurlist-description mx-3">
+                                                                                    <h3 class="sm-text">{{$service->title}}</h3>
+                                                                                    <p class="sm-text highlight"> $130000</p>
+                                                                                </div>
+                                                                            </a>
+                                    @endforeach
 
-                                        </div>
-                                    </div>
-                                    <div class="featurelist-content d-flex  py-1">
-                                        <img class="feature-smallimg" data-src="holder.js/200x250?theme=thumb" alt=""
-                                            src="{{asset('image/bighouse.png')}}" />
-                                        <div class="featurlist-description mx-3">
-                                            <h3 class="sm-text">luxury house in greenville</h3>
-                                            <p class="sm-text highlight"> $130000</p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
