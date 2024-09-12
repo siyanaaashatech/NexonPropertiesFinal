@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Property;
+use App\Models\Category;
+
 use App\Models\Blog;
 use App\Models\Testimonial;
 use App\Models\Team;
@@ -44,10 +46,12 @@ class SingleController extends Controller
     public function render_singleProperties($id)
     {
         // Fetch the property by ID
+
+        $categories = Category::latest()->get();
         $properties = Property::where('id', $id)->firstOrFail();
         $relatedProperties = Property::where('id', '!=', $properties->id)->get();
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-        return view('frontend.singleproperties', compact('properties', 'relatedProperties', 'otherImages'));
+        return view('frontend.singleproperties', compact('categories','properties', 'relatedProperties', 'otherImages'));
     }
     
 

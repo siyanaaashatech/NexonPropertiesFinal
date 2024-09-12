@@ -169,6 +169,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
+   Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.searching');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {
