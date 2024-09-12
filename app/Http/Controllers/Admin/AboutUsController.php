@@ -19,7 +19,7 @@ class AboutUsController extends Controller
     {
         $aboutUs = AboutUs::with('metadata')->latest()->get();
         $summernoteContent = new SummernoteContent();
-        return view('admin.aboutus.index', compact('aboutUs'));
+        return view('admin.aboutus.index', compact('aboutUs','summernoteContent'));
     }
 
     /**
@@ -29,7 +29,7 @@ class AboutUsController extends Controller
     {
         $summernoteContent = new SummernoteContent();
         $metadata = Metadata::all();
-        return view('admin.aboutus.create', compact('metadata'));
+        return view('admin.aboutus.create', compact('metadata','summernoteContent'));
     }
 
     /**
@@ -37,63 +37,68 @@ class AboutUsController extends Controller
      */
     
      public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'subtitle' => 'required|string|max:255',
-        'description' => 'required|string',
-        'keywords' => 'nullable|string',
-        'croppedImage' => 'required|json',
-        'cropData' => 'required|json',
-        'status' => 'required|boolean',
-    ]);
-
-    $croppedImages = json_decode($request->input('croppedImage'), true);
-    $cropData = json_decode($request->input('cropData'), true);
-
-    $images = [];
-
-    foreach ($croppedImages as $index => $base64Image) {
-        $image = explode(',', $base64Image);
-        $imageData = base64_decode($image[1]);
-
-        $imageName = time() . '-' . Str::uuid() . '.webp';
-        $destinationPath = storage_path('app/public/aboutus');
-
-        if (!File::exists($destinationPath)) {
-            File::makeDirectory($destinationPath, 0755, true, true);
-        }
-
-        $savedPath = $destinationPath . '/' . $imageName;
-        file_put_contents($savedPath, $imageData);
-
-        $relativeImagePath = 'storage/aboutus/' . $imageName;
-        $images[] = $relativeImagePath;
-    }
-
-    // Handle metadata
-    $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
-    $metadata = Metadata::create([
-        'meta_title' => $request->title,
-        'meta_description' => $request->description,
-        'meta_keywords' => json_encode($metaKeywordsArray),
-        'slug' => Str::slug($request->title),
-    ]);
-
-    AboutUs::create([
-        'title' => $request->title,
-        'subtitle' => $request->subtitle,
-        'description' => $request->description,
-        'keywords' => $request->keywords,
-        'image' => json_encode($images),
-        'status' => $request->status,
-        'metadata_id' => $metadata->id,
-    ]);
-
-    session()->flash('success', 'AboutUs created successfully.');
-
-    return redirect()->route('aboutus.index');
-}
+     {
+         $request->validate([
+             'title' => 'required|string|max:255',
+             'subtitle' => 'required|string|max:255',
+             'description' => 'required|string',
+             'keywords' => 'nullable|string',
+             'croppedImage' => 'required|json',
+             'cropData' => 'required|json',
+             'status' => 'required|boolean',
+         ]);
+     
+         $croppedImages = json_decode($request->input('croppedImage'), true);
+         $cropData = json_decode($request->input('cropData'), true);
+     
+         $images = [];
+     
+         foreach ($croppedImages as $index => $base64Image) {
+             $image = explode(',', $base64Image);
+             $imageData = base64_decode($image[1]);
+     
+             $imageName = time() . '-' . Str::uuid() . '.webp';
+             $destinationPath = storage_path('app/public/aboutus');
+     
+             if (!File::exists($destinationPath)) {
+                 File::makeDirectory($destinationPath, 0755, true, true);
+             }
+     
+             $savedPath = $destinationPath . '/' . $imageName;
+             file_put_contents($savedPath, $imageData);
+     
+             $relativeImagePath = 'storage/aboutus/' . $imageName;
+             $images[] = $relativeImagePath;
+         }
+     
+         // Preprocess the description
+         $summernoteContent = new SummernoteContent(); 
+         $processedDescription = $summernoteContent->processContent($request->input('description'));
+     
+         // Handle metadata
+         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
+         $metadata = Metadata::create([
+             'meta_title' => $request->title,
+             'meta_description' => $processedDescription, // Use processed description
+             'meta_keywords' => json_encode($metaKeywordsArray),
+             'slug' => Str::slug($request->title),
+         ]);
+     
+         AboutUs::create([
+             'title' => $request->title,
+             'subtitle' => $request->subtitle,
+             'description' => $processedDescription, // Use processed description
+             'keywords' => $request->keywords,
+             'image' => json_encode($images),
+             'status' => $request->status,
+             'metadata_id' => $metadata->id,
+         ]);
+     
+         session()->flash('success', 'AboutUs created successfully.');
+     
+         return redirect()->route('aboutus.index');
+     }
+     
     
 
     /**
@@ -156,6 +161,10 @@ class AboutUsController extends Controller
         $images[] = $relativeImagePath;
     }
 
+    // Preprocess the description
+    $summernoteContent = new SummernoteContent(); // Assuming this is your service for processing content
+    $processedDescription = $summernoteContent->processContent($request->input('description'));
+
     // Update or create metadata record
     $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
     $aboutUs->metadata()->updateOrCreate([], [
@@ -170,7 +179,7 @@ class AboutUsController extends Controller
     $aboutUs->update([
         'title' => $request->title,
         'subtitle' => $request->subtitle,
-        'description' => $request->description,
+        'description' => $processedDescription,
         'keywords' => $request->keywords,
         'image' => json_encode($images),
         'status' => $request->status,

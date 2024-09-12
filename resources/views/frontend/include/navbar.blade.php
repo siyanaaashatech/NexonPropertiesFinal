@@ -7,22 +7,14 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Introduction</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{{route('properties')}}">Rent</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{{route('properties')}}">Buy</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('about') }}">About</a>
-          </li>
-
+            @foreach($categories as $category)
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
+                </li>
+            @endforeach
         </ul>
-
-      </div>
+    </div>
+    
       <div class="button-collection  flex-column ">
         <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</a>
         <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton ">login</a>

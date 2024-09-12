@@ -49,7 +49,7 @@
 
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control summernote" rows="5" required>{{ old('description', $aboutUs->description) }}</textarea>
+                            <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description', $aboutUs->description) }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">

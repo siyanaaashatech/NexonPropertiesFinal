@@ -36,12 +36,12 @@
               <i class="fa-solid fa-building customiconssmall pt-1 mx-1"></i>
               <h2 class="sm-text">type</h2>
               </div>
-
             </div>
             <h5 class="md-text">{{$blog->title}}</h5>
             <p class="sm-text py-1"> {!! Str::limit(strip_tags($blog->description), 200, '...') !!}</p>
             <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttonyellow">Read more</a>
             </div>
+            
       @endforeach
         </div>
       </div>

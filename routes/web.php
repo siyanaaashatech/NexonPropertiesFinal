@@ -49,6 +49,7 @@ Route::get('/hello', function () {
     return view('frontend.singleproperties');
 })->name('hello');
 Route::get('/', [FrontViewController::class, 'index'])->name('index');
+Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
 
 
 Auth::routes(['verify' => true]);
