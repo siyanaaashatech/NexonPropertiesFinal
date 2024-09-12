@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\Admin\FaviconController;
-use App\Http\Controllers\Admin\SummernoteController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
@@ -64,14 +63,9 @@ Route::post('/email/resend', 'Auth\VerificationController@resend')
      ->name('verification.verify');
  
 
-Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
+    Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
-    // Route::resource('services', ServiceController::class);
-    // Update your route definition to accept PUT requests
-    Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
-
-    Route::resource('favicon', FaviconController::class);
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
 
 
@@ -107,59 +101,61 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
         Route::post('update', [PermissionsController::class, 'update'])->name('update');
         Route::get('delete/{id}', [PermissionsController::class, 'destroy'])->name('destroy');
     });
-    Route::resource('team', TeamController::class);
-    Route::resource('faqs', FAQController::class);
-    Route::resource('about_descriptions', AboutDescriptionController::class);
-    // Blog Routes
-    Route::resource('blogs', BlogController::class);
-    Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
+        Route::resource('team', TeamController::class);
+        Route::resource('faqs', FAQController::class);
+        Route::resource('about_descriptions', AboutDescriptionController::class);
+
+
+        // Blog Routes
+        Route::resource('blogs', BlogController::class);
+        Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
 });
 
-   // Testimonial Routes 
-   Route::resource('admin/testimonials', TestimonialController::class);
 
-   
+   //Property, Category, Subcategories Routes
+
    Route::resource('admin/property', PropertyController::class);
    Route::resource('admin/categories', CategoryController::class);
    Route::resource('admin/subcategories', SubCategoryController::class);
+   Route::get('/subcategories/{categoryId}', [PropertyController::class, 'getSubcategories'])->name('subcategories');
+
+
+   //Testimonial Routes 
+   Route::resource('admin/testimonials', TestimonialController::class);
 
    //MetaData Routes
    Route::resource('metadata', MetadataController::class);
    Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
-Route::resource('services', ServiceController::class);
-   Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
-
-Route::resource('favicons', FaviconController::class);
-
-//AboutUs route
-Route::resource('aboutus', AboutUsController::class);
-
-//WhyUs route
-Route::resource('whyus', WhyusController::class);
+   //Service Routes
+   Route::resource('services', ServiceController::class);
 
 
+   Route::resource('favicons', FaviconController::class);
 
+   //AboutUs Route
+   Route::resource('aboutus', AboutUsController::class);
 
-Route::resource('property', PropertyController::class);
+   //WhyUs Route
+   Route::resource('whyus', WhyusController::class);
 
-//Sitesetting route
-Route::resource('sitesettings', SiteSettingController::class);
+   //Property Route
+   Route::resource('property', PropertyController::class);
 
-//Sociallinks route
-Route::resource('social-links', SocialLinkController::class);
+   //Sitesetting route
+   Route::resource('sitesettings', SiteSettingController::class);
 
-   //Summernote Route
-   Route::post('/summernote/image/upload', [SummernoteController::class, 'uploadImage'])->name('summernote.image.upload');
+   //Sociallinks route
+   Route::resource('social-links', SocialLinkController::class);
 
-// Frontend Routes
-Route::view("/member", "frontend.member")->name('member');
-Route::view("/contact", "frontend.contact")->name('contact');
-Route::get('/about', [SingleController::class, 'render_about'])->name('about');
-Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
-Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
-Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
-Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
+   // Frontend Routes
+   Route::view("/member", "frontend.member")->name('member');
+   Route::view("/contact", "frontend.contact")->name('contact');
+   Route::get('/about', [SingleController::class, 'render_about'])->name('about');
+   Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
+   Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
+   Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
+   Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {

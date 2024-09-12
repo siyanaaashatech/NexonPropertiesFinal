@@ -47,9 +47,11 @@ class SingleController extends Controller
 
     public function render_singleProperties($id)
     {
+        // Fetch the property by ID
         $properties = Property::where('id', $id)->firstOrFail();
         $relatedProperties = Property::where('id', '!=', $properties->id)->get();
-        return view('frontend.singleproperties', compact('properties','relatedProperties'));
+        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+        return view('frontend.singleproperties', compact('properties', 'relatedProperties', 'otherImages'));
     }
 
     
