@@ -22,58 +22,34 @@
 </section>
 
 
-
-
-
-
-
 <!-- detailsection -->
 <section class="container-fluid contact">
   <div class="container">
     <div class="row d-flex  justify-content-center align-items-center gap-2">
     @foreach ($siteSettings as $siteSetting)
-
-
-
-
-
-
       <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
         <i class="fa-solid fa-location-dot customiconslarge"></i>
         <div class="information">
           <h2 class="md-text1">office address</h2>
           <h2 class="extra-small-text1">{{$siteSetting ->office_address}}</h2>
-
         </div>
-
       </div>
       <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
         <i class="fa-solid fa-envelope  customiconslarge"></i>
         <div class="information">
         <h2 class="md-text1">office Contact</h2>
         <h2 class="extra-small-text1">{{$siteSetting ->office_contact}}</h2>
-   
-
         </div>
-
       </div>
       <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-
         <i class="fa-solid fa-phone customiconslarge"></i>
         <div class="information">
         <h2 class="md-text1">office email </h2>
         <h2 class="extra-small-text1">{{$siteSetting ->office_email}}</h2>
-          
-
         </div>
-
       </div>
     </div>
-
-
     @endforeach
-
-
   </div>
 </section>
 
@@ -100,14 +76,13 @@
         </div>
         <button class="btn-buttonyellow btn-buttonyellowlarge mt-1 ">Send</button>
       </div>
-
     </div>
     <div class="col-md-6">
       <img src="{{asset("image/map.png")}}" alt="" class="contactbodyimage">
     </div>
   </div>
-
 </section>
+
 
 @endsection
 

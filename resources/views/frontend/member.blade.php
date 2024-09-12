@@ -25,9 +25,7 @@
           <button class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1 mx-1 coloryellow">register</button>
           <button class="btn-buttonyellow reg-logbutton mx-1 ">login</button>
         </div>
-      
     </div>
-
   </section>
 
 <!-- navbar -->
@@ -45,7 +43,6 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
-
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -55,7 +52,6 @@
                 <li>
                   <a class="dropdown-item" href="#">Why Us</a>
                 </li>
-
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
@@ -64,14 +60,12 @@
                 </li>
               </ul>
             </li>
-
             <li class="nav-item">
               <a class="nav-link" href="#">Contact</a>
             </li>
           </ul>
           <button class="btn-buttonyellow ">login/register</button>
         </div>
-
       </nav>
     </div>
   </section>

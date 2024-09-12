@@ -13,7 +13,6 @@
         $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
         $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
          @endphp
-
               <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller">
               <div class="flex bannercontent">
                 <div class="bannercontentinner">
@@ -21,32 +20,30 @@
                   More than <span class="highlight">1000+</span> houses available for sale & rent in the country
                 </p>
                 <h4 class="lg-text1 mb-4">{{$property->title}}</h4>
-
                 <div class="d-flex justify-content-center mb-1">
                   <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
                   <div class="btn-buttongreen mx-2">Rent</div>
                 </div>
                 <form action="{{ route('frontend.searching') }}" method="GET">
-                <div
+                  <div
                   class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
                   <div class="d-flex flex-wrap gap-md-3 showform">
-                  <input type="text" class="input bannerinput" name="list_type" placeholder="List type"
+                    <input type="text" class="input bannerinput" name="list_type" placeholder="List type"
                     value="{{ request('list_type') }}">
-                  <input type="text" class="input bannerinput" name="property_type" placeholder="Property type"
+                    <input type="text" class="input bannerinput" name="property_type" placeholder="Property type"
                     value="{{ request('property_type') }}">
-                  <input type="text" class="input bannerinput" name="location" placeholder="Location"
+                    <input type="text" class="input bannerinput" name="location" placeholder="Location"
                     value="{{ request('location') }}">
-                  <input type="number" class="input bannerinput" name="min_price" placeholder="Min Price"
+                    <input type="number" class="input bannerinput" name="min_price" placeholder="Min Price"
                     value="{{ request('min_price') }}">
-                  <input type="number" class="input bannerinput" name="max_price" placeholder="Max Price"
+                    <input type="number" class="input bannerinput" name="max_price" placeholder="Max Price"
                     value="{{ request('max_price') }}">
-                  <input type="number" class="input bannerinput" name="bedroom" placeholder="Bedroom"
+                    <input type="number" class="input bannerinput" name="bedroom" placeholder="Bedroom"
                     value="{{ request('bedroom') }}">
-                  <button type="submit" class="btn-buttongreen bannerinput">Search</button>
+                    <button type="submit" class="btn-buttongreen bannerinput">Search</button>
                   </div>
-                </div>
+                  </div>
                 </form>
-               
                 </div>
               </div>
               </div>
@@ -54,9 +51,7 @@
             </div>
       @endforeach
         </div>
-
       </div>
-
     </div>
     <div class="col-md-3">
       <div class="row">
@@ -91,14 +86,11 @@
               </p>
               </div>
             </div>
-
             </a>
-
       @endforeach
         </div>
       </div>
     </div>
-
   </div>
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -108,44 +100,42 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </a>
-
 </section>
 
 
 
 <section class="container-fluid py-4 propertiesfinder propertiesfinderhome">
   <div class="container">
- 
     <h1 class="lg-text1 text-center searchhide" onclick="funsearchingon()">
       <i class="fa-brands fa-searchengin customicons"></i> Find your properties
     </h1>
-     <form action="{{ route('frontend.searching') }}" method="GET">
-    <div class="justify-content-center align-items-center gap-1 flex-wrap hiddenform hiddenformhome" id="hiddenform">
-      <div class="d-flex flex-column col-md-3">
-        <label class="sm-text1 des-text">Listing type</label>
-        <input type="text" class="input bannerinput" name="list_type" value="{{ request('list_type') }}">
-      </div>
-      <div class="d-flex flex-column col-md-3">
-        <label class="sm-text1 des-text">Properties type</label>
-        <input type="text" class="input bannerinput" name="property_type" value="{{ request('property_type') }}">
-      </div>
-      <div class="d-flex flex-column col-md-3">
-        <label class="sm-text1 des-text">Location</label>
-        <input type="text" class="input bannerinput" name="location" value="{{ request('location') }}">
-      </div>
-      <div class="d-flex flex-column col-md-3">
-        <label class="md-text1 des-text">Price</label>
-        <input type="number" class="input bannerinput" name="min_price" placeholder="Min Price"
-          value="{{ request('min_price') }}">
-        <input type="number" class="input bannerinput" name="max_price" placeholder="Max Price"
-          value="{{ request('max_price') }}">
-      </div>
-      <div class="d-flex flex-column col-md-3">
-        <label class="sm-text1 des-text">Search</label>
-        <button class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
-      </div>
+    <form action="{{ route('frontend.searching') }}" method="GET">
+      <div class="justify-content-center align-items-center gap-1 flex-wrap hiddenform hiddenformhome" id="hiddenform">
+        <div class="d-flex flex-column col-md-3">
+          <label class="sm-text1 des-text">Listing type</label>
+          <input type="text" class="input bannerinput" name="list_type" value="{{ request('list_type') }}">
+        </div>
+        <div class="d-flex flex-column col-md-3">
+          <label class="sm-text1 des-text">Properties type</label>
+          <input type="text" class="input bannerinput" name="property_type" value="{{ request('property_type') }}">
+        </div>
+        <div class="d-flex flex-column col-md-3">
+          <label class="sm-text1 des-text">Location</label>
+          <input type="text" class="input bannerinput" name="location" value="{{ request('location') }}">
+        </div>
+        <div class="d-flex flex-column col-md-3">
+          <label class="md-text1 des-text">Price</label>
+          <input type="number" class="input bannerinput" name="min_price" placeholder="Min Price"
+            value="{{ request('min_price') }}">
+          <input type="number" class="input bannerinput" name="max_price" placeholder="Max Price"
+            value="{{ request('max_price') }}">
+        </div>
+        <div class="d-flex flex-column col-md-3">
+          <label class="sm-text1 des-text">Search</label>
+          <button class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
+        </div>
 
-    </div>
+      </div>
     </form>
   </div>
 </section>

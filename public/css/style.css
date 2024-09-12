@@ -4,11 +4,11 @@
     /* --green: ; */
     /* --green: #0e593c; */
     /* --green:#049a5cc5; */
-    --green:#05b069;
+    --green: #05b069;
     /* --offgreen: ; */
     /* --offgreen: #049a5b; */
     /* --offgreen:#05b069; */
-    --offgreen:#049a5cc5;
+    --offgreen: #049a5cc5;
     --freegreen: #49a48137;
     /* --yellow: #FFBF00; */
     --yellow: #ffbf00;
@@ -20,7 +20,7 @@
     --border-color: rgba(0, 0, 0, 0.23);
     --font-inter: "inter";
     --font-weight: 600;
-    --button-radius:8px;
+    --button-radius: 8px;
     --border-radius: 8px;
 }
 
@@ -68,12 +68,9 @@ a {
 .btn-buttonygreenlarge {
     width: 100%;
 }
-.btn-buttonyellowlg{
+.btn-buttonyellowlg {
     width: 250px !important;
-
 }
-
-
 
 .btn-buttonyellow {
     background: var(--off-yellow);
@@ -141,11 +138,30 @@ a {
     justify-content: center;
     width: 74px;
     height: 60px;
+    margin-right: 2px;
 }
 
 .next-button:hover {
     background: var(--yellow);
 }
+.nextli:not(.next-button) {
+    background:rgb(202, 201, 201);
+    border-radius: var(--button-radius);
+    font-family: var(--font-inter);
+    font-weight: 500;
+    color: rgb(242, 241, 241);
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid rgb(202, 201, 201);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 74px;
+    height: 60px;
+    margin-right: 2px;
+}
+
+
 
 .btn-buttonxs {
     display: flex;
@@ -371,16 +387,14 @@ a {
     width: 10%;
 }
 
-.nav-item {
+.navsection .nav-item {
     font-size: 20px !important;
     font-weight: 500;
     text-transform: capitalize;
 }
-
-.nav-item a {
+.navsection .nav-item a {
     color: white !important;
 }
-
 .navsection {
     background: var(--green) !important;
 }
@@ -785,11 +799,9 @@ a {
 .imagecontrollerheight {
     height: 78vh;
 }
-.imagecontrollerheightextra{
+.imagecontrollerheightextra {
     height: 64vh;
 }
-
-
 
 @media (max-width: 600px) {
     .imagecontrollermd {
@@ -867,18 +879,15 @@ a {
 }
 
 .nextui {
-    border: 1px solid black;
+
     list-style: none;
-    border-radius: 8px;
-    width: 396px !important;
 }
 
-.nextui .nextli {
+.nextui .nextli a{
     /* background: #000; */
     padding: 12px 26px;
-    color: black;
+    color: rgb(255, 255, 255) !important;
 }
-
 @media (max-width: 600px) {
     .nextui .nextli {
         /* background: #000; */
@@ -1207,7 +1216,6 @@ a {
     left: 0;
 }
 
-
 .propertiesfinderhome {
     bottom: 0rem;
 }
@@ -1225,9 +1233,8 @@ a {
 .hiddenform {
     display: flex;
 }
-.searchingform{
+.searchingform {
     display: flex;
-
 }
 
 .propertiesfinderhome {

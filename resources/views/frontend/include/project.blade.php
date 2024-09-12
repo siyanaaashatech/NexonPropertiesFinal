@@ -105,19 +105,13 @@
       @endphp
         <a class="col-md-6 pb-1" href="{{route('singleproperties', ["id" => $firstPropeties->id])}}">
         <div class="property-container rounded">
-      
+
           @php
         $mainImages = !empty($firstPropeties->main_image) ? json_decode($firstPropeties->main_image, true) : [];
         $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
        @endphp
-          <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller imagecontrollerheight imagecontrollermd "
-          data-src="holder.js/200x250?theme=thumb" />
-
-
-
-
-
-
+          <img src="{{ $mainImage }}" alt="Property Image"
+          class="imagecontroller imagecontrollerheight imagecontrollermd " data-src="holder.js/200x250?theme=thumb" />
           <div class="property-details">
           <div class="md-text1 p-0 m-0"> {{ $firstPropeties->title}}</div>
           <div class="md-text highlight text-center p-0 m-0">{{ $firstPropeties->state}}-{{ $firstPropeties->street}}
@@ -138,20 +132,9 @@
           </div>
           <p class="extra-small-text1 px-2">{{ $firstPropeties->description}} </p>
           </div>
-
     @endif
         </div>
       </a>
-
-
-
-
-
-
-
-
-
-
       <div class="col-md-6 sub-image-content">
         <div class="row ">
           @foreach ($properties as $property)
@@ -187,7 +170,6 @@
               </div>
             </a>
             </div>
-
       @endforeach
         </div>
       </div>

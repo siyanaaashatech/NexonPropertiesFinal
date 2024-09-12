@@ -32,12 +32,12 @@
         <!-- First Column -->
         <div class="col-md-6">
             @if(count($aboutDescriptions) > 0)
-                @php
-                    // Get the first item and remove it from the collection
-                    $firstDescription = $aboutDescriptions->shift();
-                @endphp
-                <h1 class="md-text text-center">{{ $firstDescription->title }}</h1>
-                <p class="extra-small-text text-center">{{ $firstDescription->description }}</p>
+                        @php
+                            // Get the first item and remove it from the collection
+                            $firstDescription = $aboutDescriptions->shift();
+                        @endphp
+                        <h1 class="md-text text-center">{{ $firstDescription->title }}</h1>
+                        <p class="extra-small-text text-center">{{ $firstDescription->description }}</p>
             @endif
         </div>
 
@@ -45,18 +45,18 @@
         <div class="col-12">
             <div class="d-flex flex-wrap  justify-content-center">
                 @foreach($aboutDescriptions->take(4) as $description)
-                <div class="col-md-5 m-1">
-                    <div class="flex-item">
-                        <h1 class="md-text text-center">{{ $description->title }}</h1>
-                        <p class="extra-small-text text-center">{{ $description->description }}</p>
-                    </div>
+                    <div class="col-md-5 m-1">
+                        <div class="flex-item">
+                            <h1 class="md-text text-center">{{ $description->title }}</h1>
+                            <p class="extra-small-text text-center">{{ $description->description }}</p>
+                        </div>
                     </div>
                 @endforeach
             </div>
         </div>
 
         <!-- Remaining Data -->
-        @if($aboutDescriptions->count()> 5)
+        @if($aboutDescriptions->count() > 5)
             <div class="col-md-12 text-center mt-3">
                 <p>Additional items available.</p>
             </div>
@@ -91,7 +91,6 @@
                 <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
                     the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
             </div>
-
             <div class="col-lg-12 extradiv">
                 <div class="row d-flex justify-content-center align-items-center gap-1 teamimagerow">
 
@@ -105,13 +104,10 @@
                                 <h1 class="xs-text">{{$team->name}}</h1>
                                 <h1 class="extra-small-text1">{{$team->position}}</h1>
                             </div>
-
                         </div>
                     @endforeach
                 </div>
-
             </div>
-
         </div>
     </div>
 </section>
@@ -138,7 +134,6 @@
                                 <h1 class="xs-text">{{$team->name}}</h1>
                                 <h1 class="extra-small-text1">{{$team->position}}</h1>
                             </div>
-
                         </div>
                     @endforeach
                 </div>
@@ -171,7 +166,6 @@
                                 <p class="sm-text mb-auto ">
                                     {{ strlen($testimonial->review) > 400 ? substr($testimonial->review, 0, 400) . "..." : $testimonial->review}}
                                 </p>
-
                                 <div class="d-flex  pt-2">
                                     <img class=" " data-src="holder.js/200x250?theme=thumb" alt=""
                                         src="{{asset('image/blog.png')}}"

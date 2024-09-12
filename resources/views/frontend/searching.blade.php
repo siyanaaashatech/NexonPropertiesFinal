@@ -3,7 +3,7 @@
 
 
 <style>
-    .sortedproperties{
+    .sortedproperties {
         background: whitesmoke;
 
     }
@@ -33,25 +33,24 @@
 </section>
 
 <section class="container-fluid">
-<div class="container pt-4">
-    <div class="row sortedproperties rounded p-4  justify-content-between">
-    <h5 class="sm-text col-md-10"> 10 listings found
-    </h5>
-    <h5 class="sm-text col-md-2 d-flex gap-2" onclick="searchingon()" >
-    <i class="fa-solid fa-magnifying-glass pt-1"></i>
-    <span class="">property search</span>
-    <i class="fa-solid fa-box"></i>
-    </h5>
+    <div class="container pt-4">
+        <div class="row sortedproperties rounded p-4  justify-content-between">
+            <h5 class="sm-text col-md-10"> 10 listings found
+            </h5>
+            <h5 class="sm-text col-md-2 d-flex gap-2" onclick="searchingon()">
+                <i class="fa-solid fa-magnifying-glass pt-1"></i>
+                <span class="">property search</span>
+                <i class="fa-solid fa-box"></i>
+            </h5>
+        </div>
     </div>
-</div>
 </section>
 
 <style>
-    .propertiesfindersearching{
+    .propertiesfindersearching {
         display: none;
-        
-    }
 
+    }
 </style>
 
 <section class="container-fluid  ">
@@ -179,7 +178,8 @@
                                                 <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                                 <div class="sell_rent_button d-flex justify-content-between ">
                                                     <div class="btn-buttonxs btn-buttonxsyellow">{{$property->status}}</div>
-                                                    <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}</div>
+                                                    <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}
+                                                    </div>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="md-text">{{ $property->title}}</h5>
@@ -242,8 +242,6 @@
         hiddenformdata.style.display = "block";
 
     }
-
-
     function changepage(element) {
         const pageli = document.getElementsByClassName("nextli");
 
