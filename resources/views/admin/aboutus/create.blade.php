@@ -53,9 +53,10 @@
                             <input type="text" name="subtitle" id="subtitle" class="form-control" value="{{ old('subtitle') }}" required>
                         </div>
 
+
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
+                            <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description') }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
@@ -121,25 +122,35 @@
     </div>
 </div>
 
-<!-- Include jQuery, Bootstrap JS, and Summernote JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
     // Initialize Summernote for description
-    $(document).ready(function() {
-        $('#description').summernote({
-            height: 200, 
-            tabsize: 2,
-            callbacks: {
-                onInit: function() {
-                    console.log('Summernote is initialized!');
+    
+            $(document).ready(function() {
+                $('.summernote').summernote();
+            });
+
+            function previewImage(event) {
+                var input = event.target;
+                var preview = document.getElementById('imagePreview');
+
+                while (preview.firstChild) {
+                    preview.removeChild(preview.firstChild); // Clear previous preview
+                }
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        var img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '200px'; // Adjust the maximum width as needed
+                        img.style.maxHeight = '200px'; // Adjust the maximum height as needed
+                        preview.appendChild(img);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
                 }
             }
-        });
-    });
 
     let cropper;
     let imagesToProcess = [];

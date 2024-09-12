@@ -49,7 +49,7 @@
 
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control summernote" rows="5" required>{{ old('description', $aboutUs->description) }}</textarea>
+                            <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description', $aboutUs->description) }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
@@ -106,8 +106,8 @@
 </div>
 
 
-<!-- Modal for Image Cropping -->
-<div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+  <!-- Modal for Image Cropping -->
+  <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -115,7 +115,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="max-width: 150%; max-height: 150%; display: none;">
+                <img id="image-preview" style="width: 100%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -124,6 +124,8 @@
         </div>
     </div>
 </div>
+</div>
+
 
 <!-- Include Cropper.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>

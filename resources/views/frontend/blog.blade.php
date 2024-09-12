@@ -39,6 +39,7 @@
             <p class="sm-text py-1"> {!! Str::limit(strip_tags($blog->description), 200, '...') !!}</p>
             <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttonyellow">Read more</a>
             </div>
+            
       @endforeach
         </div>
       </div>

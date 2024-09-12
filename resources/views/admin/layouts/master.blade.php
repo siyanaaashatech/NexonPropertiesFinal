@@ -38,7 +38,6 @@
 
                         mainInput.nepaliDatePicker();
 
-
                     };
                 </script>
             </div>
@@ -48,13 +47,14 @@
     @push('styles')
     <!-- Summernote CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
 @endpush
 
 @push('scripts')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Summernote JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+     
 @endpush
     <!-- ===============================================-->
     <!--    End of Main Content-->
@@ -237,6 +237,21 @@
 
     <script>
         // Add any custom JavaScript for theme switching and navbar style changing here
+    </script>
+
+    <!-- Summernote JS -->
+  
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300,
+                minHeight: null,
+                maxHeight: null,
+                focus: true
+            });
+        });
     </script>
 </body>
 </html>

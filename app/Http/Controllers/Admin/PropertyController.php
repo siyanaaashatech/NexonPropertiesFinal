@@ -72,10 +72,11 @@ class PropertyController extends Controller
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images');
 
         // Create a metadata entry
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => $request->suburb,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title),
         ]);
 
@@ -167,10 +168,11 @@ class PropertyController extends Controller
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images', $property->other_images);
 
         // Update metadata record
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $property->metadata()->updateOrCreate([], [
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => $request->suburb,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title),
         ]);
 
@@ -309,4 +311,10 @@ private function handleUploadedImages($uploadedFiles, $folder, $existingImages =
             }
         }
     }
+
+    public function getSubcategories($categoryId)
+{
+    $subcategories = SubCategory::where('category_id', $categoryId)->get();
+    return response()->json($subcategories);
+}
 }   

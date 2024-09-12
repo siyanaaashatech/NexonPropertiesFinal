@@ -70,10 +70,11 @@ class ServiceController extends Controller
         }
 
         // Create a new metadata entry
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => $request->keywords,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title)
         ]);
 
@@ -112,86 +113,79 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        // Validate the request inputs
         $request->validate([
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'keywords' => 'nullable|string',
             'image' => 'sometimes|array',
-            'image.*' => 'required|string', // Validate each image as a base64 string
+            'image.*' => 'required|string',
             'status' => 'required|boolean',
-            'cropData' => 'sometimes|string', // Optional crop data for images
+            'cropData' => 'sometimes|string',
         ]);
-    
-        // Initialize the crop data and existing images
-        $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
+
         $images = !empty($service->image) ? json_decode($service->image, true) : [];
-    
-        // Handle new images if provided
+
         if ($request->has('image')) {
             foreach ($request->input('image') as $base64Image) {
-                // Ensure the base64 string is valid and has a valid header
                 if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
                     $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
                     $decodedImage = base64_decode($base64Image);
-    
+
                     if ($decodedImage === false) {
-                        continue; // Skip invalid base64 string
+                        continue;
                     }
-    
-                    $imageType = strtolower($type[1]); // jpeg, png, gif, etc.
+
+                    $imageType = strtolower($type[1]);
                     if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                        continue; // Skip unsupported image types
+                        continue;
                     }
-    
-                    // Create image resource from decoded data
+
                     $imageResource = imagecreatefromstring($decodedImage);
                     if ($imageResource !== false) {
-                        $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
+                        $imageName = time() . '-' . Str::uuid() . '.webp';
                         $destinationPath = storage_path('app/public/services');
-    
-                        // Ensure the directory exists
+
                         if (!File::exists($destinationPath)) {
                             File::makeDirectory($destinationPath, 0755, true, true);
                         }
-    
-                        // Save the image and destroy the resource
+
                         $savedPath = $destinationPath . '/' . $imageName;
                         imagewebp($imageResource, $savedPath);
                         imagedestroy($imageResource);
-    
-                        // Store the relative path
+
                         $relativeImagePath = 'storage/services/' . $imageName;
                         $images[] = $relativeImagePath;
                     }
                 }
             }
         }
-    
-        // Update metadata record
-        $service->metadata()->updateOrCreate([], [
-            'meta_title' => $request->title,
-            'meta_description' => $request->description,
-            'meta_keywords' => $request->keywords,
-            'slug' => Str::slug($request->title)
-        ]);
-    
-        // Update service record
+        
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
+        $metadata = Metadata::updateOrCreate(
+            ['id' => $service->metadata_id],
+            [
+                'meta_title' => $request->title,
+                'meta_description' => $request->description,
+                'meta_keywords' => json_encode($metaKeywordsArray),
+                'slug' => Str::slug($request->title)
+            ]
+        );
+
         $service->update([
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'description' => $request->description,
             'keywords' => $request->keywords,
-            'image' => json_encode($images), // Store updated images as JSON
+            'image' => json_encode($images),
             'status' => $request->status,
+            'metadata_id' => $metadata->id,
         ]);
-    
-        // Flash success message and redirect
-        session()->flash('success', 'Service updated successfully.');
-    
-        return redirect()->route('admin.services.index');
+
+        return redirect()->route('services.index')
+                         ->with('success', 'Service updated successfully.');
     }
+
     
 
     /**

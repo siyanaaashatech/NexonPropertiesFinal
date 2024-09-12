@@ -7,7 +7,7 @@ use App\Models\AboutUs;
 use App\Models\Testimonial;
 use App\Models\Whyus;
 use App\Models\Property;
-use App\Models\PropertySearch;
+use App\Models\Category;
 
 
 class FrontViewController extends Controller
@@ -20,18 +20,34 @@ class FrontViewController extends Controller
         $whyuss=Whyus::latest()->get();
         $aboutuss =AboutUs::latest()->get()->take(1);
         $properties=Property::latest()->get()->take(6);
+        $categories = Category::all(); 
+
 
 
         return view('frontend.welcome',  compact([
-            'services','blogs','aboutuss','testimonials','whyuss','properties',
+            'services','blogs','aboutuss','testimonials','whyuss','properties','categories'
         ]));
     }
-    // public function search(Request $request)
-    // {
-    //     $query = Property::query();
-    //     $properties = PropertySearch::applyFilters($query, $request->all())->get();
-    //     return view('frontend.searching', compact('properties'));
-    // }
+
+    public function properties(Request $request, $categoryId = null)
+    {
+        $categoryId = $request->query('categoryId');
+    
+        // Fetch all categories for the navbar
+        $categories = Category::all();
+    
+        // Fetch properties, optionally filtered by category
+        $propertiesQuery = Property::query();
+    
+        if ($categoryId) {
+            $propertiesQuery->where('category_id', $categoryId);
+        }
+    
+        $properties = $propertiesQuery->paginate(12); 
+    
+        return view('frontend.properties', compact('properties', 'categories'));
+    }
+
     // public function singlePost($slug)
     // {
     //     $blogs = Blog::where('slug', $slug)->firstOrFail();

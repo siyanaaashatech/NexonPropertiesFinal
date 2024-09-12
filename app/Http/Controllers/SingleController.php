@@ -67,4 +67,3 @@ class SingleController extends Controller
     
 }
 
-

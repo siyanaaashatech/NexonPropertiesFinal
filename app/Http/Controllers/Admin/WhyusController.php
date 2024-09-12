@@ -73,10 +73,11 @@ class WhyusController extends Controller
         // $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
 
         // Create a new metadata entry
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => $request->keywords,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title)
         ]);
 
@@ -165,10 +166,11 @@ class WhyusController extends Controller
         }
     
         // Update metadata record
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $WhyUs->metadata()->updateOrCreate([], [
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => $request->keywords,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title)
         ]);
     
