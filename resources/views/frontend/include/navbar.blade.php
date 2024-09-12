@@ -3,7 +3,7 @@
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
-      <a class="navbar-brand" href="#"> <img src="{{ asset('image/logo.png') }}" alt="Logo"  class="logoimg"/></a>
+      <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo"  class="logoimg"/></a>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">

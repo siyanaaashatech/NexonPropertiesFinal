@@ -70,7 +70,7 @@ class PropertyController extends Controller
         $images = $this->handleBase64Images($request->input('main_image'), 'property');
 
         // Handle other images upload
-        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images');
+        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
 
         // Create a metadata entry
         $metadata = Metadata::create([
@@ -126,6 +126,7 @@ class PropertyController extends Controller
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $metadata = Metadata::all();
+       
         return view('admin.property.update', compact('property', 'categories', 'subCategories', 'metadata'));
     }
 
@@ -165,7 +166,7 @@ class PropertyController extends Controller
         $images = $this->handleBase64Images($request->input('main_image'), 'property', $property->main_image);
 
         // Handle other images update
-        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images', $property->other_images);
+        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images', $property->other_images);
 
         // Update metadata record
         $property->metadata()->updateOrCreate([], [

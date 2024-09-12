@@ -7,19 +7,19 @@
 @include("frontend.include.indexbanner")
 
 {{--advantage --}}
-@include("frontend.include.advantage")
+<!-- @include("frontend.include.advantage") -->
 
 {{--description about company --}}
-@include("frontend.include.about")
+<!-- @include("frontend.include.about") -->
 
 {{--our properties --}}
-@include("frontend.include.project")
+<!-- @include("frontend.include.project") -->
 
-{{-- <!-- testimonial --> --}}
-@include("frontend.include.testimonial")
+<!-- {{-- testimonial --}}
+@include("frontend.include.testimonial") -->
 
 {{--blog --}}
-@include("frontend.include.blog")
+<!-- @include("frontend.include.blog") -->
 
 @endsection
 

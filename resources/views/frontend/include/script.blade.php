@@ -20,7 +20,27 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-bs-target');
+                const targetElement = document.querySelector(targetId);
 
+                // Toggle 'show' class to manage visibility
+                if (targetElement.classList.contains('show')) {
+                    targetElement.classList.remove('show');
+                } else {
+                    // Remove 'show' class from all other elements
+                    document.querySelectorAll('.accordion-collapse').forEach(collapse => {
+                        collapse.classList.remove('show');
+                    });
+                    targetElement.classList.add('show');
+                }
+            });
+        });
+    });
+</script>
 
 
 

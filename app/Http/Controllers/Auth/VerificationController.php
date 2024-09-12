@@ -41,25 +41,25 @@ class VerificationController extends Controller
     public function verify(Request $request)
     {
         $user = $request->user();
-
+    
         // Check if the user has already verified their email
         if ($user->hasVerifiedEmail()) {
             Log::info('User attempted to verify an already verified email: ', ['user' => $user->email]);
             return redirect($this->redirectPath())->with('message', 'Your email is already verified.');
         }
-
-        // Mark the email as verified and trigger the Verified event
+    
+        // Attempt to mark email as verified
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
             Log::info('User email verified successfully: ', ['user' => $user->email]);
-
-            // Optionally trigger any additional actions after verification
-            // Example: You can notify the user or log additional details
+    
+            return redirect($this->redirectPath())->with('verified', true)->with('message', 'Your email has been successfully verified.');
+        } else {
+            Log::error('Email verification failed for user: ', ['user' => $user->email]);
+            return redirect()->route('verification.notice')->with('error', 'Your email could not be verified. Something went wrong.');
         }
-
-        // Redirect with a verified message
-        return redirect($this->redirectPath())->with('verified', true)->with('message', 'Your email has been successfully verified.');
     }
+    
 
     /**
      * Resend the email verification notification.

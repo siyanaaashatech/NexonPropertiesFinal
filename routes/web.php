@@ -122,7 +122,7 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
 
 
 
-Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
+Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth','ensure.email.is.verified'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('services', ServiceController::class);

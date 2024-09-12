@@ -33,7 +33,8 @@
                     @endif
 
                     <!-- Property edit form -->
-                    <form action="{{ route('admin.property.update', $property->id) }}" method="POST" enctype="multipart/form-data" id="propertyForm">
+                    <form action="{{ route('admin.property.update', $property->id) }}" method="POST"
+                        enctype="multipart/form-data" id="propertyForm">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="cropData" id="cropData">
@@ -42,13 +43,15 @@
                         <!-- Title -->
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
-                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $property->title) }}" required>
+                            <input type="text" name="title" id="title" class="form-control"
+                                value="{{ old('title', $property->title) }}" required>
                         </div>
 
                         <!-- Description -->
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description', $property->description) }}</textarea>
+                            <textarea name="description" id="description" class="form-control" rows="5"
+                                required>{{ old('description', $property->description) }}</textarea>
                         </div>
 
                         <!-- Category -->
@@ -80,37 +83,43 @@
                         <!-- Street -->
                         <div class="form-group mb-3">
                             <label for="street">Street</label>
-                            <input type="text" name="street" id="street" class="form-control" value="{{ old('street', $property->street) }}" required>
+                            <input type="text" name="street" id="street" class="form-control"
+                                value="{{ old('street', $property->street) }}" required>
                         </div>
 
                         <!-- Suburb -->
                         <div class="form-group mb-3">
                             <label for="suburb">Suburb</label>
-                            <input type="text" name="suburb" id="suburb" class="form-control" value="{{ old('suburb', $property->suburb) }}" required>
+                            <input type="text" name="suburb" id="suburb" class="form-control"
+                                value="{{ old('suburb', $property->suburb) }}" required>
                         </div>
 
                         <!-- State -->
                         <div class="form-group mb-3">
                             <label for="state">State</label>
-                            <input type="text" name="state" id="state" class="form-control" value="{{ old('state', $property->state) }}" required>
+                            <input type="text" name="state" id="state" class="form-control"
+                                value="{{ old('state', $property->state) }}" required>
                         </div>
 
                         <!-- Post Code -->
                         <div class="form-group mb-3">
                             <label for="post_code">Post Code</label>
-                            <input type="number" name="post_code" id="post_code" min="0" minlength="4" class="form-control" value="{{ old('post_code', $property->post_code) }}" required>
+                            <input type="number" name="post_code" id="post_code" min="0" minlength="4"
+                                class="form-control" value="{{ old('post_code', $property->post_code) }}" required>
                         </div>
 
                         <!-- Country -->
                         <div class="form-group mb-3">
                             <label for="country">Country</label>
-                            <input type="text" name="country" id="country" class="form-control" value="{{ old('country', $property->country) }}">
+                            <input type="text" name="country" id="country" class="form-control"
+                                value="{{ old('country', $property->country) }}">
                         </div>
 
                         <!-- Price -->
                         <div class="form-group mb-3">
                             <label for="price">Price</label>
-                            <input type="number" name="price" id="price" class="form-control" min="0" value="{{ old('price', $property->price) }}" required>
+                            <input type="number" name="price" id="price" class="form-control" min="0"
+                                value="{{ old('price', $property->price) }}" required>
                         </div>
 
                         <!-- Price Type -->
@@ -126,30 +135,35 @@
                         <!-- Bedrooms -->
                         <div class="form-group mb-3">
                             <label for="bedrooms">Bedrooms</label>
-                            <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0" value="{{ old('bedrooms', $property->bedrooms) }}" required>
+                            <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0"
+                                value="{{ old('bedrooms', $property->bedrooms) }}" required>
                         </div>
 
                         <!-- Bathrooms -->
                         <div class="form-group mb-3">
                             <label for="bathrooms">Bathrooms</label>
-                            <input type="number" name="bathrooms" id="bathrooms" class="form-control" min="0" value="{{ old('bathrooms', $property->bathrooms) }}" required>
+                            <input type="number" name="bathrooms" id="bathrooms" class="form-control" min="0"
+                                value="{{ old('bathrooms', $property->bathrooms) }}" required>
                         </div>
 
                         <!-- Area -->
                         <div class="form-group mb-3">
                             <label for="area">Area (sq ft)</label>
-                            <input type="number" name="area" id="area" class="form-control" min="0" value="{{ old('area', $property->area) }}" required>
+                            <input type="number" name="area" id="area" class="form-control" min="0"
+                                value="{{ old('area', $property->area) }}" required>
                         </div>
 
                         <!-- Status -->
                         <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
-                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status', $property->status) == '1' ? 'checked' : '' }} required>
+                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input"
+                                    {{ old('status', $property->status) == '1' ? 'checked' : '' }} required>
                                 <label for="status_active" class="form-check-label">Active</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status', $property->status) == '0' ? 'checked' : '' }} required>
+                                <input type="radio" name="status" id="status_inactive" value="0"
+                                    class="form-check-input" {{ old('status', $property->status) == '0' ? 'checked' : '' }} required>
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
@@ -167,7 +181,8 @@
                         <!-- Rental Period -->
                         <div class="form-group mb-3">
                             <label for="rental_period">Rental Period</label>
-                            <input type="text" name="rental_period" id="rental_period" class="form-control" value="{{ old('rental_period', $property->rental_period) }}">
+                            <input type="text" name="rental_period" id="rental_period" class="form-control"
+                                value="{{ old('rental_period', $property->rental_period) }}">
                         </div>
 
                         <!-- Main Image Upload -->
@@ -175,6 +190,13 @@
                             <label for="main_image">Main Image</label>
                             <input type="file" id="main_image" class="form-control" required>
                         </div>
+                        @if(isset($previousMainImage))
+                            <div class="mt-2">
+                                <label>Previously Uploaded Main Image:</label>
+                                <img src="{{ asset('storage/' . $previousMainImage) }}" alt="Main Image"
+                                    style="max-width: 150px; max-height: 200px;">
+                            </div>
+                        @endif
 
                         <!-- Hidden input to store the base64 string of the main image -->
                         <input type="hidden" name="main_image[0]" id="main_image_base64" required>
@@ -182,7 +204,8 @@
                         <!-- Cropped Main Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Main Image Preview:</label>
-                            <img id="cropped-image-preview" style="max-width: 150px; max-height: 200px; display: block;">
+                            <img id="cropped-image-preview"
+                                style="max-width: 150px; max-height: 200px; display: block;">
                         </div>
 
                         <!-- Other Images Upload -->
@@ -200,7 +223,8 @@
                         <!-- Keywords -->
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
-                            <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords', $property->metadata->meta_keywords) }}">
+                            <input type="text" name="keywords" id="keywords" class="form-control"
+                                value="{{ old('keywords', $property->metadata->meta_keywords) }}">
                         </div>
 
                         <div class="form-group">

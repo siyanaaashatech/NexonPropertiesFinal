@@ -73,6 +73,16 @@
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <main class="main" id="top">
         <div class="container-fluid">
             <div class="row min-vh-100 flex-center g-0">
@@ -91,7 +101,7 @@
                                         <div class="z-index-1 position-relative">
                                             <a class="link-light mb-4 font-sans-serif fs-4 d-inline-block fw-bolder"
                                                 href="#">Welcome to Nexon Property</a>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
