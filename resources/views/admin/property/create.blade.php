@@ -32,8 +32,8 @@
                         </div>
                     @endif
 
-                    <!-- Property creation form -->
-                    <form action="{{ route('property.store') }}" method="POST" enctype="multipart/form-data" id="propertyForm">
+                     <!-- Property creation form -->
+                     <form action="{{ route('property.store') }}" method="POST" enctype="multipart/form-data" id="propertyForm">
                         @csrf
                         <input type="hidden" name="cropData" id="cropData">
                         <input type="hidden" name="main_image_cropped" id="croppedImage">
@@ -68,11 +68,7 @@
                             <label for="sub_category_id">Sub Category</label>
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
-                                        {{ $subCategory->title }}
-                                    </option>
-                                @endforeach
+                                <!-- Options will be populated by JavaScript -->
                             </select>
                         </div>
 
@@ -328,5 +324,37 @@
             toast.show();
         }
     });
+
+    //JavaScript for dynamic subcategory loading
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const subCategories = @json($subCategories); // Pass the subcategories as a JSON object
+        const categoryDropdown = document.getElementById('category_id');
+        const subCategoryDropdown = document.getElementById('sub_category_id');
+
+        function updateSubCategories(selectedCategoryId) {
+            subCategoryDropdown.innerHTML = '<option value="">Choose Sub Category</option>'; // Clear previous options
+
+            const filteredSubCategories = subCategories.filter(subCategory => subCategory.category_id == selectedCategoryId);
+
+            filteredSubCategories.forEach(subCategory => {
+                const option = document.createElement('option');
+                option.value = subCategory.id;
+                option.textContent = subCategory.title;
+                subCategoryDropdown.appendChild(option);
+            });
+        }
+
+        categoryDropdown.addEventListener('change', function() {
+            updateSubCategories(this.value);
+        });
+
+        // Initialize subcategories based on the selected category on page load
+        const initialCategoryId = categoryDropdown.value;
+        if (initialCategoryId) {
+            updateSubCategories(initialCategoryId);
+        }
+    });
+
 </script>
 @endsection

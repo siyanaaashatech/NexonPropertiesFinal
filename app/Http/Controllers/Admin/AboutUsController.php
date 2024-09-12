@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AboutUs;
 use App\Models\Metadata;
 use Illuminate\Http\Request;
+use App\Models\SummernoteContent;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,7 @@ class AboutUsController extends Controller
     public function index()
     {
         $aboutUs = AboutUs::with('metadata')->latest()->get();
+        $summernoteContent = new SummernoteContent();
         return view('admin.aboutus.index', compact('aboutUs'));
     }
 
@@ -25,6 +27,7 @@ class AboutUsController extends Controller
      */
     public function create()
     {
+        $summernoteContent = new SummernoteContent();
         $metadata = Metadata::all();
         return view('admin.aboutus.create', compact('metadata'));
     }
@@ -32,7 +35,6 @@ class AboutUsController extends Controller
     /**
      * Store a newly created AboutUs in storage.
      */
-    
     
      public function store(Request $request)
 {
@@ -69,11 +71,12 @@ class AboutUsController extends Controller
         $images[] = $relativeImagePath;
     }
 
-    // Create metadata and AboutUs entries as before
+    // Handle metadata
+    $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
     $metadata = Metadata::create([
         'meta_title' => $request->title,
         'meta_description' => $request->description,
-        'meta_keywords' => $request->keywords,
+        'meta_keywords' => json_encode($metaKeywordsArray),
         'slug' => Str::slug($request->title),
     ]);
 
@@ -153,15 +156,17 @@ class AboutUsController extends Controller
         $images[] = $relativeImagePath;
     }
 
-    // Update metadata record
+    // Update or create metadata record
+    $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
     $aboutUs->metadata()->updateOrCreate([], [
         'meta_title' => $request->title,
         'meta_description' => $request->description,
-        'meta_keywords' => $request->keywords,
+        'meta_keywords' => json_encode($metaKeywordsArray),
         'slug' => Str::slug($request->title),
     ]);
 
     // Update aboutus record
+    
     $aboutUs->update([
         'title' => $request->title,
         'subtitle' => $request->subtitle,

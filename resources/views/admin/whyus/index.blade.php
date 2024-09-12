@@ -84,7 +84,12 @@
 
                                                                     <div class="form-group mb-3">
                                                                         <label for="meta_keywords">Meta Keywords</label>
-                                                                        <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $why->metadata->meta_keywords) }}</textarea>
+                                                                        @php
+                                                                            // Decode JSON and prepare keywords for display
+                                                                            $metaKeywords = json_decode($why->metadata->meta_keywords, true);
+                                                                            $metaKeywords = is_array($metaKeywords) ? implode("\n", $metaKeywords) : $why->metadata->meta_keywords;
+                                                                        @endphp
+                                                                        <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $metaKeywords) }}</textarea>
                                                                     </div>
 
                                                                     <div class="form-group mb-3">

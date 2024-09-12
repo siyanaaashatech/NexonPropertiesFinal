@@ -51,28 +51,29 @@
                         </div>
 
                         <!-- Category -->
-                        <div class="form-group mb-3">
-                            <label for="category_id">Category</label>
-                            <select class="form-control" id="category_id" name="category_id" required>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ $property->category_id == $category->id ? 'selected' : '' }}>
-                                        {{ $category->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-group mb-3">
+                        <label for="category_id">Category</label>
+                        <select class="form-control" id="category_id" name="category_id" required>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ $property->category_id == $category->id ? 'selected' : '' }}>
+                                    {{ $category->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <!-- Sub Category -->
-                        <div class="form-group mb-3">
-                            <label for="sub_category_id">Sub Category</label>
-                            <select class="form-control" id="sub_category_id" name="sub_category_id" required>
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" {{ $property->sub_category_id == $subCategory->id ? 'selected' : '' }}>
-                                        {{ $subCategory->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <!-- Sub Category -->
+                    <div class="form-group mb-3">
+                        <label for="sub_category_id">Sub Category</label>
+                        <select class="form-control" id="sub_category_id" name="sub_category_id" required>
+                            @foreach($subCategories as $subCategory)
+                                <option value="{{ $subCategory->id }}" {{ $property->sub_category_id == $subCategory->id ? 'selected' : '' }}>
+                                    {{ $subCategory->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
 
                         <!-- Street -->
                         <div class="form-group mb-3">
@@ -311,5 +312,29 @@
             toast.show();
         }
     });
+    //For dynamic loading subcategories
+    
+    document.getElementById('category_id').addEventListener('change', function () {
+        const categoryId = this.value;
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Clear existing options
+        subCategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+
+        if (categoryId) {
+            fetch(`{{ url('/subcategories') }}/${categoryId}`)
+                .then(response => response.json())
+                .then(subcategories => {
+                    subcategories.forEach(subcategory => {
+                        const option = document.createElement('option');
+                        option.value = subcategory.id;
+                        option.textContent = subcategory.title;
+                        subCategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching subcategories:', error));
+        }
+    });
+</script>
 </script>
 @endsection

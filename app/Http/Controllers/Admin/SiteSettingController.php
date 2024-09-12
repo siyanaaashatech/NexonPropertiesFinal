@@ -106,6 +106,7 @@ class SiteSettingController extends Controller
                 'meta_keywords' => $request->input('keywords', ''), // Optionally handle keywords
                 'slug' => Str::slug($request->input('office_title'))
             ]);
+            
         } else {
             // Create new metadata if not exists
             Metadata::create([

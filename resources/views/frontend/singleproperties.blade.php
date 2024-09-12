@@ -14,10 +14,8 @@
                             $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
                             $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
                          @endphp
-
                         <img src="{{ $mainImage }}" alt="Property Image"
                             class="imagecontroller imagecontrollerheight rounded ">
-
                     </div>
                     <!-- Property Images -->
                     <div class="col-md-4">
@@ -77,7 +75,6 @@
                                 <p class="sm-text">
                                     {{$properties->description}}
                                 </p>
-
                             </div>
                             <div class="description-body">
                                 <h3 class="md-text greenhighlight">more information if any</h3>
@@ -85,7 +82,6 @@
                                     {{$properties->description}}
                                 </p>
                             </div>
-
                         </div>
                         <div class="col-md-4">
                             <div class="description-body">
@@ -104,23 +100,18 @@
                                     @foreach ($relatedProperties as $property)
                                                                         <a class="featurelist-content d-flex py-1"
                                                                             href="{{route('singleproperties', ['id' => $property->id])}}">
-
-
-
                                                                             @php
                                                                                 $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
                                                                                 $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
                                                                              @endphp
                                                                             <img src="{{ $mainImage }}" alt="Property Image" class="feature-smallimg"
                                                                                 data-src="holder.js/200x250?theme=thumb" />
-
                                                                             <div class="featurlist-description mx-3">
                                                                                 <h3 class="sm-text">{{$property->title}}</h3>
                                                                                 <p class="sm-text highlight"> {{$property->price}}</p>
                                                                             </div>
                                                                         </a>
                                     @endforeach
-
                                 </div>
                             </div>
                         </div>
