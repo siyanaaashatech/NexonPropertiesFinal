@@ -2,7 +2,7 @@
 @section("content")
 
 <!-- bannersection -->
-<section class="container-fluid">
+<section class="container-fluid otherpagebanner">
     <div class="row">
         <div class="col-md-12 p-0">
             <div class="carousel-inner mb-3">
@@ -10,7 +10,7 @@
                     <div
                         class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
                         <img src="{{ asset('image/abou1.png') }}" alt="" srcset=""
-                            class="imagecontroller imagecontrollerheight">
+                            class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
                         <div class="flex bannercontentheight">
                             <div class="bannercontentinnerheight ">
                                 <h4 class="lg-text1">About</h4>
@@ -129,14 +129,10 @@
                 <p class=" extra-small-text text-center">Utilizing her exceptional experience and knowledge of
                     the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
             </div>
-
             <div class="col-lg-12">
                 <div class="row d-flex justify-content-center align-items-center py-2">
                     @foreach ($teams as $team)
-
                         <div class="col-md-3 member-container">
-
-
                             <img class="teamimage" src="{{ asset($team->image) }}" alt="Blog image" data-src="">
                             <div class="memberdetail">
                                 <h1 class="xs-text">{{$team->name}}</h1>
@@ -145,18 +141,13 @@
 
                         </div>
                     @endforeach
-
-
-
                 </div>
-
             </div>
-
         </div>
     </div>
 </section>
-<!-- testimonial -->
 
+<!-- testimonial -->
 <section class="container-fluid teammember py-5 my-4">
     <div class="container">
         <div class="row d-flex flex-column justify-content-center align-items-center">
@@ -202,7 +193,6 @@
 
 
 <!---------------------------------------------------- faq ------------------------------------------------------------->
-
 <section class="container-fluid py-5">
     <div class="container d-flex flex-column justify-content-center align-items-center">
         <div class="col-lg-5">
@@ -240,7 +230,4 @@
         </div>
     </div>
 </section>
-
-
-
 @endsection

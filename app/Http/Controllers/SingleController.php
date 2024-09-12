@@ -7,6 +7,7 @@ use App\Models\Testimonial;
 use App\Models\Team;
 use App\Models\FAQ;
 use App\Models\AboutDescription;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 class SingleController extends Controller
 {
@@ -47,6 +48,19 @@ class SingleController extends Controller
         $relatedProperties = Property::where('id', '!=', $properties->id)->get();
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
         return view('frontend.singleproperties', compact('properties', 'relatedProperties', 'otherImages'));
+    }
+    
+
+    public function render_contact()
+    {
+        $siteSettings=SiteSetting::latest()->get();
+        return view('frontend.contact', compact('siteSettings'));
+    }
+
+    public function render_search()
+    {
+        $properties = Property::latest()->get();
+        return view('frontend.searching', compact('properties'));
     }
     
     

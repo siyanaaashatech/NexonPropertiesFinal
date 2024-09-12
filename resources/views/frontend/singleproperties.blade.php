@@ -16,7 +16,7 @@
                          @endphp
 
                         <img src="{{ $mainImage }}" alt="Property Image"
-                            class="imagecontroller imagecontrollerheight rounded ">
+                            class="imagecontroller imagecontrollerheight imagecontrollermd  rounded ">
 
                     </div>
                     <!-- Property Images -->

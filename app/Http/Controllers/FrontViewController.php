@@ -7,6 +7,7 @@ use App\Models\AboutUs;
 use App\Models\Testimonial;
 use App\Models\Whyus;
 use App\Models\Property;
+use App\Models\PropertySearch;
 
 
 class FrontViewController extends Controller
@@ -25,6 +26,12 @@ class FrontViewController extends Controller
             'services','blogs','aboutuss','testimonials','whyuss','properties',
         ]));
     }
+    // public function search(Request $request)
+    // {
+    //     $query = Property::query();
+    //     $properties = PropertySearch::applyFilters($query, $request->all())->get();
+    //     return view('frontend.searching', compact('properties'));
+    // }
     // public function singlePost($slug)
     // {
     //     $blogs = Blog::where('slug', $slug)->firstOrFail();
@@ -32,23 +39,3 @@ class FrontViewController extends Controller
     //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
     // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

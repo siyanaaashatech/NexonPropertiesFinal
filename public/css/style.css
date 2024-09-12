@@ -1,10 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 :root {
-    /* --green: #049A5B; */
-    --green: #0e593c;
-    /* --offgreen: #08D57F; */
-    --offgreen: #049a5b;
+    /* --green: ; */
+    /* --green: #0e593c; */
+    /* --green:#049a5cc5; */
+    --green:#05b069;
+    /* --offgreen: ; */
+    /* --offgreen: #049a5b; */
+    /* --offgreen:#05b069; */
+    --offgreen:#049a5cc5;
     --freegreen: #49a48137;
     /* --yellow: #FFBF00; */
     --yellow: #ffbf00;
@@ -16,7 +20,7 @@
     --border-color: rgba(0, 0, 0, 0.23);
     --font-inter: "inter";
     --font-weight: 600;
-    --button-radius: 20px;
+    --button-radius:8px;
     --border-radius: 8px;
 }
 
@@ -64,6 +68,12 @@ a {
 .btn-buttonygreenlarge {
     width: 100%;
 }
+.btn-buttonyellowlg{
+    width: 250px !important;
+
+}
+
+
 
 .btn-buttonyellow {
     background: var(--off-yellow);
@@ -671,7 +681,9 @@ a {
     display: block;
     object-fit: cover;
 }
-
+.property-imageheightbanner {
+    height: 28vh;
+}
 .property-imageheight {
     height: 25.1vh;
 }
@@ -773,6 +785,11 @@ a {
 .imagecontrollerheight {
     height: 78vh;
 }
+.imagecontrollerheightextra{
+    height: 64vh;
+}
+
+
 
 @media (max-width: 600px) {
     .imagecontrollermd {
@@ -1093,7 +1110,7 @@ a {
 .bur-menu {
     display: none;
     z-index: 1000;
-    background: var(--offgreen);
+    background: var(--green);
     height: 84vh;
     width: 25vw;
     position: absolute;
@@ -1184,6 +1201,12 @@ a {
     background: var(--offgreen);
     cursor: pointer;
 }
+.propertiesfindersearching {
+    bottom: 0rem;
+    top: 1rem;
+    left: 0;
+}
+
 
 .propertiesfinderhome {
     bottom: 0rem;
@@ -1201,6 +1224,10 @@ a {
 
 .hiddenform {
     display: flex;
+}
+.searchingform{
+    display: flex;
+
 }
 
 .propertiesfinderhome {

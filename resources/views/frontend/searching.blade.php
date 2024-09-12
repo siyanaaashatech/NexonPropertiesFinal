@@ -2,6 +2,14 @@
 @section("content")
 
 
+<style>
+    .sortedproperties{
+        background: whitesmoke;
+
+    }
+</style>
+
+
 <section class="container-fluid">
     <div class="row">
         <div class="col-md-12 p-0">
@@ -9,13 +17,13 @@
                 <div class="row d-flex">
                     <div
                         class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                        <img src="{{ asset('image/house3.png') }}" alt="" srcset=""
-                            class="imagecontroller imagecontrollerheight">
+                        <img src="{{ asset('image/abou1.png') }}" alt="" srcset=""
+                            class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
                         <div class="flex bannercontentheight">
                             <div class="bannercontentinnerheight ">
-                                <h4 class="lg-text1">properties</h4>
-                                <h5 class="md-text1">home <i class="fa-solid fa-angle-right "></i>
-                                    <span class="highlight">properties</span>
+                                <h4 class="lg-text1">searching</h4>
+                                <h5 class="md-text1"><a href="">home</a> <i class="fa-solid fa-angle-right "></i>
+                                    <span class="highlight">searching</span>
                                 </h5>
                             </div>
                         </div>
@@ -24,17 +32,31 @@
             </div>
 </section>
 
+<section class="container-fluid">
+<div class="container pt-4">
+    <div class="row sortedproperties rounded p-4  justify-content-between">
+    <h5 class="sm-text col-md-10"> 10 listings found
+    </h5>
+    <h5 class="sm-text col-md-2 d-flex gap-2" onclick="searchingon()" >
+    <i class="fa-solid fa-magnifying-glass pt-1"></i>
+    <span class="">property search</span>
+    <i class="fa-solid fa-box"></i>
+    </h5>
+    </div>
+</div>
+</section>
 
+<style>
+    .propertiesfindersearching{
+        display: none;
+        
+    }
 
+</style>
 
-{{-- form --}}
-<section class="container-fluid py-4 propertiesfinder">
-    <div class="container">
-
-        <h1 class="lg-text1 text-center searchhide" onclick="funsearchingon()">
-            <i class="fa-brands fa-searchengin customicons"></i> Find your properties
-        </h1>
-        <div class="justify-content-center align-items-center gap-1 flex-wrap hiddenform" id="hiddenform">
+<section class="container-fluid  ">
+    <div class="container propertiesfinder propertiesfindersearching py-4 rounded">
+        <div class="justify-content-center align-items-center gap-1 flex-wrap searchingform" id="hiddenform">
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Listing type</label>
                 <input type="text" class="input bannerinput">
@@ -64,6 +86,22 @@
     </div>
 </section>
 
+<script>
+    function searchingon() {
+        const searchingSection = document.querySelector('.propertiesfindersearching');
+        if (searchingSection.style.display === "none" || searchingSection.style.display === "") {
+            searchingSection.style.display = "block";
+        } else {
+            searchingSection.style.display = "none";
+        }
+    }
+</script>
+
+
+
+
+
+{{-- form --}}
 
 
 
@@ -127,20 +165,6 @@
 <section class="container-fluid multipost mb-3 pb-4">
     <div class="container">
         <div class="row ">
-            <div class="col-md-12">
-                <div class="property-container d-flex justify-content-center align-self-center gap-3 flex-wrap">
-                    <div class="btn-buttongreen"> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
-                    </div>
-                    <div class="btn-buttongreen"> <i class="fa-solid fa-house customicons customiconssmall"></i> Condos
-                    </div>
-                    <div class="btn-buttongreen "> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
-                    </div>
-                    <div class="btn-buttongreen "> <i class="fa-solid fa-house customicons customiconssmall"></i> Condos
-                    </div>
-                    <div class="btn-buttongreen "> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
-                    </div>
-                </div>
-            </div>
             <div class="col-md-12 py-3">
                 <div class="row">
                     @foreach ($properties as $property)
@@ -154,7 +178,7 @@
 
                                                 <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                                 <div class="sell_rent_button d-flex justify-content-between ">
-                                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
+                                                    <div class="btn-buttonxs btn-buttonxsyellow">{{$property->status}}</div>
                                                     <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}</div>
                                                 </div>
                                                 <div class="card-body">

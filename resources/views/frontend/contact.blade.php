@@ -7,7 +7,7 @@
       <div class="carousel-inner mb-3">
         <div class="row d-flex">
           <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-            <img src="{{ asset('image/contact.png') }}" alt="" srcset="" class="imagecontroller imagecontrollerheight">
+            <img src="{{ asset('image/contact.png') }}" alt="" srcset="" class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
             <div class="flex bannercontentheight">
               <div class="bannercontentinnerheight ">
                 <h4 class="lg-text1">Contact</h4>
@@ -23,15 +23,26 @@
 
 
 
+
+
+
+
 <!-- detailsection -->
 <section class="container-fluid contact">
   <div class="container">
     <div class="row d-flex  justify-content-center align-items-center gap-2">
+    @foreach ($siteSettings as $siteSetting)
+
+
+
+
+
+
       <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
         <i class="fa-solid fa-location-dot customiconslarge"></i>
         <div class="information">
           <h2 class="md-text1">office address</h2>
-          <h2 class="extra-small-text1">North road 435673Kth street</h2>
+          <h2 class="extra-small-text1">{{$siteSetting ->office_address}}</h2>
 
         </div>
 
@@ -39,8 +50,9 @@
       <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
         <i class="fa-solid fa-envelope  customiconslarge"></i>
         <div class="information">
-          <h2 class="md-text1">office email </h2>
-          <h2 class="extra-small-text1">Northroad@gmail.com</h2>
+        <h2 class="md-text1">office Contact</h2>
+        <h2 class="extra-small-text1">{{$siteSetting ->office_contact}}</h2>
+   
 
         </div>
 
@@ -49,13 +61,18 @@
 
         <i class="fa-solid fa-phone customiconslarge"></i>
         <div class="information">
-          <h2 class="md-text1">office Contact</h2>
-          <h2 class="extra-small-text1">977-00-3333-33</h2>
+        <h2 class="md-text1">office email </h2>
+        <h2 class="extra-small-text1">{{$siteSetting ->office_email}}</h2>
+          
 
         </div>
 
       </div>
     </div>
+
+
+    @endforeach
+
 
   </div>
 </section>

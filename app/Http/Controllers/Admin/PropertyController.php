@@ -125,7 +125,7 @@ class PropertyController extends Controller
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $metadata = Metadata::all();
-        return view('property.update', compact('property', 'categories', 'subCategories', 'metadata'));
+        return view('admin.property.update', compact('property', 'categories', 'subCategories', 'metadata'));
     }
 
     /**
@@ -216,7 +216,7 @@ class PropertyController extends Controller
 
         $property->delete();
 
-        return redirect()->route('admin.property.index')->with('success', 'Property deleted successfully.');
+        return redirect()->route('property.index')->with('success', 'Property deleted successfully.');
     }
 
     /**

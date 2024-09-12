@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\BlogController;
@@ -12,11 +13,21 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\MetadataController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\FrontViewController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\NoTransactionPurposeController;
+use App\Http\Controllers\OffenderController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TranPurposeController;
+use App\Http\Controllers\TranProofController;
+use App\Http\Controllers\TranNatureController;
+use App\Http\Controllers\HistoriesController;
+use App\Models\Blog;
+use App\Models\Testimonial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\Admin\FaviconController;
-use App\Http\Controllers\Admin\SummernoteController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
@@ -59,15 +70,18 @@ Route::get('/email/verify', 'Auth\VerificationController@show')
 Route::post('/email/resend', 'Auth\VerificationController@resend')
     ->name('verification.resend');
 
-     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-     ->middleware(['auth', 'signed'])
-     ->name('verification.verify');
- 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+
+
 
 Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
     // Route::resource('services', ServiceController::class);
+    Route::resource('services', ServiceController::class);
     // Update your route definition to accept PUT requests
     Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
 
@@ -115,20 +129,16 @@ Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(func
     Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('uploadImage');
 });
 
-   // Testimonial Routes 
-   Route::resource('admin/testimonials', TestimonialController::class);
-
-   
-   Route::resource('admin/property', PropertyController::class);
-   Route::resource('admin/categories', CategoryController::class);
-   Route::resource('admin/subcategories', SubCategoryController::class);
-
-   //MetaData Routes
-   Route::resource('metadata', MetadataController::class);
-   Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
+// Testimonial Routes 
+Route::resource('admin/testimonials', TestimonialController::class);
+Route::resource('admin/property', PropertyController::class);
+Route::resource('admin/categories', CategoryController::class);
+Route::resource('admin/subcategories', SubCategoryController::class);
+//MetaData Routes
+Route::resource('metadata', MetadataController::class);
+Route::put('/metadata/{id}', [MetadataController::class, 'update'])->name('metadata.update');
 
 Route::resource('services', ServiceController::class);
-   Route::put('/services/update', [ServiceController::class, 'update'])->name('services.update');
 
 Route::resource('favicons', FaviconController::class);
 
@@ -137,29 +147,25 @@ Route::resource('aboutus', AboutUsController::class);
 
 //WhyUs route
 Route::resource('whyus', WhyusController::class);
-
-
-
-
 Route::resource('property', PropertyController::class);
-
 //Sitesetting route
 Route::resource('sitesettings', SiteSettingController::class);
-
 //Sociallinks route
 Route::resource('social-links', SocialLinkController::class);
+Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.searching');
 
-   //Summernote Route
-   Route::post('/summernote/image/upload', [SummernoteController::class, 'uploadImage'])->name('summernote.image.upload');
+
+
 
 // Frontend Routes
 Route::view("/member", "frontend.member")->name('member');
-Route::view("/contact", "frontend.contact")->name('contact');
+Route::get("/contact", [SingleController::class ,"render_contact"])->name('contact');
 Route::get('/about', [SingleController::class, 'render_about'])->name('about');
 Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
 Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
 Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
 Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
+Route::get('/searching', [SingleController::class, 'render_search'])->name('searching');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {
