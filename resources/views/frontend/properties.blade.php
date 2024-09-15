@@ -139,41 +139,42 @@
                     </div>
                     <div class="btn-buttongreen "> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
                     </div>
-
                 </div>
             </div>
             <div class="col-md-12 py-3">
                 <div class="row">
                     @foreach ($properties as $property)
-                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
-                            <div class="card">
-                                <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                                <div class="sell_rent_button d-flex justify-content-between ">
-                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">{{$property->availability_status}}</div>
-
-
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="md-text">{{ $property->title}}</h5>
-                                    <div class=" d-flex gap-3 flex-wrap ">
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
-                                    </div>
-                                    <div class="price-person ">
-                                        <div class="d-flex justify-content-between align-content-center">
-                                            <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
-                                                    /</span>{{ $property->rental_period}} </div>
-                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                                class="feature-smallimg feature-smallimgdup">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
+                                            <div class="card">
+                                                @php
+                                                    $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+                                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                                                 @endphp
+                                                <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
+                                                <div class="sell_rent_button d-flex justify-content-between ">
+                                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
+                                                    <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="md-text">{{strlen($property->title)>28 ? substr($property->title ,0 ,28). "...":$property->title }}</h5>
+                                                    <div class=" d-flex gap-3 flex-wrap ">
+                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
+                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
+                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
+                                                    </div>
+                                                    <div class="price-person ">
+                                                        <div class="d-flex justify-content-between align-content-center">
+                                                            <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
+                                                                    /</span>{{ $property->rental_period}} </div>
+                                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
+                                                                class="feature-smallimg feature-smallimgdup">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
                     @endforeach
-
                 </div>
             </div>
         </div>
@@ -186,24 +187,32 @@
 <section class="container-fluid ">
     <div class="container">
         <div class="row  nextpage ">
-            <ul class="nextui d-flex gap-1">
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
-                        <i class="fa-solid fa-arrow-right"></i></a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">1</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">2</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">3</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
-                        <i class="fa-solid fa-arrow-left"></i></a></li>
+
+
+
+            <ul class="nextui d-flex gap-1 justify-content-center align-content-center flex-wrap">
+                <li class="nextli next-button" onclick="changepage(this)"><a href="#" class="md-text1">1</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">2</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">3</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">4</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">5</a></li>
             </ul>
+
+
+
+
+
         </div>
     </div>
 </section>
-
-
-
 @endsection
 
+<style>
 
+
+
+
+</style>
 
 
 <script>
@@ -216,17 +225,16 @@
 
     }
 
+    function changepage(clickedElement) {
+    // Remove 'next-button' class from all list items
+    const allButtons = document.querySelectorAll('.nextli');
+    allButtons.forEach(button => button.classList.remove('next-button'));
 
-    function changepage(element) {
-        const pageli = document.getElementsByClassName("nextli");
-        
-        for (let i = 0; i < pageli.length; i++) {
-            pageli[i].classList.remove("activeli");
+    // Add 'next-button' class to the clicked list item
+    clickedElement.classList.add('next-button');
+}
 
-        }
 
-        element.classList.add("activeli")
-    }
 
 
 </script>

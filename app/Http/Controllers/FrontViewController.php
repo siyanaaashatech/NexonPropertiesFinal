@@ -1,29 +1,35 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\Models\Property;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Blog;
 use App\Models\AboutUs;
 use App\Models\Testimonial;
-use Illuminate\Support\Facades\DB; 
+use App\Models\Whyus;
+use App\Models\Property;
+use App\Models\Category;
+
 
 class FrontViewController extends Controller
 {
     public function index()
     {
-        $services = Service::latest()->take(4)->get();
+        $services = Service::latest()->get()->take(4);
         $blogs = Blog::latest()->get();
-        $aboutuss = AboutUs::latest()->take(1)->get();
-        $testimonials = Testimonial::latest()->get();
-        $properties = Property::latest()->take(4)->get();
+        $testimonials =Testimonial::latest()->get();
+        $whyuss=Whyus::latest()->get();
+        $aboutuss =AboutUs::latest()->get()->take(1);
+        $properties=Property::latest()->get()->take(6);
+        $categories = Category::all(); 
+        $subcategories = SubCategory::all();
 
-        // Debugging Step: Check properties fetched in the index method
-        // dd($properties);
+        // dd($categories, $subcategories);
 
-        return view('frontend.welcome', compact('services', 'blogs', 'aboutuss', 'testimonials', 'properties'));
+
+        return view('frontend.welcome',  compact([
+            'services','blogs','aboutuss','testimonials','whyuss','properties','categories','subcategories'
+        ]));
     }
 
 

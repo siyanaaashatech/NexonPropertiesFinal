@@ -54,8 +54,8 @@
 
                 <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
                 <div class="property-details">
-                  <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-                  <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
+                  <div class="md-text1 p-0 m-0">{{ strlen($property->title)>28 ? substr($property->title,0 ,28) ."..." :$property->title }}</div>
+                  <div class="sm-text highlight text-center p-0 m-0"><i class="fa-solid fa-location-dot"></i>{{ $property->country }}-{{ $property->state }}-{{ $property->street }}</div>
                   <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                     <p class="detail-item sm-text1">
                       <span class="sm-text1">{{ $property->bedrooms }}</span><br />
@@ -72,13 +72,13 @@
                   </div>
                   <p class="extra-small-text1 px-2 text-center">
                     {{strlen($property->description) > 150 ? substr($property->description, 0, 150) . "..." :
-                    $property->description}}
+                    $property->description
                   </p>
                 </div>
               </div>
             </a>
           </div>
-
+          s
           @endforeach
         </div>
       </div>
@@ -99,37 +99,42 @@
         the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
     </div>
     <div class="row py-1 property-body">
-      <div class="col-md-6 pb-1">
+      @if(count($properties) > 0)
+        @php
+        $firstPropeties = $properties->shift();
+      @endphp
+        <a class="col-md-6 pb-1" href="{{route('singleproperties', ["id" => $firstPropeties->id])}}">
         <div class="property-container rounded">
-          <img src="{{asset('image/bighouse.png')}}" alt="Property Image"
-            class="imagecontroller imagecontrollerheight imagecontrollermd ">
+
+          @php
+        $mainImages = !empty($firstPropeties->main_image) ? json_decode($firstPropeties->main_image, true) : [];
+        $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+       @endphp
+          <img src="{{ $mainImage }}" alt="Property Image"
+          class="imagecontroller imagecontrollerheight imagecontrollermd " data-src="holder.js/200x250?theme=thumb" />
           <div class="property-details">
-            <div class="md-text1 p-0 m-0">Hello</div>
-            <div class="md-text highlight text-center p-0 m-0">North road 435673Kth street</div>
-            <div class="d-flex justify-content-between gap-3 p-0 mx-4">
-              <p class="detail-item sm-text1">
-                <span class="sm-text1">13</span><br />
-                <i class="fa-solid fa-bed detail-icon"></i>
-              </p>
-              <p class="detail-item sm-text1">
-                <span class="detail-number">02</span><br />
-                <i class="fa-solid fa-bath detail-icon"></i>
-              </p>
-              <p class="detail-item sm-text1">
-                <span class="sm-text1">13</span><br />
-                <i class="fa-solid fa-bed detail-icon"></i>
-              </p>
-            </div>
-            <p class="extra-small-text1 px-2">We wanted to take a moment to tell you what a We wanted to take a moment
-              wanted to take a moment to tell you what a We wanted to take a moment wanted to take a moment to tell
-              you what a We wanted to take a moment to tell
-              you what a We wanted to take </p>
+          <div class="md-text1 p-0 m-0"> {{strlen( $firstPropeties->title)>28 ? substr($firstPropeties->title ,0 ,28). "..." :$firstPropeties->title }}</div>
+          <div class="md-text highlight text-center p-0 m-0"><i class="fa-solid fa-location-dot mx-1"></i>{{ $firstPropeties->state}}-{{ $firstPropeties->street}}
           </div>
+          <div class="d-flex justify-content-between gap-3 p-0 mx-4">
+            <p class="detail-item sm-text1">
+            <span class="sm-text1">{{ $firstPropeties->bedrooms}}</span><br />
+            <i class="fa-solid fa-bed detail-icon"></i>
+            </p>
+            <p class="detail-item sm-text1">
+            <span class="detail-number">{{ $firstPropeties->bathrooms}}</span><br />
+            <i class="fa-solid fa-bath detail-icon"></i>
+            </p>
+            <p class="detail-item sm-text1">
+            <span class="sm-text1">{{ $firstPropeties->area}}</span><br />
+            <i class="fa-solid fa-bed detail-icon"></i>
+            </p>
+          </div>
+          <p class="extra-small-text1 px-2">{{ $firstPropeties->description}} </p>
+          </div>
+    @endif
         </div>
-      </div>
-
-
-
+      </a>
       <div class="col-md-6 sub-image-content">
         <div class="row ">
           @foreach ($properties as $property)
@@ -140,11 +145,10 @@
         $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
         $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
          @endphp
-
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
               <div class="property-details">
                 <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-                <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
+                <div class="sm-text highlight text-center p-0 m-0 "><i class="fa-solid fa-location-dot mx-1"></i>{{$property->country }}-{{$property->state }}-{{$property->street }}</div>
                 <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
                   <span class="sm-text1">{{ $property->bedrooms }}</span><br />
@@ -166,7 +170,6 @@
               </div>
             </a>
             </div>
-
       @endforeach
         </div>
       </div>
