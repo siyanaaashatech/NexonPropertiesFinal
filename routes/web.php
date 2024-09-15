@@ -118,6 +118,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 Route::post('/email/resend', [VerificationController::class, 'resend'])
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.send');
+    Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 
 

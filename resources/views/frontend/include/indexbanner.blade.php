@@ -116,7 +116,7 @@
             <i class="fa-brands fa-searchengin customicons"></i> Find your properties
         </h1>
         <div class="justify-content-center align-items-center gap-1 flex-wrap hiddenform hiddenformhome" id="hiddenform">
-            <form action="{{ route('properties.search') }}" method="GET">
+            <form action="{{ route('frontend.search') }}" method="GET">
                 <div class="d-flex flex-column col-md-3">
                     <label class="sm-text1 des-text">Listing type</label>
                     <input type="text" class="input bannerinput" name="list_type" value="{{ request('list_type') }}">
