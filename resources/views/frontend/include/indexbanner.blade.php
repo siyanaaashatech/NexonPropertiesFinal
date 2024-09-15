@@ -383,5 +383,5 @@
     // Start the process
     showInitialItems();
   });
- 
+
 </script>
