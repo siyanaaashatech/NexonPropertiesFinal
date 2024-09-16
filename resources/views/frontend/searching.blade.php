@@ -1,16 +1,36 @@
 @extends("frontend.layouts.master")
 
 @section('content')
-<section class="container-fluid py-4">
-    <div class="container">
-        <h1 class="lg-text1 text-center">Search Results</h1>
 
+<section class="container-fluid otherpagebanner">
+    <div class="row">
+        <div class="col-md-12 p-0">
+            <div class="carousel-inner ">
+                <div class="row d-flex">
+                    <div
+                        class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
+                        <img src="{{ asset('image/abou1.png') }}" alt="" srcset=""
+                            class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
+                        <div class="flex bannercontentheight">
+                            <div class="bannercontentinnerheight ">
+                                <h4 class="lg-text1">Search</h4>
+                                <h5 class="md-text1"><a href="">home</a> <i class="fa-solid fa-angle-right "></i>
+                                    <span class="highlight">Search</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+
+
+<section class="container-fluid pb-4">
+    <div class="container">
         @if($properties instanceof \Illuminate\Support\Collection && $properties->isNotEmpty())
             <div class="row mt-4">
                 @foreach ($properties as $property)
-
-
-
                 <a class="col-md-4 my-2" href="{{ route('singleproperties', ['id' => $property->id]) }}">
                                             <div class="card">
                                             @php
@@ -24,7 +44,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
-                                                    <h5 class="md-text">{{strlen($property->title)>100 ? substr($property->title ,0 ,100). "...":$property->title }}</h5>
+                                                    <h5 class="md-text">{{strlen($property->title)>34 ? substr($property->title ,0 ,34). "...":$property->title }}</h5>
                                                     <div class=" d-flex gap-3 flex-wrap ">
                                                         <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
                                                         <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>

@@ -18,8 +18,9 @@ class SingleController extends Controller
         $testimonials=Testimonial::latest()->get();
         $teams=Team::latest()->get();
         $faqs=FAQ::Latest()->get();
+        $categories=Category::latest()->get();
         $aboutDescriptions=AboutDescription::latest()->get();
-        return view('frontend.about', compact('aboutDescriptions','teams','testimonials' ,'faqs'));
+        return view('frontend.about', compact('aboutDescriptions','teams','testimonials' ,'faqs','categories'));
     }
     public function render_blog()
     {

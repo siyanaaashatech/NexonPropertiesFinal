@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Warang+Citi&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 :root {
     /* --green: ; */
     /* --green: #0e593c; */
@@ -18,7 +17,7 @@
     --text-offblack: rgba(0, 0, 0, 0.56);
     --text-gray: rgba(23, 32, 45, 0.7);
     --border-color: rgba(0, 0, 0, 0.23);
-    --font-inter: "inter";
+    --font-inter:"NotosansWarang";
     --font-weight: 600;
     --button-radius: 8px;
     --border-radius: 8px;
@@ -38,7 +37,10 @@ body {
 a {
     color: white;
 }
+.btn-buttongreensmall{
+    width: 10px;
 
+}
 /* button  to control the button*/
 .btn-buttongreen {
     background: var(--offgreen);
@@ -332,6 +334,8 @@ textarea:focus {
 
 .bannerinput {
     width: 260px;
+    
+
 }
 
 a {
@@ -413,7 +417,7 @@ a {
 
     .bannercontentinner {
         position: absolute;
-        bottom: 2rem;
+        bottom: 3rem;
         left: 10%;
     }
 }
@@ -537,7 +541,7 @@ a {
 
 .bannercontentinner {
     position: absolute;
-    bottom: 2rem;
+    bottom: 3rem;
     left: 9%;
 }
 
@@ -559,9 +563,7 @@ a {
         left: 4%;
     }
 
-    .formsection {
-        display: none;
-    }
+
 }
 
 /* properties section */
@@ -702,12 +704,17 @@ a {
     height: 25.1vh;
 }
 
+
+
+
+
+
 .property-details {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(200, 198, 198, 0.344);
+    background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
     height: 38.5vh;
@@ -734,10 +741,37 @@ a {
     opacity: 1;
 }
 
+
 .property-container:hover .property-more-details {
     opacity: 1;
     transform: translateY(70%);
 }
+
+
+
+.property-detailsbanner{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    height: 28vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    transform: translateY(76%);
+}
+
+
+
+
+
+
+
+
+
 
 /* for bannersection */
 
@@ -1206,8 +1240,8 @@ a {
 
 .propertiesfinder {
     position: relative;
-    bottom: 5rem;
-    background: var(--offgreen);
+    bottom:3rem;
+    background: var(--green);
     cursor: pointer;
 }
 .propertiesfindersearching {
@@ -1510,6 +1544,7 @@ a {
     bottom: 5rem;
     background-color: black;
 }
+
 .advance:hover{
     color:var(--text-offblack);
     cursor:pointer;
@@ -1518,13 +1553,42 @@ a {
 
 }
 
-.amenities {
-    background-color: blanchedalmond;
+@media(max-width:500px)
+{
+    .formsection span{
+        margin-top: 2rem
+        
+    }
+    .formsection button{
+        margin-top:0.5rem
+
+    }
+    .advance{
+        margin-top:0.8rem !important;
+        margin-right: 1rem;
+    }
+}
+
+
+.amenities{
+    position: absolute;
+    background: var(--freegreen);
     border-radius: 8px;
     display: none;
+    top:42rem;
+    left:8%;
+    width:80vw;
+  }
+  .nameofthing{
+    padding-left:8px;
+  
+  }
+  
+  @media (max-width:500px) {
+    .amenities{
+        top: 45rem;
+  
   }
 
-  .nameofthing {
-    padding-left: 8px;
-
+    
   }

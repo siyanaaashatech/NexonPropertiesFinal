@@ -35,7 +35,7 @@
         <h1 class="md-text1 highlight">Message us</h1>
         <input type="text" class="input" placeholder="Your email id here">
         <textarea name="" id="" rows="1" cols="" class="textarea my-1"></textarea>
-        <a href="{{ route('login') }}" class="btn-buttonyellow footer-button">login/register</a>
+        <a href="{{ route('login') }}" class="btn-buttonyellow footer-button">send message</a>
       </div>
     </div>
   </div>
