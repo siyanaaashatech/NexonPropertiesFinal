@@ -183,21 +183,37 @@
 
 
 <!-- nextpage section -->
-<section class="container-fluid ">
+<!-- nextpage section -->
+<section class="container-fluid">
     <div class="container">
-        <div class="row  nextpage ">
-            <ul class="nextui d-flex gap-1">
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
-                        <i class="fa-solid fa-arrow-right"></i></a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">1</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">2</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">3</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
-                        <i class="fa-solid fa-arrow-left"></i></a></li>
+        <div class="row nextpage">
+            <ul class="nextui d-flex gap-1 justify-content-center align-content-center">
+                <li class="nextli next-button" onclick="changepage(this)"><a href="#" class="md-text1">1</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">2</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">3</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">4</a></li>
+                <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">5</a></li>
             </ul>
         </div>
     </div>
 </section>
+
+<script>
+    function changepage(element) {
+        // Get the page number from the clicked element
+        const pageNumber = element.innerText;
+
+        // Define the base URL for the pages
+        const baseURL = "yourBaseURL"; // Replace with the actual base URL of your pages
+
+        // Construct the URL for the desired page
+        const pageURL = `${baseURL}?page=${pageNumber}`;
+
+        // Redirect to the new page
+        window.location.href = pageURL;
+    }
+</script>
+
 
 
 
@@ -213,20 +229,12 @@
             hiddenformdata.style.display = "none";
         }
         hiddenformdata.style.display = "block";
-
     }
-
-
-    function changepage(element) {
-        const pageli = document.getElementsByClassName("nextli");
-        
-        for (let i = 0; i < pageli.length; i++) {
-            pageli[i].classList.remove("activeli");
-
-        }
-
-        element.classList.add("activeli")
-    }
-
-
+    function changepage(clickedElement) {
+    // Remove 'next-button' class from all list items
+    const allButtons = document.querySelectorAll('.nextli');
+    allButtons.forEach(button => button.classList.remove('next-button'));
+    // Add 'next-button' class to the clicked list item
+    clickedElement.classList.add('next-button');
+}
 </script>

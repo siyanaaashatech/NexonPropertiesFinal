@@ -7,13 +7,10 @@ use App\Models\Testimonial;
 use App\Models\Team;
 use App\Models\FAQ;
 use App\Models\AboutDescription;
+use App\Models\Category;
 use Illuminate\Http\Request;
 class SingleController extends Controller
-{
-
-
-    
-  
+{ 
 
     public function render_about()
     {
@@ -48,10 +45,11 @@ class SingleController extends Controller
     public function render_singleProperties($id)
     {
         // Fetch the property by ID
+        $categories = Category::latest()->get();
         $properties = Property::where('id', $id)->firstOrFail();
         $relatedProperties = Property::where('id', '!=', $properties->id)->get();
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-        return view('frontend.singleproperties', compact('properties', 'relatedProperties', 'otherImages'));
+        return view('frontend.singleproperties', compact('properties', 'relatedProperties', 'otherImages','categories'));
     }
 
     
