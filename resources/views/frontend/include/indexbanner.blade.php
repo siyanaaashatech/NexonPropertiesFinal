@@ -20,30 +20,93 @@
                   More than <span class="highlight">1000+</span> houses available for sale & rent in the country
                 </p>
                 <h4 class="lg-text1 mb-4">{{$property->title}}</h4>
-                <div class="d-flex justify-content-center mb-1">
-                  <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
-                  <div class="btn-buttongreen mx-2">Rent</div>
-                </div>
+                <!-- <div class="d-flex justify-content-center mb-1">
+              <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
+              <div class="btn-buttongreen mx-2">Rent</div>
+              </div> -->
                 <form action="{{ route('frontend.searching') }}" method="GET">
                   <div
                   class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
                   <div class="d-flex flex-wrap gap-md-3 showform">
-                    <input type="text" class="input bannerinput" name="list_type" placeholder="List type"
-                    value="{{ request('list_type') }}">
-                    <input type="text" class="input bannerinput" name="property_type" placeholder="Property type"
-                    value="{{ request('property_type') }}">
-                    <input type="text" class="input bannerinput" name="location" placeholder="Location"
+
+
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="" disabled selected>Select Category</option>
+                    @foreach($categories as $category)
+              <option value="{{ $category->id }}" {{ request('list_type') == $category->id ? 'selected' : '' }}>
+              {{ $category->title }}
+              </option>
+            @endforeach
+                    </select>
+
+
+                    
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    @foreach($subcategories as $subcategory)
+              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
+              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
+              {{ $subcategory->title }}
+              </option>
+            @endforeach</option>
+                    </select>
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="1">States</option>
+                    <option value="">
+                      @foreach($properties as $property)
+              @if(!empty($property->state))
+          <option value="{{ $property->state }}" {{ request('state') == $property->state ? 'selected' : '' }}>
+          {{ $property->state }}
+          </option>
+        @endif
+            @endforeach</option>
+                    </select>
+
+
+
+                    <!-- Regions Placeholder -->
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="1">regions</option>
+                    <option value="2">Region 1</option>
+                    <option value="3">Region 2</option>
+                    </select>
+
+                    <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
                     value="{{ request('location') }}">
-                    <input type="number" class="input bannerinput" name="min_price" placeholder="Min Price"
-                    value="{{ request('min_price') }}">
-                    <input type="number" class="input bannerinput" name="max_price" placeholder="Max Price"
-                    value="{{ request('max_price') }}">
-                    <input type="number" class="input bannerinput" name="bedroom" placeholder="Bedroom"
-                    value="{{ request('bedroom') }}">
-                    <button type="submit" class="btn-buttongreen bannerinput">Search</button>
+                    <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
+                    <button type="submit" class="btn-buttongreen">Search</button>
                   </div>
                   </div>
                 </form>
+
+                <script>
+                  document.addEventListener('DOMContentLoaded', function () {
+                  const categorySelect = document.getElementById('category_id');
+                  const subCategorySelect = document.getElementById('subcategory_id');
+
+                  function filterSubcategories() {
+                    const selectedCategoryId = categorySelect.value;
+                    const subCategories = subCategorySelect.querySelectorAll('option');
+
+                    subCategories.forEach(option => {
+                    if (!option.value) return; // Skip the "Select Sub-Category" option
+                    option.style.display = option.dataset.categoryId === selectedCategoryId || selectedCategoryId === '' ? 'block' : 'none';
+                    });
+
+                    // Reset subcategory selection when category changes
+                    subCategorySelect.value = '';
+                  }
+
+                  // Initial filter when the page loads
+                  filterSubcategories();
+
+                  // Update subcategories when the category is changed
+                  categorySelect.addEventListener('change', filterSubcategories);
+                  });
+                </script>
                 </div>
               </div>
               </div>
@@ -53,6 +116,9 @@
         </div>
       </div>
     </div>
+
+
+
     <div class="col-md-3">
       <div class="row">
         <div class="col-md-12 p-0 ">
@@ -65,8 +131,10 @@
          @endphp
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image  property-imageheightbanner">
               <div class="property-details">
-              <div class="md-text1">{{$property->title}}</div>
-              <div class="sm-text highlight text-center p-0 m-0">{{$property->title}}</div>
+              <div class="md-text1">
+                {{ strlen($property->title) > 32 ? substr($property->title, 0, 32) . "..." : $property->title}}
+              </div>
+              <div class="sm-text highlight text-center p-0 m-0">eedddde</div>
               <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
                 <span class="sm-text1">13</span><br />
@@ -101,6 +169,103 @@
     <span class="visually-hidden">Next</span>
   </a>
 </section>
+
+<section class="container rounded  amenities ">
+  <div class="row p-3" id="advanceitems">
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Air Conditioning</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Laundry</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Dishwasher</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Garage</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Gym</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Refrigerator</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Swimming Pool</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Washer</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Balcony</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Barbeque</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+
+
+
+
+  </div>
+  </div>
+</section>
+
+<script>
+  function funOpenadvance() {
+    const advanceItems = document.querySelector(".amenities");
+
+    // Check if the advanceItems element is found
+    if (!advanceItems) {
+      console.error("Element with class 'amenities' not found.");
+      return;
+    }
+
+    // Check if the display style is set to 'none' and toggle it
+    if (advanceItems.style.display === "none") {
+      advanceItems.style.display = "block";
+    } else {
+      advanceItems.style.display = "none";
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
 
 
 
@@ -200,4 +365,5 @@
     // Start the process
     showInitialItems();
   });
+
 </script>

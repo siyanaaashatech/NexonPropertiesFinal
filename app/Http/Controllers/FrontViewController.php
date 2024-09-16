@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Blog;
@@ -21,32 +22,24 @@ class FrontViewController extends Controller
         $aboutuss =AboutUs::latest()->get()->take(1);
         $properties=Property::latest()->get()->take(6);
         $categories = Category::all(); 
+        $subcategories = SubCategory::all();
 
 
 
         return view('frontend.welcome',  compact([
-            'services','blogs','aboutuss','testimonials','whyuss','properties','categories'
+            'services','blogs','aboutuss','testimonials','whyuss','properties','categories','subcategories'
         ]));
     }
 
-    public function properties(Request $request, $categoryId = null)
+    public function search(Request $request)
     {
-        $categoryId = $request->query('categoryId');
-    
-        // Fetch all categories for the navbar
-        $categories = Category::all();
-    
-        // Fetch properties, optionally filtered by category
-        $propertiesQuery = Property::query();
-    
-        if ($categoryId) {
-            $propertiesQuery->where('category_id', $categoryId);
-        }
-    
-        $properties = $propertiesQuery->paginate(12); 
-    
-        return view('frontend.properties', compact('properties', 'categories'));
+        
+        $searchController = new SearchPropertiesController();
+        $categories = Category::all(); 
+        $properties = $searchController->filterProperties($request);
+        return view('frontend.searching', compact('properties','categories'));
     }
+
 
     // public function singlePost($slug)
     // {

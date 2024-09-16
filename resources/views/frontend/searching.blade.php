@@ -1,188 +1,30 @@
 @extends("frontend.layouts.master")
-@section("content")
 
-
-<style>
-    .sortedproperties {
-        background: whitesmoke;
-
-    }
-</style>
-
-
-<section class="container-fluid">
-    <div class="row">
-        <div class="col-md-12 p-0">
-            <div class="carousel-inner mb-3">
-                <div class="row d-flex">
-                    <div
-                        class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                        <img src="{{ asset('image/abou1.png') }}" alt="" srcset=""
-                            class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
-                        <div class="flex bannercontentheight">
-                            <div class="bannercontentinnerheight ">
-                                <h4 class="lg-text1">searching</h4>
-                                <h5 class="md-text1"><a href="">home</a> <i class="fa-solid fa-angle-right "></i>
-                                    <span class="highlight">searching</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-</section>
-
-<section class="container-fluid">
-    <div class="container pt-4">
-        <div class="row sortedproperties rounded p-4  justify-content-between">
-            <h5 class="sm-text col-md-10"> 10 listings found
-            </h5>
-            <h5 class="sm-text col-md-2 d-flex gap-2" onclick="searchingon()">
-                <i class="fa-solid fa-magnifying-glass pt-1"></i>
-                <span class="">property search</span>
-                <i class="fa-solid fa-box"></i>
-            </h5>
-        </div>
-    </div>
-</section>
-
-<style>
-    .propertiesfindersearching {
-        display: none;
-
-    }
-</style>
-
-<section class="container-fluid  ">
-    <div class="container propertiesfinder propertiesfindersearching py-4 rounded">
-        <div class="justify-content-center align-items-center gap-1 flex-wrap searchingform" id="hiddenform">
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Listing type</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Properties type</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Location</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Location</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="md-text1 des-text">Price</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Search</label>
-                <button class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<script>
-    function searchingon() {
-        const searchingSection = document.querySelector('.propertiesfindersearching');
-        if (searchingSection.style.display === "none" || searchingSection.style.display === "") {
-            searchingSection.style.display = "block";
-        } else {
-            searchingSection.style.display = "none";
-        }
-    }
-</script>
-
-
-
-
-
-{{-- form --}}
-
-
-
-{{--
-
-<!-- project page-->
-<!-- hero section -->
-<section class="container-fluid">
-    <div class="row">
-        <div class="col-md-12 p-0">
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner mb-3">
-                    <!-- First Carousel Item -->
-                    <div class="carousel-item active">
-                        <div class="row d-flex">
-                            <div
-                                class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                                <img src="{{ asset('image/house1.png') }}" alt="" srcset="" class="imagecontroller">
-                                <div class="flex bannercontent">
-                                    <div class="bannercontentinner">
-                                        <p class="sm-text1 mb-3 text-center forhidden">More than <span
-                                                class="highlight">1000+</span> houses
-                                            available for
-                                            sale &
-                                            rent in the country</p>
-                                        <h4 class="lg-text1 mb-4">Find Your Dream Home</h4>
-                                        <div class="d-flex justify-content-center mb-1">
-                                            <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
-                                            <div class="btn-buttongreen mx-2">Rent</div>
-                                        </div>
-                                        <div
-                                            class="formsection d-flex flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
-                                            <div class="d-flex flex-wrap  gap-md-3">
-                                                <input type="text" class="input bannerinput" placeholder="List type">
-                                                <input type="text" class="input bannerinput"
-                                                    placeholder="property type">
-                                                <input type="text" class="input bannerinput" placeholder="Location">
-                                                <input type="text" class="input bannerinput" placeholder="Price">
-                                                <input type="text" class="input bannerinput" placeholder="Bedroom">
-                                                <button class="btn-buttongreen bannerinput ">Search</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
-</section>
---}}
-
-<!-- multiple properties section -->
-<section class="container-fluid multipost mb-3 pb-4">
+@section('content')
+<section class="container-fluid py-4">
     <div class="container">
-        <div class="row ">
-            <div class="col-md-12 py-3">
-                <div class="row">
-                    @foreach ($properties as $property)
-                                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
+        <h1 class="lg-text1 text-center">Search Results</h1>
+
+        @if($properties instanceof \Illuminate\Support\Collection && $properties->isNotEmpty())
+            <div class="row mt-4">
+                @foreach ($properties as $property)
+
+
+
+                <a class="col-md-4 my-2" href="{{ route('singleproperties', ['id' => $property->id]) }}">
                                             <div class="card">
-
-                                                @php
-                                                    $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-                                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
-                                                 @endphp
-
+                                            @php
+                                $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+                                $mainImage = !empty($mainImages) ? asset($mainImages[0]) : asset('images/default-placeholder.png');
+                            @endphp
                                                 <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                                 <div class="sell_rent_button d-flex justify-content-between ">
-                                                    <div class="btn-buttonxs btn-buttonxsyellow">{{$property->status}}</div>
+                                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
                                                     <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
-                                                    <h5 class="md-text">{{ $property->title}}</h5>
+                                                    <h5 class="md-text">{{strlen($property->title)>100 ? substr($property->title ,0 ,100). "...":$property->title }}</h5>
                                                     <div class=" d-flex gap-3 flex-wrap ">
                                                         <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
                                                         <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
@@ -199,59 +41,11 @@
                                                 </div>
                                             </div>
                                         </a>
-                    @endforeach
-
-                </div>
+                @endforeach
             </div>
-        </div>
+        @else
+            <p class="text-center mt-4">No properties found matching your search criteria.</p>
+        @endif
     </div>
 </section>
-
-
-
-<!-- nextpage section -->
-<section class="container-fluid ">
-    <div class="container">
-        <div class="row  nextpage ">
-            <ul class="nextui d-flex gap-1">
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
-                        <i class="fa-solid fa-arrow-right"></i></a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">1</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">2</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text ">3</a></li>
-                <li class="nextli" onclick="changepage(this)"><a href="" class="md-text">
-                        <i class="fa-solid fa-arrow-left"></i></a></li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-
-
 @endsection
-
-
-
-
-<script>
-    function funsearchingon() {
-        const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
-        if (hiddenformdata.style.display === "block") {
-            hiddenformdata.style.display = "none";
-        }
-        hiddenformdata.style.display = "block";
-
-    }
-    function changepage(element) {
-        const pageli = document.getElementsByClassName("nextli");
-
-        for (let i = 0; i < pageli.length; i++) {
-            pageli[i].classList.remove("activeli");
-
-        }
-
-        element.classList.add("activeli")
-    }
-
-
-</script>

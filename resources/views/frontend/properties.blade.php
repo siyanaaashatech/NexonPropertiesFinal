@@ -25,7 +25,63 @@
 </section>
 
 
+<form action="{{ route('frontend.searching') }}" method="GET">
+                  <div
+                  class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
+                  <div class="d-flex flex-wrap gap-md-3 showform">
 
+
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="" disabled selected>Select Category</option>
+                    @foreach($categories as $category)
+              <option value="{{ $category->id }}" {{ request('list_type') == $category->id ? 'selected' : '' }}>
+              {{ $category->title }}
+              </option>
+            @endforeach
+                    </select>
+
+
+                    
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    @foreach($subcategories as $subcategory)
+              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
+              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
+              {{ $subcategory->title }}
+              </option>
+            @endforeach</option>
+                    </select>
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="1">States</option>
+                    <option value="">
+                      @foreach($properties as $property)
+              @if(!empty($property->state))
+          <option value="{{ $property->state }}" {{ request('state') == $property->state ? 'selected' : '' }}>
+          {{ $property->state }}
+          </option>
+        @endif
+            @endforeach</option>
+                    </select>
+
+
+
+                    <!-- Regions Placeholder -->
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="1">regions</option>
+                    <option value="2">Region 1</option>
+                    <option value="3">Region 2</option>
+                    </select>
+
+                    <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+                    value="{{ request('location') }}">
+                    <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
+                    <button type="submit" class="btn-buttongreen">Search</button>
+                  </div>
+                  </div>
+                </form>
 
 {{-- form --}}
 <section class="container-fluid py-4 propertiesfinder">
@@ -64,7 +120,75 @@
     </div>
 </section>
 
+<section class="container rounded  amenities ">
+  <div class="row p-3" id="advanceitems">
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Air Conditioning</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Laundry</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Dishwasher</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Garage</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Gym</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Refrigerator</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Swimming Pool</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Washer</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Balcony</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Barbeque</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
 
+
+
+
+  </div>
+  </div>
+</section>
 
 
 {{--
@@ -157,7 +281,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
-                                                    <h5 class="md-text">{{ $property->title}}</h5>
+                                                    <h5 class="md-text">{{strlen($property->title)>28 ? substr($property->title ,0 ,28). "...":$property->title }}</h5>
                                                     <div class=" d-flex gap-3 flex-wrap ">
                                                         <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
                                                         <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
@@ -190,7 +314,7 @@
 
 
 
-            <ul class="nextui d-flex gap-1 justify-content-center align-content-center">
+            <ul class="nextui d-flex gap-1 justify-content-center align-content-center flex-wrap">
                 <li class="nextli next-button" onclick="changepage(this)"><a href="#" class="md-text1">1</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">2</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">3</a></li>

@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Property;
+use App\Models\SubCategory;
 use App\Models\Category;
-
 use App\Models\Blog;
 use App\Models\Testimonial;
 use App\Models\Team;
@@ -25,7 +25,8 @@ class SingleController extends Controller
     {
         $blogs = Blog::latest()->get();
         $properties =Property::latest()->get();
-        return view('frontend.blog', compact( 'blogs' ,'properties'));
+        $categories=Category::latest()->get();
+        return view('frontend.blog', compact( 'blogs' ,'properties','categories'));
     }
     public function singlePost($id)
     {
@@ -37,9 +38,10 @@ class SingleController extends Controller
 
 
     public function render_properties()
-    {
+    { $subcategories = SubCategory::all();
         $properties = Property::latest()->get();
-        return view('frontend.properties', compact( 'properties'));
+        $categories = Category::latest()->get();
+        return view('frontend.properties', compact( 'properties', 'categories','subcategories'));
     }   
 
 
@@ -58,7 +60,8 @@ class SingleController extends Controller
     public function render_contact()
     {
         $siteSettings=SiteSetting::latest()->get();
-        return view('frontend.contact', compact('siteSettings'));
+        $categories=Category::latest()->get();
+        return view('frontend.contact', compact("categories",'siteSettings'));
     }
 
     public function render_search()

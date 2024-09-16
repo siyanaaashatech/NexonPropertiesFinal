@@ -36,6 +36,8 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
+use App\Http\Controllers\SearchPropertiesController;
+
 
 Auth::routes();
 Route::get("/member", function () {
@@ -61,8 +63,8 @@ Route::get('/hello', function () {
     return view('frontend.singleproperties');
 })->name('hello');
 Route::get('/', [FrontViewController::class, 'index'])->name('index');
-Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
-
+// Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
+// Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 Auth::routes(['verify' => true]);
 
@@ -165,11 +167,12 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    Route::view("/member", "frontend.member")->name('member');
    Route::view("/contact", "frontend.contact")->name('contact');
    Route::get('/about', [SingleController::class, 'render_about'])->name('about');
+   Route::get('/contact', [SingleController::class, 'render_contact'])->name('contact');
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
-   Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.searching');
+   Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {

@@ -1510,3 +1510,21 @@ a {
     bottom: 5rem;
     background-color: black;
 }
+.advance:hover{
+    color:var(--text-offblack);
+    cursor:pointer;
+
+
+
+}
+
+.amenities {
+    background-color: blanchedalmond;
+    border-radius: 8px;
+    display: none;
+  }
+
+  .nameofthing {
+    padding-left: 8px;
+
+  }
