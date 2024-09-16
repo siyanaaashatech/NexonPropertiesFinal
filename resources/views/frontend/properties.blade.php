@@ -41,17 +41,6 @@
             @endforeach
                     </select>
 
-
-                    
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    @foreach($subcategories as $subcategory)
-              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
-              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
-              {{ $subcategory->title }}
-              </option>
-            @endforeach</option>
-                    </select>
                     <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
                     <option value="1">States</option>

@@ -21,6 +21,7 @@ class PropertyController extends Controller
         $properties = Property::with('metadata')->latest()->get();
         return view('admin.property.index', compact('properties'));
     }
+    
 
     /**
      * Show the form for creating a new property.
@@ -36,79 +37,75 @@ class PropertyController extends Controller
     /**
      * Store a newly created property in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'main_image' => 'required|array', // Ensure main_image is an array
-            'main_image.*' => 'required|string', // Validate as a string since it's a base64 image
-            'cropData' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'sub_category_id' => 'required|exists:sub_categories,id',
-            'street' => 'required|string|max:255',
-            'suburb' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'post_code' => 'required|string|max:20',
-            'country' => 'nullable|string|max:255',
-            'price' => 'required|numeric',
-            'price_type' => 'required|in:fixed,negotiable,on_request',
-            'bedrooms' => 'required|integer',
-            'bathrooms' => 'required|integer',
-            'area' => 'required|integer',
-            'status' => 'required|boolean',
-            'availability_status' => 'required|in:available,sold,rental',
-            'rental_period' => 'nullable|string',
-            'keywords' => 'nullable|string',
-            'other_images' => 'required|array', // Ensure other_images is an array
-            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048', 
-            
-        ]);
 
-        // Handle the main image upload (base64 images)
-        $images = $this->handleBase64Images($request->input('main_image'), 'property');
-
-        // Handle other images upload
-        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images');
-
-        // Create a metadata entry
-        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
-        $metadata = Metadata::create([
-            'meta_title' => $request->title,
-            'meta_description' => $request->description,
-            'meta_keywords' => json_encode($metaKeywordsArray),
-            'slug' => Str::slug($request->title),
-        ]);
-
-        // Create new property record and associate with metadata
-        Property::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'sub_category_id' => $request->sub_category_id,
-            'street' => $request->street,
-            'suburb' => $request->suburb,
-            'state' => $request->state,
-            'post_code' => $request->post_code,
-            'country' => $request->country,
-            'price' => $request->price,
-            'price_type' => $request->price_type,
-            'bedrooms' => $request->bedrooms,
-            'bathrooms' => $request->bathrooms,
-            'area' => $request->area,
-            'status' => $request->status,
-            'main_image' => json_encode($images),
-            'other_images' => json_encode($otherImages),
-            'availability_status' => $request->availability_status,
-            'rental_period' => $request->rental_period,
-            'metadata_id' => $metadata->id,
-            'update_time' => now()->toDateString(),
-        ]);
-
-        session()->flash('success', 'Property created successfully.');
-
-        return redirect()->route('property.index');
-    }
+    
+        public function store(Request $request)
+        {
+            // Validate the incoming request data
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'category_id' => 'required|exists:categories,id',
+                'sub_category_id' => 'required|exists:sub_categories,id',
+                'street' => 'required|string|max:255',
+                'suburb' => 'required|string|max:255',
+                'state' => 'required|string|max:255',
+                'post_code' => 'required|integer',
+                'country' => 'required|string|max:255',
+                'price' => 'required|numeric',
+                'price_type' => 'required|in:fixed,negotiable,on_request',
+                'bedrooms' => 'required|integer',
+                'bathrooms' => 'required|integer',
+                'area' => 'required|numeric',
+                'status' => 'required|boolean',
+                'availability_status' => 'required|in:available,sold,rental',
+                'rental_period' => 'nullable|string',
+                'main_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'other_images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'googlemap' => 'nullable|string',
+            ]);
+    
+            // Handle file uploads
+            if ($request->hasFile('main_image')) {
+                $mainImage = $request->file('main_image')->store('images/properties', 'public');
+            }
+    
+            $property = new Property();
+            $property->title = $request->input('title');
+            $property->description = $request->input('description');
+            $property->category_id = $request->input('category_id');
+            $property->sub_category_id = $request->input('sub_category_id');
+            $property->street = $request->input('street');
+            $property->suburb = $request->input('suburb');
+            $property->state = $request->input('state');
+            $property->post_code = $request->input('post_code');
+            $property->country = $request->input('country');
+            $property->price = $request->input('price');
+            $property->price_type = $request->input('price_type');
+            $property->bedrooms = $request->input('bedrooms');
+            $property->bathrooms = $request->input('bathrooms');
+            $property->area = $request->input('area');
+            $property->status = $request->input('status');
+            $property->availability_status = $request->input('availability_status');
+            $property->rental_period = $request->input('rental_period');
+            $property->googlemap = $request->input('googlemap');
+            $property->main_image = $mainImage;
+    
+            // Handle other images
+            if ($request->hasFile('other_images')) {
+                $otherImages = [];
+                foreach ($request->file('other_images') as $image) {
+                    $otherImages[] = $image->store('images/properties', 'public');
+                }
+                $property->other_images = json_encode($otherImages);
+            }
+    
+            $property->save();
+    
+            return redirect()->route('property.index')->with('success', 'Property created successfully.');
+        }
+    
+    
 
     /**
      * Display the specified property.
@@ -156,6 +153,7 @@ class PropertyController extends Controller
             'availability_status' => 'required|in:available,sold,rental',
             'rental_period' => 'nullable|string',
             'keywords' => 'nullable|string',
+            'googlemap' => 'nullable|string',
             'other_images' => 'required|array',
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
             'update_time' => now()->toDateString(),
@@ -192,6 +190,8 @@ class PropertyController extends Controller
             'bedrooms' => $request->bedrooms,
             'bathrooms' => $request->bathrooms,
             'area' => $request->area,
+            'keywords' => $request->keywords,
+            'googlemap' => $request->googlemap,
             'status' => $request->status,
             'main_image' => json_encode($images),
             'other_images' => json_encode($otherImages),

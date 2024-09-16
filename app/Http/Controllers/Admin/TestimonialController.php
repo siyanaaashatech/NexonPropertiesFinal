@@ -71,7 +71,7 @@ class TestimonialController extends Controller
         }
 
     
-         // Create new service record and associate with metadata
+         // Create new testimonial record and associate with metadata
          Testimonial::create([
             'title' => $request->title,
             'designation' => $request->designation,
@@ -82,7 +82,7 @@ class TestimonialController extends Controller
            
         ]);
 
-        session()->flash('success', 'Service created successfully.');
+        session()->flash('success', 'Testimonial created successfully.');
 
         return redirect()->route('testimonials.index');
     }

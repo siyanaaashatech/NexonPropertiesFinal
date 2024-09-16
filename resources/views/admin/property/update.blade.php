@@ -181,6 +181,11 @@
                             </div>
                         </div>
 
+                        <div class="form-group mb-3">
+                            <label for="googlemap">Google Map</label>
+                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap', $property->googlemap) }}" required>
+                        </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Update Property</button>
                             <a href="{{ route('property.index') }}" class="btn btn-secondary">Cancel</a>

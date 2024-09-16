@@ -138,16 +138,16 @@
 
                         <!-- Status -->
                         <div class="form-group mb-3">
-    <label for="status">Status</label>
-    <div class="form-check">
-        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
-        <label for="status_active" class="form-check-label">Active</label>
-    </div>
-    <div class="form-check">
-        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
-        <label for="status_inactive" class="form-check-label">Inactive</label>
-    </div>
-</div>
+                        <label for="status">Status</label>
+                          <div class="form-check">
+                        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
+                        <label for="status_active" class="form-check-label">Active</label>
+                        </div>
+                          <div class="form-check">
+                        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
+                        <label for="status_inactive" class="form-check-label">Inactive</label>
+                          </div>
+                          </div>
 
                         <!-- Availability Status -->
                         <div class="form-group mb-3">
@@ -171,8 +171,8 @@
     <input type="file" id="main_image" class="form-control" required>
 </div>
 
-<!-- Hidden input to store the base64 string of the main image -->
-<input type="hidden" name="main_image[0]" id="main_image_base64" required>
+                    <!-- Hidden input to store the base64 string of the main image -->
+                       <input type="hidden" name="main_image[0]" id="main_image_base64" required>
                         <!-- Cropped Main Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Main Image Preview:</label>
@@ -197,8 +197,14 @@
                         </div>
 
                         <div class="form-group mb-3">
-    <label for="update_time">Update Time</label>
-    <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y - F - d') }}" readonly>
+                            <label for="googlemap">Google Map</label>
+                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap') }}"
+                                >
+                        </div>
+
+                        <div class="form-group mb-3">
+                        <label for="update_time">Update Time</label>
+                       <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y - F - d') }}" readonly>
 </div>
 
                         <div class="form-group">

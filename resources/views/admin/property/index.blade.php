@@ -39,6 +39,7 @@
                                         <td>{{ $property->subCategory->title }}</td>
                                         <td>${{ number_format($property->price, 2) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($property->update_time)->format('Y - F - d') }}</td>
+                                        
                                         <td>
                                             @if($property->status)
                                                 <span class="badge bg-success">Active</span>
