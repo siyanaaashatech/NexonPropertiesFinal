@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Blog;
@@ -55,23 +56,3 @@ class FrontViewController extends Controller
     //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
     // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

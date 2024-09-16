@@ -4,7 +4,6 @@
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
       <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo"  class="logoimg"/></a>
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
             @foreach($categories as $category)
@@ -18,11 +17,8 @@
       <div class="button-collection  flex-column ">
         <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</a>
         <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton ">login</a>
-
       </div>
       <i class="fa-solid fa-bars customicons mx-4 " onclick="funmenu()"></i>
-
-
     </nav>
   </div>
   <div class="bur-menu py-3" id="bur-menu">

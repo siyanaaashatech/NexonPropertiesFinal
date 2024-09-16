@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\BlogController;
@@ -12,6 +13,17 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\MetadataController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\FrontViewController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\NoTransactionPurposeController;
+use App\Http\Controllers\OffenderController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TranPurposeController;
+use App\Http\Controllers\TranProofController;
+use App\Http\Controllers\TranNatureController;
+use App\Http\Controllers\HistoriesController;
+use App\Models\Blog;
+use App\Models\Testimonial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
@@ -24,6 +36,8 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
+use App\Http\Controllers\SearchPropertiesController;
+
 
 Auth::routes();
 Route::get("/member", function () {
@@ -49,8 +63,8 @@ Route::get('/hello', function () {
     return view('frontend.singleproperties');
 })->name('hello');
 Route::get('/', [FrontViewController::class, 'index'])->name('index');
-Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
-
+// Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
+// Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 Auth::routes(['verify' => true]);
 
@@ -59,10 +73,10 @@ Route::get('/email/verify', 'Auth\VerificationController@show')
 Route::post('/email/resend', 'Auth\VerificationController@resend')
     ->name('verification.resend');
 
-     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-     ->middleware(['auth', 'signed'])
-     ->name('verification.verify');
- 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
 
     Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
 
@@ -153,10 +167,12 @@ Route::post('/email/resend', 'Auth\VerificationController@resend')
    Route::view("/member", "frontend.member")->name('member');
    Route::view("/contact", "frontend.contact")->name('contact');
    Route::get('/about', [SingleController::class, 'render_about'])->name('about');
+   Route::get('/contact', [SingleController::class, 'render_contact'])->name('contact');
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
+   Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {

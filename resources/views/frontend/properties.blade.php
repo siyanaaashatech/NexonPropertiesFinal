@@ -25,7 +25,63 @@
 </section>
 
 
+<form action="{{ route('frontend.searching') }}" method="GET">
+                  <div
+                  class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
+                  <div class="d-flex flex-wrap gap-md-3 showform">
 
+
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="" disabled selected>Select Category</option>
+                    @foreach($categories as $category)
+              <option value="{{ $category->id }}" {{ request('list_type') == $category->id ? 'selected' : '' }}>
+              {{ $category->title }}
+              </option>
+            @endforeach
+                    </select>
+
+
+                    
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    @foreach($subcategories as $subcategory)
+              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
+              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
+              {{ $subcategory->title }}
+              </option>
+            @endforeach</option>
+                    </select>
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="1">States</option>
+                    <option value="">
+                      @foreach($properties as $property)
+              @if(!empty($property->state))
+          <option value="{{ $property->state }}" {{ request('state') == $property->state ? 'selected' : '' }}>
+          {{ $property->state }}
+          </option>
+        @endif
+            @endforeach</option>
+                    </select>
+
+
+
+                    <!-- Regions Placeholder -->
+                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    <option value="1">regions</option>
+                    <option value="2">Region 1</option>
+                    <option value="3">Region 2</option>
+                    </select>
+
+                    <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+                    value="{{ request('location') }}">
+                    <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
+                    <button type="submit" class="btn-buttongreen">Search</button>
+                  </div>
+                  </div>
+                </form>
 
 {{-- form --}}
 <section class="container-fluid py-4 propertiesfinder">
@@ -64,7 +120,75 @@
     </div>
 </section>
 
+<section class="container rounded  amenities ">
+  <div class="row p-3" id="advanceitems">
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Air Conditioning</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Laundry</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Dishwasher</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Garage</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Gym</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Refrigerator</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Swimming Pool</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Washer</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Balcony</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Barbeque</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
+    <div class="d-flex col-md-2 pt-3">
+      <input type="checkbox" name="Aircondition" id="">
+      <span class="nameofthing">Floorboard</span>
+    </div>
 
+
+
+
+  </div>
+  </div>
+</section>
 
 
 {{--
@@ -139,41 +263,42 @@
                     </div>
                     <div class="btn-buttongreen "> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
                     </div>
-
                 </div>
             </div>
             <div class="col-md-12 py-3">
                 <div class="row">
                     @foreach ($properties as $property)
-                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
-                            <div class="card">
-                                <img class="p-2" src="{{asset('image/blog.png')}}" alt=" cap p">
-                                <div class="sell_rent_button d-flex justify-content-between ">
-                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
-                                    <div class="btn-buttonxs btn-buttonxsgreen">{{$property->availability_status}}</div>
-
-
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="md-text">{{ $property->title}}</h5>
-                                    <div class=" d-flex gap-3 flex-wrap ">
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
-                                        <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
-                                    </div>
-                                    <div class="price-person ">
-                                        <div class="d-flex justify-content-between align-content-center">
-                                            <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
-                                                    /</span>{{ $property->rental_period}} </div>
-                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                                class="feature-smallimg feature-smallimgdup">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
+                                            <div class="card">
+                                                @php
+                                                    $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+                                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                                                 @endphp
+                                                <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
+                                                <div class="sell_rent_button d-flex justify-content-between ">
+                                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
+                                                    <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="md-text">{{strlen($property->title)>28 ? substr($property->title ,0 ,28). "...":$property->title }}</h5>
+                                                    <div class=" d-flex gap-3 flex-wrap ">
+                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
+                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
+                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
+                                                    </div>
+                                                    <div class="price-person ">
+                                                        <div class="d-flex justify-content-between align-content-center">
+                                                            <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
+                                                                    /</span>{{ $property->rental_period}} </div>
+                                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
+                                                                class="feature-smallimg feature-smallimgdup">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
                     @endforeach
-
                 </div>
             </div>
         </div>
@@ -186,40 +311,33 @@
 <!-- nextpage section -->
 <section class="container-fluid">
     <div class="container">
-        <div class="row nextpage">
-            <ul class="nextui d-flex gap-1 justify-content-center align-content-center">
+        <div class="row  nextpage ">
+
+
+
+            <ul class="nextui d-flex gap-1 justify-content-center align-content-center flex-wrap">
                 <li class="nextli next-button" onclick="changepage(this)"><a href="#" class="md-text1">1</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">2</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">3</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">4</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">5</a></li>
             </ul>
+
+
+
+
+
         </div>
     </div>
 </section>
-
-<script>
-    function changepage(element) {
-        // Get the page number from the clicked element
-        const pageNumber = element.innerText;
-
-        // Define the base URL for the pages
-        const baseURL = "yourBaseURL"; // Replace with the actual base URL of your pages
-
-        // Construct the URL for the desired page
-        const pageURL = `${baseURL}?page=${pageNumber}`;
-
-        // Redirect to the new page
-        window.location.href = pageURL;
-    }
-</script>
-
-
-
-
 @endsection
 
+<style>
 
+
+
+
+</style>
 
 
 <script>
@@ -229,12 +347,19 @@
             hiddenformdata.style.display = "none";
         }
         hiddenformdata.style.display = "block";
+
     }
+
     function changepage(clickedElement) {
     // Remove 'next-button' class from all list items
     const allButtons = document.querySelectorAll('.nextli');
     allButtons.forEach(button => button.classList.remove('next-button'));
+
     // Add 'next-button' class to the clicked list item
     clickedElement.classList.add('next-button');
 }
+
+
+
+
 </script>

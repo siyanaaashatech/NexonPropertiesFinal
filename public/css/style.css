@@ -1,10 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 :root {
-    /* --green: #049A5B; */
-    --green: #0e593c;
-    /* --offgreen: #08D57F; */
-    --offgreen: #049a5b;
+    /* --green: ; */
+    /* --green: #0e593c; */
+    /* --green:#049a5cc5; */
+    --green: #05b069;
+    /* --offgreen: ; */
+    /* --offgreen: #049a5b; */
+    /* --offgreen:#05b069; */
+    --offgreen: #049a5cc5;
     --freegreen: #49a48137;
     /* --yellow: #FFBF00; */
     --yellow: #ffbf00;
@@ -16,7 +20,7 @@
     --border-color: rgba(0, 0, 0, 0.23);
     --font-inter: "inter";
     --font-weight: 600;
-    --button-radius: 20px;
+    --button-radius: 8px;
     --border-radius: 8px;
 }
 
@@ -63,6 +67,9 @@ a {
 
 .btn-buttonygreenlarge {
     width: 100%;
+}
+.btn-buttonyellowlg {
+    width: 250px !important;
 }
 
 .btn-buttonyellow {
@@ -131,12 +138,12 @@ a {
     justify-content: center;
     width: 74px;
     height: 60px;
+    margin-right: 2px;
 }
 
 .next-button:hover {
     background: var(--yellow);
 }
-
 .nextli:not(.next-button) {
     background:rgb(202, 201, 201);
     border-radius: var(--button-radius);
@@ -153,6 +160,8 @@ a {
     height: 60px;
     margin-right: 2px;
 }
+
+
 
 .btn-buttonxs {
     display: flex;
@@ -378,16 +387,14 @@ a {
     width: 10%;
 }
 
-.nav-item {
+.navsection .nav-item {
     font-size: 20px !important;
     font-weight: 500;
     text-transform: capitalize;
 }
-
-.nav-item a {
+.navsection .nav-item a {
     color: white !important;
 }
-
 .navsection {
     background: var(--green) !important;
 }
@@ -688,7 +695,9 @@ a {
     display: block;
     object-fit: cover;
 }
-
+.property-imageheightbanner {
+    height: 28vh;
+}
 .property-imageheight {
     height: 25.1vh;
 }
@@ -790,6 +799,9 @@ a {
 .imagecontrollerheight {
     height: 78vh;
 }
+.imagecontrollerheightextra {
+    height: 64vh;
+}
 
 @media (max-width: 600px) {
     .imagecontrollermd {
@@ -867,14 +879,15 @@ a {
 }
 
 .nextui {
+
     list-style: none;
 }
+
 .nextui .nextli a{
     /* background: #000; */
     padding: 12px 26px;
     color: rgb(255, 255, 255) !important;
 }
-
 @media (max-width: 600px) {
     .nextui .nextli {
         /* background: #000; */
@@ -1106,7 +1119,7 @@ a {
 .bur-menu {
     display: none;
     z-index: 1000;
-    background: var(--offgreen);
+    background: var(--green);
     height: 84vh;
     width: 25vw;
     position: absolute;
@@ -1197,6 +1210,11 @@ a {
     background: var(--offgreen);
     cursor: pointer;
 }
+.propertiesfindersearching {
+    bottom: 0rem;
+    top: 1rem;
+    left: 0;
+}
 
 .propertiesfinderhome {
     bottom: 0rem;
@@ -1213,6 +1231,9 @@ a {
 }
 
 .hiddenform {
+    display: flex;
+}
+.searchingform {
     display: flex;
 }
 
@@ -1489,3 +1510,21 @@ a {
     bottom: 5rem;
     background-color: black;
 }
+.advance:hover{
+    color:var(--text-offblack);
+    cursor:pointer;
+
+
+
+}
+
+.amenities {
+    background-color: blanchedalmond;
+    border-radius: 8px;
+    display: none;
+  }
+
+  .nameofthing {
+    padding-left: 8px;
+
+  }

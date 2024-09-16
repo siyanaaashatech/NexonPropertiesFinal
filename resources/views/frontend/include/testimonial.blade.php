@@ -24,46 +24,36 @@
               {{ strlen(strip_tags($testimonial->review)) > 200
         ? substr(strip_tags($testimonial->review), 0, 300) . "..."
         : strip_tags($testimonial->review) 
-      }}
-
+            }}
               </p>
               <div class="d-flex  pt-2">
-            
               @php
-              $images = json_decode($testimonial->image, true); // Decode the JSON array into a PHP array
-              @endphp
+        $images = json_decode($testimonial->image, true); // Decode the JSON array into a PHP array
+        @endphp
               @if (!empty($images))
-              @foreach ($images as $image)
-              <img class="" data-src="holder.js/200x250?theme=thumb"
-                src="{{ asset('storage/testimonials/' . basename($image)) }}" alt="Blog image"
-                style="height:14vh; width:130px ;border-radius:8px;">
-              @endforeach
-              @else
-                <p>No images available</p>
-              @endif
-              
+          @foreach ($images as $image)
+        <img class="" data-src="holder.js/200x250?theme=thumb"
+        src="{{ asset('storage/testimonials/' . basename($image)) }}" alt="Blog image"
+        style="height:14vh; width:130px ;border-radius:8px;">
+      @endforeach
+        @else
+        <p>No images available</p>
+      @endif
               <div class="mx-4">
                 <div class="md-text media-md-text ">{{$testimonial->title}}</div>
                 <div class="sm-text">{{$testimonial->title}}</div>
               </div>
               </div>
-
             </div>
             </div>
-
           </div>
-
     @endforeach
-
       </div>
       <div class="col-md-2 mx-md-4 d-flex gap-2 pt-2">
         <button class="next-button" id="forward" onclick="forward()"><i class="fa-solid fa-arrow-right "></i></button>
         <button class="next-button" id="backward" onclick="backward()"><i class="fa-solid fa-arrow-left "></i></button>
-
       </div>
-
     </div>
-
   </div>
 </section>
 
