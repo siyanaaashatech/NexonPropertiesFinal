@@ -22,9 +22,10 @@ class FrontViewController extends Controller
         $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
         $properties = Property::where('status', 1)->latest()->take(6)->get();
         $categories = Category::all(); // Assuming categories don't have a status
+        $subcategories = SubCategory::all();
     
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories'
         ]));
     }
     
