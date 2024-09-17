@@ -169,7 +169,7 @@ class AboutUsController extends Controller
                 $images = $newImages;  // Replace old images with new ones
             }
         }
-    
+        
         // Update or create metadata record
         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $aboutUs->metadata()->updateOrCreate([], [
@@ -190,7 +190,6 @@ class AboutUsController extends Controller
         ]);
     
         session()->flash('success', 'AboutUs updated successfully.');
-    
         return redirect()->route('aboutus.index');
     }
 
