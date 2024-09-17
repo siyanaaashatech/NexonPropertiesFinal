@@ -12,6 +12,7 @@ class Service extends Model
         'title',
         'subtitle',
         'description',
+        'keywords',
         'image',
         'status',
         'metadata_id'

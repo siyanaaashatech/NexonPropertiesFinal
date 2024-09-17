@@ -29,11 +29,13 @@ class Property extends Model
         'availability_status',
         'rental_period',
         'other_images',
-        'metadata_id'
+        'metadata_id',
+        'update_time' 
     ];
 
     protected $casts = [
         'other_images' => 'array', // Handle multi-image upload as an array
+        'update_time' => 'date',
     ];
 
     // Relationships

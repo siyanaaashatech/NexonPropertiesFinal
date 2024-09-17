@@ -1,74 +1,46 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use DOMDocument;
-
+use Intervention\Image\Facades\Image;
 class SummernoteContent extends Model
 {
-    // Define the table associated with the model
-    protected $table = 'summernote_contents'; // Adjust this as needed
-
-    // Define the attributes that are mass assignable
-    protected $fillable = ['content'];
-
-    /**
-     * Process Summernote content to sanitize and handle file uploads.
-     *
-     * @param string $content
-     * @return string
-     */
-    public function processContent(string $content): string
+    public function processContent($content)
     {
-        $dom = new DOMDocument();
-        libxml_use_internal_errors(true); // Suppress DOMDocument warnings
-        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
-
-        $images = $dom->getElementsByTagName('img');
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
-
-            if (preg_match('/^data:image\/(\w+);base64,/', $src, $type)) {
-                $data = substr($src, strpos($src, ',') + 1);
-                $data = base64_decode($data);
-                $extension = strtolower($type[1]);
-
-                $filename = uniqid() . '.' . $extension;
-                $filePath = 'uploads/summernote/' . $filename;
-
-                Storage::disk('public')->put($filePath, $data);
-
-                $img->setAttribute('src', Storage::url($filePath));
+        if ($content != '') {
+            $dom = new \DomDocument();
+            $content = preg_replace('/<(\w+):(\w+)>/', '&lt;\1:\2&gt;', $content);
+            $content = preg_replace('/<\/(\w+):(\w+)>/', '&lt;/\1:\2&gt;', $content);
+            libxml_use_internal_errors(true);
+            $dom->loadHtml('<meta http-equiv="Content-Type" content="charset=utf-8" />' . $content);
+            libxml_clear_errors();
+            $images = $dom->getElementsByTagName('img');
+            // Loop through each <img> tag in the submitted content
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
+                $src = str_replace('http://127.0.0.1:8000/', 'http://127.0.0.1:8000/', $src);
+                $img->removeAttribute('src');
+                $img->setAttribute('src', $src);
+                // If the image source is a data URL, process it
+                if (preg_match('/data:image/', $src)) {
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
+                    $filename = uniqid();
+                    $filepath = 'uploads/' . $filename . '.' . $mimetype;
+                    // Use Intervention Image to encode and save the image
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
+                    // Update the image source to the newly saved image URL
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
+                }
             }
+            // Remove unnecessary HTML tags from the content
+            $html_cut = preg_replace('~<(?:!DOCTYPE|/?(?:html|body|head|meta))[^>]>\s~i', '', $dom->saveHTML());
+            return $html_cut;
+        } else {
+            return $content;
         }
-
-        return $dom->saveHTML();
-    }
-
-    /**
-     * Get the content attribute with processing.
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getContentAttribute($value)
-    {
-        // Process content if needed before returning
-        return $value;
-    }
-
-    /**
-     * Set the content attribute and process it.
-     *
-     * @param string $value
-     * @return void
-     */
-    public function setContentAttribute($value)
-    {
-        // Process content before saving
-        $this->attributes['content'] = $this->processContent($value);
     }
 }

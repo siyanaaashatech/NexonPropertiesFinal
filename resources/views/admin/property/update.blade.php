@@ -51,28 +51,29 @@
                         </div>
 
                         <!-- Category -->
-                        <div class="form-group mb-3">
-                            <label for="category_id">Category</label>
-                            <select class="form-control" id="category_id" name="category_id" required>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ $property->category_id == $category->id ? 'selected' : '' }}>
-                                        {{ $category->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-group mb-3">
+                        <label for="category_id">Category</label>
+                        <select class="form-control" id="category_id" name="category_id" required>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ $property->category_id == $category->id ? 'selected' : '' }}>
+                                    {{ $category->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <!-- Sub Category -->
-                        <div class="form-group mb-3">
-                            <label for="sub_category_id">Sub Category</label>
-                            <select class="form-control" id="sub_category_id" name="sub_category_id" required>
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" {{ $property->sub_category_id == $subCategory->id ? 'selected' : '' }}>
-                                        {{ $subCategory->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <!-- Sub Category -->
+                    <div class="form-group mb-3">
+                        <label for="sub_category_id">Sub Category</label>
+                        <select class="form-control" id="sub_category_id" name="sub_category_id" required>
+                            @foreach($subCategories as $subCategory)
+                                <option value="{{ $subCategory->id }}" {{ $property->sub_category_id == $subCategory->id ? 'selected' : '' }}>
+                                    {{ $subCategory->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
 
                         <!-- Street -->
                         <div class="form-group mb-3">
@@ -158,6 +159,15 @@
                             <img id="cropped-image-preview" style="max-width: 100%; max-height: 200px; display: block;">
                         </div>
                         <div class="form-group mb-3">
+                            <label for="other_images">Other Images</label>
+                            <input type="file" id="other_images" class="form-control" name="other_images[]" multiple>
+                        </div>
+                        <!-- Other Images Preview -->
+                        <div class="form-group mb-3" id="other-images-preview-container" style="display: none;">
+                            <label>Selected Other Images Preview:</label>
+                            <div id="other-images-preview" style="display: flex; flex-wrap: wrap;"></div>
+                        </div>
+                        <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
                                 <input type="radio" name="status" id="status_active" value="1" class="form-check-input" 
@@ -169,6 +179,11 @@
                                        {{ old('status', $property->status) == '0' ? 'checked' : '' }} required>
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="googlemap">Google Map</label>
+                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap', $property->googlemap) }}" required>
                         </div>
 
                         <div class="form-group">
@@ -311,5 +326,29 @@
             toast.show();
         }
     });
+    //For dynamic loading subcategories
+    
+    document.getElementById('category_id').addEventListener('change', function () {
+        const categoryId = this.value;
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Clear existing options
+        subCategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+
+        if (categoryId) {
+            fetch(`{{ url('/subcategories') }}/${categoryId}`)
+                .then(response => response.json())
+                .then(subcategories => {
+                    subcategories.forEach(subcategory => {
+                        const option = document.createElement('option');
+                        option.value = subcategory.id;
+                        option.textContent = subcategory.title;
+                        subCategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching subcategories:', error));
+        }
+    });
+</script>
 </script>
 @endsection

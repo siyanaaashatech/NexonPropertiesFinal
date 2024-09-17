@@ -1,45 +1,104 @@
 <?php
 namespace App\Http\Controllers;
+
 use App\Models\Service;
+use App\Models\Property;
+use App\Models\SubCategory;
+use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Testimonial;
+use App\Models\Team;
+use App\Models\FAQ;
+use App\Models\AboutDescription;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+
 class SingleController extends Controller
 {
-    public function render_service()
-    {
-        $services = Service::latest()->get();
-        return view('frontend.properties', compact( 'services'));
-    }
-
     public function render_about()
     {
-        $testimonials=Testimonial::latest()->get();
-        $services = Service::latest()->get();
-        return view('frontend.about', compact( 'services' ,'testimonials'));
+        $testimonials = Testimonial::where('status', 1)->latest()->get();
+        $teams = Team::where('status', 1)->latest()->get();
+        $faqs = FAQ::where('status', 1)->latest()->get();
+        $aboutDescriptions = AboutDescription::where('status', 1)->latest()->get();
+        
+        return view('frontend.about', compact('aboutDescriptions', 'teams', 'testimonials', 'faqs'));
     }
+
     public function render_blog()
     {
-        $blogs = Blog::latest()->get();
-        $services =Service::latest()->get();
-        return view('frontend.blog', compact( 'blogs' ,'services'));
+        $blogs = Blog::where('status', 1)->latest()->get();
+        $properties = Property::where('status', 1)->latest()->get();
+        $categories = Category::all();
+        
+        return view('frontend.blog', compact('blogs', 'properties', 'categories'));
     }
+
     public function singlePost($id)
     {
-        $blogs = Blog::where('id', $id)->firstOrFail();
-        $services = Service::latest()->get();
-        $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
-        return view('frontend.singleblogpost', compact('blogs','relatedPosts','services'));
+        $blogs = Blog::where('id', $id)->where('status', 1)->firstOrFail();
+        $properties = Property::where('status', 1)->latest()->get();
+        $relatedPosts = Blog::where('id', '!=', $blogs->id)->where('status', 1)->get();
+        
+        return view('frontend.singleblogpost', compact('blogs', 'relatedPosts', 'properties'));
+    }
+
+    public function render_properties()
+    {
+        $subcategories = SubCategory::all();
+        $properties = Property::where('status', 1)->latest()->get();
+        $categories = Category::all(); 
+        
+        return view('frontend.properties', compact('properties', 'categories', 'subcategories'));
     }
 
     public function render_singleProperties($id)
     {
-        $services = Service::where('id', $id)->firstOrFail();
-        $relatedService = Service::where('id', '!=', $services->id)->get();
-        return view('frontend.singleproperties', compact('services','relatedService'));
+        // Fetch the property by ID and ensure it's active
+        $categories = Category::all(); 
+        $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
+        $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
+        
+        // Handle the 'other_images' field if it exists
+        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+        
+        return view('frontend.singleproperties', compact('categories', 'properties', 'relatedProperties', 'otherImages'));
     }
-    
-    
+
+    public function render_contact()
+    {
+        $siteSettings = SiteSetting::where('status', 1)->latest()->get();
+        $categories = Category::all(); 
+        
+        return view('frontend.contact', compact('categories', 'siteSettings'));
+    }
+
+    public function render_search()
+    {
+        $properties = Property::where('status', 1)->latest()->get();
+        
+        return view('frontend.searching', compact('properties'));
+    }
+
+    public function properties(Request $request, $categoryId = null)
+{
+    // Fetch all categories for the navbar
+    $categories = Category::all();
+
+    // Get the categoryId from the request query
+    $categoryId = $request->query('categoryId');
+
+    // Fetch properties filtered by category and active status
+    $propertiesQuery = Property::where('status', 1); // Ensure properties are active
+
+    if ($categoryId) {
+        $propertiesQuery->where('category_id', $categoryId); // Filter by category
+    }
+
+    // Paginate the results
+    $properties = $propertiesQuery->paginate(6); // You can adjust the number of properties per page
+
+    return view('frontend.properties', compact('properties', 'categories'));
 }
 
-
+}

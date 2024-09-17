@@ -38,10 +38,11 @@ class CategoryController extends Controller
         ]);
 
         // Create metadata dynamically based on category title
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
             'meta_title' => $request->title,
             'meta_description' => "Description for " . $request->title,
-            'meta_keywords' => $request->meta_keywords,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title),
         ]);
 
@@ -86,10 +87,11 @@ class CategoryController extends Controller
         ]);
 
         // Update metadata with the updated title and other fields
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata->update([
             'meta_title' => $request->title,
             'meta_description' => "Description for " . $request->title,
-            'meta_keywords' => $request->meta_keywords,
+            'meta_keywords' =>json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title),
         ]);
 

@@ -53,9 +53,10 @@
                             <input type="text" name="subtitle" id="subtitle" class="form-control" value="{{ old('subtitle') }}" required>
                         </div>
 
+
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control summernote" rows="5" required>{{ old('description') }}</textarea>
+                            <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description') }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
@@ -64,9 +65,15 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label for="image">Images</label>
+                            <input type="file" name="image[]" id="image" class="form-control" multiple required>
+                        </div>
+
+                        {{-- <!-- Image Upload with Cropper.js -->
+                        <div class="form-group mb-3">
                             <label for="image">Image</label>
                             <input type="file" id="image" class="form-control" required>
-                        </div>
+                        </div> --}}
 
                         <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
@@ -92,7 +99,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create About Us</button>
                             <a href="{{ route('aboutus.index') }}" class="btn btn-secondary">Cancel</a>
@@ -113,7 +119,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="width: 100%; display: none;">
+                <img id="image-preview" style="width: 10%; height: 10%; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -124,8 +130,8 @@
 </div>
 
 <!-- Include Cropper.js -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <script>
     let cropper;
@@ -185,16 +191,6 @@
         }, 'image/png');
     });
 
-    // Initialize Summernote
-    $(document).ready(function() {
-        $('.summernote').summernote({
-            height: 300,
-            minHeight: null,
-            maxHeight: null,
-            focus: true
-        });
-    });
-
     // Show toast message after form submission
     document.addEventListener('DOMContentLoaded', function () {
         if (document.querySelector('.toast')) {
@@ -204,5 +200,3 @@
     });
 </script>
 @endsection
-</body>
-</html>

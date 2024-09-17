@@ -17,9 +17,9 @@ class Metadata extends Model
 
     // Relationships
     public function siteSettings()
-    {
-        return $this->hasMany(SiteSetting::class);
-    }
+{
+    return $this->hasMany(SiteSetting::class, 'metadata_id');
+}
 
     public function aboutUs()
     {
@@ -39,5 +39,10 @@ class Metadata extends Model
     public function blog()
     {
         return $this->hasMany(Blog::class);
+    }
+
+    public function whyUs()
+    {
+        return $this->hasMany(whyUs::class);
     }
 }
