@@ -118,42 +118,42 @@ class ServiceController extends Controller
             'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'keywords' => 'nullable|string',
-            'image' => 'sometimes|array',
-            'image.*' => 'required|string',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|string',
             'status' => 'required|boolean',
-            'cropData' => 'sometimes|string',
+            'cropData' => 'nullable|string',
         ]);
-
+    
         $images = !empty($service->image) ? json_decode($service->image, true) : [];
-
-        if ($request->has('image')) {
-            foreach ($request->input('image') as $base64Image) {
-                if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+    
+        if ($request->has('image') && is_array($request->image)) {
+            foreach ($request->image as $base64Image) {
+                if (is_string($base64Image) && preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
                     $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
                     $decodedImage = base64_decode($base64Image);
-
+    
                     if ($decodedImage === false) {
                         continue;
                     }
-
+    
                     $imageType = strtolower($type[1]);
                     if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
                         continue;
                     }
-
+    
                     $imageResource = imagecreatefromstring($decodedImage);
                     if ($imageResource !== false) {
                         $imageName = time() . '-' . Str::uuid() . '.webp';
                         $destinationPath = storage_path('app/public/services');
-
+    
                         if (!File::exists($destinationPath)) {
                             File::makeDirectory($destinationPath, 0755, true, true);
                         }
-
+    
                         $savedPath = $destinationPath . '/' . $imageName;
                         imagewebp($imageResource, $savedPath);
                         imagedestroy($imageResource);
-
+    
                         $relativeImagePath = 'storage/services/' . $imageName;
                         $images[] = $relativeImagePath;
                     }
@@ -171,22 +171,25 @@ class ServiceController extends Controller
                 'slug' => Str::slug($request->title)
             ]
         );
-
-        $service->update([
+    
+        $serviceData = [
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'description' => $request->description,
             'keywords' => $request->keywords,
-            'image' => json_encode($images),
             'status' => $request->status,
             'metadata_id' => $metadata->id,
-        ]);
-
+        ];
+    
+        if (!empty($images)) {
+            $serviceData['image'] = json_encode($images);
+        }
+    
+        $service->update($serviceData);
+    
         return redirect()->route('services.index')
                          ->with('success', 'Service updated successfully.');
     }
-
-    
 
     /**
      * Remove the specified service from storage.

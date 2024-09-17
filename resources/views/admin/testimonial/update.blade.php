@@ -47,7 +47,7 @@
                         @endphp
                         @if(is_array($images) && count($images) > 0)
                             @foreach($images as $image)
-                                <img src="{{ asset($image) }}" alt="Blog Image" style="max-width: 200px; max-height: 200px;">
+                                <img src="{{ asset($image) }}" alt="Testimonial Image" style="max-width: 200px; max-height: 200px;">
                             @endforeach
                         @else
                             <p>No valid image data found.</p>
@@ -89,8 +89,6 @@
         </form>
     </div>
 </div>
-
-
 
 
     <!-- Modal for Image Cropping -->
@@ -179,19 +177,20 @@
         if (!cropper) return;
 
         const cropData = cropper.getData();
-        document.getElementById('cropData').value = JSON.stringify({
+        document.getElementById('cropData').value = JSON.stringify([{
             width: Math.round(cropData.width),
             height: Math.round(cropData.height),
             x: Math.round(cropData.x),
             y: Math.round(cropData.y),
-        });
+        }]);
 
         cropper.getCroppedCanvas().toBlob((blob) => {
             const reader = new FileReader();
             reader.readAsDataURL(blob);
             reader.onloadend = function () {
-                document.getElementById('existing_image').value = JSON.stringify([reader.result]);
-                displayExistingImage();
+                document.getElementById('croppedImage').value = reader.result;
+                document.getElementById('cropped-image-preview').src = reader.result;
+                document.getElementById('cropped-preview-container').style.display = 'block';
             };
 
             // Close modal after saving crop

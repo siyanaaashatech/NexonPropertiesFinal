@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\AboutUs;
 use App\Models\Metadata;
 use Illuminate\Http\Request;
-use App\Models\SummernoteContent;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
@@ -18,8 +17,7 @@ class AboutUsController extends Controller
     public function index()
     {
         $aboutUs = AboutUs::with('metadata')->latest()->get();
-        $summernoteContent = new SummernoteContent();
-        return view('admin.aboutus.index', compact('aboutUs','summernoteContent'));
+        return view('admin.aboutus.index', compact('aboutUs'));
     }
 
     /**
@@ -27,125 +25,35 @@ class AboutUsController extends Controller
      */
     public function create()
     {
-        $summernoteContent = new SummernoteContent();
+        
         $metadata = Metadata::all();
-        return view('admin.aboutus.create', compact('metadata','summernoteContent'));
+        return view('admin.aboutus.create', compact('metadata'));
     }
 
     /**
      * Store a newly created AboutUs in storage.
      */
     
-     public function store(Request $request)
-     {
-         $request->validate([
-             'title' => 'required|string|max:255',
-             'subtitle' => 'required|string|max:255',
-             'description' => 'required|string',
-             'keywords' => 'nullable|string',
-             'croppedImage' => 'required|json',
-             'cropData' => 'required|json',
-             'status' => 'required|boolean',
-         ]);
-     
-         $croppedImages = json_decode($request->input('croppedImage'), true);
-         $cropData = json_decode($request->input('cropData'), true);
-     
-         $images = [];
-     
-         foreach ($croppedImages as $index => $base64Image) {
-             $image = explode(',', $base64Image);
-             $imageData = base64_decode($image[1]);
-     
-             $imageName = time() . '-' . Str::uuid() . '.webp';
-             $destinationPath = storage_path('app/public/aboutus');
-     
-             if (!File::exists($destinationPath)) {
-                 File::makeDirectory($destinationPath, 0755, true, true);
-             }
-     
-             $savedPath = $destinationPath . '/' . $imageName;
-             file_put_contents($savedPath, $imageData);
-     
-             $relativeImagePath = 'storage/aboutus/' . $imageName;
-             $images[] = $relativeImagePath;
-         }
-     
-         // Preprocess the description
-         $summernoteContent = new SummernoteContent(); 
-         $processedDescription = $summernoteContent->processContent($request->input('description'));
-     
-         // Handle metadata
-         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
-         $metadata = Metadata::create([
-             'meta_title' => $request->title,
-             'meta_description' => $processedDescription, // Use processed description
-             'meta_keywords' => json_encode($metaKeywordsArray),
-             'slug' => Str::slug($request->title),
-         ]);
-     
-         AboutUs::create([
-             'title' => $request->title,
-             'subtitle' => $request->subtitle,
-             'description' => $processedDescription, // Use processed description
-             'keywords' => $request->keywords,
-             'image' => json_encode($images),
-             'status' => $request->status,
-             'metadata_id' => $metadata->id,
-         ]);
-     
-         session()->flash('success', 'AboutUs created successfully.');
-     
-         return redirect()->route('aboutus.index');
-     }
-     
     
-
-    /**
-     * Show the form for editing the specified aboutus
-     */
-    public function edit($id)
-    {
-        $aboutUs = AboutUs::findOrFail($id); 
-        return view('admin.aboutus.update', compact('aboutUs'));
-    }
-    /**
-     * Update the specified aboutus in storage.
-     */
-    public function update(Request $request, $id)
+    public function store(Request $request)
 {
-    $aboutUs = AboutUs::findOrFail($id);
-    
     $request->validate([
         'title' => 'required|string|max:255',
         'subtitle' => 'required|string|max:255',
         'description' => 'required|string',
         'keywords' => 'nullable|string',
-        'croppedImage' => 'nullable|json',
-        'cropData' => 'nullable|json',
         'status' => 'required|boolean',
+        'cropData' => 'nullable|string',
     ]);
 
-    $croppedImages = json_decode($request->input('croppedImage'), true);
-    $cropData = json_decode($request->input('cropData'), true);
-
+    // Handle base64 image processing
+    $croppedImage = $request->input('croppedImage');
     $images = [];
 
-    // Delete old images
-    $oldImages = json_decode($aboutUs->image, true);
-    if ($oldImages) {
-        foreach ($oldImages as $oldImage) {
-            $oldImagePath = storage_path('app/public/' . str_replace('storage/', '', $oldImage));
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-        }
-    }
-
-    // Process and save new images
-    foreach ($croppedImages as $index => $base64Image) {
-        $image = explode(',', $base64Image);
-        $imageData = base64_decode($image[1]);
+    if ($croppedImage) {
+        $base64Image = str_replace('data:image/png;base64,', '', $croppedImage);
+        $base64Image = str_replace(' ', '+', $base64Image);
+        $imageData = base64_decode($base64Image);
 
         $imageName = time() . '-' . Str::uuid() . '.webp';
         $destinationPath = storage_path('app/public/aboutus');
@@ -161,52 +69,138 @@ class AboutUsController extends Controller
         $images[] = $relativeImagePath;
     }
 
-    // Preprocess the description
-    $summernoteContent = new SummernoteContent(); // Assuming this is your service for processing content
-    $processedDescription = $summernoteContent->processContent($request->input('description'));
-
-    // Update or create metadata record
+    // Handle metadata
     $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
-    $aboutUs->metadata()->updateOrCreate([], [
+    $metadata = Metadata::create([
         'meta_title' => $request->title,
         'meta_description' => $request->description,
         'meta_keywords' => json_encode($metaKeywordsArray),
         'slug' => Str::slug($request->title),
     ]);
 
-    // Update aboutus record
-    
-    $aboutUs->update([
+    AboutUs::create([
         'title' => $request->title,
         'subtitle' => $request->subtitle,
-        'description' => $processedDescription,
+        'description' => $request->description,
         'keywords' => $request->keywords,
         'image' => json_encode($images),
         'status' => $request->status,
+        'metadata_id' => $metadata->id,
     ]);
 
-    session()->flash('success', 'AboutUs updated successfully.');
-
+    session()->flash('success', 'About Us entry created successfully.');
     return redirect()->route('aboutus.index');
 }
 
+
+    
+
     /**
-     * Remove the specified aboutus from storage.
+     * Show the form for editing the specified aboutus
      */
-    public function destroy(AboutUs $aboutUs)
+    public function edit($id)
     {
-        $images = json_decode($aboutUs->image, true);
-        if ($images) {
-            foreach ($images as $image) {
-                $filePath = storage_path('app/' . $image);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
+        $aboutUs = AboutUs::findOrFail($id); 
+        return view('admin.aboutus.update', compact('aboutUs'));
+    }
+    /**
+     * Update the specified aboutus in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $aboutUs = AboutUs::findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
+            'description' => 'required|string',
+            'keywords' => 'nullable|string',
+            'croppedImage' => 'nullable|string',
+            'cropData' => 'nullable|string',
+            'status' => 'required|boolean',
+        ]);
+    
+        $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
+        $images = $aboutUs->image ? json_decode($aboutUs->image, true) : [];
+        
+        // Handle new images
+        if ($request->has('croppedImage') && $request->input('croppedImage')) {
+            $croppedImages = json_decode($request->input('croppedImage'), true);
+            
+            if (!empty($croppedImages)) {
+                $newImages = [];
+                foreach ($croppedImages as $base64Image) {
+                    if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+                        $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+                        $decodedImage = base64_decode($base64Image);
+    
+                        if ($decodedImage !== false) {
+                            $imageType = strtolower($type[1]);
+                            if (in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
+                                $imageResource = imagecreatefromstring($decodedImage);
+                                if ($imageResource !== false) {
+                                    $imageName = time() . '-' . Str::uuid() . '.webp';
+                                    $destinationPath = storage_path('app/public/aboutus');
+    
+                                    if (!File::exists($destinationPath)) {
+                                        File::makeDirectory($destinationPath, 0755, true, true);
+                                    }
+    
+                                    $savedPath = $destinationPath . '/' . $imageName;
+                                    imagewebp($imageResource, $savedPath);
+                                    imagedestroy($imageResource);
+    
+                                    $relativeImagePath = 'storage/aboutus/' . $imageName;
+                                    $newImages[] = $relativeImagePath;
+                                }
+                            }
+                        }
+                    }
                 }
+                
+                // Delete old images
+                foreach ($images as $oldImage) {
+                    $oldImagePath = storage_path('app/public/' . $oldImage);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+                
+                $images = $newImages;  // Replace old images with new ones
             }
         }
+    
+        // Update or create metadata record
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
+        $aboutUs->metadata()->updateOrCreate([], [
+            'meta_title' => $request->title,
+            'meta_description' => $request->description,
+            'meta_keywords' => json_encode($metaKeywordsArray),
+            'slug' => Str::slug($request->title),
+        ]);
+    
+        // Update aboutus record
+        $aboutUs->update([
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'description' => $request->description,
+            'keywords' => $request->keywords,
+            'image' => json_encode($images),
+            'status' => $request->status,
+        ]);
+    
+        session()->flash('success', 'AboutUs updated successfully.');
+    
+        return redirect()->route('aboutus.index');
+    }
 
+    /* Remove the specified aboutus from storage.
+     */
+    public function destroy($id)
+    {
+        $aboutUs = AboutUs::findOrFail($id);
         $aboutUs->delete();
-
-        return redirect()->route('aboutus.index')->with('success', 'AboutUs deleted successfully.');
+        return redirect()->route('aboutus.index')
+                         ->with('success', 'About us deleted successfully.');
     }
 }

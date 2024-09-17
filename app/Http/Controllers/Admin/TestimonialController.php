@@ -112,29 +112,57 @@ class TestimonialController extends Controller
         'designation' => 'nullable|string|max:255',
         'review' => 'required|string',
         'rating' => 'required|integer|min:1|max:5',
+        'image' => 'nullable|array',
         'image.*' => 'nullable|string',
         'status' => 'required|boolean',
         'cropData' => 'nullable|string',
     ]);
-    // Find the testimonial and update it
+
+    // Find the testimonial to update
     $testimonial = Testimonial::findOrFail($id);
-    // Prepare testimonial data
-    $testimonialData = $request->except('image'); // Exclude raw image input
-    if ($request->has('image')) {
+
+    // Update basic fields
+    $testimonial->title = $request->input('title');
+    $testimonial->designation = $request->input('designation');
+    $testimonial->review = $request->input('review');
+    $testimonial->rating = $request->input('rating');
+    $testimonial->status = $request->input('status');
+
+    // Handle image update
+    if ($request->has('image') && is_array($request->input('image')) && count($request->input('image')) > 0) {
         $images = [];
-        foreach ($request->input('image') as $base64Image) {
-            // Handle base64 image as before
+        $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
+
+        foreach ($request->input('image') as $index => $base64Image) {
             if (strpos($base64Image, 'data:image') === 0) {
-                $image_parts = explode(',', $base64Image);
-                $image_base64 = base64_decode($image_parts[1]);
-                $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/public/testimonials');
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0755, true, true);
-                }
-                $savedPath = $destinationPath . '/' . $imageName;
-                $imageResource = imagecreatefromstring($image_base64);
+                $image = explode(',', $base64Image);
+                $decodedImage = base64_decode($image[1]);
+                $imageResource = imagecreatefromstring($decodedImage);
+
                 if ($imageResource !== false) {
+                    // Apply cropping if cropData is available
+                    if ($cropData && isset($cropData[$index])) {
+                        $crop = $cropData[$index];
+                        $croppedImage = imagecrop($imageResource, [
+                            'x' => $crop['x'],
+                            'y' => $crop['y'],
+                            'width' => $crop['width'],
+                            'height' => $crop['height']
+                        ]);
+                        if ($croppedImage !== false) {
+                            imagedestroy($imageResource);
+                            $imageResource = $croppedImage;
+                        }
+                    }
+
+                    $imageName = time() . '-' . Str::uuid() . '.webp';
+                    $destinationPath = storage_path('app/public/testimonials');
+
+                    if (!File::exists($destinationPath)) {
+                        File::makeDirectory($destinationPath, 0755, true, true);
+                    }
+
+                    $savedPath = $destinationPath . '/' . $imageName;
                     imagewebp($imageResource, $savedPath);
                     imagedestroy($imageResource);
                     $relativeImagePath = 'storage/testimonials/' . $imageName;
@@ -142,12 +170,32 @@ class TestimonialController extends Controller
                 }
             }
         }
-        $testimonialData['image'] = json_encode($images); // Store paths as JSON
+
+        if (!empty($images)) {
+            // Delete old images
+            $oldImages = json_decode($testimonial->image, true);
+            if (is_array($oldImages)) {
+                foreach ($oldImages as $oldImage) {
+                    $oldImagePath = storage_path('app/public/' . str_replace('storage/', '', $oldImage));
+                    if (File::exists($oldImagePath)) {
+                        File::delete($oldImagePath);
+                    }
+                }
+            }
+
+            $testimonial->image = json_encode($images);
+        }
     }
-    $testimonial->update($testimonialData);
-    return redirect()->route('testimonials.index')
-                     ->with('success', 'Testimonial updated successfully.');
+
+    // Save the updated testimonial
+    $testimonial->save();
+
+    // Flash message and redirect
+    session()->flash('success', 'Testimonial updated successfully.');
+    return redirect()->route('testimonials.index');
 }
+
+
     /**
      * Remove the specified testimonial from storage.
      *
