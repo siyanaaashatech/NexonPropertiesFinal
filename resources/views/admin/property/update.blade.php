@@ -159,6 +159,15 @@
                             <img id="cropped-image-preview" style="max-width: 100%; max-height: 200px; display: block;">
                         </div>
                         <div class="form-group mb-3">
+                            <label for="other_images">Other Images</label>
+                            <input type="file" id="other_images" class="form-control" name="other_images[]" multiple>
+                        </div>
+                        <!-- Other Images Preview -->
+                        <div class="form-group mb-3" id="other-images-preview-container" style="display: none;">
+                            <label>Selected Other Images Preview:</label>
+                            <div id="other-images-preview" style="display: flex; flex-wrap: wrap;"></div>
+                        </div>
+                        <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
                                 <input type="radio" name="status" id="status_active" value="1" class="form-check-input" 

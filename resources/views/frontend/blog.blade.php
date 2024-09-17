@@ -8,10 +8,8 @@
     <div class="row">
       <div class="col-md-8">
         <div class="row d-flex flex- col ">
-
           @foreach ($blogs as $blog)
             <div class="col-md-12 mb-5">
-
             @php
         $images = json_decode($blog->image, true); // Decode the JSON array into a PHP array
         @endphp
@@ -36,12 +34,12 @@
               <i class="fa-solid fa-building customiconssmall pt-1 mx-1"></i>
               <h2 class="sm-text">type</h2>
               </div>
-
             </div>
             <h5 class="md-text">{{$blog->title}}</h5>
             <p class="sm-text py-1"> {!! Str::limit(strip_tags($blog->description), 200, '...') !!}</p>
             <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttonyellow">Read more</a>
             </div>
+            
       @endforeach
         </div>
       </div>
@@ -52,21 +50,14 @@
         <div class="paddingbox ">
           <h2 class="md-text1">Recent post</h2>
           <ul class="customui">
-
             @foreach ($blogs as $blog)
         <li class="py-1">
-          <a href="{{ route('singleblogpost' , ["id"=>$blog->id])}}" class="md-text"> <i
+          <a href="{{ route('singleblogpost', ["id" => $blog->id])}}" class="md-text"> <i
             class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
           {{$blog->title}}</a>
         </li>
-
       @endforeach
-
-
-
-
           </ul>
-
         </div>
         <div class="paddingbox nobackground">
           <h2 class="md-text">feature list</h2>
@@ -85,20 +76,12 @@
                 <p class="sm-text highlight"> {{$property->price}}</p>
                 </div>
               </a>
-
       @endforeach
-
-
-
-
           </div>
         </div>
-
       </div>
     </div>
-
   </div>
-
 </section>
 
 
