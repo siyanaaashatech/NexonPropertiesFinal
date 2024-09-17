@@ -38,7 +38,6 @@
 
                         mainInput.nepaliDatePicker();
 
-
                     };
                 </script>
             </div>
