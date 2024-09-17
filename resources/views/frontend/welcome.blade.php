@@ -20,6 +20,7 @@
 
 {{--blog --}}
 @include("frontend.include.blog")
+@include("frontend.include.landproperties")
 
 @endsection
 

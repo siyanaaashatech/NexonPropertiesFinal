@@ -20,7 +20,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Serial No.</th> 
+                                    <th>S.N</th>
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Sub Category</th>
@@ -33,7 +33,7 @@
                             <tbody>
                                 @foreach($properties as $index => $property)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{$loop->iteration}}</td>
                                         <td>{{ $property->title }}</td>
                                         <td>{{ $property->category->title }}</td>
                                         <td>{{ $property->subCategory->title }}</td>

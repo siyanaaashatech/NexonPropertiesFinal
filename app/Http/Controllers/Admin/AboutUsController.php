@@ -1,25 +1,22 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\AboutUs;
 use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-
 class AboutUsController extends Controller
 {
-    /** 
+    /**
      * Display a listing of the aboutus.
      */
     public function index()
     {
         $aboutUs = AboutUs::with('metadata')->latest()->get();
         return view('admin.aboutus.index', compact('aboutUs'));
+        return view('admin.aboutus.index', compact('aboutUs'));
     }
-
     /**
      * Show the form for creating a new AboutUs.
      */
@@ -28,8 +25,8 @@ class AboutUsController extends Controller
         
         $metadata = Metadata::all();
         return view('admin.aboutus.create', compact('metadata'));
+        return view('admin.aboutus.create', compact('metadata'));
     }
-
     /**
      * Store a newly created AboutUs in storage.
      */
@@ -100,7 +97,7 @@ class AboutUsController extends Controller
      */
     public function edit($id)
     {
-        $aboutUs = AboutUs::findOrFail($id); 
+        $aboutUs = AboutUs::findOrFail($id);
         return view('admin.aboutus.update', compact('aboutUs'));
     }
     /**

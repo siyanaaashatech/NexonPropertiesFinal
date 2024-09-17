@@ -44,6 +44,7 @@
                     
                     <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
+                    <option value="" disabled selected>Select subCategory</option>
                     @foreach($subcategories as $subcategory)
               <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
               {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
@@ -54,14 +55,14 @@
                     <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
                     <option value="1">States</option>
-                    <option value="">
+                    
                       @foreach($properties as $property)
               @if(!empty($property->state))
           <option value="{{ $property->state }}" {{ request('state') == $property->state ? 'selected' : '' }}>
           {{ $property->state }}
           </option>
         @endif
-            @endforeach</option>
+            @endforeach
                     </select>
 
 
@@ -82,31 +83,7 @@
                   </div>
                 </form>
 
-                <script>
-                  document.addEventListener('DOMContentLoaded', function () {
-                  const categorySelect = document.getElementById('category_id');
-                  const subCategorySelect = document.getElementById('subcategory_id');
-
-                  function filterSubcategories() {
-                    const selectedCategoryId = categorySelect.value;
-                    const subCategories = subCategorySelect.querySelectorAll('option');
-
-                    subCategories.forEach(option => {
-                    if (!option.value) return; // Skip the "Select Sub-Category" option
-                    option.style.display = option.dataset.categoryId === selectedCategoryId || selectedCategoryId === '' ? 'block' : 'none';
-                    });
-
-                    // Reset subcategory selection when category changes
-                    subCategorySelect.value = '';
-                  }
-
-                  // Initial filter when the page loads
-                  filterSubcategories();
-
-                  // Update subcategories when the category is changed
-                  categorySelect.addEventListener('change', filterSubcategories);
-                  });
-                </script>
+             
                 </div>
               </div>
               </div>
@@ -130,9 +107,9 @@
         $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
          @endphp
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image  property-imageheightbanner">
-              <div class="property-details">
+              <div class="property-details property-detailsbanner px-1">
               <div class="md-text1">
-                {{ strlen($property->title) > 32 ? substr($property->title, 0, 32) . "..." : $property->title}}
+                {{ strlen($property->title) >28 ? substr($property->title, 0, 28) . "..." : $property->title}}
               </div>
               <div class="sm-text highlight text-center p-0 m-0">eedddde</div>
               <div class="d-flex justify-content-between gap-3 p-0 mx-4">
@@ -170,8 +147,9 @@
   </a>
 </section>
 
+
 <section class="container rounded  amenities ">
-  <div class="row p-3" id="advanceitems">
+  <div class="row  p-3" id="advanceitems">
     <div class="d-flex col-md-2 pt-3">
       <input type="checkbox" name="Aircondition" id="">
       <span class="nameofthing">Air Conditioning</span>
@@ -267,7 +245,7 @@
 
 
 
-
+{{--
 
 <section class="container-fluid py-4 propertiesfinder propertiesfinderhome">
   <div class="container">
@@ -304,6 +282,7 @@
     </form>
   </div>
 </section>
+--}}
 
 
 <script>
@@ -367,3 +346,30 @@
   });
 
 </script>
+
+
+<script>
+                  document.addEventListener('DOMContentLoaded', function () {
+                  const categorySelect = document.getElementById('category_id');
+                  const subCategorySelect = document.getElementById('subcategory_id');
+
+                  function filterSubcategories() {
+                    const selectedCategoryId = categorySelect.value;
+                    const subCategories = subCategorySelect.querySelectorAll('option');
+
+                    subCategories.forEach(option => {
+                    if (!option.value) return; // Skip the "Select Sub-Category" option
+                    option.style.display = option.dataset.categoryId === selectedCategoryId || selectedCategoryId === '' ? 'block' : 'none';
+                    });
+
+                    // Reset subcategory selection when category changes
+                    subCategorySelect.value = '';
+                  }
+
+                  // Initial filter when the page loads
+                  filterSubcategories();
+
+                  // Update subcategories when the category is changed
+                  categorySelect.addEventListener('change', filterSubcategories);
+                  });
+                </script>

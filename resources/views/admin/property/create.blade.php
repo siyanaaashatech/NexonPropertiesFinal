@@ -32,8 +32,9 @@
                         </div>
                     @endif
 
-                     <!-- Property creation form -->
-                     <form action="{{ route('property.store') }}" method="POST" enctype="multipart/form-data" id="propertyForm">
+                    <!-- Property creation form -->
+                    <form action="{{ route('property.store') }}" method="POST" enctype="multipart/form-data"
+                        id="propertyForm">
                         @csrf
                         <input type="hidden" name="cropData" id="cropData">
                         <input type="hidden" name="main_image_cropped" id="croppedImage">
@@ -41,13 +42,15 @@
                         <!-- Title -->
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
-                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
+                            <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}"
+                                required>
                         </div>
 
                         <!-- Description -->
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
+                            <textarea name="description" id="description" class="form-control" rows="5"
+                                required>{{ old('description') }}</textarea>
                         </div>
 
                         <!-- Category -->
@@ -68,44 +71,54 @@
                             <label for="sub_category_id">Sub Category</label>
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
-                                <!-- Options will be populated by JavaScript -->
+                                @foreach($subCategories as $subCategory)
+                                    <option value="{{ $subCategory->id }}" {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
+                                        {{ $subCategory->title }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
                         <!-- Street -->
                         <div class="form-group mb-3">
                             <label for="street">Street</label>
-                            <input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}" required>
+                            <input type="text" name="street" id="street" class="form-control"
+                                value="{{ old('street') }}" required>
                         </div>
 
                         <!-- Suburb -->
                         <div class="form-group mb-3">
                             <label for="suburb">Suburb</label>
-                            <input type="text" name="suburb" id="suburb" class="form-control" value="{{ old('suburb') }}" required>
+                            <input type="text" name="suburb" id="suburb" class="form-control"
+                                value="{{ old('suburb') }}" required>
                         </div>
 
                         <!-- State -->
                         <div class="form-group mb-3">
                             <label for="state">State</label>
-                            <input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
+                            <input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}"
+                                required>
                         </div>
 
                         <!-- Post Code -->
                         <div class="form-group mb-3">
                             <label for="post_code">Post Code</label>
-                            <input type="number" name="post_code" id="post_code" min="0" minlength="4" class="form-control" value="{{ old('post_code') }}" required>
+                            <input type="number" name="post_code" id="post_code" min="0" minlength="4"
+                                class="form-control" value="{{ old('post_code') }}" required>
                         </div>
 
                         <!-- Country -->
                         <div class="form-group mb-3">
                             <label for="country">Country</label>
-                            <input type="text" name="country" id="country" class="form-control" value="{{ old('country') }}">
+                            <input type="text" name="country" id="country" class="form-control"
+                                value="{{ old('country') }}">
                         </div>
 
                         <!-- Price -->
                         <div class="form-group mb-3">
                             <label for="price">Price</label>
-                            <input type="number" name="price" id="price" class="form-control" min="0" value="{{ old('price') }}" required>
+                            <input type="number" name="price" id="price" class="form-control" min="0"
+                                value="{{ old('price') }}" required>
                         </div>
 
                         <!-- Price Type -->
@@ -113,70 +126,81 @@
                             <label for="price_type">Price Type</label>
                             <select name="price_type" id="price_type" class="form-control" required>
                                 <option value="fixed" {{ old('price_type') == 'fixed' ? 'selected' : '' }}>Fixed</option>
-                                <option value="negotiable" {{ old('price_type') == 'negotiable' ? 'selected' : '' }}>Negotiable</option>
-                                <option value="on_request" {{ old('price_type') == 'on_request' ? 'selected' : '' }}>On Request</option>
+                                <option value="negotiable" {{ old('price_type') == 'negotiable' ? 'selected' : '' }}>
+                                    Negotiable</option>
+                                <option value="on_request" {{ old('price_type') == 'on_request' ? 'selected' : '' }}>On
+                                    Request</option>
                             </select>
                         </div>
 
                         <!-- Bedrooms -->
                         <div class="form-group mb-3">
                             <label for="bedrooms">Bedrooms</label>
-                            <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0" value="{{ old('bedrooms') }}" required>
+                            <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0"
+                                value="{{ old('bedrooms') }}" required>
                         </div>
 
                         <!-- Bathrooms -->
                         <div class="form-group mb-3">
                             <label for="bathrooms">Bathrooms</label>
-                            <input type="number" name="bathrooms" id="bathrooms" class="form-control" min="0" value="{{ old('bathrooms') }}" required>
+                            <input type="number" name="bathrooms" id="bathrooms" class="form-control" min="0"
+                                value="{{ old('bathrooms') }}" required>
                         </div>
 
                         <!-- Area -->
                         <div class="form-group mb-3">
                             <label for="area">Area (sq ft)</label>
-                            <input type="number" name="area" id="area" class="form-control" min="0" value="{{ old('area') }}" required>
+                            <input type="number" name="area" id="area" class="form-control" min="0"
+                                value="{{ old('area') }}" required>
                         </div>
 
                         <!-- Status -->
                         <div class="form-group mb-3">
-                        <label for="status">Status</label>
-                          <div class="form-check">
-                        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
-                        <label for="status_active" class="form-check-label">Active</label>
+                            <label for="status">Status</label>
+                            <div class="form-check">
+                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input"
+                                    {{ old('status') == '1' ? 'checked' : '' }} required>
+                                <label for="status_active" class="form-check-label">Active</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="status" id="status_inactive" value="0"
+                                    class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
+                                <label for="status_inactive" class="form-check-label">Inactive</label>
+                            </div>
                         </div>
-                          <div class="form-check">
-                        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
-                        <label for="status_inactive" class="form-check-label">Inactive</label>
-                          </div>
-                          </div>
 
                         <!-- Availability Status -->
                         <div class="form-group mb-3">
                             <label for="availability_status">Availability Status</label>
                             <select name="availability_status" id="availability_status" class="form-control" required>
                                 <option value="available" {{ old('availability_status') == 'available' ? 'selected' : '' }}>Available</option>
-                                <option value="sold" {{ old('availability_status') == 'sold' ? 'selected' : '' }}>Sold</option>
-                                <option value="rental" {{ old('availability_status') == 'rental' ? 'selected' : '' }}>Rental</option>
+                                <option value="sold" {{ old('availability_status') == 'sold' ? 'selected' : '' }}>Sold
+                                </option>
+                                <option value="rental" {{ old('availability_status') == 'rental' ? 'selected' : '' }}>
+                                    Rental</option>
                             </select>
                         </div>
 
                         <!-- Rental Period -->
                         <div class="form-group mb-3">
                             <label for="rental_period">Rental Period</label>
-                            <input type="text" name="rental_period" id="rental_period" class="form-control" value="{{ old('rental_period') }}">
+                            <input type="text" name="rental_period" id="rental_period" class="form-control"
+                                value="{{ old('rental_period') }}">
                         </div>
 
-                     <!-- Main Image Upload -->
-<div class="form-group mb-3">
-    <label for="main_image">Main Image</label>
-    <input type="file" id="main_image" class="form-control" required>
-</div>
+                        <!-- Main Image Upload -->
+                        <div class="form-group mb-3">
+                            <label for="main_image">Main Image</label>
+                            <input type="file" id="main_image" class="form-control" required>
+                        </div>
 
-                    <!-- Hidden input to store the base64 string of the main image -->
-                       <input type="hidden" name="main_image[0]" id="main_image_base64" required>
+                        <!-- Hidden input to store the base64 string of the main image -->
+                        <input type="hidden" name="main_image[0]" id="main_image_base64" required>
                         <!-- Cropped Main Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Main Image Preview:</label>
-                            <img id="cropped-image-preview" style="max-width: 150px; max-height: 200px; display: block;">
+                            <img id="cropped-image-preview"
+                                style="max-width: 150px; max-height: 200px; display: block;">
                         </div>
 
                         <!-- Other Images Upload -->
@@ -192,20 +216,14 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
-                            <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
-                                >
+                            <input type="text" name="keywords" id="keywords" class="form-control"
+                                value="{{ old('keywords') }}">
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="googlemap">Google Map</label>
-                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap') }}"
-                                >
+                            <label for="update_time">Update Time</label>
+                            <input type="date" name="update_time" id="update_time" class="form-control">
                         </div>
-
-                        <div class="form-group mb-3">
-                        <label for="update_time">Update Time</label>
-                       <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y - F - d') }}" readonly>
-</div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
@@ -242,7 +260,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 <script>
-       let cropper;
+    let cropper;
     let currentFile;
 
     // Main image input change event
@@ -330,37 +348,15 @@
             toast.show();
         }
     });
+    // document.getElementById('update_time').addEventListener('change', function () {
+    //     const date = new Date(this.value);
+    //     const formattedDate = date.toLocaleDateString('en-US', {
+    //         year: 'numeric',
+    //         month: 'long',
+    //         day: '2-digit',
+    //     }).replace(',', ''); // Format to "Y - F - d"
 
-    //JavaScript for dynamic subcategory loading
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const subCategories = @json($subCategories); // Pass the subcategories as a JSON object
-        const categoryDropdown = document.getElementById('category_id');
-        const subCategoryDropdown = document.getElementById('sub_category_id');
-
-        function updateSubCategories(selectedCategoryId) {
-            subCategoryDropdown.innerHTML = '<option value="">Choose Sub Category</option>'; // Clear previous options
-
-            const filteredSubCategories = subCategories.filter(subCategory => subCategory.category_id == selectedCategoryId);
-
-            filteredSubCategories.forEach(subCategory => {
-                const option = document.createElement('option');
-                option.value = subCategory.id;
-                option.textContent = subCategory.title;
-                subCategoryDropdown.appendChild(option);
-            });
-        }
-
-        categoryDropdown.addEventListener('change', function() {
-            updateSubCategories(this.value);
-        });
-
-        // Initialize subcategories based on the selected category on page load
-        const initialCategoryId = categoryDropdown.value;
-        if (initialCategoryId) {
-            updateSubCategories(initialCategoryId);
-        }
-    });
-
+    //     this.value = `${date.getFullYear()} - ${date.toLocaleString('default', { month: 'long' })} - ${date.getDate().toString().padStart(2, '0')}`;
+    // });
 </script>
 @endsection

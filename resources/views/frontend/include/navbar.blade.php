@@ -1,4 +1,13 @@
 {{--navbar --}}
+<style>
+.nav-link.active-red {
+    color: red;
+}
+
+</style>
+
+
+
 
 <section class="container-fluid navsection">
   <div class="container">
@@ -8,11 +17,12 @@
       </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
-            @foreach($categories as $category)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
-                </li>
-            @endforeach
+          @foreach($categories as $category)
+        <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('properties') && request()->get('categoryId') == $category->id ? 'active-red' : '' }}"
+          href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
+        </li>
+      @endforeach
         </ul>
       </div>
     </nav>
@@ -33,7 +43,7 @@
         <i class="fa-solid fa-house customiconssmall "></i>
         <a class="nav-link " aria-current="page" href="/">Introduction</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active ">
 
         <i class="fa-solid fa-truck-moving  customiconssmall"></i>
         <a class="nav-link " aria-current="page" href="{{route('properties')}}">Rent</a>
@@ -63,7 +73,7 @@
       <i class="fa-brands fa-facebook customicons mx-2"></i>
       <i class="fa-brands fa-linkedin customicons mx-2"></i>
       <i class="fa-brands fa-youtube customicons mx-2"></i>
-      
+
     </div>
   </div>
 </section>
