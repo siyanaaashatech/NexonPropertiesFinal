@@ -10,6 +10,7 @@ use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PropertyController extends Controller
 {
@@ -61,22 +62,20 @@ class PropertyController extends Controller
             'rental_period' => 'nullable|string',
             'keywords' => 'nullable|string',
             'other_images' => 'required|array', // Ensure other_images is an array
-            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048', 
-            
+            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         // Handle the main image upload (base64 images)
         $images = $this->handleBase64Images($request->input('main_image'), 'property');
 
         // Handle other images upload
-        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images');
+        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
 
         // Create a metadata entry
-        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => json_encode($metaKeywordsArray),
+            'meta_keywords' => $request->suburb,
             'slug' => Str::slug($request->title),
         ]);
 
@@ -102,7 +101,7 @@ class PropertyController extends Controller
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
             'metadata_id' => $metadata->id,
-            'update_time' => now()->toDateString(),
+            'update_time' => $request->update_time,
         ]);
 
         session()->flash('success', 'Property created successfully.');
@@ -126,6 +125,7 @@ class PropertyController extends Controller
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $metadata = Metadata::all();
+
         return view('admin.property.update', compact('property', 'categories', 'subCategories', 'metadata'));
     }
 
@@ -158,21 +158,25 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'required|array',
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'update_time' => now()->toDateString(),
         ]);
 
+        // Delete existing main images
+        $this->deleteImages(json_decode($property->main_image, true), 'property/');
+
+        // Delete existing other images
+        $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
+
         // Handle main image update
-        $images = $this->handleBase64Images($request->input('main_image'), 'property', $property->main_image);
+        $images = $this->handleBase64Images($request->input('main_image'), 'property');
 
         // Handle other images update
-        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other-images', $property->other_images);
+        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
 
         // Update metadata record
-        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $property->metadata()->updateOrCreate([], [
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => json_encode($metaKeywordsArray),
+            'meta_keywords' => $request->suburb,
             'slug' => Str::slug($request->title),
         ]);
 
@@ -197,7 +201,7 @@ class PropertyController extends Controller
             'other_images' => json_encode($otherImages),
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
-            'update_time' => now()->toDateString(),
+            'update_time' =>$request->update_time,
         ]);
 
         session()->flash('success', 'Property updated successfully.');
@@ -206,115 +210,123 @@ class PropertyController extends Controller
     }
 
     /**
+     * Handle base64 image uploads and convert them to WEBP.
+     */
+    private function handleBase64Images(array $base64Images, $folder, $existingImages = [])
+    {
+        // Initialize with existing images if provided
+        $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
+
+        foreach ($base64Images as $base64Image) {
+            // Extract base64 encoded part and decode it
+            $image = explode(',', $base64Image);
+            $decodedImage = base64_decode($image[1]);
+            $imageResource = imagecreatefromstring($decodedImage);
+
+            if ($imageResource !== false) {
+                // Generate unique image name
+                $imageName = time() . '-' . Str::uuid() . '.webp';
+                // Correct destination path
+                $destinationPath = storage_path("app/public/$folder");
+
+                // Create the directory if it does not exist
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true, true);
+                }
+
+                // Save the image in WEBP format
+                $savedPath = $destinationPath . '/' . $imageName;
+                imagewebp($imageResource, $savedPath);
+                imagedestroy($imageResource);
+
+                // Correctly formatted relative path for storage link
+                $relativeImagePath = "storage/$folder/$imageName";
+                $images[] = $relativeImagePath;
+            }
+        }
+
+        return $images;
+    }
+
+    /**
+     * Handle uploaded image files and convert them to WEBP.
+     */
+    private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
+    {
+        // Initialize with existing images if any
+        $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
+
+        if ($uploadedFiles) {
+            foreach ($uploadedFiles as $file) {
+                // Generate a unique name for each image
+                $imageName = time() . '-' . Str::uuid() . '.webp';
+                // Correct destination path for storage
+                $destinationPath = storage_path("app/public/$folder");
+
+                // Create the directory if it does not exist
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true, true);
+                }
+
+                // Convert the uploaded image to WEBP format
+                $imageResource = imagecreatefromstring(file_get_contents($file));
+                $savedPath = $destinationPath . '/' . $imageName;
+                imagewebp($imageResource, $savedPath);
+                imagedestroy($imageResource);
+
+                // Correctly formatted relative path for storage link
+                $relativeImagePath = "storage/$folder/$imageName";
+                $images[] = $relativeImagePath;
+            }
+        }
+
+        return $images;
+    }
+
+    /**
      * Remove the specified property from storage.
      */
     public function destroy(Property $property)
     {
         // Delete main images
-        $this->deleteImages(json_decode($property->main_image, true));
+        $this->deleteImages(json_decode($property->main_image, true), 'property/');
 
         // Delete other images
-        $this->deleteImages(json_decode($property->other_images, true));
+        $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
 
+        // Delete the property from the database
         $property->delete();
 
-        return redirect()->route('property.index')->with('success', 'Property deleted successfully.');
+        return redirect()->route('admin.property.index')->with('success', 'Property deleted successfully.');
     }
 
     /**
- * Handle base64 image uploads and conversions to WEBP.
- */
-private function handleBase64Images(array $base64Images, $folder, $existingImages = [])
-{
-    // Initialize with existing images if provided
-    $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
-
-    foreach ($base64Images as $base64Image) {
-        // Extract base64 encoded part and decode it
-        $image = explode(',', $base64Image);
-        $decodedImage = base64_decode($image[1]);
-        $imageResource = imagecreatefromstring($decodedImage);
-
-        if ($imageResource !== false) {
-            // Generate unique image name
-            $imageName = time() . '-' . Str::uuid() . '.webp';
-            // Correct destination path
-            $destinationPath = storage_path("app/public/$folder");
-
-            // Create the directory if it does not exist
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            // Save the image in WEBP format
-            $savedPath = $destinationPath . '/' . $imageName;
-            imagewebp($imageResource, $savedPath);
-            imagedestroy($imageResource);
-
-            // Correctly formatted relative path for storage link
-            $relativeImagePath = "storage/$folder/$imageName";
-            $images[] = $relativeImagePath;
-        }
-    }
-
-    return $images;
-}
-
-
-   /**.
- * Handle uploaded image files and convert them to WEBP.
- */
-private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
-{
-    // Initialize with existing images if any
-    $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
-
-    if ($uploadedFiles) {
-        foreach ($uploadedFiles as $file) {
-            // Generate a unique name for each image
-            $imageName = time() . '-' . Str::uuid() . '.webp';
-            // Correct destination path for storage
-            $destinationPath = storage_path("app/public/$folder");
-
-            // Create the directory if it does not exist
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            // Convert the uploaded image to WEBP format
-            $imageResource = imagecreatefromstring(file_get_contents($file));
-            $savedPath = $destinationPath . '/' . $imageName;
-            imagewebp($imageResource, $savedPath);
-            imagedestroy($imageResource);
-
-            // Correctly formatted relative path for storage link
-            $relativeImagePath = "storage/$folder/$imageName";
-            $images[] = $relativeImagePath;
-        }
-    }
-
-    return $images;
-}
-
-
-    /**
-     * Delete images from storage.
+     * Deletes images from the specified path.
+     *
+     * @param array|string|null $images
+     * @param string $folderPath
      */
-    private function deleteImages($images)
+    private function deleteImages($images, $folderPath)
     {
-        if ($images) {
+        // If $images is a string, convert it to an array
+        if (is_string($images)) {
+            $images = [$images];
+        }
+
+        // If $images is an array, iterate through each image
+        if (is_array($images)) {
             foreach ($images as $image) {
-                $filePath = storage_path('app/' . $image);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
+                // Check if image is not empty
+                if (!empty($image)) {
+                    // Extract the basename of the image path
+                    $imagePath = storage_path('app/public/' . $folderPath . basename($image));
+
+                    // Check if the image exists and delete it
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
                 }
             }
         }
     }
-
-    public function getSubcategories($categoryId)
-{
-    $subcategories = SubCategory::where('category_id', $categoryId)->get();
-    return response()->json($subcategories);
 }
-}   

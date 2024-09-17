@@ -696,6 +696,7 @@ a {
     /* Adjust based on your design */
     display: block;
     object-fit: cover;
+    opacity: 0.8;
 }
 .property-imageheightbanner {
     height: 28vh;
@@ -828,6 +829,7 @@ a {
     height: 86.2vh;
     width: 100%;
     object-fit: cover;
+    opacity: 0.9;
 }
 
 .imagecontrollerheight {
