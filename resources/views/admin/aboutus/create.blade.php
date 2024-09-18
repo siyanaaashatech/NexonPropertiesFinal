@@ -6,7 +6,6 @@
 </head>
 <body>
 @extends('admin.layouts.master')
-
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -28,7 +27,6 @@
                             </div>
                         </div>
                     @endif
-
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -38,32 +36,25 @@
                             </ul>
                         </div>
                     @endif
-
                     <!-- About Us creation form -->
                     <form action="{{ route('aboutus.store') }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
                         @csrf
-
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="subtitle">Subtitle</label>
                             <input type="text" name="subtitle" id="subtitle" class="form-control" value="{{ old('subtitle') }}" required>
                         </div>
-
-
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
                             <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description') }}</textarea>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
                             <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords') }}</textarea>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="image">Images</label>
                             <input type="file" name="image[]" id="image" class="form-control" multiple required>
@@ -77,7 +68,6 @@
 
                         <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
-                        
                         <!-- Hidden input to simulate array submission -->
                         <input type="hidden" name="image[]" id="croppedImage"> 
 
@@ -85,8 +75,8 @@
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Image Preview:</label>
                             <img id="cropped-image-preview" style="max-width: 150%; max-height: 200%; display: block;">
+                            <img id="cropped-image-preview" style="max-width: 150%; max-height: 200%; display: block;">
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
@@ -98,7 +88,6 @@
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create About Us</button>
                             <a href="{{ route('aboutus.index') }}" class="btn btn-secondary">Cancel</a>
@@ -109,7 +98,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -119,6 +107,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <img id="image-preview" style="width: 10%; height: 10%; display: none;">
                 <img id="image-preview" style="width: 10%; height: 10%; display: none;">
             </div>
             <div class="modal-footer">

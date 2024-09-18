@@ -25,13 +25,16 @@
 </section>
 
 
-<form action="{{ route('frontend.searching') }}" method="GET">
-                  <div
-                  class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
-                  <div class="d-flex flex-wrap gap-md-3 showform">
-
-
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+{{-- form --}}
+<form action="{{ route('frontend.searching') }}" method="GET" class="container-fluid py-5 propertiesfinder">
+    <div class="container">
+        <h1 class="md-text1 text-center searchhide" onclick="funsearchingon()">
+            <i class="fa-brands fa-searchengin customicons"></i> Find your properties
+        </h1>
+        <div class="justify-content-center align-items-center gap-2 flex-wrap hiddenform" id="hiddenform">
+            <div class="d-flex flex-column col-md-3">
+                <label for="" class="sm-text1 des-text">Listing type</label>
+                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
                     <option value="" disabled selected>Select Category</option>
                     @foreach($categories as $category)
@@ -40,8 +43,25 @@
               </option>
             @endforeach
                     </select>
+            </div>
 
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+
+            <div class="d-flex flex-column col-md-3">
+                <label for="" class="sm-text1 des-text">Properties type</label>
+                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+                    value="{{ request('region') }}">
+                    @foreach($subcategories as $subcategory)
+              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
+              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
+              {{ $subcategory->title }}
+              </option>
+            @endforeach</option>
+                    </select>
+            </div>
+
+            <div class="d-flex flex-column col-md-3">
+                <label for="" class="sm-text1 des-text">Location</label>
+                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
                     <option value="1">States</option>
                     <option value="">
@@ -53,131 +73,34 @@
         @endif
             @endforeach</option>
                     </select>
+            </div>
 
-
-
-                    <!-- Regions Placeholder -->
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
+            <div class="d-flex flex-column col-md-3">
+                <label for="" class="sm-text1 des-text">Location</label>
+                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
                     <option value="1">regions</option>
                     <option value="2">Region 1</option>
                     <option value="3">Region 2</option>
                     </select>
+            </div>
 
-                    <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
-                    value="{{ request('location') }}">
-                    <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
-                    <button type="submit" class="btn-buttongreen">Search</button>
-                  </div>
-                  </div>
-                </form>
-
-{{-- form --}}
-<section class="container-fluid py-4 propertiesfinder">
-    <div class="container">
-
-        <h1 class="lg-text1 text-center searchhide" onclick="funsearchingon()">
-            <i class="fa-brands fa-searchengin customicons"></i> Find your properties
-        </h1>
-        <div class="justify-content-center align-items-center gap-1 flex-wrap hiddenform" id="hiddenform">
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Listing type</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Properties type</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Location</label>
-                <input type="text" class="input bannerinput">
-            </div>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Location</label>
-                <input type="text" class="input bannerinput">
-            </div>
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="md-text1 des-text">Price</label>
-                <input type="text" class="input bannerinput">
+                <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+                    value="{{ request('location') }}">
             </div>
+
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Search</label>
-                <button class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
+                <button type="submit" class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
             </div>
 
         </div>
     </div>
-</section>
-
-<section class="container rounded  amenities ">
-  <div class="row p-3" id="advanceitems">
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Air Conditioning</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Laundry</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Dishwasher</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Garage</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Gym</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Refrigerator</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Swimming Pool</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Washer</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Balcony</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Barbeque</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
+</form>
 
 
-
-
-  </div>
-  </div>
-</section>
 
 
 {{--
@@ -330,14 +253,17 @@
 
 
 <script>
-    function funsearchingon() {
-        const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
-        if (hiddenformdata.style.display === "block") {
-            hiddenformdata.style.display = "none";
-        }
-        hiddenformdata.style.display = "block";
+   function funsearchingon() {
+    const hiddenformdata = document.querySelector(".hiddenform");
 
+    // Toggle the display style
+    if (hiddenformdata.style.display === "none" || hiddenformdata.style.display === "") {
+        hiddenformdata.style.display = "block";
+    } else {
+        hiddenformdata.style.display = "none";
     }
+}
+
 
     function changepage(clickedElement) {
     // Remove 'next-button' class from all list items

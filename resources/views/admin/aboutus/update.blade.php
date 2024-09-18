@@ -1,5 +1,4 @@
 @extends('admin.layouts.master')
-
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -21,7 +20,6 @@
                             </div>
                         </div>
                     @endif
-
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -31,40 +29,32 @@
                             </ul>
                         </div>
                     @endif
-
                     <!-- About Us update form -->
                     <form action="{{ route('aboutus.update', $aboutUs->id) }}" method="POST" enctype="multipart/form-data" id="aboutUsForm">
                         @csrf
                         @method('PUT')
-
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $aboutUs->title) }}" required>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="subtitle">Subtitle</label>
                             <input type="text" name="subtitle" id="subtitle" class="form-control" value="{{ old('subtitle', $aboutUs->subtitle) }}" required>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
                             <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description', $aboutUs->description) }}</textarea>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
                             <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords', $aboutUs->keywords) }}</textarea>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="image">Images</label>
                             <input type="file" name="image[]" id="image" class="form-control" multiple>
                         </div>
-
                         <!-- Crop Data Hidden Field -->
                         <input type="hidden" name="cropData" id="cropData">
-                        
                         <!-- Hidden input to simulate array submission -->
                         <input type="hidden" name="croppedImage" id="croppedImage">
 
@@ -81,7 +71,6 @@
                             <label>New Cropped Images:</label>
                             <div id="cropped-images-preview"></div>
                         </div>
-
                         <div class="form-group mb-3">
                             <label for="status">Status</label>
                             <div class="form-check">
@@ -93,7 +82,6 @@
                                 <label for="status_inactive" class="form-check-label">Inactive</label>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Update About Us</button>
                             <a href="{{ route('aboutus.index') }}" class="btn btn-secondary">Cancel</a>
@@ -115,6 +103,7 @@
             </div>
             <div class="modal-body">
                 <img id="image-preview" style="width: 100%; height: auto;">
+                <img id="image-preview" style="width: 100%; height: auto;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -125,6 +114,7 @@
 </div>
 
 <!-- Include Cropper.js -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
