@@ -234,7 +234,7 @@ a {
 }
 
 .md-text1 {
-    font-size:21px;
+    font-size: 21px;
     font-weight: var(--font-weight);
     color: white;
     font-family: var(--font-inter);
@@ -434,12 +434,14 @@ a {
     width: 70px;
     border-radius: 4px;
     font-size: 14px;
+    border:2px solid var(--off-white);
 }
 
-.reg-logbutton-white {
-background: none;
-    color: white;
-    border:1px solid white;
+.reg-logbutton-white{
+    color:white;
+    background:none;
+    border:2px solid var(--off-white);
+    
 }
 
 @media (max-width: 990px) {
@@ -690,28 +692,21 @@ background: none;
     animation-fill-mode: both;
 }
 
-
 .property-image {
     width: 100%;
     height: 38.5vh;
     /* Adjust based on your design */
     display: block;
     object-fit: cover;
-    opacity: 0.9;
+    opacity:0.7;
 }
-
-
 .property-imageheightbanner {
     height: 28vh;
+    
 }
 .property-imageheight {
     height: 25.1vh;
 }
-
-
-
-
-
 
 .property-details {
     position: absolute;
@@ -745,7 +740,6 @@ background: none;
     opacity: 1;
 }
 
-
 .property-container:hover .property-more-details {
     opacity: 1;
     transform: translateY(70%);
@@ -765,16 +759,8 @@ background: none;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    transform: translateY(76%);
+    transform: translateY(80%);
 }
-
-
-
-
-
-
-
-
 
 
 /* for bannersection */
@@ -832,7 +818,7 @@ background: none;
     height: 86.2vh;
     width: 100%;
     object-fit: cover;
-    opacity: 0.9;
+    opacity:0.9;
 }
 
 .imagecontrollerheight {
@@ -1244,7 +1230,7 @@ background: none;
 }
 
 .propertiesfinder {
-    position: relative;
+   position: relative;
     bottom:3rem;
     background: var(--green);
     cursor: pointer;
@@ -1553,36 +1539,30 @@ background: none;
 .advance:hover{
     color:var(--text-offblack);
     cursor:pointer;
-
-
-
 }
 
 @media(max-width:500px)
 {
     .formsection span{
-        margin-top: 2rem
+        margin-top: 1rem
         
     }
     .formsection button{
-        margin-top:0.5rem
+        margin-top: 1rem
 
-    }
-    .advance{
-        margin-top:0.8rem !important;
-        margin-right: 1rem;
     }
 }
 
 
 .amenities{
     position: absolute;
-    background: var(--freegreen);
+    background:white;
     border-radius: 8px;
     display: none;
-    top:42rem;
+    top:44rem;
     left:8%;
     width:80vw;
+    z-index:10;
   }
   .nameofthing{
     padding-left:8px;
@@ -1591,9 +1571,53 @@ background: none;
   
   @media (max-width:500px) {
     .amenities{
-        top: 45rem;
+        top: 46rem;
   
   }
 
     
   }
+
+  .landproperties{
+    background: #e2e0e049;
+  }
+  .cityimage{
+    height: 45vh;
+    width: 100%;
+    object-fit: cover;
+
+  }
+  .city-detail{
+    position: relative;
+  }
+  .city-description{
+    background-color:rgba(0, 0,0, 0.1);
+    position: absolute;
+    bottom: 0rem;
+    height: 45vh;
+    object-fit: cover;
+    width: 100%;
+    border-radius: var(--border-radius);
+  }
+ 
+
+.city-detail:nth-child(1) {
+    order: 1; 
+    object-fit: contain;
+    width:850px !important;
+}
+
+.city-detail:nth-child(2) {
+    order: 2; 
+    width: 400px;
+}
+.city-detail:nth-child(3) {
+    order: 2; 
+    width: 400px;
+    
+}
+.city-detail:nth-child(4) {
+    order: 1; 
+    width:850px !important;
+}
+
