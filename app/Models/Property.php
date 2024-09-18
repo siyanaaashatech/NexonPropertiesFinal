@@ -49,6 +49,7 @@ class Property extends Model
         return $this->belongsTo(SubCategory::class);
     }
 
+
     public function metadata()
     {
         return $this->belongsTo(Metadata::class);
