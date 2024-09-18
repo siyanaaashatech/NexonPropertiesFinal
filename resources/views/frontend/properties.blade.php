@@ -46,18 +46,18 @@
             </div>
 
 
-            <div class="d-flex flex-column col-md-3">
+            {{-- <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Properties type</label>
                 <select type="text" class="input bannerinput" name="region" placeholder="Regions"
                     value="{{ request('region') }}">
                     @foreach($subcategories as $subcategory)
-              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
-              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
-              {{ $subcategory->title }}
-              </option>
-            @endforeach</option>
+                        <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
+                          {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
+                          {{ $subcategory->title }}
+                        </option>
+                      @endforeach</option>
                     </select>
-            </div>
+            </div> --}}
 
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Location</label>

@@ -10,9 +10,9 @@
               <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2">
 
               @php
-        $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-        $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
-         @endphp
+                $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+                $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+              @endphp
               <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller">
               <div class="flex bannercontent">
                 <div class="bannercontentinner">
@@ -24,65 +24,83 @@
               <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
               <div class="btn-buttongreen mx-2">Rent</div>
               </div> -->
-                <form action="{{ route('frontend.searching') }}" method="GET">
-                  <div
-                  class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
+              <form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
+                <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
                   <div class="d-flex flex-wrap gap-md-3 showform">
-
-
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="" disabled selected>Select Category</option>
-                    @foreach($categories as $category)
-              <option value="{{ $category->id }}" {{ request('list_type') == $category->id ? 'selected' : '' }}>
-              {{ $category->title }}
-              </option>
-            @endforeach
+                    <select class="input bannerinput" name="category_id" id="category_id">
+                      <option value="" disabled selected>Select Category</option>
+                      @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->title }}</option>
+                      @endforeach
                     </select>
-
-
                     
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="" disabled selected>Select subCategory</option>
-                    @foreach($subcategories as $subcategory)
-              <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
-              {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
-              {{ $subcategory->title }}
-              </option>
-            @endforeach</option>
+                    <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
+                      <option value="" disabled selected>Select Subcategory</option>
                     </select>
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="1">States</option>
-                    
-                      @foreach($properties as $property)
-              @if(!empty($property->state))
-          <option value="{{ $property->state }}" {{ request('state') == $property->state ? 'selected' : '' }}>
-          {{ $property->state }}
-          </option>
-        @endif
-            @endforeach
+              
+                    <select class="input bannerinput" name="state" id="state">
+                      <option value="" disabled selected>Select State</option>
+                      @foreach($states as $state)
+                        <option value="{{ $state }}">{{ $state }}</option>
+                      @endforeach
                     </select>
-
-
-
-                    <!-- Regions Placeholder -->
-                    <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="1">regions</option>
-                    <option value="2">Region 1</option>
-                    <option value="3">Region 2</option>
+              
+                    <select class="input bannerinput" name="suburb" id="suburb">
+                      <option value="" disabled selected>Select Region</option>
                     </select>
-
+              
                     <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
                     value="{{ request('location') }}">
                     <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
                     <button type="submit" class="btn-buttongreen">Search</button>
-                  </div>
-                  </div>
-                </form>
 
+                  </div>
+                </div>
+              </form>
+
+              <script>
+              $(document).ready(function() {
+                $('#category_id').change(function() {
+                  var categoryId = $(this).val();
+                  if (categoryId) {
+                    $.ajax({
+                      url: '/get-subcategories/' + categoryId,
+                      type: 'GET',
+                      success: function(data) {
+                        $('#subcategory_id').empty();
+                        $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
+                        $.each(data, function(key, value) {
+                          $('#subcategory_id').append('<option value="' + value.id + '">' + value.title + '</option>');
+                        });
+                      }
+                    });
+                  } else {
+                    $('#subcategory_id').empty();
+                    $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
+                  }
+                });
+              
+                $('#state').change(function() {
+                  var state = $(this).val();
+                  if (state) {
+                    $.ajax({
+                      url: '/get-suburbs/' + state,
+                      type: 'GET',
+                      success: function(data) {
+                        $('#suburb').empty();
+                        $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+                        $.each(data, function(key, value) {
+                          $('#suburb').append('<option value="' + value + '">' + value + '</option>');
+                        });
+                      }
+                    });
+                  } else {
+                    $('#suburb').empty();
+                    $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+                  }
+                });
+              });
+              </script>
              
                 </div>
               </div>
@@ -93,7 +111,6 @@
         </div>
       </div>
     </div>
-
 
 
     <div class="col-md-3">
@@ -146,7 +163,6 @@
     <span class="visually-hidden">Next</span>
   </a>
 </section>
-
 
 <section class="container rounded  amenities ">
   <div class="row  p-3" id="advanceitems">
@@ -210,10 +226,6 @@
       <input type="checkbox" name="Aircondition" id="">
       <span class="nameofthing">Floorboard</span>
     </div>
-
-
-
-
   </div>
   </div>
 </section>
@@ -236,14 +248,6 @@
     }
   }
 </script>
-
-
-
-
-
-
-
-
 
 {{--
 
@@ -283,7 +287,6 @@
   </div>
 </section>
 --}}
-
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -347,29 +350,24 @@
 
 </script>
 
-
 <script>
-                  document.addEventListener('DOMContentLoaded', function () {
-                  const categorySelect = document.getElementById('category_id');
-                  const subCategorySelect = document.getElementById('subcategory_id');
-
-                  function filterSubcategories() {
-                    const selectedCategoryId = categorySelect.value;
-                    const subCategories = subCategorySelect.querySelectorAll('option');
-
-                    subCategories.forEach(option => {
-                    if (!option.value) return; // Skip the "Select Sub-Category" option
-                    option.style.display = option.dataset.categoryId === selectedCategoryId || selectedCategoryId === '' ? 'block' : 'none';
-                    });
-
-                    // Reset subcategory selection when category changes
+   document.addEventListener('DOMContentLoaded', function () {
+      const categorySelect = document.getElementById('category_id');
+      const subCategorySelect = document.getElementById('subcategory_id');
+      function filterSubcategories() {
+        const selectedCategoryId = categorySelect.value;
+        const subCategories = subCategorySelect.querySelectorAll('option');
+        subCategories.forEach(option => {
+            if (!option.value) return; // Skip the "Select Sub-Category" option
+                option.style.display = option.dataset.categoryId === selectedCategoryId || selectedCategoryId === '' ? 'block' : 'none';
+              });
+                // Reset subcategory selection when category changes
                     subCategorySelect.value = '';
-                  }
+      }
+      // Initial filter when the page loads
+      filterSubcategories();
+     // Update subcategories when the category is changed
+        categorySelect.addEventListener('change', filterSubcategories);
+    });
+</script>
 
-                  // Initial filter when the page loads
-                  filterSubcategories();
-
-                  // Update subcategories when the category is changed
-                  categorySelect.addEventListener('change', filterSubcategories);
-                  });
-                </script>

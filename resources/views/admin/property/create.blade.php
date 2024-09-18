@@ -53,7 +53,6 @@
                                 required>{{ old('description') }}</textarea>
                         </div>
 
-                        <!-- Category -->
                         <div class="form-group mb-3">
                             <label for="category_id">Category</label>
                             <select name="category_id" id="category_id" class="form-control" required>
@@ -65,17 +64,12 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        
                         <!-- Sub Category -->
                         <div class="form-group mb-3">
                             <label for="sub_category_id">Sub Category</label>
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
-                                        {{ $subCategory->title }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
 
@@ -362,5 +356,32 @@
 
     //     this.value = `${date.getFullYear()} - ${date.toLocaleString('default', { month: 'long' })} - ${date.getDate().toString().padStart(2, '0')}`;
     // });
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('category_id');
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Object to store all subcategories grouped by category ID
+        const subCategories = @json($subCategories->groupBy('category_id'));
+
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+            
+            // Clear current options
+            subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+            
+            if (selectedCategoryId && subCategories[selectedCategoryId]) {
+                subCategories[selectedCategoryId].forEach(function(subCategory) {
+                    const option = new Option(subCategory.title, subCategory.id);
+                    subCategorySelect.add(option);
+                });
+            }
+        });
+
+        // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
+        if (categorySelect.value) {
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+    });
+
 </script>
 @endsection

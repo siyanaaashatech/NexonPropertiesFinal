@@ -54,31 +54,26 @@
                                 required>{{ old('description', $property->description) }}</textarea>
                         </div>
 
-                        <!-- Category -->
-                        <div class="form-group mb-3">
-                            <label for="category_id">Category</label>
-                            <select name="category_id" id="category_id" class="form-control" required>
-                                <option value="">Choose Category</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $property->category_id) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                       <!-- Category -->
+<div class="form-group mb-3">
+    <label for="category_id">Category</label>
+    <select name="category_id" id="category_id" class="form-control" required>
+        <option value="">Choose Category</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" {{ old('category_id', $property->category_id) == $category->id ? 'selected' : '' }}>
+                {{ $category->title }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-                        <!-- Sub Category -->
-                        <div class="form-group mb-3">
-                            <label for="sub_category_id">Sub Category</label>
-                            <select name="sub_category_id" id="sub_category_id" class="form-control" required>
-                                <option value="">Choose Sub Category</option>
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" {{ old('sub_category_id', $property->sub_category_id) == $subCategory->id ? 'selected' : '' }}>
-                                        {{ $subCategory->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+<!-- Sub Category -->
+<div class="form-group mb-3">
+    <label for="sub_category_id">Sub Category</label>
+    <select name="sub_category_id" id="sub_category_id" class="form-control" required>
+        <option value="">Choose Sub Category</option>
+    </select>
+</div>
 
                         <!-- Street -->
                         <div class="form-group mb-3">
@@ -372,5 +367,36 @@
             toast.show();
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const categorySelect = document.getElementById('category_id');
+    const subCategorySelect = document.getElementById('sub_category_id');
+    
+    // Object to store all subcategories grouped by category ID
+    const subCategories = @json($subCategories->groupBy('category_id'));
+
+    function updateSubCategories() {
+        const selectedCategoryId = categorySelect.value;
+        
+        // Store the current selection
+        const currentSelection = subCategorySelect.value;
+        
+        // Clear current options
+        subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+        
+        if (selectedCategoryId && subCategories[selectedCategoryId]) {
+            subCategories[selectedCategoryId].forEach(function(subCategory) {
+                const option = new Option(subCategory.title, subCategory.id);
+                option.selected = (subCategory.id == currentSelection);
+                subCategorySelect.add(option);
+            });
+        }
+    }
+
+    categorySelect.addEventListener('change', updateSubCategories);
+
+    // Initial update on page load
+    updateSubCategories();
+});
 </script>
 @endsection

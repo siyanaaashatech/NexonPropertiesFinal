@@ -56,6 +56,7 @@ class SingleController extends Controller
     {
         // Fetch the property by ID and ensure it's active
         $categories = Category::all(); 
+        $subcategories = SubCategory::all(); 
         $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
         $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
         
@@ -84,6 +85,7 @@ class SingleController extends Controller
 {
     // Fetch all categories for the navbar
     $categories = Category::all();
+    $subcategories = SubCategory::all(); // Fetch subcategories here
 
     // Get the categoryId from the request query
     $categoryId = $request->query('categoryId');
@@ -98,7 +100,9 @@ class SingleController extends Controller
     // Paginate the results
     $properties = $propertiesQuery->paginate(6); // You can adjust the number of properties per page
 
-    return view('frontend.properties', compact('properties', 'categories'));
+    // Pass $subcategories to the view
+    return view('frontend.properties', compact('properties', 'categories', 'subcategories'));
 }
+
 
 }

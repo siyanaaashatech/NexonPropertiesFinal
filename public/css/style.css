@@ -234,7 +234,7 @@ a {
 }
 
 .md-text1 {
-    font-size:21px;
+    font-size: 21px;
     font-weight: var(--font-weight);
     color: white;
     font-family: var(--font-inter);
@@ -434,12 +434,14 @@ a {
     width: 70px;
     border-radius: 4px;
     font-size: 14px;
+    border:2px solid var(--off-white);
 }
 
-.reg-logbutton-white {
-    background: var(--off-white);
-    color: var(--text-black);
-    border: none;
+.reg-logbutton-white{
+    color:white;
+    background:none;
+    border:2px solid var(--off-white);
+    
 }
 
 @media (max-width: 990px) {
@@ -696,26 +698,22 @@ a {
     /* Adjust based on your design */
     display: block;
     object-fit: cover;
-    opacity: 0.8;
+    opacity:0.7;
 }
 .property-imageheightbanner {
     height: 28vh;
+    
 }
 .property-imageheight {
     height: 25.1vh;
 }
-
-
-
-
-
 
 .property-details {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     text-align: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
     height: 38.5vh;
@@ -742,7 +740,6 @@ a {
     opacity: 1;
 }
 
-
 .property-container:hover .property-more-details {
     opacity: 1;
     transform: translateY(70%);
@@ -755,23 +752,15 @@ a {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     text-align: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
     height: 28vh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    transform: translateY(76%);
+    transform: translateY(80%);
 }
-
-
-
-
-
-
-
-
 
 
 /* for bannersection */
@@ -829,7 +818,7 @@ a {
     height: 86.2vh;
     width: 100%;
     object-fit: cover;
-    opacity: 0.9;
+    opacity:0.9;
 }
 
 .imagecontrollerheight {
@@ -1241,7 +1230,7 @@ a {
 }
 
 .propertiesfinder {
-    position: relative;
+   position: relative;
     bottom:3rem;
     background: var(--green);
     cursor: pointer;
@@ -1550,36 +1539,30 @@ a {
 .advance:hover{
     color:var(--text-offblack);
     cursor:pointer;
-
-
-
 }
 
 @media(max-width:500px)
 {
     .formsection span{
-        margin-top: 2rem
+        margin-top: 1rem
         
     }
     .formsection button{
-        margin-top:0.5rem
+        margin-top: 1rem
 
-    }
-    .advance{
-        margin-top:0.8rem !important;
-        margin-right: 1rem;
     }
 }
 
 
 .amenities{
     position: absolute;
-    background: var(--freegreen);
+    background:white;
     border-radius: 8px;
     display: none;
-    top:42rem;
+    top:44rem;
     left:8%;
     width:80vw;
+    z-index:10;
   }
   .nameofthing{
     padding-left:8px;
@@ -1588,7 +1571,7 @@ a {
   
   @media (max-width:500px) {
     .amenities{
-        top: 45rem;
+        top: 46rem;
   
   }
 

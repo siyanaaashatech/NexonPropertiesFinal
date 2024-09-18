@@ -1,16 +1,15 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\SubCategory;
-use Illuminate\Http\Request;
-use App\Models\Service;
-use App\Models\Blog;
-use App\Models\AboutUs;
-use App\Models\Testimonial;
-use App\Models\Whyus;
 use App\Models\Property;
 use App\Models\Category;
-
-
+use App\Models\Service;
+use App\Models\Blog;
+use App\Models\Testimonial;
+use App\Models\Whyus;
+use App\Models\AboutUs;
+use App\Models\Subcategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 class FrontViewController extends Controller
 {
     public function index()
@@ -21,15 +20,14 @@ class FrontViewController extends Controller
         $whyuss = Whyus::where('status', 1)->latest()->get();
         $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
         $properties = Property::where('status', 1)->latest()->take(6)->get();
-        $categories = Category::all(); // Assuming categories don't have a status
-        $subcategories = SubCategory::all();
-    
+        $categories = Category::all();
+        $states = Property::distinct('state')->pluck('state');
+        $subcategories = Subcategory::all();
+        $suburbs = Property::distinct('suburb')->pluck('suburb');
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs'
         ]));
     }
-    
-    
 
     public function properties(Request $request, $categoryId = null)
     {

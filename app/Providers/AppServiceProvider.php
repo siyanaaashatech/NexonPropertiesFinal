@@ -7,6 +7,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -33,6 +35,12 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         if(config('app.env') === 'production') {
             URL::forceScheme('https');
-        }
+
+             // Share categories and subcategories with all views
+        View::composer('*', function ($view) {
+            // Fetch all categories and their associated subcategories
+            $categories = Category::with('subcategories')->get();
+            $view->with('categories', $categories);
+        });       
     }
-}
+}}
