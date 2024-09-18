@@ -6,7 +6,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h4>Edit Why Us </h4>
+                    <h4>Edit Why Us</h4>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -32,7 +32,7 @@
                         </div>
                     @endif
 
-                    <!-- About Us update form -->
+                    <!-- WhyUs update form -->
                     <form action="{{ route('whyus.update', $WhyUs->id) }}" method="POST" enctype="multipart/form-data" id="whyUsForm">
                         @csrf
                         @method('PUT')
@@ -52,20 +52,39 @@
                             <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords', $WhyUs->keywords) }}</textarea>
                         </div>
 
+                        <!-- Previous Image Preview -->
+                        @if($WhyUs->image)
+                            <div class="form-group mb-3">
+                                <label for="previousImage">Current Image</label>
+                                <div>
+                                    @php
+                                        $images = json_decode($WhyUs->image, true);
+                                    @endphp
+                                    @if(is_array($images) && count($images) > 0)
+                                        @foreach($images as $image)
+                                            <img src="{{ asset($image) }}" alt="Current Image" class="img-thumbnail m-2" style="max-width: 200px; height: auto;">
+                                        @endforeach
+                                    @else
+                                        <p>No images available</p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
                         <!-- Image Upload with Cropper.js -->
                         <div class="form-group mb-3">
                             <label for="image">Upload New Image</label>
-                            <input type="file" id="image" class="form-control" accept="image/*">
+                            <input type="file" id="image" name="image" class="form-control" accept="image">
                         </div>
 
                         <!-- Hidden Inputs for Base64 Image -->
-                        <input type="hidden" name="image[]" id="croppedImage">
+                        <input type="hidden" name="croppedImage" id="croppedImage">
                         <input type="hidden" name="cropData" id="cropData">
 
                         <!-- Cropped Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Image Preview:</label>
-                            <img id="cropped-image-preview" style="max-width: 150%; max-height: 200%; display: block;">
+                            <img id="cropped-image-preview" style="max-width: 100%; height: auto;">
                         </div>
 
                         <div class="form-group mb-3">
@@ -81,7 +100,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Update About Us</button>
+                            <button type="submit" class="btn btn-primary">Update WhyUs</button>
                             <a href="{{ route('whyus.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
@@ -100,7 +119,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="image-preview" style="max-width: 150%; max-height: 150%; display: none;">
+                <img id="image-preview" style="max-width: 100%; height: auto; display: none;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -120,9 +139,9 @@
 
     // Image file input change event
     document.getElementById('image').addEventListener('change', function (e) {
-        const files = e.target.files;
-        if (files && files.length > 0) {
-            currentFile = files[0];
+        const file = e.target.files[0];
+        if (file) {
+            currentFile = file;
             const url = URL.createObjectURL(currentFile);
             const imagePreview = document.getElementById('image-preview');
             imagePreview.src = url;
@@ -141,6 +160,7 @@
             });
         }
     });
+
 
     // Save cropped image data and update hidden input fields
     document.getElementById('saveCrop').addEventListener('click', function () {

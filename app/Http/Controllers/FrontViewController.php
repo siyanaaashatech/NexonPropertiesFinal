@@ -15,32 +15,41 @@ class FrontViewController extends Controller
 {
     public function index()
     {
-        $services = Service::latest()->get()->take(4);
-        $blogs = Blog::latest()->get();
-        $testimonials =Testimonial::latest()->get();
-        $whyuss=Whyus::latest()->get();
-        $aboutuss =AboutUs::latest()->get()->take(1);
-        $properties=Property::latest()->get()->take(6);
-        $categories = Category::all(); 
+        $services = Service::where('status', 1)->latest()->take(4)->get();
+        $blogs = Blog::where('status', 1)->latest()->get();
+        $testimonials = Testimonial::where('status', 1)->latest()->get();
+        $whyuss = Whyus::where('status', 1)->latest()->get();
+        $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
+        $properties = Property::where('status', 1)->latest()->take(6)->get();
+        $categories = Category::all(); // Assuming categories don't have a status
         $subcategories = SubCategory::all();
-
-
-
-        return view('frontend.welcome',  compact([
-            'services','blogs','aboutuss','testimonials','whyuss','properties','categories','subcategories'
+    
+        return view('frontend.welcome', compact([
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories'
         ]));
     }
+    
+    
 
-    public function search(Request $request)
+    public function properties(Request $request, $categoryId = null)
     {
+        $categoryId = $request->query('categoryId');
         
-        $searchController = new SearchPropertiesController();
-        $categories = Category::all(); 
-        $properties = $searchController->filterProperties($request);
-        return view('frontend.searching', compact('properties','categories'));
+        // Fetch all categories for the navbar
+        $categories = Category::all();
+        
+        // Fetch properties, optionally filtered by category, and where status is active
+        $propertiesQuery = Property::where('status', '1');
+        
+        if ($categoryId) {
+            $propertiesQuery->where('category_id', $categoryId);
+        }
+        
+        $properties = $propertiesQuery->paginate(1); 
+        
+        return view('frontend.properties', compact('properties', 'categories'));
     }
-
-
+    
     // public function singlePost($slug)
     // {
     //     $blogs = Blog::where('slug', $slug)->firstOrFail();

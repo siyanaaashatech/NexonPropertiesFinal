@@ -20,7 +20,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>S.N</th>
+                                    <th>Serial No.</th> 
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Sub Category</th>
@@ -31,14 +31,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($properties as $property)
+                                @foreach($properties as $index => $property)
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $property->title }}</td>
                                         <td>{{ $property->category->title }}</td>
                                         <td>{{ $property->subCategory->title }}</td>
                                         <td>${{ number_format($property->price, 2) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($property->update_time)->format('Y - F - d') }}</td>
+                                        
                                         <td>
                                             @if($property->status)
                                                 <span class="badge bg-success">Active</span>

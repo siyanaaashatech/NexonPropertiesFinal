@@ -96,86 +96,58 @@ class BlogController extends Controller
 
     // Update blog in the database
     public function update(Request $request, Blog $blog)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'author' => 'nullable|string|max:255',
-            'keywords' => 'nullable|string',
-            'image' => 'sometimes|array',
-            'image.*' => 'required|string',
-            'status' => 'required|boolean',
-            'cropData' => 'nullable|string',
-        ]);
-    
-        // Initialize images array with current images
-        $images = !empty($blog->image) ? json_decode($blog->image, true) : [];
-    
-        // Handle image processing if new images are provided
-        if ($request->has('image') && $request->input('image')) {
-            foreach ($request->input('image') as $base64Image) {
-                if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
-                    $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-                    $decodedImage = base64_decode($base64Image);
-    
-                    if ($decodedImage === false) {
-                        continue; // Skip if decoding fails
-                    }
-    
-                    $imageType = strtolower($type[1]); // Extract image type
-                    if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                        continue; // Skip unsupported image types
-                    }
-    
-                    // Create image resource from the decoded image
-                    $imageResource = imagecreatefromstring($decodedImage);
-                    if ($imageResource !== false) {
-                        // Generate a unique image name
-                        $imageName = time() . '-' . Str::uuid() . '.webp';
-                        $destinationPath = storage_path('app/public/blog_images');
-    
-                        // Create directory if it doesn't exist
-                        if (!File::exists($destinationPath)) {
-                            File::makeDirectory($destinationPath, 0755, true, true);
-                        }
-    
-                        $savedPath = $destinationPath . '/' . $imageName;
-    
-                        // Save image as WebP format
-                        imagewebp($imageResource, $savedPath);
-                        imagedestroy($imageResource);
-    
-                        // Store the relative path to the image
-                        $relativeImagePath = 'storage/blog_images/' . $imageName;
-                        $images[] = $relativeImagePath;
-                    }
-                }
-            }
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'author' => 'nullable|string|max:255',
+        'keywords' => 'nullable|string',
+        'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp',
+        'status' => 'required|boolean',
+        'cropData' => 'nullable|string',
+    ]);
+
+    $images = !empty($blog->image) ? json_decode($blog->image, true) : [];
+
+    // Handle image upload if a new image is provided
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $imageName = time() . '-' . Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = storage_path('app/public/blog_images');
+
+        // Create directory if it doesn't exist
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true, true);
         }
-    
-        // Update metadata for the blog
-        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
-        $blog->metadata()->updateOrCreate([], [
-            'meta_title' => $request->title,
-            'meta_description' => $request->description,
-            'meta_keywords' => json_encode($metaKeywordsArray),
-            'slug' => Str::slug($request->title)
-        ]);
-    
-        // Update the blog record
-        $blog->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'author' => $request->author,
-            'keywords' => $request->keywords,
-            'image' => json_encode($images), // Store images as JSON
-            'status' => $request->status,
-        ]);
-    
-        session()->flash('success', 'Blog updated successfully.');
-        return redirect()->route('admin.blogs.index');
+
+        $file->move($destinationPath, $imageName);
+        $relativeImagePath = 'storage/blog_images/' . $imageName;
+        $images[] = $relativeImagePath;
     }
-    
+
+    // Update metadata for the blog
+    $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
+    $blog->metadata()->updateOrCreate([], [
+        'meta_title' => $request->title,
+        'meta_description' => $request->description,
+        'meta_keywords' => json_encode($metaKeywordsArray),
+        'slug' => Str::slug($request->title)
+    ]);
+
+    // Update the blog record
+    $blog->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'author' => $request->author,
+        'keywords' => $request->keywords,
+        'image' => json_encode($images),
+        'status' => $request->status,
+    ]);
+
+    session()->flash('success', 'Blog updated successfully.');
+    return redirect()->route('admin.blogs.index');
+}
+
 
 
     // Delete a blog from the database

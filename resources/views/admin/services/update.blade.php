@@ -62,6 +62,25 @@
                                 required>{{ old('keywords', $service->keywords) }}</textarea>
                         </div>
 
+                        <!-- Display Current Image -->
+                <div class="form-group mb-3" id="current-image-container">
+                    <label>Current Image:</label>
+                    @if(!empty($service->image))
+                        @php
+                            $images = is_string($service->image) ? json_decode($service->image, true) : $service->image;
+                        @endphp
+                        @if(is_array($images) && count($images) > 0)
+                            @foreach($images as $image)
+                                <img src="{{ asset($image) }}" alt="Service Image" style="max-width: 200px; max-height: 200px;">
+                            @endforeach
+                        @else
+                            <p>No valid image data found.</p>
+                        @endif
+                    @else
+                        <p>No image uploaded.</p>
+                    @endif
+                </div>
+
                         <!-- Image Upload with Cropper.js -->
                         <div class="form-group mb-3">
                             <label for="image">Upload New Image</label>

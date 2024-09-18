@@ -220,7 +220,8 @@
 
 
 <!-- nextpage section -->
-<section class="container-fluid ">
+<!-- nextpage section -->
+<section class="container-fluid">
     <div class="container">
         <div class="row  nextpage ">
 

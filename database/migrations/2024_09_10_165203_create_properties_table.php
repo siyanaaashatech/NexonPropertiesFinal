@@ -30,7 +30,8 @@ class CreatePropertiesTable extends Migration
             $table->string('rental_period')->nullable();
             $table->json('other_images')->nullable();
             $table->foreignId('metadata_id')->constrained('metadata')->onDelete('cascade');
-            $table->timestamp('update_time')->nullable(); // New update_time field added
+            $table->string('googlemap')->nullable();
+            $table->timestamp('update_time')->nullable(); 
             $table->timestamps();
         });
     }

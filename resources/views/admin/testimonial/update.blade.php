@@ -38,6 +38,25 @@
                     <input type="file" id="image" class="form-control" accept="image/*" multiple>
                 </div>
 
+                <!-- Display Current Image -->
+                <div class="form-group mb-3" id="current-image-container">
+                    <label>Current Image:</label>
+                    @if(!empty($testimonial->image))
+                        @php
+                            $images = is_string($testimonial->image) ? json_decode($testimonial->image, true) : $testimonial->image;
+                        @endphp
+                        @if(is_array($images) && count($images) > 0)
+                            @foreach($images as $image)
+                                <img src="{{ asset($image) }}" alt="Testimonial Image" style="max-width: 200px; max-height: 200px;">
+                            @endforeach
+                        @else
+                            <p>No valid image data found.</p>
+                        @endif
+                    @else
+                        <p>No image uploaded.</p>
+                    @endif
+                </div>
+
                 <!-- Hidden Inputs for Base64 Image -->
                 <input type="hidden" name="image[]" id="croppedImage">
                 <input type="hidden" name="cropData" id="cropData">
@@ -72,8 +91,6 @@
 </div>
 
 
-
-
     <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -101,7 +118,37 @@
     let cropper;
     let currentFile;
 
-    // Image file input change event
+    function displayExistingImage() {
+        const existingImage = document.getElementById('existing_image').value;
+        const previewContainer = document.getElementById('image-preview-container');
+        
+        if (existingImage) {
+            try {
+                const images = JSON.parse(existingImage);
+                if (Array.isArray(images) && images.length > 0) {
+                    previewContainer.innerHTML = '';
+                    images.forEach(image => {
+                        const img = document.createElement('img');
+                        img.src = image;
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '200px';
+                        img.style.display = 'block';
+                        img.style.marginBottom = '10px';
+                        previewContainer.appendChild(img);
+                    });
+                } else {
+                    previewContainer.innerHTML = '<p>No Image Available</p>';
+                }
+            } catch (e) {
+                console.error("Error parsing existing image:", e);
+                previewContainer.innerHTML = '<p>Error displaying image</p>';
+            }
+        } else {
+            previewContainer.innerHTML = '<p>No Image Available</p>';
+        }
+    }
+
+    // Initialize Cropper.js for new image upload
     document.getElementById('image').addEventListener('change', function (e) {
         const files = e.target.files;
         if (files && files.length > 0) {
@@ -127,34 +174,32 @@
 
     // Save cropped image data and update hidden input fields
     document.getElementById('saveCrop').addEventListener('click', function () {
+        if (!cropper) return;
+
         const cropData = cropper.getData();
-        document.getElementById('cropData').value = JSON.stringify({
+        document.getElementById('cropData').value = JSON.stringify([{
             width: Math.round(cropData.width),
             height: Math.round(cropData.height),
             x: Math.round(cropData.x),
-            y: Math.round(cropData.y)
-        });
+            y: Math.round(cropData.y),
+        }]);
 
-        const base64Image = cropper.getCroppedCanvas().toDataURL('image/png');
-        document.getElementById('croppedImage').value = base64Image; // Store the base64 string
+        cropper.getCroppedCanvas().toBlob((blob) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                document.getElementById('croppedImage').value = reader.result;
+                document.getElementById('cropped-image-preview').src = reader.result;
+                document.getElementById('cropped-preview-container').style.display = 'block';
+            };
 
-        // Set cropped image preview
-        const croppedImagePreview = document.getElementById('cropped-image-preview');
-        croppedImagePreview.src = base64Image;
-        document.getElementById('cropped-preview-container').style.display = 'block';
-
-        // Close modal after saving crop
-        const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
-        cropModal.hide();
+            // Close modal after saving crop
+            const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
+            cropModal.hide();
+        }, 'image/png');
     });
 
-    // Show toast message after form submission
-    document.addEventListener('DOMContentLoaded', function () {
-        if (document.querySelector('.toast')) {
-            const toast = new bootstrap.Toast(document.querySelector('.toast'));
-            toast.show();
-        }
-    });
+    // Initialize preview on page load
+    window.addEventListener('load', displayExistingImage);
 </script>
-
 @endsection
