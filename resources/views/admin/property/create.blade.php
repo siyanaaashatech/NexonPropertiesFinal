@@ -73,6 +73,20 @@
                             </select>
                         </div>
 
+                       <!-- Amenities -->
+                       <div class="form-group">
+                        <label for="amenities">Amenities</label>
+                        @foreach($amenities as $amenity)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
+                                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
+                                    {{ $amenity->title }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+
                         <!-- Street -->
                         <div class="form-group mb-3">
                             <label for="street">Street</label>
@@ -219,9 +233,10 @@
                         </div>
 
                         <div class="form-group mb-3">
-                        <label for="update_time">Update Time</label>
-                       <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y - F - d') }}" readonly>
-</div>
+                            <label for="update_time">Update Time</label>
+                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
+                        </div>
+                        
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
@@ -385,3 +400,5 @@
 
 </script>
 @endsection
+
+

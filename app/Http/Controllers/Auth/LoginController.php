@@ -53,7 +53,7 @@ class LoginController extends Controller
     if ($user->isAdmin()) {
         return redirect('/admin'); // Redirect to admin panel for admins
     } elseif ($user->isSuperAdmin()) {
-        return redirect('/superadmin'); // Redirect to super admin panel if applicable
+        return redirect('/admin'); // Redirect to super admin panel if applicable
     } else {
         return redirect('/'); // Redirect to frontend view for regular users
     }

@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\WhyusController;
@@ -39,8 +40,8 @@ use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
 use App\Http\Controllers\SearchPropertiesController;
 use App\Http\Controllers\Admin\ContactController;
-
-
+use App\Http\Controllers\Admin\ReviewsandRatingsController;
+use App\Models\Offer;
 
 Auth::routes();
 
@@ -174,8 +175,23 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    //Sociallinks route
    Route::resource('social-links', SocialLinkController::class);
 
-   //Contact route
-   Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
+   //Offer-Feature route
+   Route::resource('offers', OfferController::class);
+
+   // Contact routes
+    Route::prefix('admin')->group(function () {
+    Route::get('/contact', [App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact/store', [App\Http\Controllers\Admin\ContactController::class, 'store'])->name('contact.store');
+});
+
+ // Review routes
+ Route::prefix('admin')->group(function () {
+    Route::get('/review', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'index'])->name('review.index');
+    Route::post('/review/store', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'store'])->name('review.store');
+    Route::post('/submit-review', [ReviewsandRatingsController::class, 'store'])->name('submit.review');
+
+});
+
 
 
    // Frontend Routes

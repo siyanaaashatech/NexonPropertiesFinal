@@ -32,64 +32,41 @@
             <i class="fa-brands fa-searchengin customicons"></i> Find your properties
         </h1>
         <div class="justify-content-center align-items-center gap-2 flex-wrap hiddenform" id="hiddenform">
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Listing type</label>
-                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="" disabled selected>Select Category</option>
-                    @foreach($categories as $category)
-              <option value="{{ $category->id }}" {{ request('list_type') == $category->id ? 'selected' : '' }}>
-              {{ $category->title }}
-              </option>
-            @endforeach
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Listing type</label>
+                    <select class="input bannerinput" name="category_id" id="category_id">
+                        <option value="" disabled selected>Select Category</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->title }}</option>
+                        @endforeach
                     </select>
-            </div>
-
-
-            {{-- <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Properties type</label>
-                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    @foreach($subcategories as $subcategory)
-                        <option value="{{ $subcategory->id }}" data-category-id="{{ $subcategory->category_id }}"
-                          {{ request('property_type') == $subcategory->id ? 'selected' : '' }}>
-                          {{ $subcategory->title }}
-                        </option>
-                      @endforeach</option>
-                    </select>
-            </div> --}}
-
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Location</label>
-                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="1">States</option>
-                    <option value="">
-                      @foreach($properties as $property)
-              @if(!empty($property->state))
-          <option value="{{ $property->state }}" {{ request('state') == $property->state ? 'selected' : '' }}>
-          {{ $property->state }}
-          </option>
-        @endif
-            @endforeach</option>
-                    </select>
-            </div>
-
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Location</label>
-                <select type="text" class="input bannerinput" name="region" placeholder="Regions"
-                    value="{{ request('region') }}">
-                    <option value="1">regions</option>
-                    <option value="2">Region 1</option>
-                    <option value="3">Region 2</option>
-                    </select>
-            </div>
-
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="md-text1 des-text">Price</label>
-                <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
-                    value="{{ request('location') }}">
-            </div>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Select Category</label>
+                  <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
+                    <option value="" disabled selected>Select Subcategory</option>
+                  </select>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Select State</label>
+                  <select class="input bannerinput" name="state" id="state">
+                    <option value="" disabled selected>Select State</option>
+                    @foreach($states as $state)
+                      <option value="{{ $state }}">{{ $state }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Select Region</label>
+                  <select class="input bannerinput" name="suburb" id="suburb">
+                    <option value="" disabled selected>Select Region</option>
+                  </select>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Keyword</label>
+                  <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+                  value="{{ request('location') }}">
+                </div>
 
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Search</label>
@@ -101,7 +78,50 @@
 </form>
 
 
-
+<script>
+    $(document).ready(function() {
+      $('#category_id').change(function() {
+        var categoryId = $(this).val();
+        if (categoryId) {
+          $.ajax({
+            url: '/get-subcategories/' + categoryId,
+            type: 'GET',
+            success: function(data) {
+              $('#subcategory_id').empty();
+              $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
+              $.each(data, function(key, value) {
+                $('#subcategory_id').append('<option value="' + value.id + '">' + value.title + '</option>');
+              });
+            }
+          });
+        } else {
+          $('#subcategory_id').empty();
+          $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
+        }
+      });
+    
+      $('#state').change(function() {
+        var state = $(this).val();
+        if (state) {
+          $.ajax({
+            url: '/get-suburbs/' + state,
+            type: 'GET',
+            success: function(data) {
+              $('#suburb').empty();
+              $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+              $.each(data, function(key, value) {
+                $('#suburb').append('<option value="' + value + '">' + value + '</option>');
+              });
+            }
+          });
+        } else {
+          $('#suburb').empty();
+          $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+        }
+      });
+    });
+    </script>
+   
 
 {{--
 

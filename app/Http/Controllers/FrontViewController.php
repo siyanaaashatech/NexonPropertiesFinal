@@ -8,10 +8,21 @@ use App\Models\Testimonial;
 use App\Models\Whyus;
 use App\Models\AboutUs;
 use App\Models\Subcategory;
+use App\Models\Amenity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 class FrontViewController extends Controller
 {
+    private function extractAmenities($amenities)
+    {
+        if (is_string($amenities)) {
+            return json_decode($amenities, true) ?? [];
+        } elseif (is_array($amenities)) {
+            return $amenities;
+        }
+        return [];
+    }
+
     public function index()
     {
         $services = Service::where('status', 1)->latest()->take(4)->get();
@@ -24,28 +35,28 @@ class FrontViewController extends Controller
         $states = Property::distinct('state')->pluck('state');
         $subcategories = Subcategory::all();
         $suburbs = Property::distinct('suburb')->pluck('suburb');
+        $amenities = Amenity::all();
+
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs','amenities'
         ]));
     }
 
     public function properties(Request $request, $categoryId = null)
     {
         $categoryId = $request->query('categoryId');
-        
         // Fetch all categories for the navbar
         $categories = Category::all();
-        
         // Fetch properties, optionally filtered by category, and where status is active
         $propertiesQuery = Property::where('status', '1');
-        
         if ($categoryId) {
             $propertiesQuery->where('category_id', $categoryId);
         }
-        
-        $properties = $propertiesQuery->paginate(1); 
-        
-        return view('frontend.properties', compact('properties', 'categories'));
+        $properties = $propertiesQuery->paginate(1);
+        $states = Property::distinct('state')->pluck('state');
+        $amenities = Amenity::all();
+
+        return view('frontend.properties', compact('properties', 'categories', 'states','amenties'));
     }
     
     // public function singlePost($slug)

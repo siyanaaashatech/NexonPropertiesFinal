@@ -2,31 +2,40 @@
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
-      <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo"  class="logoimg"/></a>
+      <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo" class="logoimg" /></a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
-            @foreach($categories as $category)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
-                </li>
-            @endforeach
+          @foreach($categories as $category)
+        <li class="nav-item">
+        <a class="nav-link"
+          href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
+        </li>
+      @endforeach
         </ul>
-    </div>
-    
-      <div class="button-collection">
-        @guest
-          <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
-          <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
-        @else
-          <span class="welcome-message">Welcome, {{ Auth::user()->name }}</span>
-          {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
-          <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn-buttonyellow reg-logbutton">Logout</a>
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              @csrf
-          </form>
-        @endguest
       </div>
-      <i class="fa-solid fa-bars customicons mx-4 " onclick="funmenu()"></i>
+      <div class="button-collection d-flex flex-column justify-content-center">
+        @guest
+      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+    @else
+    <span class="welcome-message sm-text1"> {{ Auth::user()->name }}</span>
+    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+    <div class="d-flex">
+      <div class="">
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="btn-buttonyellow reg-logbutton">Logout</a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </div>
+<div class="d-flex fav">
+  <p class="sm-text1 counter">1</p>
+  <i class="fa-solid fa-heart "></i>
+      </div>
+    </div>
+    </form>
+  @endguest
+      </div>
+      <i class="fa-solid fa-bars customicons mx-4 p-0 m-0" onclick="funmenu()"></i>
     </nav>
   </div>
   <div class="bur-menu py-3" id="bur-menu">
@@ -61,23 +70,20 @@
       </li>
     </div>
     <h2 class="navdestext">Follow Us</h2>
-    {{-- <div class="d-flex font-collection py-2">
-      <a href="{{ $sitesetting->facebook_link }}" class="social-icon"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
-      <a href="{{ $sitesetting->linkedin_link }}" class="social-icon"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
-      <a href="{{ $sitesetting->instagram_link }}" class="social-icon"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+    <div class="d-flex font-collection py-2">
+      <a href="#"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
     </div>
-  </div> --}}
+  </div>
 </section>
-
 <script>
   function funsearchingon() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
     hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
   }
-
   function funmenu() {
     const burmenu = document.getElementById("bur-menu");
     burmenu.style.display = burmenu.style.display === "block" ? "none" : "block";
   }
 </script>
-
