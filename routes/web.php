@@ -176,7 +176,8 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 
    //Contact route
    Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
-
+//property update 
+Route::put('property/{id}/update-images', [PropertyController::class, 'updateImages'])->name('property.updateImages');
 
    // Frontend Routes
    Route::view("/member", "frontend.member")->name('member');

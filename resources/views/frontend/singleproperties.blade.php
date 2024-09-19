@@ -12,8 +12,19 @@
                             $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
                             $mainImage = !empty($mainImages) ? asset($mainImages[0]) : asset('images/default-placeholder.png');
                         @endphp
+                        <style>
+                            .review-addtofavourite{
+                                position: absolute;
+                                bottom: 4rem;
+                              
+                            }
+                        </style>
                         <img src="{{ $mainImage }}" alt="Property Image"
                             class="imagecontroller imagecontrollerheight rounded">
+                            <div class="review-addtofavourite d-flex gap-1 mx-4">
+                            <span class="btn-buttonxs btn-buttonxsgreen">hello</span>
+                            <span class="btn-buttonxs btn-buttonxsgreen">hello</span>
+                            </div>
                     </div>
 
                     <!-- Property Images -->
@@ -33,15 +44,15 @@
                     </div>
                     <!-- Property Details -->
                     <div class="col-md-12">
-                        <div class="d-flex py-2">
-                            <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{ $properties->status }}</div>
-                            <div class="btn-buttonxs btn-buttonxsgreen">{{ $properties->availability_status }}</div>
-                        </div>
                         <h3 class="md-text">{{ $properties->title }}</h3>
                         <h4 class="sm-text highlight">
                             <i class="fa-solid fa-location-dot"></i>
                             <span>{{ $properties->state }}-{{ $properties->suburb }}-{{ $properties->street }}</span>
                         </h4>
+                        <div class="d-flex py-2">
+                            <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{ $properties->status }}</div>
+                            <div class="btn-buttonxs btn-buttonxsgreen">{{ $properties->availability_status }}</div>
+                        </div>
                     </div>
 
                     <!-- Overview and Description -->
