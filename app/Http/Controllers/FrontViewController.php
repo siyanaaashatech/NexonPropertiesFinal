@@ -20,12 +20,14 @@ class FrontViewController extends Controller
         $whyuss = Whyus::where('status', 1)->latest()->get();
         $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
         $properties = Property::where('status', 1)->latest()->take(6)->get();
+        $propertie = Property::where('status', 1)->latest()->take(6)->get();
         $categories = Category::all();
         $states = Property::distinct('state')->pluck('state');
         $subcategories = Subcategory::all();
         $suburbs = Property::distinct('suburb')->pluck('suburb');
+        $subPropertyCount = Property::distinct('suburb')->count();
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs', 'propertie', 'subPropertyCount'
         ]));
     }
     public function properties(Request $request, $categoryId = null)
