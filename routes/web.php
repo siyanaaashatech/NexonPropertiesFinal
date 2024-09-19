@@ -176,6 +176,9 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    //Sociallinks route
    Route::resource('social-links', SocialLinkController::class);
 
+    //Amenity route
+    Route::resource('amenities', AmenityController::class);
+
    //Offer-Feature route
    Route::resource('offers', OfferController::class);
 

@@ -73,21 +73,7 @@
                                 <option value="">Choose Sub Category</option>
                             </select>
                         </div>
-
-                       <!-- Amenities -->
-                       <div class="form-group">
-                        <label for="amenities">Amenities</label>
-                        @foreach($amenities as $amenity)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
-                                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
-                                    {{ $amenity->title }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
-                        </div>
+                       
 
                        <!-- Amenities -->
                        <div class="form-group">

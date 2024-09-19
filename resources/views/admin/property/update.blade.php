@@ -54,18 +54,7 @@
                                 required>{{ old('description', $property->description) }}</textarea>
                         </div>
 
-                       <!-- Category -->
-<div class="form-group mb-3">
-    <label for="category_id">Category</label>
-    <select name="category_id" id="category_id" class="form-control" required>
-        <option value="">Choose Category</option>
-        @foreach($categories as $category)
-            <option value="{{ $category->id }}" {{ old('category_id', $property->category_id) == $category->id ? 'selected' : '' }}>
-                {{ $category->title }}
-            </option>
-        @endforeach
-    </select>
-</div>
+
                        <!-- Category -->
 <div class="form-group mb-3">
     <label for="category_id">Category</label>
@@ -101,27 +90,6 @@
     @endforeach
 </div>
 
-<!-- Sub Category -->
-<div class="form-group mb-3">
-    <label for="sub_category_id">Sub Category</label>
-    <select name="sub_category_id" id="sub_category_id" class="form-control" required>
-        <option value="">Choose Sub Category</option>
-    </select>
-</div>
-
-<!-- Amenities -->
-<div class="form-group">
-    <label for="amenities">Amenities</label>
-    @foreach($amenities as $amenity)
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
-                   {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
-            <label class="form-check-label" for="amenity_{{ $amenity->id }}">
-                {{ $amenity->title }}
-            </label>
-        </div>
-    @endforeach
-</div>
 
 
                         <!-- Street -->

@@ -14,15 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 class FrontViewController extends Controller
 {
-    private function extractAmenities($amenities)
-    {
-        if (is_string($amenities)) {
-            return json_decode($amenities, true) ?? [];
-        } elseif (is_array($amenities)) {
-            return $amenities;
-        }
-        return [];
-    }
+  
 
     private function extractAmenities($amenities)
     {
