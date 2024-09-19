@@ -107,7 +107,7 @@ class PropertyController extends Controller
 
         session()->flash('success', 'Property created successfully.');
 
-        return redirect()->route('property.index');
+        return redirect()->route('  property.index');
     }
 
     /**

@@ -34,7 +34,8 @@ class SingleController extends Controller
         $blogs = Blog::where('id', $id)->firstOrFail();
         $properties = Property::latest()->get();
         $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
-        return view('frontend.singleblogpost', compact('blogs','relatedPosts','properties'));
+        $categories=Category::latest()->get();
+        return view('frontend.singleblogpost', compact('blogs','relatedPosts','properties','categories'));
     }
 
 
@@ -71,9 +72,15 @@ class SingleController extends Controller
     public function render_search()
     {
         $properties = Property::latest()->get();
-        return view('frontend.searching', compact('properties'));
+        $categories=Category::latest()->get();
+        return view('frontend.searching', compact('properties','categories'));
     }
-
+    public function render_favourite()
+    {
+        $properties = Property::latest()->get();
+        $categories=Category::latest()->get();
+        return view('frontend.favourite', compact('properties','categories'));
+    }
     public function properties(Request $request, $categoryId = null)
 {
     // Fetch all categories for the navbar

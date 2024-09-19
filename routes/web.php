@@ -39,7 +39,8 @@ use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
 use App\Http\Controllers\SearchPropertiesController;
 use App\Http\Controllers\Admin\ContactController;
-
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 Auth::routes();
@@ -190,6 +191,8 @@ Route::put('property/{id}/update-images', [PropertyController::class, 'updateIma
    Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
    Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+   Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');
+   
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {
@@ -201,4 +204,9 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
 Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
 Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
 Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
+
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
