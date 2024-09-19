@@ -1,35 +1,20 @@
 {{--navbar --}}
-<style>
-.nav-link.active-red {
-    color: red;
-}
-
-</style>
-
-
-
 
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
-      <a class="navbar-brand" href="/"> 
-          <img src="{{ asset('image/logo.png') }}" alt="Logo" class="logoimg"/>
-      </a>
+      <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo"  class="logoimg"/></a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
-          @foreach($categories as $category)
-        <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('properties') && request()->get('categoryId') == $category->id ? 'active-red' : '' }}"
-          href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
-        </li>
-      @endforeach
+            @foreach($categories as $category)
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
+                </li>
+            @endforeach
         </ul>
-      </div>
-    </nav>
-</div>
-
+    </div>
     
-      <div class="button-collection  flex-column ">
+      <div class="button-collection">
         <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</a>
         <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton ">login</a>
       </div>
@@ -43,7 +28,7 @@
         <i class="fa-solid fa-house customiconssmall "></i>
         <a class="nav-link " aria-current="page" href="/">Introduction</a>
       </li>
-      <li class="nav-item active ">
+      <li class="nav-item">
 
         <i class="fa-solid fa-truck-moving  customiconssmall"></i>
         <a class="nav-link " aria-current="page" href="{{route('properties')}}">Rent</a>
@@ -73,7 +58,7 @@
       <i class="fa-brands fa-facebook customicons mx-2"></i>
       <i class="fa-brands fa-linkedin customicons mx-2"></i>
       <i class="fa-brands fa-youtube customicons mx-2"></i>
-
+      
     </div>
   </div>
 </section>

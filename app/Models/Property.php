@@ -14,6 +14,7 @@ class Property extends Model
         'description',
         'category_id',
         'sub_category_id',
+        'amenities',
         'street',
         'suburb',
         'state',
@@ -34,7 +35,8 @@ class Property extends Model
     ];
 
     protected $casts = [
-        'other_images' => 'array', // Handle multi-image upload as an array
+        'other_images' => 'array',
+        'amenities' => 'array',
         'update_time' => 'date',
     ];
 
@@ -52,5 +54,10 @@ class Property extends Model
     public function metadata()
     {
         return $this->belongsTo(Metadata::class);
+    }
+
+    public function amenities()
+    {
+        return $this->hasMany(Amenity::class);
     }
 }

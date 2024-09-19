@@ -53,7 +53,6 @@
                                 required>{{ old('description') }}</textarea>
                         </div>
 
-                        <!-- Category -->
                         <div class="form-group mb-3">
                             <label for="category_id">Category</label>
                             <select name="category_id" id="category_id" class="form-control" required>
@@ -65,19 +64,28 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        
                         <!-- Sub Category -->
                         <div class="form-group mb-3">
                             <label for="sub_category_id">Sub Category</label>
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}" {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
-                                        {{ $subCategory->title }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
+
+                       <!-- Amenities -->
+                       <div class="form-group">
+                        <label for="amenities">Amenities</label>
+                        @foreach($amenities as $amenity)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
+                                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
+                                    {{ $amenity->title }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
 
                         <!-- Street -->
                         <div class="form-group mb-3">
@@ -156,18 +164,16 @@
 
                         <!-- Status -->
                         <div class="form-group mb-3">
-                            <label for="status">Status</label>
-                            <div class="form-check">
-                                <input type="radio" name="status" id="status_active" value="1" class="form-check-input"
-                                    {{ old('status') == '1' ? 'checked' : '' }} required>
-                                <label for="status_active" class="form-check-label">Active</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="radio" name="status" id="status_inactive" value="0"
-                                    class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
-                                <label for="status_inactive" class="form-check-label">Inactive</label>
-                            </div>
+                        <label for="status">Status</label>
+                          <div class="form-check">
+                        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
+                        <label for="status_active" class="form-check-label">Active</label>
                         </div>
+                          <div class="form-check">
+                        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
+                        <label for="status_inactive" class="form-check-label">Inactive</label>
+                          </div>
+                          </div>
 
                         <!-- Availability Status -->
                         <div class="form-group mb-3">
@@ -194,8 +200,8 @@
                             <input type="file" id="main_image" class="form-control" required>
                         </div>
 
-                        <!-- Hidden input to store the base64 string of the main image -->
-                        <input type="hidden" name="main_image[0]" id="main_image_base64" required>
+                    <!-- Hidden input to store the base64 string of the main image -->
+                       <input type="hidden" name="main_image[0]" id="main_image_base64" required>
                         <!-- Cropped Main Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
                             <label>Cropped Main Image Preview:</label>
@@ -216,14 +222,21 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
-                            <input type="text" name="keywords" id="keywords" class="form-control"
-                                value="{{ old('keywords') }}">
+                            <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
+                                >
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="googlemap">Google Map</label>
+                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap') }}"
+                                >
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="update_time">Update Time</label>
-                            <input type="date" name="update_time" id="update_time" class="form-control">
+                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
                         </div>
+                        
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
@@ -358,5 +371,32 @@
 
     //     this.value = `${date.getFullYear()} - ${date.toLocaleString('default', { month: 'long' })} - ${date.getDate().toString().padStart(2, '0')}`;
     // });
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('category_id');
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Object to store all subcategories grouped by category ID
+        const subCategories = @json($subCategories->groupBy('category_id'));
+
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+            
+            // Clear current options
+            subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+            
+            if (selectedCategoryId && subCategories[selectedCategoryId]) {
+                subCategories[selectedCategoryId].forEach(function(subCategory) {
+                    const option = new Option(subCategory.title, subCategory.id);
+                    subCategorySelect.add(option);
+                });
+            }
+        });
+
+        // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
+        if (categorySelect.value) {
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+    });
+
 </script>
 @endsection

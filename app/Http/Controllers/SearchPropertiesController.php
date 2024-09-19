@@ -5,67 +5,94 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
+use App\Models\Subcategory;
+use App\Models\Amenity;
+use App\Models\Property;
 
 class SearchPropertiesController extends Controller
 {
+    public function index()
+    {
+        $categories = Category::all();
+        $subcategories = Subcategory::all();
+        $states = Property::distinct('state')->pluck('state');
+        $properties = Property::latest()->take(5)->get(); 
+        $amenities = Amenity::all();
+        return view('frontend.welcome', compact('categories', 'subcategories', 'states', 'properties', 'amenities'));
+    }
+
+    public function getSubcategories($categoryId)
+    {
+        $categories = Category::all();
+        $subcategories = Subcategory::where('category_id', $categoryId)->get();
+        return response()->json($subcategories);
+    }
+
+    public function getSuburbs($state)
+    {
+        $suburbs = Property::where('state', $state)->distinct('suburb')->pluck('suburb');
+        return response()->json($suburbs);
+    }
+
+
     public function filterProperties(Request $request)
     {
-        // Initialize the query builder for the properties table
-        $query = DB::table('properties');
-
-        // Debug: Check the incoming request data
-        // Uncomment this line if you need to see what data is being received
-        // dd($request->all());
-
-        // Apply filters based on request parameters
-
-        // Filter by Category
-        if ($request->filled('list_type')) {
-            $query->where('category_id', $request->input('list_type'));
+        $query = Property::with(['category', 'subCategory']); 
+    
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
         }
-
-        // Filter by Subcategory
-        if ($request->filled('property_type')) {
-            $query->where('sub_category_id', $request->input('property_type'));
+    
+        if ($request->filled('subcategory_id')) {
+            $query->where('sub_category_id', $request->input('subcategory_id'));
         }
-
-        // Filter by Location (street, suburb, state, postcode, or country)
-        if ($request->filled('location')) {
-            $query->where(function ($subQuery) use ($request) {
-                $subQuery->where('street', 'like', '%' . $request->input('location') . '%')
-                    ->orWhere('suburb', 'like', '%' . $request->input('location') . '%')
-                    ->orWhere('state', 'like', '%' . $request->input('location') . '%')
-                    ->orWhere('post_code', 'like', '%' . $request->input('location') . '%')
-                    ->orWhere('country', 'like', '%' . $request->input('location') . '%');
-            });
-        }
-
-        // Filter by Price Range
-        if ($request->filled('min_price') || $request->filled('max_price')) {
-            $minPrice = $request->input('min_price', 0);
-            $maxPrice = $request->input('max_price', PHP_INT_MAX);
-            $query->whereBetween('price', [$minPrice, $maxPrice]);
-        }
-
-        // Filter by State
+    
         if ($request->filled('state')) {
             $query->where('state', $request->input('state'));
         }
-
-        // Filter by Number of Bedrooms (optional; you can include this if the form has such a field)
-        if ($request->filled('bedroom')) {
-            $query->where('bedrooms', $request->input('bedroom'));
+    
+        if ($request->filled('suburb')) {
+            $query->where('suburb', $request->input('suburb'));
         }
-
-        // Fetch the filtered properties
+    
+        if ($request->filled('location')) {
+            $location = $request->input('location');
+            $query->where(function($q) use ($location) {
+                $q->where('title', 'like', "%{$location}%")
+                  ->orWhere('description', 'like', "%{$location}%");
+            });
+        }
+    
+        if ($request->filled('amenities')) {
+            $selectedAmenities = $request->input('amenities');
+            $query->where(function ($q) use ($selectedAmenities) {
+                foreach ($selectedAmenities as $amenityId) {
+                    $q->whereJsonContains('amenities', $amenityId);
+                }
+            });
+        }
+    
+        if ($request->filled('bedrooms')) {
+            $query->where('bedrooms', $request->input('bedrooms'));
+        }
+    
+        if ($request->filled('bathrooms')) {
+            $query->where('bathrooms', $request->input('bathrooms'));
+        }
+    
+        if ($request->filled('area')) {
+            $query->where('area', '>=', $request->input('area'));
+        }
+    
+        if ($request->filled('price')) {
+            $query->where('price', $request->input('price'));
+        }
+    
         $properties = $query->get();
-
-
-
-        $categories = Category::get()->all();
-        // Debug: Uncomment to check if the query is applying filters correctly
-        //  dd($query->toSql(), $query->getBindings(), $properties);
-
-        return view('frontend.searching', compact('properties', 'categories'));
+        $categories = Category::all(); 
+        $amenities = Amenity::all();
+        
+        return view('frontend.searching', compact('properties', 'categories', 'amenities'));
     }
+    
 }
