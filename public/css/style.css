@@ -1559,7 +1559,7 @@ a {
     background:white;
     border-radius: 8px;
     display: none;
-    top:44rem;
+    top:42rem;
     left:8%;
     width:80vw;
     z-index:10;
@@ -1577,7 +1577,6 @@ a {
 
     
   }
-
   .landproperties{
     background: #e2e0e049;
   }

@@ -49,11 +49,13 @@ class SingleController extends Controller
 
     public function render_singleProperties($id)
     {
-        // Fetch the property by ID
-
-        $categories = Category::latest()->get();
-        $properties = Property::where('id', $id)->firstOrFail();
-        $relatedProperties = Property::where('id', '!=', $properties->id)->get();
+        // Fetch the property by ID and ensure it's active
+        $categories = Category::all(); 
+        $subcategories = SubCategory::all(); 
+        $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
+        $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
+        
+        // Handle the 'other_images' field if it exists
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
         return view('frontend.singleproperties', compact('categories','properties', 'relatedProperties', 'otherImages'));
     }
@@ -71,8 +73,29 @@ class SingleController extends Controller
         $properties = Property::latest()->get();
         return view('frontend.searching', compact('properties'));
     }
-    
-    
-    
+
+    public function properties(Request $request, $categoryId = null)
+{
+    // Fetch all categories for the navbar
+    $categories = Category::all();
+    $subcategories = SubCategory::all(); // Fetch subcategories here
+
+    // Get the categoryId from the request query
+    $categoryId = $request->query('categoryId');
+
+    // Fetch properties filtered by category and active status
+    $propertiesQuery = Property::where('status', 1); // Ensure properties are active
+
+    if ($categoryId) {
+        $propertiesQuery->where('category_id', $categoryId); // Filter by category
+    }
+
+    // Paginate the results
+    $properties = $propertiesQuery->paginate(6); // You can adjust the number of properties per page
+
+    // Pass $subcategories to the view
+    return view('frontend.properties', compact('properties', 'categories', 'subcategories'));
 }
 
+
+}

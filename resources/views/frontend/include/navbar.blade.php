@@ -1,5 +1,4 @@
 {{--navbar --}}
-
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
@@ -15,83 +14,70 @@
     </div>
     
       <div class="button-collection">
-        <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</a>
-        <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton ">login</a>
+        @guest
+          <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+          <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+        @else
+          <span class="welcome-message">Welcome, {{ Auth::user()->name }}</span>
+          {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+          <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn-buttonyellow reg-logbutton">Logout</a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
+        @endguest
       </div>
       <i class="fa-solid fa-bars customicons mx-4 " onclick="funmenu()"></i>
     </nav>
   </div>
   <div class="bur-menu py-3" id="bur-menu">
     <div class="activites">
-      <h2 class="navdestext pt-3">activities section</h2>
+      <h2 class="navdestext pt-3">Activities Section</h2>
       <li class="nav-item">
-        <i class="fa-solid fa-house customiconssmall "></i>
-        <a class="nav-link " aria-current="page" href="/">Introduction</a>
+        <i class="fa-solid fa-house customiconssmall"></i>
+        <a class="nav-link" aria-current="page" href="/">Introduction</a>
       </li>
       <li class="nav-item">
-
-        <i class="fa-solid fa-truck-moving  customiconssmall"></i>
-        <a class="nav-link " aria-current="page" href="{{route('properties')}}">Rent</a>
+        <i class="fa-solid fa-truck-moving customiconssmall"></i>
+        <a class="nav-link" aria-current="page" href="{{ route('properties') }}">Rent</a>
       </li>
       <li class="nav-item">
         <i class="fa-solid fa-cart-shopping customiconssmall"></i>
-        <a class="nav-link" aria-current="page" href="{{route('properties')}}">Buy</a>
+        <a class="nav-link" aria-current="page" href="{{ route('properties') }}">Buy</a>
       </li>
     </div>
     <div class="information">
-      <h2 class="navdestext">Information section</h2>
+      <h2 class="navdestext">Information Section</h2>
       <li class="nav-item d-flex">
         <i class="fa-solid fa-circle-question customiconssmall"></i>
-        <a class="nav-link" aria-current="page" href="{{route("about")}}">About</a>
+        <a class="nav-link" aria-current="page" href="{{ route('about') }}">About</a>
       </li>
       <li class="nav-item">
         <i class="fa-solid fa-blog customiconssmall"></i>
-        <a class="nav-link active" aria-current="page" href="{{route("blog")}}">Blog</a>
+        <a class="nav-link active" aria-current="page" href="{{ route('blog') }}">Blog</a>
       </li>
       <li class="nav-item">
         <i class="fa-solid fa-address-book customiconssmall"></i>
-        <a class="nav-link active" aria-current="page" href="{{route('contact')}}">contact</a>
+        <a class="nav-link active" aria-current="page" href="{{ route('contact') }}">Contact</a>
       </li>
     </div>
-    <h2 class="navdestext">follow us</h2>
-    <div class="d-flex font-collection py-2">
-      <i class="fa-brands fa-facebook customicons mx-2"></i>
-      <i class="fa-brands fa-linkedin customicons mx-2"></i>
-      <i class="fa-brands fa-youtube customicons mx-2"></i>
-      
+    <h2 class="navdestext">Follow Us</h2>
+    {{-- <div class="d-flex font-collection py-2">
+      <a href="{{ $sitesetting->facebook_link }}" class="social-icon"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
+      <a href="{{ $sitesetting->linkedin_link }}" class="social-icon"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
+      <a href="{{ $sitesetting->instagram_link }}" class="social-icon"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
     </div>
-  </div>
+  </div> --}}
 </section>
 
-
-<!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button> -->
-
-
-
-
-
-{{--navbar --}}
 <script>
   function funsearchingon() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
-    if (hiddenformdata.style.display === "block") {
-      hiddenformdata.style.display = "none";
-    }
-    hiddenformdata.style.display = "block";
-
+    hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
   }
 
   function funmenu() {
     const burmenu = document.getElementById("bur-menu");
-
-    if (burmenu.style.display === "block") {
-      burmenu.style.display = "none";
-    } else {
-      burmenu.style.display = "block";
-
-    }
+    burmenu.style.display = burmenu.style.display === "block" ? "none" : "block";
   }
 </script>
+

@@ -39,20 +39,26 @@ class LoginController extends Controller
      *
      */
 
-    protected function authenticated($user)
-    {
-        if (Auth::check()) {
-            History::create([
-                'description' => 'Logged in',
-                'user_id' => Auth::user()->id,
-                'type' => 0,
-                'ip_address' => UtilityFunctions::getuserIP()
-            ]);
-            return redirect('/admin');
-        } else {
-            return redirect('/login');
-        }
+     protected function authenticated($request, $user)
+     {
+         // Log the login event
+         History::create([
+             'description' => 'Logged in',
+             'user_id' => $user->id,
+             'type' => 0,
+             'ip_address' => UtilityFunctions::getuserIP()
+         ]);
+     
+        // Redirect based on role
+    if ($user->isAdmin()) {
+        return redirect('/admin'); // Redirect to admin panel for admins
+    } elseif ($user->isSuperAdmin()) {
+        return redirect('/superadmin'); // Redirect to super admin panel if applicable
+    } else {
+        return redirect('/'); // Redirect to frontend view for regular users
     }
+}
+     
 
     public function logout()
     {

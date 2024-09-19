@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\PropertyController;
@@ -37,9 +38,19 @@ use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
 use App\Http\Controllers\SearchPropertiesController;
+use App\Http\Controllers\Admin\ContactController;
+
 
 
 Auth::routes();
+
+Route::get('/login', function () {
+    return view('auth.login'); 
+})->name('login');
+
+// Route to handle form submission
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
 Route::get("/member", function () {
     return view("frontend.member");
 
@@ -163,6 +174,10 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    //Sociallinks route
    Route::resource('social-links', SocialLinkController::class);
 
+   //Contact route
+   Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
+
+
    // Frontend Routes
    Route::view("/member", "frontend.member")->name('member');
    Route::view("/contact", "frontend.contact")->name('contact');
@@ -182,4 +197,7 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
     Route::post('/update/password', [App\Http\Controllers\ProfilesController::class, 'updatePassword'])->name('update.password');
 });
 
+Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
+Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
 

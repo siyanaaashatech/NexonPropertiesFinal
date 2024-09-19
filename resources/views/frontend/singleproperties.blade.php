@@ -91,18 +91,30 @@
                                 </div>
                             </div>
 
-                            <!-- Sidebar Details -->
-                            <div class="col-md-4">
-                                <div class="description-body">
-                                    <h3 class="md-text greenhighlight">Nexon Detail Center</h3>
+                           <!-- Sidebar Details -->
+                           <div class="col-md-4">
+                            <div class="description-body">
+                                <h3 class="md-text greenhighlight">Nexon Detail Center</h3>
+                                <form action="{{ route('contact.store') }}" method="POST">
+                                    @csrf
                                     <div class="d-flex flex-column gap-2">
-                                        <input type="text" name="person_name" class="input" placeholder="Person Name">
-                                        <input type="text" name="contact_no" class="input my-2"
-                                            placeholder="Contact No.">
-                                        <textarea name="message" class="textarea" placeholder="Your Message"></textarea>
-                                        <button class="btn-buttongreen btn-buttonygreenlarge mx-2">Search</button>
+                                        @auth
+                                            <!-- If the user is logged in, display a message box without input fields -->
+                                            <p class="text-muted">Any queries, {{ Auth::user()->name }}? ({{ Auth::user()->email }})</p>
+                                            <textarea name="message" class="textarea" placeholder="Your Message" required></textarea>
+                                            <button type="submit" class="btn-buttongreen btn-buttonygreenlarge mx-2">Send Message</button>
+                                        @else
+                                            <!-- If the user is a guest, show the form fields -->
+                                            <input type="text" name="person_name" class="input" placeholder="Person Name" required>
+                                            <input type="email" name="email" class="input my-2" placeholder="Email" required>
+                                            <textarea name="message" class="textarea" placeholder="Your Message" required></textarea>
+                                            <button type="submit" class="btn-buttongreen btn-buttonygreenlarge mx-2">Submit</button>
+                                        @endauth
                                     </div>
-                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        
 
                                 <!-- Related Properties -->
                                 <div class="paddingbox nobackground description-body">
