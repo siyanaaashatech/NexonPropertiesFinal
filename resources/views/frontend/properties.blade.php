@@ -67,6 +67,33 @@
                   <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
                   value="{{ request('location') }}">
                 </div>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Select Category</label>
+                  <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
+                    <option value="" disabled selected>Select Subcategory</option>
+                  </select>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Select State</label>
+                  <select class="input bannerinput" name="state" id="state">
+                    <option value="" disabled selected>Select State</option>
+                    @foreach($states as $state)
+                      <option value="{{ $state }}">{{ $state }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Select Region</label>
+                  <select class="input bannerinput" name="suburb" id="suburb">
+                    <option value="" disabled selected>Select Region</option>
+                  </select>
+                </div>
+                <div class="d-flex flex-column col-md-3">
+                    <label for="" class="sm-text1 des-text">Keyword</label>
+                  <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+                  value="{{ request('location') }}">
+                </div>
 
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Search</label>
@@ -78,6 +105,50 @@
 </form>
 
 
+<script>
+    $(document).ready(function() {
+      $('#category_id').change(function() {
+        var categoryId = $(this).val();
+        if (categoryId) {
+          $.ajax({
+            url: '/get-subcategories/' + categoryId,
+            type: 'GET',
+            success: function(data) {
+              $('#subcategory_id').empty();
+              $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
+              $.each(data, function(key, value) {
+                $('#subcategory_id').append('<option value="' + value.id + '">' + value.title + '</option>');
+              });
+            }
+          });
+        } else {
+          $('#subcategory_id').empty();
+          $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
+        }
+      });
+    
+      $('#state').change(function() {
+        var state = $(this).val();
+        if (state) {
+          $.ajax({
+            url: '/get-suburbs/' + state,
+            type: 'GET',
+            success: function(data) {
+              $('#suburb').empty();
+              $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+              $.each(data, function(key, value) {
+                $('#suburb').append('<option value="' + value + '">' + value + '</option>');
+              });
+            }
+          });
+        } else {
+          $('#suburb').empty();
+          $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+        }
+      });
+    });
+    </script>
+   
 <script>
     $(document).ready(function() {
       $('#category_id').change(function() {
@@ -200,36 +271,37 @@
             <div class="col-md-12 py-3">
                 <div class="row">
                     @foreach ($properties as $property)
-                                        <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
-                                            <div class="card">
-                                                @php
-                                                    $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
-                                                    $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
-                                                 @endphp
-                                                <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
-                                                <div class="sell_rent_button d-flex justify-content-between ">
-                                                    <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
-                                                    <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}
-                                                    </div>
+                            <a class="col-md-4 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
+                                <div class="card">
+                                     @php
+                                        $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
+                                        $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
+                                     @endphp
+                                    <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
+                                        <div class="sell_rent_button d-flex justify-content-between ">
+                                             <div class="btn-buttonxs btn-buttonxsyellow ">{{$property->status}}</div>
+                                                <div class="btn-buttonxs btn-buttonxsgreen mx-1">{{$property->availability_status}}
                                                 </div>
-                                                <div class="card-body">
-                                                    <h5 class="md-text">{{strlen($property->title)>28 ? substr($property->title ,0 ,28). "...":$property->title }}</h5>
-                                                    <div class=" d-flex gap-3 flex-wrap ">
-                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
-                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
-                                                        <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
-                                                    </div>
-                                                    <div class="price-person ">
-                                                        <div class="d-flex justify-content-between align-content-center">
-                                                            <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
-                                                                    /</span>{{ $property->rental_period}} </div>
-                                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
-                                                                class="feature-smallimg feature-smallimgdup">
+                                            </div>
+                                             <div class="card-body">
+                                                 <h5 class="md-text">{{strlen($property->title)>28 ? substr($property->title ,0 ,28). "...":$property->title }}</h5>
+                                                <div class=" d-flex gap-3 flex-wrap ">
+                                                    <h2 class="sm-text"><span class="mx-1">{{ $property->bedrooms}}</span> bedroom</h2>
+                                                    <h2 class="sm-text"><span class="mx-1">{{ $property->bathrooms}}</span>bathroom</h2>
+                                                    <h2 class="sm-text"><span class="mx-1">{{ $property->price}}</span>area</h2>
+                                                </div>
+                                                <div class="price-person ">
+                                                    <div class="d-flex justify-content-between align-content-center">
+                                                        <div class=" sm-text"> <span class="md-text"> ${{ $property->price}}
+                                                            </span>{{ $property->rental_period}} 
                                                         </div>
+                                                            <img src="{{asset('image/blog.png')}}" alt="" sizes="" srcset=""
+                                                            class="feature-smallimg feature-smallimgdup">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </a>
+                                    </div>
+                                </a>
                     @endforeach
                 </div>
             </div>
@@ -254,20 +326,12 @@
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">4</a></li>
                 <li class="nextli" onclick="changepage(this)"><a href="#" class="md-text1">5</a></li>
             </ul>
-
-
-
-
-
         </div>
     </div>
 </section>
 @endsection
 
 <style>
-
-
-
 
 </style>
 

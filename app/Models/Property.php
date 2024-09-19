@@ -15,6 +15,7 @@ class Property extends Model
         'category_id',
         'sub_category_id',
         'amenities',
+        'amenities',
         'street',
         'suburb',
         'state',
@@ -35,7 +36,8 @@ class Property extends Model
     ];
 
     protected $casts = [
-        'other_images' => 'array', // Handle multi-image upload as an array
+        'other_images' => 'array',
+        'amenities' => 'array',
         'update_time' => 'date',
     ];
 

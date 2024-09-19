@@ -164,89 +164,124 @@
   </a>
 </section>
 
-<section class="container rounded  amenities ">
-  <div class="row  p-3" id="advanceitems">
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Air Conditioning</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Laundry</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Dishwasher</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Garage</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Gym</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Refrigerator</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Swimming Pool</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Washer</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Balcony</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Barbeque</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
-    <div class="d-flex col-md-2 pt-3">
-      <input type="checkbox" name="Aircondition" id="">
-      <span class="nameofthing">Floorboard</span>
-    </div>
+<section class="container-fluid">
+  <!-- ... (existing carousel and search form code) ... -->
+</section>
+
+<section class="container rounded amenities">
+  <div class="row p-3" id="advanceitems">
+    <!-- Amenity Checkboxes -->
+    @foreach($amenities as $amenity)
+      <div class="d-flex col-md-2 pt-3">
+        <input type="checkbox" name="amenities[]" id="amenity-{{ $amenity->id }}" value="{{ $amenity->id }}"
+               {{ in_array($amenity->id, request('amenities', [])) ? 'checked' : '' }} class="amenity-checkbox">
+        <label for="amenity-{{ $amenity->id }}" class="nameofthing">{{ $amenity->title }}</label>
+      </div>
+    @endforeach
   </div>
+
+  <!-- Bedrooms, Bathrooms, Area, and Price Section -->
+  <div class="row py-4">
+    <div class="col-md-3">
+      <label for="bedrooms" class="sm-text1">Bedrooms</label>
+      <select name="bedrooms" id="bedrooms" class="input bannerinput">
+        <option value="" disabled selected>Select Bedrooms</option>
+        @for ($i = 1; $i <= 10; $i++)
+          <option value="{{ $i }}" {{ request('bedrooms') == $i ? 'selected' : '' }}>{{ $i }}</option>
+        @endfor
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="bathrooms" class="sm-text1">Bathrooms</label>
+      <select name="bathrooms" id="bathrooms" class="input bannerinput">
+        <option value="" disabled selected>Select Bathrooms</option>
+        @for ($i = 1; $i <= 10; $i++)
+          <option value="{{ $i }}" {{ request('bathrooms') == $i ? 'selected' : '' }}>{{ $i }}</option>
+        @endfor
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="area" class="sm-text1">Area (sq. ft.)</label>
+      <input type="number" name="area" id="area" class="input bannerinput" placeholder="Enter area"
+             value="{{ request('area') }}">
+    </div>
+
+    <div class="col-md-3">
+      <label for="price" class="sm-text1">Price</label>
+      <input type="number" name="price" class="input bannerinput" placeholder="Enter Price"
+             value="{{ request('price') }}">
+  </div>
+  
   </div>
 </section>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const amenitiesCheckboxes = document.querySelectorAll('.amenity-checkbox');
+  const searchForm = document.querySelector('form[action="{{ route('frontend.searching') }}"]');
+  
+
+  function updateSearch() {
+    const selectedAmenities = Array.from(amenitiesCheckboxes)
+      .filter(cb => cb.checked)
+      .map(cb => cb.value);
+
+    searchForm.querySelectorAll('input[name="amenities[]"]').forEach(input => input.remove());
+
+    selectedAmenities.forEach(amenityId => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'amenities[]';
+      input.value = amenityId;
+      searchForm.appendChild(input);
+    });
+
+    ['bedrooms', 'bathrooms', 'area', 'price'].forEach(filterName => {
+      const filterElement = document.getElementById(filterName);
+      if (filterElement) {
+        const filterValue = filterElement.value;
+        searchForm.querySelector(`input[name="${filterName}"]`)?.remove();
+
+        if (filterValue) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = filterName;
+          input.value = filterValue;
+          searchForm.appendChild(input);
+        }
+      }
+    });
+  }
+
+  amenitiesCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateSearch);
+  });
+
+  // Attach event listeners to other filters
+  ['bedrooms', 'bathrooms', 'area', 'price'].forEach(filterName => {
+    const filterElement = document.getElementById(filterName);
+    if (filterElement) {
+      filterElement.addEventListener('change', updateSearch);
+    }
+  });
+
   function funOpenadvance() {
     const advanceItems = document.querySelector(".amenities");
-
-    // Check if the advanceItems element is found
     if (!advanceItems) {
       console.error("Element with class 'amenities' not found.");
       return;
     }
-
-    // Check if the display style is set to 'none' and toggle it
-    if (advanceItems.style.display === "none") {
-      advanceItems.style.display = "block";
-    } else {
-      advanceItems.style.display = "none";
-    }
+    advanceItems.style.display = advanceItems.style.display === "none" ? "block" : "none";
   }
+
+  const advanceSearchButton = document.querySelector('.advance');
+  if (advanceSearchButton) {
+    advanceSearchButton.addEventListener('click', funOpenadvance);
+  }
+});
+
 </script>
 
 {{--
@@ -370,4 +405,3 @@
         categorySelect.addEventListener('change', filterSubcategories);
     });
 </script>
-

@@ -25,6 +25,7 @@
                                     <th>Category</th>
                                     <th>Sub Category</th>
                                     <th>Amenities</th>
+                                    <th>Amenities</th>
                                     <th>Price</th>
                                     <th>Update Time</th>
                                     <th>Status</th>
@@ -52,9 +53,22 @@
                                                 <span class="text-muted">No amenities</span>
                                             @endif
                                         </td>
+                                        <td>
+                                            @if(is_array($property->amenities) && count($property->amenities) > 0)
+                                                @foreach($property->amenities as $amenityId)
+                                                    @php
+                                                        $amenity = App\Models\Amenity::find($amenityId);
+                                                    @endphp
+                                                    @if($amenity)
+                                                       {{ $amenity->title }}
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted">No amenities</span>
+                                            @endif
+                                        </td>
                                         <td>${{ number_format($property->price, 2) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($property->update_time)->format('Y - F - d') }}</td>
-                                        
                                         <td>
                                             @if($property->status)
                                                 <span class="badge bg-success">Active</span>

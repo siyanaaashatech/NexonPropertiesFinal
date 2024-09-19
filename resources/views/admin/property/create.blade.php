@@ -65,12 +65,28 @@
                             </select>
                         </div>
                         
+                        
                         <!-- Sub Category -->
                         <div class="form-group mb-3">
                             <label for="sub_category_id">Sub Category</label>
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
                             </select>
+                        </div>
+
+                       <!-- Amenities -->
+                       <div class="form-group">
+                        <label for="amenities">Amenities</label>
+                        @foreach($amenities as $amenity)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
+                                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
+                                    {{ $amenity->title }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
                         </div>
 
                        <!-- Amenities -->
@@ -224,6 +240,8 @@
                             <label for="keywords">Keywords</label>
                             <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
                                 >
+                            <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
+                                >
                         </div>
 
                         <div class="form-group mb-3">
@@ -235,7 +253,10 @@
                         <div class="form-group mb-3">
                             <label for="update_time">Update Time</label>
                             <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
+                            <label for="update_time">Update Time</label>
+                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
                         </div>
+                        
                         
 
                         <div class="form-group">
@@ -371,6 +392,33 @@
 
     //     this.value = `${date.getFullYear()} - ${date.toLocaleString('default', { month: 'long' })} - ${date.getDate().toString().padStart(2, '0')}`;
     // });
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('category_id');
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Object to store all subcategories grouped by category ID
+        const subCategories = @json($subCategories->groupBy('category_id'));
+
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+            
+            // Clear current options
+            subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+            
+            if (selectedCategoryId && subCategories[selectedCategoryId]) {
+                subCategories[selectedCategoryId].forEach(function(subCategory) {
+                    const option = new Option(subCategory.title, subCategory.id);
+                    subCategorySelect.add(option);
+                });
+            }
+        });
+
+        // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
+        if (categorySelect.value) {
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
         const categorySelect = document.getElementById('category_id');
         const subCategorySelect = document.getElementById('sub_category_id');

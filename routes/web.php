@@ -38,6 +38,7 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
+use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\SearchPropertiesController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ReviewsandRatingsController;
@@ -202,7 +203,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
-   Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
+//    Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
    Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
 
@@ -217,3 +218,6 @@ Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->
 Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
 Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
 
+Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
+Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);

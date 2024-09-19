@@ -45,11 +45,12 @@ class SingleController extends Controller
 
     public function render_properties()
     {
+        $categories = Category::all();
         $subcategories = SubCategory::all();
-        $properties = Property::where('status', 1)->latest()->get();
-        $categories = Category::all(); 
-        
-        return view('frontend.properties', compact('properties', 'categories', 'subcategories'));
+        $properties = Property::where('status', 1)->latest()->paginate(6);
+        $states = Property::distinct('state')->pluck('state');
+        return view('frontend.properties', compact('categories', 'subcategories',  'properties', 'states'));
+
     }
 
     public function render_singleProperties($id)
@@ -62,8 +63,8 @@ class SingleController extends Controller
         
         // Handle the 'other_images' field if it exists
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-        
         return view('frontend.singleproperties', compact('categories', 'properties', 'relatedProperties', 'otherImages'));
+
     }
 
     public function render_contact()
@@ -76,33 +77,31 @@ class SingleController extends Controller
 
     public function render_search()
     {
-        $properties = Property::where('status', 1)->latest()->get();
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $properties = Property::latest()->take(5)->get();
         
-        return view('frontend.searching', compact('properties'));
+        return view('frontend.searching', compact('properties', 'categories', 'subcategories'));
     }
+    
 
-    public function properties(Request $request, $categoryId = null)
-{
-    // Fetch all categories for the navbar
-    $categories = Category::all();
-    $subcategories = SubCategory::all(); // Fetch subcategories here
+    public function properties(Request $request)
+    {
+        $categories = Category::all();
+        $categoryId = $request->query('categoryId');
+        $propertiesQuery = Property::where('status', 1);
+    
+        if ($categoryId) {
+            $propertiesQuery->where('category_id', $categoryId);
+        }
 
-    // Get the categoryId from the request query
-    $categoryId = $request->query('categoryId');
+        $properties = $propertiesQuery->paginate(6);
 
-    // Fetch properties filtered by category and active status
-    $propertiesQuery = Property::where('status', 1); // Ensure properties are active
+        $states = Property::distinct('state')->pluck('state');
 
-    if ($categoryId) {
-        $propertiesQuery->where('category_id', $categoryId); // Filter by category
+        $subcategories = SubCategory::all();
+    
+        return view('frontend.properties', compact('properties', 'categories', 'states', 'subcategories'));
     }
-
-    // Paginate the results
-    $properties = $propertiesQuery->paginate(6); // You can adjust the number of properties per page
-
-    // Pass $subcategories to the view
-    return view('frontend.properties', compact('properties', 'categories', 'subcategories'));
-}
-
 
 }

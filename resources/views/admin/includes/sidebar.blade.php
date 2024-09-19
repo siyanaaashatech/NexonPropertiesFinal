@@ -4,6 +4,12 @@
     }
 </style>
 
+<style>
+    .nav-item {
+        list-style-type: none;
+    }
+</style>
+
 <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
     <script>
         var navbarStyle = localStorage.getItem("navbarStyle");
@@ -26,8 +32,12 @@
         <div class="navbar-vertical-content scrollbar">
             <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link dropdown-indicator" href="#dashboard" role="button" data-bs-toggle="collapse"
                         aria-expanded="true" aria-controls="dashboard">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon">
+                                <svg class="svg-inline--fa fa-chart-pie fa-w-17" aria-hidden="true" focusable="false"
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon">
                                 <svg class="svg-inline--fa fa-chart-pie fa-w-17" aria-hidden="true" focusable="false"
@@ -39,14 +49,24 @@
                                 </svg>
                                 <a href="#"><span class="nav-link-text ps-1">Dashboard</span></a>
                             </span>
+                                <a href="#"><span class="nav-link-text ps-1">Dashboard</span></a>
+                            </span>
                         </div>
                     </a>
+                </li>
                 </li>
 
 
                 {{-- Beginning of Site Settings --}}
+                {{-- Beginning of Site Settings --}}
 
                 <li class="nav-item">
+                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                        <div class="col-auto navbar-vertical-label">Site Settings</div>
+                        <div class="col ps-0">
+                            <hr class="mb-0 navbar-vertical-divider">
+                        </div>
+                    </div>
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">Site Settings</div>
                         <div class="col ps-0">
@@ -58,11 +78,26 @@
                         href="#dashboard1" role="button" data-bs-toggle="collapse"
                         aria-expanded="{{ Request::segment(2) == 'site-settings' ? 'true' : 'false' }}"
                         aria-controls="dashboard1">
+                    <a class="nav-link dropdown-indicator {{ Request::segment(2) == 'site-settings' ? '' : 'collapsed' }}"
+                        href="#dashboard1" role="button" data-bs-toggle="collapse"
+                        aria-expanded="{{ Request::segment(2) == 'site-settings' ? 'true' : 'false' }}"
+                        aria-controls="dashboard1">
                         <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><i class="fas fa-users"></i></span>
                             <span class="nav-link-icon"><i class="fas fa-users"></i></span>
                             <span class="nav-link-text ps-1">Site Settings</span>
                         </div>
                     </a>
+                    <ul class="nav collapse {{ Request::segment(2) == 'site-settings' ? 'show' : '' }}" id="dashboard1">
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::segment(2) == 'site-settings' ? 'active' : '' }}"
+                                href="{{ route('sitesettings.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-angle-double-right"></i> Site Setting
+                                </div>
+                            </a>
+                        </li>
                     <ul class="nav collapse {{ Request::segment(2) == 'site-settings' ? 'show' : '' }}" id="dashboard1">
 
                         <li class="nav-item">
@@ -82,6 +117,14 @@
                                 </div>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::segment(2) == 'favicons' ? 'active' : '' }}"
+                                href="{{ route('favicons.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-angle-double-right"></i> Favicon
+                                </div>
+                            </a>
+                        </li>
 
 
                         <li class="nav-item">
@@ -92,7 +135,42 @@
                                 </div>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::segment(2) == 'social-links' ? 'active' : '' }}"
+                                href="{{ route('social-links.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-angle-double-right"></i> Social Links
+                                </div>
+                            </a>
+                        </li>
 
+                    </ul>
+                </li>
+                </li>
+
+                {{-- End of Site Settings --}}
+
+
+
+                {{-- Start of the Information --}}
+                <li class="nav-item">
+                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                        <div class="col-auto navbar-vertical-label">Informations</div>
+                        <div class="col ps-0">
+                            <hr class="mb-0 navbar-vertical-divider">
+                        </div>
+                    </div>
+                <li class="nav-item">
+                    <a class="nav-link dropdown-indicator {{ Request::segment(2) == 'information' ? '' : 'collapsed' }}"
+                        href="#dashboard2" role="button" data-bs-toggle="collapse"
+                        aria-expanded="{{ Request::segment(2) == 'information' ? 'true' : 'false' }}"
+                        aria-controls="dashboard2">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                            <span class="nav-link-text ps-1">Informations</span>
+                        </div>
+                    </a>
+                    <ul class="nav collapse" id="dashboard2">
                     </ul>
                 </li>
                 </li>
@@ -180,6 +258,18 @@
                             </a>
                         </li>
 
+
+                        <li class="nav-item">
+                            <!-- Top-level link for Services -->
+                            <a class="nav-link {{ Request::is('admin/services*') ? 'active' : '' }}"
+                                href="{{ route('services.index') }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="fas fa-concierge-bell"></i></span>
+                                    <span class="nav-link-text ps-1">Services</span>
+                                </div>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <!-- Top-level link for FAQs -->
                             <a class="nav-link {{ Request::is('admin/faqs*') ? 'active' : '' }}"
@@ -219,6 +309,46 @@
 
                 {{-- For Properties Management --}}
 
+                <li class="nav-item">
+                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                        <div class="col-auto navbar-vertical-label">Property Management</div>
+                        <div class="col ps-0">
+                            <hr class="mb-0 navbar-vertical-divider">
+                        </div>
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-indicator {{ Request::segment(2) == 'information' ? '' : 'collapsed' }}"
+                            href="#dashboard3" role="button" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::segment(2) == 'information' ? 'true' : 'false' }}"
+                            aria-controls="dashboard3">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                <span class="nav-link-text ps-1">Properties</span>
+                            </div>
+                        </a>
+                        <ul class="nav collapse" id="dashboard3">
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/categories*') ? 'active' : '' }}"
+                                    href="{{ route('categories.index') }}">
+                                    <div class="d-flex align-items-center">
+                                        <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                        <span class="nav-link-text ps-1">Category</span>
+                                    </div>
+                                </a>
+
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/subcategories*') ? 'active' : '' }}"
+                                    href="{{ route('subcategories.index') }}">
+                                    <div class="d-flex align-items-center">
+                                        <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                        <span class="nav-link-text ps-1">Subcategories</span>
+                                    </div>
+                                </a>
+                            </li>
                 <li class="nav-item">
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">Property Management</div>
@@ -399,10 +529,20 @@
                             <hr class="mb-0 navbar-vertical-divider">
                         </div>
                     </div>
+                <li class="nav-item">
+                    <!-- label-->
+                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                        <div class="col-auto navbar-vertical-label">History</div>
+                        <div class="col ps-0">
+                            <hr class="mb-0 navbar-vertical-divider">
+                        </div>
+                    </div>
 
 
 
 
+                    {{-- @can('hasPermission', 'view_blogs') --}}
+              
                     {{-- @can('hasPermission', 'view_blogs') --}}
               
 
@@ -410,7 +550,9 @@
 
 
                 </li>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
