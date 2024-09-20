@@ -315,7 +315,16 @@ a {
 
 /* for input */
 
-.input,
+
+.input{
+    border: 2px solid var(--border-color);
+    stroke: none;
+    border-radius: var(--border-radius);
+    padding: 10px 8px;
+    font-size: 20px;
+    width: 100%;
+
+}
 .textarea {
     border: 2px solid var(--border-color);
     stroke: none;
@@ -552,8 +561,8 @@ a {
 
 .bannercontentinner {
     position: absolute;
-    bottom: 3rem;
-    left: 9%;
+    top: 16rem;
+    left: 25%;
 }
 
 .bannercontentinnerheight {
@@ -565,6 +574,10 @@ a {
 .formsection {
     background: rgba(255, 255, 255, 0.74);
     border-radius: var(--border-radius);
+    position: absolute;
+ bottom: 4rem;
+ left: 5%;
+
 }
 
 @media (max-width: 600px) {
@@ -731,6 +744,10 @@ a {
     box-sizing: border-box;
     transform: translateY(76%);
 }
+
+
+
+
 
 .property-more-details {
     display: flex;
@@ -1569,8 +1586,8 @@ a {
     background:white;
     border-radius: 8px;
     display: none;
-    top:42rem;
-    left:8%;
+    top:40rem;
+    left:6.6%;
     width:80vw;
     z-index:10;
   }
@@ -1694,6 +1711,144 @@ a {
 }
 
 
+
+.review-form {
+    position: fixed;
+    top: 0rem;
+    height: 100vh;
+    width:100%;
+    background: rgba(0, 0, 0, 0.685);
+    z-index: 20;
+}
+.review-form-detail{
+    border-radius: var(--border-radius);
+    background: var(--green);
+    position:absolute;
+    top:10rem;
+}
+.rating::before{
+    display: block;
+    content: "";
+    width: 100%;
+    border-bottom:1px solid rgba(208, 205, 205, 0.888);
+    margin-bottom:0.6rem;
+}
+.rating::after{
+    display: block;
+    content: "";
+    width:100%;
+    border-bottom:1px solid rgba(208, 205, 205, 0.888);
+    padding:0.4rem 0;
+}
+.fa-circle-xmark{
+    position: absolute;
+    top: 1rem;
+    right:1rem;
+    font-size: 42px;
+    z-index: 20;
+    cursor: pointer;
+    color:rgb(208, 205, 205);;
+}
+.fa-circle-xmark:hover{
+    color:black;
+}
+.fav {
+    font-size: 40px;
+    margin: 0 0 0 1rem;
+    margin-top: -1.2rem !important;
+    color: white;
+  }
+  .counter{
+    position: absolute;
+    top:1rem;
+    right:4rem;
+    padding: 0 8px;
+    background:black;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+  .review-form {
+    display: none;
+}
+.login-message {
+    display: none;
+}
+/* Overlay background for the login popup */
+.overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+z-index: 999; /* Ensure it appears on top of other content */
+display: none; /* Hidden by default */
+}
+/* Popup content styling */
+.popup-content {
+background: #fff;
+padding: 30px;
+border-radius: 10px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Subtle shadow for elevation */
+position: relative;
+margin: 10% auto;
+width: 100%;
+max-width: 400px; /* Maximum width for the popup */
+text-align: center;
+}
+/* Close button inside the popup */
+.popup-close {
+font-size: 1.5rem;
+color: #FF0000; /* Red color for the close icon */
+position: absolute;
+top: 10px;
+right: 10px;
+cursor: pointer;
+}
+/* Heading styling */
+.popup-content h2 {
+margin-bottom: 20px;
+font-size: 1.8rem;
+color: #333;
+font-weight: 600;
+}
+/* Login button styling */
+.popup-content .btn {
+background-color: #007BFF; /* Bootstrap primary blue */
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1.1rem;
+transition: background-color 0.3s ease;
+}
+.popup-content .btn:hover {
+background-color: #0056B3;
+}
+/* Responsive styling */
+@media (max-width: 768px) {
+.popup-content {
+width: 90%;
+}
+.popup-content h2 {
+font-size: 1.5rem;
+}
+.popup-close {
+font-size: 1.3rem;
+}}
+
+
+
+
+
+
+
+
+
+
+
+
 .fav {
        
     font-size: 40px;
@@ -1703,13 +1858,6 @@ a {
 
   }
  
-
-
-
-
-
-
-
   .counter{
     position: absolute;
     top:1rem;
@@ -1775,9 +1923,6 @@ a {
     
 }
 
-
-
-
 .fa-trash{
     position: absolute;
 top:-1rem;
@@ -1795,3 +1940,6 @@ border-radius: 20px;
 .fa-trash:hover{
 color:red;
 }
+
+
+

@@ -3,6 +3,7 @@
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
       <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo" class="logoimg" /></a>
+     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
           @foreach($categories as $category)
@@ -11,6 +12,7 @@
           href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
         </li>
       @endforeach
+    
         </ul>
       </div>
 
@@ -80,16 +82,14 @@
       <a href="#"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
       <a href="#"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
       <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
-    </div>
+  </div>
   </div>
 </section>
-
 <script>
   function funsearchingon() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
     hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
   }
-
   function funmenu() {
     const burmenu = document.getElementById("bur-menu");
     burmenu.style.display = burmenu.style.display === "block" ? "none" : "block";

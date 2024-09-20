@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Models\Amenity;
 use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -32,7 +33,8 @@ class PropertyController extends Controller
         $categories = Category::all();
         $subCategories = SubCategory::all();
         $metadata = Metadata::all();
-        return view('admin.property.create', compact('categories', 'subCategories', 'metadata'));
+        $amenities = Amenity::all();  
+        return view('admin.property.create', compact('categories', 'subCategories', 'metadata', 'amenities'));
     }
 
     /**
@@ -40,14 +42,16 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the input data
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'main_image' => 'required|array',
-            'main_image.*' => 'required|string', // Assuming base64 format
+            'main_image.*' => 'required|string',
+            'cropData' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'required|exists:sub_categories,id',
+            'amenities' => 'required|array',
+            'amenities.*' => 'exists:amenities,id',
             'street' => 'required|string|max:255',
             'suburb' => 'required|string|max:255',
             'state' => 'required|string|max:255',
@@ -62,16 +66,16 @@ class PropertyController extends Controller
             'availability_status' => 'required|in:available,sold,rental',
             'rental_period' => 'nullable|string',
             'keywords' => 'nullable|string',
-            'other_images' => 'nullable|array',
-            'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'other_images' => 'required|array',
+            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-
+    
         // Handle the main image upload (base64 images)
         $images = $this->handleBase64Images($request->input('main_image'), 'property');
-
+    
         // Handle other images upload
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
-
+    
         // Create a metadata entry
         $metadata = Metadata::create([
             'meta_title' => $request->title,
@@ -79,13 +83,18 @@ class PropertyController extends Controller
             'meta_keywords' => $request->suburb,
             'slug' => Str::slug($request->title),
         ]);
-
+    
+        // Handle update_time as a Carbon instance
+        $updateTime = $request->input('update_time');
+        $parsedUpdateTime = \Carbon\Carbon::createFromFormat('Y-F-d', $updateTime)->format('Y-m-d'); // Convert to 'Y-m-d' for storage
+    
         // Create new property record and associate with metadata
         Property::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
             'sub_category_id' => $request->sub_category_id,
+            'amenities' => $request->amenities,
             'street' => $request->street,
             'suburb' => $request->suburb,
             'state' => $request->state,
@@ -102,13 +111,14 @@ class PropertyController extends Controller
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
             'metadata_id' => $metadata->id,
-            'update_time' => Carbon::now(),
+            'update_time' => $parsedUpdateTime, // Store in the correct format
         ]);
-
+    
         session()->flash('success', 'Property created successfully.');
-
-        return redirect()->route('  property.index');
+    
+        return redirect()->route('property.index');
     }
+    
 
     /**
      * Display the specified property.
@@ -125,9 +135,10 @@ class PropertyController extends Controller
     {
         $categories = Category::all();
         $subCategories = SubCategory::all();
+        $amenities = Amenity::all();
         $metadata = Metadata::all();
 
-        return view('admin.property.update', compact('property', 'categories', 'subCategories', 'metadata'));
+        return view('admin.property.update', compact('property', 'categories', 'subCategories', 'amenities', 'metadata'));
     }
 
     /**
@@ -142,6 +153,8 @@ class PropertyController extends Controller
             'main_image.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'required|exists:sub_categories,id',
+            'amenities' => 'required|array',
+            'amenities.*' => 'exists:amenities,id',
             'street' => 'required|string|max:255',
             'suburb' => 'required|string|max:255',
             'state' => 'required|string|max:255',
@@ -191,6 +204,7 @@ class PropertyController extends Controller
             'description' => $request->description,
             'category_id' => $request->category_id,
             'sub_category_id' => $request->sub_category_id,
+            'amenities' => $request->amenities,
             'street' => $request->street,
             'suburb' => $request->suburb,
             'state' => $request->state,

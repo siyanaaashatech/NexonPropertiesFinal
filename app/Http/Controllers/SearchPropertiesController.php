@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Subcategory;
+use App\Models\Amenity;
 use App\Models\Property;
+
 class SearchPropertiesController extends Controller
 {
     public function index()
@@ -12,38 +14,45 @@ class SearchPropertiesController extends Controller
         $categories = Category::all();
         $subcategories = Subcategory::all();
         $states = Property::distinct('state')->pluck('state');
-        $properties = Property::latest()->take(5)->get();
-        return view('frontend.index', compact('categories', 'subcategories', 'states', 'properties'));
+        $properties = Property::latest()->take(5)->get(); 
+        $amenities = Amenity::all();
+        return view('frontend.welcome', compact('categories', 'subcategories', 'states', 'properties', 'amenities'));
     }
+
     public function getSubcategories($categoryId)
     {
         $categories = Category::all();
         $subcategories = Subcategory::where('category_id', $categoryId)->get();
         return response()->json($subcategories);
     }
+
     public function getSuburbs($state)
     {
         $suburbs = Property::where('state', $state)->distinct('suburb')->pluck('suburb');
         return response()->json($suburbs);
     }
+
+
     public function filterProperties(Request $request)
     {
-        $query = Property::with(['category', 'subCategory']);
+        $query = Property::with(['category', 'subCategory']); 
+    
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->input('category_id'));
         }
-        if ($request->filled('sub_category_id')) {
-            $query->where(function($q) use ($request) {
-                $q->where('sub_category_id', $request->input('sub_category_id'))
-                  ->orWhereNull('sub_category_id');
-            });
+    
+        if ($request->filled('subcategory_id')) {
+            $query->where('sub_category_id', $request->input('subcategory_id'));
         }
+    
         if ($request->filled('state')) {
             $query->where('state', $request->input('state'));
         }
+    
         if ($request->filled('suburb')) {
             $query->where('suburb', $request->input('suburb'));
         }
+    
         if ($request->filled('location')) {
             $location = $request->input('location');
             $query->where(function($q) use ($location) {
@@ -51,8 +60,37 @@ class SearchPropertiesController extends Controller
                   ->orWhere('description', 'like', "%{$location}%");
             });
         }
+    
+        if ($request->filled('amenities')) {
+            $selectedAmenities = $request->input('amenities');
+            $query->where(function ($q) use ($selectedAmenities) {
+                foreach ($selectedAmenities as $amenityId) {
+                    $q->whereJsonContains('amenities', $amenityId);
+                }
+            });
+        }
+    
+        if ($request->filled('bedrooms')) {
+            $query->where('bedrooms', $request->input('bedrooms'));
+        }
+    
+        if ($request->filled('bathrooms')) {
+            $query->where('bathrooms', $request->input('bathrooms'));
+        }
+    
+        if ($request->filled('area')) {
+            $query->where('area', '>=', $request->input('area'));
+        }
+    
+        if ($request->filled('price')) {
+            $query->where('price', $request->input('price'));
+        }
+    
         $properties = $query->get();
-        $categories = Category::all();
-        return view('frontend.searching', compact('properties', 'categories'));
+        $categories = Category::all(); 
+        $amenities = Amenity::all();
+        
+        return view('frontend.searching', compact('properties', 'categories', 'amenities'));
     }
+    
 }

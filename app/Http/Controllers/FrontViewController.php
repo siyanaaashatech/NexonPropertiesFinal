@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 use App\Models\Property;
 use App\Models\Category;
@@ -8,10 +9,23 @@ use App\Models\Testimonial;
 use App\Models\Whyus;
 use App\Models\AboutUs;
 use App\Models\Subcategory;
+use App\Models\Amenity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 class FrontViewController extends Controller
 {
+  
+
+    private function extractAmenities($amenities)
+    {
+        if (is_string($amenities)) {
+            return json_decode($amenities, true) ?? [];
+        } elseif (is_array($amenities)) {
+            return $amenities;
+        }
+        return [];
+    }
+
     public function index()
     {
         $services = Service::where('status', 1)->latest()->take(4)->get();
@@ -21,13 +35,15 @@ class FrontViewController extends Controller
         $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
         $properties = Property::where('status', 1)->latest()->take(6)->get();
         $propertie = Property::where('status', 1)->latest()->take(6)->get();
+        $subPropertyCount = Property::distinct('suburb')->count();
         $categories = Category::all();
         $states = Property::distinct('state')->pluck('state');
         $subcategories = Subcategory::all();
         $suburbs = Property::distinct('suburb')->pluck('suburb');
-        $subPropertyCount = Property::distinct('suburb')->count();
+        $amenities = Amenity::all();
+
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs', 'propertie', 'subPropertyCount'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs','amenities','propertie','subPropertyCount'
         ]));
     }
     public function properties(Request $request, $categoryId = null)
@@ -42,6 +58,15 @@ class FrontViewController extends Controller
         }
         $properties = $propertiesQuery->paginate(1);
         $states = Property::distinct('state')->pluck('state');
-        return view('frontend.properties', compact('properties', 'categories', 'states'));
+        $amenities = Amenity::all();
+
+        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
+    
+    // public function singlePost($slug)
+    // {
+    //     $blogs = Blog::where('slug', $slug)->firstOrFail();
+    //     $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
+    //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
+    // }
 }

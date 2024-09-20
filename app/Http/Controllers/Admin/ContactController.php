@@ -11,8 +11,8 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $contact = Contact::all();
-        return view('admin.contact.index', compact('contact')); 
+        $contacts = Contact::all();
+        return view('admin.contact.index', compact('contacts')); 
     }
 
     public function store(Request $request)
@@ -28,13 +28,13 @@ class ContactController extends Controller
         // For guests, validate and take all inputs
         else {
             $request->validate([
-                'person_name' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'message' => 'required|string',
             ]);
 
             Contact::create([
-                'name' => $request->input('person_name'),
+                'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'message' => $request->input('message'),
             ]);

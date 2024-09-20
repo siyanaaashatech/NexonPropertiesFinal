@@ -97,12 +97,13 @@ class SingleController extends Controller
         $propertiesQuery->where('category_id', $categoryId); // Filter by category
     }
 
-    // Paginate the results
-    $properties = $propertiesQuery->paginate(6); // You can adjust the number of properties per page
+        $properties = $propertiesQuery->paginate(6);
 
-    // Pass $subcategories to the view
-    return view('frontend.properties', compact('properties', 'categories', 'subcategories'));
-}
+        $states = Property::distinct('state')->pluck('state');
 
+        $subcategories = SubCategory::all();
+    
+        return view('frontend.properties', compact('properties', 'categories', 'states', 'subcategories'));
+    }
 
 }

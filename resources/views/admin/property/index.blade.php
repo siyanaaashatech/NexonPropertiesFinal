@@ -32,6 +32,7 @@
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Sub Category</th>
+                                    <th>Amenities</th>
                                     <th>Price</th>
                                     <th>Update Time</th>
                                     <th>Status</th>
@@ -45,8 +46,23 @@
                                         <td>{{ $property->title }}</td>
                                         <td>{{ $property->category->title }}</td>
                                         <td>{{ $property->subCategory->title }}</td>
+                                        <td>
+                                            @if(is_array($property->amenities) && count($property->amenities) > 0)
+                                                @foreach($property->amenities as $amenityId)
+                                                    @php
+                                                        $amenity = App\Models\Amenity::find($amenityId);
+                                                    @endphp
+                                                    @if($amenity)
+                                                       {{ $amenity->title }}
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted">No amenities</span>
+                                            @endif
+                                        </td>
+                                        
                                         <td>${{ number_format($property->price, 2) }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($property->update_time)->format('Y M d') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($property->update_time)->format('Y - F - d') }}</td>
                                         <td>
                                             @if($property->status)
                                                 <span class="badge bg-success">Active</span>
@@ -55,54 +71,38 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('property.edit', $property->id) }}"
-                                                class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('property.destroy', $property->id) }}" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('Are you sure you want to delete this property?');">
+
+                                            <a href="{{ route('property.edit', $property->id) }}" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('property.destroy', $property->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this service?')">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
                                             </form>
 
-                                            <!-- Button to trigger Image Modal -->
-                                            <a href="javascript:void(0)" class="btn btn-outline-secondary btn-sm"
-                                                data-bs-toggle="modal" data-bs-target="#imageModal{{ $property->id }}">
-                                                <i class="fas fa-image"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
 
-                                    <!-- Image Modal for viewing and updating images -->
-                                    <div class="modal fade" id="imageModal{{ $property->id }}" tabindex="-1"
-                                        aria-labelledby="imageModalLabel{{ $property->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="imageModalLabel{{ $property->id }}">
-                                                        Manage Images
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('property.updateImages', $property->id) }}"
-                                                        method="POST" enctype="multipart/form-data">
-                                                        @csrf
-                                                        @method('PUT')
+                                            <!-- Button to trigger Metadata Modal -->
+                                            @if($property->metadata)
+                                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#metadataModal{{ $property->id }}">
+                                                    M
+                                                </button>
+                            
 
-                                                        <!-- Main Image Section -->
-                                                        <h5>Main Image</h5>
-                                                        <div id="mainImagePreview" class="mb-3">
-                                                            @foreach(json_decode($property->main_image) as $image)
-                                                                <div class="card me-2 mb-2"
-                                                                    style="max-width: 150px; display: inline-block;">
-                                                                    <img src="{{ asset('/' . $image) }}" alt="Main Image"
-                                                                        class="card-img-top"
-                                                                        style="max-height: 150px; object-fit: cover;">
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
+                                                <!-- Metadata Modal with Edit Form -->
+                                                <div class="modal fade" id="metadataModal{{ $property->id }}" tabindex="-1" aria-labelledby="metadataModalLabel{{ $property->id }}" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="metadataModalLabel{{ $property->id }}">Edit Metadata Details</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ route('metadata.update', $property->metadata->id) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
 
                                                         <div class="form-group mb-3">
                                                             <label for="main_image">Main Image</label>
@@ -181,30 +181,77 @@
 
 
 
-                                                        <div class="form-group">
-                                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancel</button>
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End of Modal -->
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @else
-                        <div class="alert alert-info">
-                            No properties available. <a href="{{ route('property.create') }}">Create a new
-                                property</a>.
-                        </div>
-                    @endif
+                                            @endif
+
+                                     <!-- Button to trigger Offer Modal -->
+                                   <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#offerModal{{ $property->id }}">
+                                     O
+                                   </button>
+
+                                    <!-- Offer Modal with Create/Edit Form -->
+                                   <div class="modal fade" id="offerModal{{ $property->id }}" tabindex="-1" aria-labelledby="offerModalLabel{{ $property->id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                     <div class="modal-content" style="min-height: 300px;">
+                                       <div class="modal-header">
+                                         <h5 class="modal-title" id="offerModalLabel{{ $property->id }}">
+                                          {{ $property->offer ? 'Edit' : 'Create' }} Offer for {{ $property->title }}
+                                         </h5>
+                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                       </div>
+                                      <div class="modal-body">
+                                     <form action="{{ route('offers.store') }}" method="POST">
+                                    @csrf
+                                   <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                  <div class="form-group mb-4">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="featured_properties" id="featured_properties{{ $property->id }}" value="1" 
+                                     {{ $property->offer && $property->offer->featured_properties == 'Yes' ? 'checked' : '' }}>
+                                   <label class="form-check-label" for="featured_properties{{ $property->id }}">
+                                     Featured 
+                                   </label>
+                                </div>
+                              </div>
+                                <div class="form-group mb-4">
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="offered_properties" id="offered_properties{{ $property->id }}" value="1" 
+                                      {{ $property->offer && $property->offer->offered_properties == 'Yes' ? 'checked' : '' }}>
+                                       <label class="form-check-label" for="offered_properties{{ $property->id }}">
+                                        Special Offer
+                                      </label>
+                                  </div>
+                                 </div>
+                                   <div class="form-group mt-4">
+                                   <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                     </div>
+                                  </form>
+                                 </div>
+                                     </div>
+                                     </div>
+                                   </div>
+                               </td>
+                             </tr>
+                  @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-info">
+                    No properties available. <a href="{{ route('property.create') }}">Create a new property</a>.
                 </div>
-            </div>
+            @endif
         </div>
     </div>
+</div>
+</div>
 </div>
 
 <!-- Include Cropper.js -->
@@ -287,3 +334,7 @@
 
 </script>
 @endsection
+
+
+
+

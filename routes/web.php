@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\WhyusController;
@@ -37,11 +38,11 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
+use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\SearchPropertiesController;
 use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-
+use App\Http\Controllers\Admin\ReviewsandRatingsController;
+use App\Models\Offer;
 
 Auth::routes();
 
@@ -175,10 +176,27 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    //Sociallinks route
    Route::resource('social-links', SocialLinkController::class);
 
-   //Contact route
-   Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
-//property update 
-Route::put('property/{id}/update-images', [PropertyController::class, 'updateImages'])->name('property.updateImages');
+    //Amenity route
+    Route::resource('amenities', AmenityController::class);
+
+   //Offer-Feature route
+   Route::resource('offers', OfferController::class);
+
+   // Contact routes
+    Route::prefix('admin')->group(function () {
+    Route::get('/contact', [App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact/store', [App\Http\Controllers\Admin\ContactController::class, 'store'])->name('contact.store');
+});
+
+ // Review routes
+ Route::prefix('admin')->group(function () {
+    Route::get('/review', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'index'])->name('review.index');
+    Route::post('/review/store', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'store'])->name('review.store');
+    Route::post('/submit-review', [ReviewsandRatingsController::class, 'store'])->name('submit.review');
+
+});
+
+
 
    // Frontend Routes
    Route::view("/member", "frontend.member")->name('member');
@@ -188,7 +206,7 @@ Route::put('property/{id}/update-images', [PropertyController::class, 'updateIma
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
-   Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
+//    Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
    Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
    Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');
@@ -205,8 +223,6 @@ Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->
 Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
 Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
 
-Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-
+Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
+Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);

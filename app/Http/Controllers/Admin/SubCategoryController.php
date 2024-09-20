@@ -100,7 +100,7 @@ class SubCategoryController extends Controller
             'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('admin.subcategories.index')->with('success', 'SubCategory updated successfully.');
+        return redirect()->route('subcategories.index')->with('success', 'SubCategory updated successfully.');
     }
 
     /**
@@ -111,6 +111,6 @@ class SubCategoryController extends Controller
         $subCategory = SubCategory::findOrFail($id);
         $subCategory->delete();
 
-        return redirect()->route('admin.subcategories.index')->with('success', 'SubCategory deleted successfully.');
+        return redirect()->route('subcategories.index')->with('success', 'SubCategory deleted successfully.');
     }
 }

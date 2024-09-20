@@ -62,7 +62,8 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        
+                        
                         <!-- Sub Category -->
                         <div class="form-group mb-3">
                             <label for="sub_category_id">Sub Category</label>
@@ -75,6 +76,21 @@
                                 @endforeach
                             </select>
                         </div>
+                       
+
+                       <!-- Amenities -->
+                       <div class="form-group">
+                        <label for="amenities">Amenities</label>
+                        @foreach($amenities as $amenity)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
+                                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
+                                    {{ $amenity->title }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
 
                         <!-- Street -->
                         <div class="form-group mb-3">
@@ -198,13 +214,19 @@
                             <label for="keywords">Keywords</label>
                             <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
                                 >
+                           
                         </div>
 
                         <div class="form-group mb-3">
-    <label for="update_time">Update Time</label>
-    <input type="date" name="update_time" id="update_time" class="form-control" value="{{old('update_time', now())}}" required>
-</div>
+                            <label for="googlemap">Google Map</label>
+                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap') }}"
+                                >
+                        </div>
 
+                        <div class="form-group mb-3">
+                            <label for="update_time">Update Time</label>
+                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
+                        </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
                             <a href="{{ route('property.index') }}" class="btn btn-secondary">Cancel</a>
@@ -328,5 +350,71 @@
             toast.show();
         }
     });
+    // document.getElementById('update_time').addEventListener('change', function () {
+    //     const date = new Date(this.value);
+    //     const formattedDate = date.toLocaleDateString('en-US', {
+    //         year: 'numeric',
+    //         month: 'long',
+    //         day: '2-digit',
+    //     }).replace(',', ''); // Format to "Y - F - d"
+
+    //     this.value = `${date.getFullYear()} - ${date.toLocaleString('default', { month: 'long' })} - ${date.getDate().toString().padStart(2, '0')}`;
+    // });
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('category_id');
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Object to store all subcategories grouped by category ID
+        const subCategories = @json($subCategories->groupBy('category_id'));
+
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+            
+            // Clear current options
+            subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+            
+            if (selectedCategoryId && subCategories[selectedCategoryId]) {
+                subCategories[selectedCategoryId].forEach(function(subCategory) {
+                    const option = new Option(subCategory.title, subCategory.id);
+                    subCategorySelect.add(option);
+                });
+            }
+        });
+
+        // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
+        if (categorySelect.value) {
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('category_id');
+        const subCategorySelect = document.getElementById('sub_category_id');
+        
+        // Object to store all subcategories grouped by category ID
+        const subCategories = @json($subCategories->groupBy('category_id'));
+
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+            
+            // Clear current options
+            subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+            
+            if (selectedCategoryId && subCategories[selectedCategoryId]) {
+                subCategories[selectedCategoryId].forEach(function(subCategory) {
+                    const option = new Option(subCategory.title, subCategory.id);
+                    subCategorySelect.add(option);
+                });
+            }
+        });
+
+        // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
+        if (categorySelect.value) {
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+    });
+
 </script>
 @endsection
+
+
