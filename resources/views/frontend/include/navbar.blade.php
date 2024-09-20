@@ -16,7 +16,30 @@
         </ul>
       </div>
 
-    
+      <div class="button-collection d-flex flex-column justify-content-center">
+        @guest
+      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+    @else
+    <span class="welcome-message sm-text1"> {{ Auth::user()->name }}</span>
+    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+    <div class="d-flex">
+      <div class="">
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="btn-buttonyellow reg-logbutton">Logout</a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+
+      </div>
+<a href="{{route("favourite")}}" class="d-flex fav mainitems-fav" >
+  <p class="sm-text1 counter">1</p>
+  <i class="fa-solid fa-heart "></i>
+</a>
+    </div>
+    </form>
+
+  @endguest
+      </div>
       <i class="fa-solid fa-bars customicons mx-4 p-0 m-0" onclick="funmenu()"></i>
   
 
@@ -60,32 +83,6 @@
       <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
   </div>
   </div>
-
-  <div class="button-collection d-flex flex-column justify-content-center">
-        @guest
-      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
-      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
-    @else
-    <span class="welcome-message sm-text1"> {{ Auth::user()->name }}</span>
-    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
-    <div class="d-flex">
-      <div class="">
-      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-        class="btn-buttonyellow reg-logbutton">Logout</a>
-      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-
-      </div>
-<a href="{{route("favourite")}}" class="d-flex fav mainitems-fav" >
-  <p class="sm-text1 counter">1</p>
-  <i class="fa-solid fa-heart "></i>
-</a>
-    </div>
-
-    </form>
-
-  @endguest
-      </div>
 </section>
 <script>
   function funsearchingon() {
