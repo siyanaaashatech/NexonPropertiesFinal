@@ -80,13 +80,21 @@ class SearchPropertiesController extends Controller
             $query->where('bathrooms', $request->input('bathrooms'));
         }
     
-        if ($request->filled('area')) {
-            $query->where('area', '>=', $request->input('area'));
-        }
+       // Area range filter
+    if ($request->filled('min_area') && $request->filled('max_area')) {
+        $minArea = $request->input('min_area');
+        $maxArea = $request->input('max_area');
+        $query->where('area', '>=', $minArea)
+              ->where('area', '<=', $maxArea);
+    }
+
+    // Price range filter
+    if ($request->filled('min_price') && $request->filled('max_price')) {
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $query->whereBetween('price', [$minPrice, $maxPrice]);
+    }
     
-        if ($request->filled('price')) {
-            $query->where('price', $request->input('price'));
-        }
     
         $properties = $query->get();
         $categories = Category::all(); 
