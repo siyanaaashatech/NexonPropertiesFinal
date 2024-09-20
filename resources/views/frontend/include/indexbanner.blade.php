@@ -132,10 +132,9 @@
   </a>
 </section>
 
-<section class="container">
-  <div class="row d-flex justify-content-center align-content-center">
-<form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm" class="col-md-6">
-  <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
+
+<form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
+  <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
     <div class="d-flex flex-wrap gap-md-3 showform">
       <select class="input bannerinput" name="category_id" id="category_id">
         <option value="" disabled selected>Select Category</option>
@@ -157,13 +156,11 @@
       </select>
       <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
       value="{{ request('location') }}">
-      <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
+      <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced ::</span>
       <button type="submit" class="btn-buttongreen">Search</button>
     </div>
   </div>
 </form>
-</div>
- </section>
 
 <section class="container rounded amenities">
   <div class="row p-3" id="advanceitems">

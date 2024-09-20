@@ -1,5 +1,6 @@
 @extends('admin.layouts.master')
 
+
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -15,6 +16,7 @@
                         </div>
                     @endif
 
+
                     @if($reviews->count() > 0)
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -24,6 +26,7 @@
                                     <th>Email</th>
                                     <th>Reviews</th>
                                     <th>Ratings</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -35,29 +38,24 @@
                                         <td>{{ e($review->email) }}</td>
                                         <td>{{ e(Str::limit($review->reviews, 50)) }}</td>
                                         <td>{{ $review->ratings }}</td>
+                                        <td>{{ ucfirst($review->status) }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewReviewModal{{ $review->id }}">
-                                                View
-                                            </button>
-
-                                            <div class="modal fade" id="viewReviewModal{{ $review->id }}" tabindex="-1" aria-labelledby="viewReviewModalLabel{{ $review->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="viewReviewModalLabel{{ $review->id }}">Review from {{ e($review->name) }}</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p><strong>Email:</strong> {{ e($review->email) }}</p>
-                                                            <p><strong>Rating:</strong> {{ $review->ratings }} / 5</p>
-                                                            <p><strong>Review:</strong> {{ e($review->reviews) }}</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @if($review->status === 'pending')
+                                                <form action="{{ route('admin.reviews.update', $review->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="accepted">
+                                                    <button type="submit" class="btn btn-outline-success btn-sm">Accept</button>
+                                                </form>
+                                                <form action="{{ route('admin.reviews.update', $review->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="rejected">
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm">Reject</button>
+                                                </form>
+                                            @else
+                                                {{ ucfirst($review->status) }}
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -74,3 +72,6 @@
     </div>
 </div>
 @endsection
+
+
+

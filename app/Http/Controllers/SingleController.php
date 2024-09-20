@@ -10,6 +10,7 @@ use App\Models\Team;
 use App\Models\FAQ;
 use App\Models\AboutDescription;
 use App\Models\SiteSetting;
+// use App\Models\ReviewAndRating;
 use Illuminate\Http\Request;
 class SingleController extends Controller
 {
@@ -55,7 +56,7 @@ class SingleController extends Controller
         $subcategories = SubCategory::all(); 
         $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
         $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
-        
+        // $acceptedReviews = ReviewAndRating::where('status', 'accepted')->get();
         // Handle the 'other_images' field if it exists
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
         return view('frontend.singleproperties', compact('categories','properties', 'relatedProperties', 'otherImages'));

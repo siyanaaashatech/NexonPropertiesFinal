@@ -190,11 +190,12 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 
  // Review routes
  Route::prefix('admin')->group(function () {
-    Route::get('/review', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'index'])->name('review.index');
-    Route::post('/review/store', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'store'])->name('review.store');
+    Route::get('/review', [ReviewsandRatingsController::class, 'index'])->name('review.index');
+    Route::post('/review/store', [ReviewsandRatingsController::class, 'store'])->name('review.store');
     Route::post('/submit-review', [ReviewsandRatingsController::class, 'store'])->name('submit.review');
-
+    Route::patch('/reviews/{review}', [ReviewsandRatingsController::class, 'update'])->name('admin.reviews.update');
 });
+
 
 
 
