@@ -54,6 +54,7 @@
                                 required>{{ old('description', $property->description) }}</textarea>
                         </div>
 
+
                        <!-- Category -->
 <div class="form-group mb-3">
     <label for="category_id">Category</label>
@@ -88,6 +89,7 @@
         </div>
     @endforeach
 </div>
+
 
 
                         <!-- Street -->
@@ -195,69 +197,16 @@
                                 value="{{ old('rental_period', $property->rental_period) }}">
                         </div>
 
-                        <!-- Main Image Upload -->
-                        <div class="form-group mb-3">
-                            <label for="main_image">Main Image</label>
-                            <input type="file" id="main_image" 
-                                class="form-control" required>
-
-                        </div>
-                        @if(!empty($property->main_image))
-                            <div class="mt-2">
-                                <label>Previously Uploaded main Images:</label>
-                                <div style="display: flex; flex-wrap: wrap;">
-                                    @foreach(json_decode($property->main_image) as $image)
-                                        <img src="{{ asset('/' . $image) }}" alt="Other Image"
-                                            style="max-width: 100px; margin: 5px; border: 1px solid #ccc; padding: 2px;">
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-
-                        <!-- Hidden input to store the base64 string of the main image -->
-                        <input type="hidden" name="main_image[0]" id="main_image_base64" required>
-
-                        <!-- Cropped Main Image Preview -->
-                        <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
-                            <label>Cropped Main Image Preview:</label>
-                            <img id="cropped-image-preview"
-                                style="max-width: 150px; max-height: 200px; display: block;">
-                        </div>
-
-                        <!-- Other Images Upload -->
-                        <div class="form-group mb-3">
-                            <label for="other_images">Other Images</label>
-                            <input type="file" id="other_images" class="form-control"
-                                value="{{ old('main_image', $property->other_images) }}" name="other_images[]" multiple>
-                        </div>
-                        @if(!empty($property->other_images))
-                            <div class="mt-2">
-                                <label>Previously Uploaded Other Images:</label>
-                                <div style="display: flex; flex-wrap: wrap;">
-                                    @foreach(json_decode($property->other_images) as $image)
-                                        <img src="{{ asset('/' . $image) }}" alt="Other Image"
-                                            style="max-width: 100px; margin: 5px; border: 1px solid #ccc; padding: 2px;">
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-
-                        <!-- Other Images Preview -->
-                        <div class="form-group mb-3" id="other-images-preview-container" style="display: none;">
-                            <label>Selected Other Images Preview:</label>
-                            <div id="other-images-preview" style="display: flex; flex-wrap: wrap;"></div>
-                        </div>
+                   
+                    
+                       
+                       
 
                         <!-- Keywords -->
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
                             <input type="text" name="keywords" id="keywords" class="form-control"
                                 value="{{ old('keywords', $property->metadata->meta_keywords) }}">
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="googlemap">Google Map</label>
-                            <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap', $property->googlemap) }}" required>
                         </div>
 
                         <div class="form-group">
@@ -413,5 +362,39 @@
     // Initial update on page load
     updateSubCategories();
 });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const categorySelect = document.getElementById('category_id');
+    const subCategorySelect = document.getElementById('sub_category_id');
+    
+    // Object to store all subcategories grouped by category ID
+    const subCategories = @json($subCategories->groupBy('category_id'));
+
+    function updateSubCategories() {
+        const selectedCategoryId = categorySelect.value;
+        
+        // Store the current selection
+        const currentSelection = subCategorySelect.value;
+        
+        // Clear current options
+        subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
+        
+        if (selectedCategoryId && subCategories[selectedCategoryId]) {
+            subCategories[selectedCategoryId].forEach(function(subCategory) {
+                const option = new Option(subCategory.title, subCategory.id);
+                option.selected = (subCategory.id == currentSelection);
+                subCategorySelect.add(option);
+            });
+        }
+    }
+
+    categorySelect.addEventListener('change', updateSubCategories);
+
+    // Initial update on page load
+    updateSubCategories();
+});
 </script>
 @endsection
+
+

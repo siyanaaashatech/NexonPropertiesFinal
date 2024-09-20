@@ -15,6 +15,7 @@ class Property extends Model
         'category_id',
         'sub_category_id',
         'amenities',
+        'amenities',
         'street',
         'suburb',
         'state',
@@ -51,13 +52,22 @@ class Property extends Model
         return $this->belongsTo(SubCategory::class);
     }
 
+
     public function metadata()
     {
         return $this->belongsTo(Metadata::class);
     }
 
-    public function amenities()
-    {
-        return $this->hasMany(Amenity::class);
-    }
+    public function offer()
+{
+    return $this->hasOne(Offer::class, 'properties_id');
+
+}
+    
+public function amenities()
+{
+    return $this->hasMany(Amenity::class);
+}
+
+
 }

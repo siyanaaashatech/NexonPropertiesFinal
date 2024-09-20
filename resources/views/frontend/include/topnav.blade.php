@@ -6,10 +6,13 @@
 
 <section class="container-fluid">
   <div class="container">
-    <div class="button-collection row  gap-sm-5 nav-button-collection py-2">
+    <div class="button-collection row gap-sm-3 nav-button-collection py-2">
       <button class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1 mx-1 coloryellow">register</button>
       <button class="btn-buttonyellow reg-logbutton mx-1 ">login</button>
+      <div class=" ">
+        <p class="sm-text1 top-counter">1</p>
+        <i class="fa-solid fa-heart top-fa-heart "></i>
+      </div>
     </div>
-
   </div>
 </section>

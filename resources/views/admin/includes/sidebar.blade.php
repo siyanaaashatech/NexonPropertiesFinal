@@ -191,9 +191,28 @@
                             </a>
                         </li>
 
-                        
+                        <li class="nav-item">
+                        <!-- Top-level link for Contact -->
+                        <a class="nav-link {{ Request::is('admin/contact*') ? 'active' : '' }}"
+                        href="{{ route('contact.index') }}">
+                         <div class="d-flex align-items-center">
+                             <span class="nav-link-icon"><i class="fas fa-address-book"></i></span>
+                             <span class="nav-link-text ps-1">Contact</span>
+                         </div>
+                     </a>
+                 </li>
 
 
+                 <li class="nav-item">
+                     <!-- Top-level link for Reviews -->
+                     <a class="nav-link {{ Request::is('admin/review*') ? 'active' : '' }}"
+                        href="{{ route('review.index') }}">
+                         <div class="d-flex align-items-center">
+                             <span class="nav-link-icon"><i class="fas fa-address-book"></i></span>
+                             <span class="nav-link-text ps-1">Review</span>
+                         </div>
+                     </a>
+                 </li>
                     </ul>
                 </li>
                 </li>
@@ -379,6 +398,12 @@
                     </li>
                 </li>
 
+
+
+
+
+
+
                 <li class="nav-item">
                     <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
@@ -402,3 +427,5 @@
         </div>
     </div>
 </nav>
+
+

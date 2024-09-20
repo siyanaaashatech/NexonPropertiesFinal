@@ -18,4 +18,9 @@ class Category extends Model
     {
         return $this->belongsTo(Metadata::class);
     }
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
 }

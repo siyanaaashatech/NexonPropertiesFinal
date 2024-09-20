@@ -16,6 +16,7 @@ class AboutUsController extends Controller
         $aboutUs = AboutUs::with('metadata')->latest()->get();
         return view('admin.aboutus.index', compact('aboutUs'));
         return view('admin.aboutus.index', compact('aboutUs'));
+        return view('admin.aboutus.index', compact('aboutUs'));
     }
     /**
      * Show the form for creating a new AboutUs.
@@ -24,6 +25,7 @@ class AboutUsController extends Controller
     {
         
         $metadata = Metadata::all();
+        return view('admin.aboutus.create', compact('metadata'));
         return view('admin.aboutus.create', compact('metadata'));
         return view('admin.aboutus.create', compact('metadata'));
     }
@@ -98,6 +100,7 @@ class AboutUsController extends Controller
     public function edit($id)
     {
         $aboutUs = AboutUs::findOrFail($id);
+        $aboutUs = AboutUs::findOrFail($id);
         return view('admin.aboutus.update', compact('aboutUs'));
     }
     /**
@@ -166,7 +169,7 @@ class AboutUsController extends Controller
                 $images = $newImages;  // Replace old images with new ones
             }
         }
-    
+        
         // Update or create metadata record
         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $aboutUs->metadata()->updateOrCreate([], [
@@ -187,7 +190,6 @@ class AboutUsController extends Controller
         ]);
     
         session()->flash('success', 'AboutUs updated successfully.');
-    
         return redirect()->route('aboutus.index');
     }
 

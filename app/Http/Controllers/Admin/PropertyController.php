@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class PropertyController extends Controller
 {
@@ -20,10 +21,9 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        $properties = Property::with('metadata')->latest()->get();
+        $properties = Property::with('metadata', 'category', 'subCategory')->latest()->get();
         return view('admin.property.index', compact('properties'));
     }
-    
 
     /**
      * Show the form for creating a new property.
@@ -149,9 +149,8 @@ class PropertyController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'main_image' => 'sometimes|array',
-            'main_image.*' => 'sometimes|string',
-            'cropData' => 'sometimes|string',
+            'main_image' => 'nullable|array',
+            'main_image.*' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'required|exists:sub_categories,id',
             'amenities' => 'required|array',
@@ -170,22 +169,26 @@ class PropertyController extends Controller
             'availability_status' => 'required|in:available,sold,rental',
             'rental_period' => 'nullable|string',
             'keywords' => 'nullable|string',
-            'googlemap' => 'nullable|string',
-            'other_images' => 'required|array',
-            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'other_images' => 'nullable|array',
+            'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'update_time' => Carbon::now(),
         ]);
 
-        // Delete existing main images
-        $this->deleteImages(json_decode($property->main_image, true), 'property/');
+        // Handle main image update if provided
+        if ($request->has('main_image')) {
+            $this->deleteImages(json_decode($property->main_image, true), 'property/');
+            $images = $this->handleBase64Images($request->input('main_image'), 'property');
+        } else {
+            $images = json_decode($property->main_image, true);
+        }
 
-        // Delete existing other images
-        $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
-
-        // Handle main image update
-        $images = $this->handleBase64Images($request->input('main_image'), 'property');
-
-        // Handle other images update
-        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
+        // Handle other images update if provided
+        if ($request->hasFile('other_images')) {
+            $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
+            $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
+        } else {
+            $otherImages = json_decode($property->other_images, true);
+        }
 
         // Update metadata record
         $property->metadata()->updateOrCreate([], [
@@ -212,14 +215,11 @@ class PropertyController extends Controller
             'bedrooms' => $request->bedrooms,
             'bathrooms' => $request->bathrooms,
             'area' => $request->area,
-            'keywords' => $request->keywords,
-            'googlemap' => $request->googlemap,
             'status' => $request->status,
-            'main_image' => json_encode($images),
             'other_images' => json_encode($otherImages),
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
-            'update_time' =>$request->update_time,
+            'update_time' => Carbon::now(),
         ]);
 
         session()->flash('success', 'Property updated successfully.');
@@ -233,12 +233,16 @@ class PropertyController extends Controller
     private function handleBase64Images(array $base64Images, $folder, $existingImages = [])
     {
         // Initialize with existing images if provided
-        $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
+        $images = !empty($existingImages) ? $existingImages : [];
 
         foreach ($base64Images as $base64Image) {
             // Extract base64 encoded part and decode it
             $image = explode(',', $base64Image);
-            $decodedImage = base64_decode($image[1]);
+            if (isset($image[1])) {
+                $decodedImage = base64_decode($image[1]);
+            } else {
+                continue; // Skip if the base64 string is not properly formatted
+            }
             $imageResource = imagecreatefromstring($decodedImage);
 
             if ($imageResource !== false) {
@@ -272,7 +276,7 @@ class PropertyController extends Controller
     private function handleUploadedImages($uploadedFiles, $folder, $existingImages = [])
     {
         // Initialize with existing images if any
-        $images = !empty($existingImages) ? json_decode($existingImages, true) : [];
+        $images = !empty($existingImages) ? $existingImages : [];
 
         if ($uploadedFiles) {
             foreach ($uploadedFiles as $file) {
@@ -315,7 +319,7 @@ class PropertyController extends Controller
         // Delete the property from the database
         $property->delete();
 
-        return redirect()->route('admin.property.index')->with('success', 'Property deleted successfully.');
+        return redirect()->route('property.index')->with('success', 'Property deleted successfully.');
     }
 
     /**
@@ -346,5 +350,44 @@ class PropertyController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * Update images for the specified property.
+     */
+    public function updateImages(Request $request,  $id)
+    {
+        $request->validate([
+            'main_image.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $property = Property::findOrFail($id);
+
+        if ($request->has('main_image_base64')) {
+            $mainImageData = $request->input('main_image_base64');
+    
+            // Remove the data:image part and decode the image
+            $mainImage = str_replace('data:image/jpeg;base64,', '', $mainImageData);
+            $mainImage = base64_decode($mainImage);
+    
+            // Save the image to the desired location
+            $mainImagePath = '' . time() . '.webp';
+            file_put_contents(public_path($mainImagePath), $mainImage);
+        }    
+
+        // Handle other images update
+        if ($request->hasFile('other_images')) {
+            // Delete existing other images
+            $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
+
+            // Handle new other images
+            $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
+            $property->update(['other_images' => json_encode($otherImages)]);
+        }
+
+        session()->flash('success', 'Images updated successfully.');
+
+        return redirect()->back();
     }
 }

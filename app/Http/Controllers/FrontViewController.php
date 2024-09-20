@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Property;
 use App\Models\Category;
 use App\Models\Service;
@@ -9,13 +8,14 @@ use App\Models\Blog;
 use App\Models\Testimonial;
 use App\Models\Whyus;
 use App\Models\AboutUs;
-use App\Models\Amenity;
 use App\Models\Subcategory;
+use App\Models\Amenity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-
 class FrontViewController extends Controller
 {
+  
+
     private function extractAmenities($amenities)
     {
         if (is_string($amenities)) {
@@ -34,17 +34,18 @@ class FrontViewController extends Controller
         $whyuss = Whyus::where('status', 1)->latest()->get();
         $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
         $properties = Property::where('status', 1)->latest()->take(6)->get();
+        $propertie = Property::where('status', 1)->latest()->take(6)->get();
+        $subPropertyCount = Property::distinct('suburb')->count();
         $categories = Category::all();
         $states = Property::distinct('state')->pluck('state');
         $subcategories = Subcategory::all();
         $suburbs = Property::distinct('suburb')->pluck('suburb');
         $amenities = Amenity::all();
-        
+
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs', 'amenities'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs','amenities','propertie','subPropertyCount'
         ]));
     }
-
     public function properties(Request $request, $categoryId = null)
     {
         $categoryId = $request->query('categoryId');
@@ -58,6 +59,14 @@ class FrontViewController extends Controller
         $properties = $propertiesQuery->paginate(1);
         $states = Property::distinct('state')->pluck('state');
         $amenities = Amenity::all();
-        return view('frontend.properties', compact('properties', 'categories', 'states', 'amenities'));
+
+        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
+    
+    // public function singlePost($slug)
+    // {
+    //     $blogs = Blog::where('slug', $slug)->firstOrFail();
+    //     $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
+    //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
+    // }
 }
