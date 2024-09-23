@@ -10,7 +10,7 @@
           <i class="fa-brands fa-facebook customicons mx-2"></i>
           <i class="fa-brands fa-linkedin customicons mx-2"></i>
           <i class="fa-brands fa-youtube customicons mx-2"></i>
-          <i class="fa-brands fa-youtube customicons mx-2"></i>
+          <i class="fa-brands fa-instagram customicons mx-2"></i>
         </div>
       </div>
       <div class="col-md-2 sm-col-12 mx-4 ">

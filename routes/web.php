@@ -207,6 +207,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 
 
 
+
    // Frontend Routes
    Route::view("/member", "frontend.member")->name('member');
    Route::view("/contact", "frontend.contact")->name('contact');
@@ -218,6 +219,8 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 //    Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
    Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+   Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');
+   
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {

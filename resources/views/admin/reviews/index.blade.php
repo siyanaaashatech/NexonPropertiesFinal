@@ -1,5 +1,6 @@
 @extends('admin.layouts.master')
 
+
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -26,6 +27,7 @@
                                     <th>Suburb</th>
                                     <th>Reviews</th>
                                     <th>Ratings</th>
+                                    <th>Status</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -91,3 +93,6 @@
     </div>
 </div>
 @endsection
+
+
+

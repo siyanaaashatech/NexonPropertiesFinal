@@ -24,38 +24,6 @@
               <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
               <div class="btn-buttongreen mx-2">Rent</div>
               </div> -->
-              <form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm" onsubmit="return validateForm()">
-                <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-10 px-4 mx-md-4">
-                  <div class="d-flex flex-wrap gap-md-3 showform">
-                    <select class="input bannerinput" name="category_id" id="category_id" required>
-                      <option value="" disabled selected>Select Category</option>
-                      @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->title }}</option>
-                      @endforeach
-                    </select>
-                    
-                    <select class="input bannerinput" name="subcategory_id" id="subcategory_id" required>
-                      <option value="" disabled selected>Select Subcategory</option>
-                    </select>
-              
-                    <select class="input bannerinput" name="state" id="state" required>
-                      <option value="" disabled selected>Select State</option>
-                      @foreach($states as $state)
-                        <option value="{{ $state }}">{{ $state }}</option>
-                      @endforeach
-                    </select>
-              
-                    <select class="input bannerinput" name="suburb" id="suburb" required>
-                      <option value="" disabled selected>Select Region</option>
-                    </select>
-              
-                    <input type="text" class="input bannerinput" name="location" placeholder="Keyword" id="location" required>
-                    <span class="sm-text mt-2 greenhighlight advance" onclick="funOpenadvance()">Advanced ::</span>
-                    <button type="submit" class="btn-buttongreen">Search</button>
-                  </div>
-                </div>
-              </form>
-
               <script>
 
               $(document).ready(function() {
@@ -178,9 +146,35 @@
   </a>
 </section>
 
-<section class="container-fluid">
-  <!-- ... (existing carousel and search form code) ... -->
-</section>
+
+<form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
+  <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
+    <div class="d-flex flex-wrap gap-md-3 showform">
+      <select class="input bannerinput" name="category_id" id="category_id">
+        <option value="" disabled selected>Select Category</option>
+        @foreach($categories as $category)
+          <option value="{{ $category->id }}">{{ $category->title }}</option>
+        @endforeach
+      </select>
+      <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
+        <option value="" disabled selected>Select Subcategory</option>
+      </select>
+      <select class="input bannerinput" name="state" id="state">
+        <option value="" disabled selected>Select State</option>
+        @foreach($states as $state)
+          <option value="{{ $state }}">{{ $state }}</option>
+        @endforeach
+      </select>
+      <select class="input bannerinput" name="suburb" id="suburb">
+        <option value="" disabled selected>Select Region</option>
+      </select>
+      <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+      value="{{ request('location') }}">
+      <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced ::</span>
+      <button type="submit" class="btn-buttongreen">Search</button>
+    </div>
+  </div>
+</form>
 
 <section class="container rounded amenities">
   <div class="row p-3" id="advanceitems">
@@ -197,7 +191,7 @@
   <!-- Bedrooms, Bathrooms, Area, and Price Section -->
   <div class="row py-4">
     <div class="col-md-3">
-      <label for="bedrooms" class="sm-text1">Bedrooms</label>
+      <label for="bedrooms" class="sm-text">Bedrooms</label>
       <select name="bedrooms" id="bedrooms" class="input bannerinput">
         <option value="" selected>Beds Any</option>
         @for ($i = 1; $i <= 10; $i++)
@@ -207,7 +201,7 @@
     </div>
 
     <div class="col-md-3">
-      <label for="bathrooms" class="sm-text1">Bathrooms</label>
+      <label for="bathrooms" class="sm-text">Bathrooms</label>
       <select name="bathrooms" id="bathrooms" class="input bannerinput">
         <option value="" selected>Baths Any</option>
         @for ($i = 1; $i <= 10; $i++)
@@ -217,30 +211,23 @@
     </div>
 
     <div class="col-md-3">
-      <label for="area-range" class="sm-text1">Area (sq. ft.)</label>
+      <label for="area-range" class="sm-text">Area (sq. ft.)</label>
       <div id="area-slider" class="mt-2"></div>
-      <span id="area-range-display" class="sm-text1 d-block mt-2"></span>
+      <span id="area-range-display" class="sm-text d-block mt-2"></span>
       <input type="hidden" name="min_area" id="min_area">
       <input type="hidden" name="max_area" id="max_area">
     </div>
 
     <div class="col-md-3">
-      <label for="price-range" class="sm-text1">Price</label>
+      <label for="price-range" class="sm-text">Price</label>
       <div id="price-slider" class="mt-2"></div>
-      <span id="price-range-display" class="sm-text1 d-block mt-2"></span>
+      <span id="price-range-display" class="sm-text d-block mt-2"></span>
       <input type="hidden" name="min_price" id="min_price">
       <input type="hidden" name="max_price" id="max_price">
     </div>
   </div>
 </section>
 <style>
-  .sm-text1 {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-    color: black;
-  }
   .ui-slider-horizontal {
     height: 8px;
   }
@@ -327,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
     slide: function(event, ui) {
       updateAreaDisplay(ui.values[0], ui.values[1]);
     },
-    change: updateSearch // Add this line to trigger updateSearch on slider change
+    change: updateSearch 
   });
 
   function updateAreaDisplay(minArea, maxArea) {

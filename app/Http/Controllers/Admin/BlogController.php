@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App\Http\Controllers\Admin;
+
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
@@ -8,6 +10,7 @@ use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+
 
 class BlogController extends Controller
 {
@@ -18,12 +21,14 @@ class BlogController extends Controller
         return view('admin.blogs.index', compact('blogs'));
     }
 
+
     // Show form to create a new blog
     public function create()
     {
         $metadata = Metadata::all();
         return view('admin.blogs.create', compact('metadata'));
     }
+
 
     // Store new blog in the database
     public function store(Request $request)
@@ -39,30 +44,37 @@ class BlogController extends Controller
             'cropData' => 'nullable|string',
         ]);
 
+
         $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
         $images = [];
+
 
         foreach ($request->input('image') as $base64Image) {
             $image = explode(',', $base64Image);
             $decodedImage = base64_decode($image[1]);
             $imageResource = imagecreatefromstring($decodedImage);
 
+
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
                 $destinationPath = storage_path('app/public/blog_images');
+
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
                 }
 
+
                 $savedPath = $destinationPath . '/' . $imageName;
                 imagewebp($imageResource, $savedPath);
                 imagedestroy($imageResource);
+
 
                 $relativeImagePath = 'storage/blog_images/' . $imageName;
                 $images[] = $relativeImagePath;
             }
         }
+
 
         // Handle metadata
         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
@@ -72,6 +84,7 @@ class BlogController extends Controller
             'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title)
         ]);
+
 
         // Create new blog record
         Blog::create([
@@ -83,9 +96,11 @@ class BlogController extends Controller
             'metadata_id' => $metadata->id,
         ]);
 
+
         session()->flash('success', 'Blog created successfully.');
         return redirect()->route('admin.blogs.index');
     }
+
 
     // Show form to edit the blog
     public function edit(Blog $blog)
@@ -107,7 +122,9 @@ public function update(Request $request, Blog $blog)
         'cropData' => 'nullable|string',
     ]);
 
+
     $images = !empty($blog->image) ? json_decode($blog->image, true) : [];
+
 
     // Handle image upload if a new image is provided
     if ($request->hasFile('image')) {
@@ -126,15 +143,19 @@ public function update(Request $request, Blog $blog)
         $imageName = time() . '-' . Str::uuid() . '.' . $file->getClientOriginalExtension();
         $destinationPath = storage_path('app/public/blog_images');
 
+
         // Create directory if it doesn't exist
         if (!File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true, true);
         }
 
+
         $file->move($destinationPath, $imageName);
         $relativeImagePath = 'storage/blog_images/' . $imageName;
         $images[] = $relativeImagePath;  // Add new image path to array
+        $images[] = $relativeImagePath;  // Add new image path to array
     }
+
 
     // Update metadata for the blog
     $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
@@ -145,6 +166,7 @@ public function update(Request $request, Blog $blog)
         'slug' => Str::slug($request->title)
     ]);
 
+
     // Update the blog record
     $blog->update([
         'title' => $request->title,
@@ -152,8 +174,10 @@ public function update(Request $request, Blog $blog)
         'author' => $request->author,
         'keywords' => $request->keywords,
         'image' => json_encode($images),  // Save updated images
+        'image' => json_encode($images),  // Save updated images
         'status' => $request->status,
     ]);
+
 
     session()->flash('success', 'Blog updated successfully.');
     return redirect()->route('admin.blogs.index');
@@ -173,9 +197,11 @@ public function update(Request $request, Blog $blog)
             }
         }
 
+
         $blog->delete();
         return redirect()->route('admin.blogs.index')->with('success', 'Blog deleted successfully.');
     }
+
 
     // Upload image via AJAX
     public function uploadImage(Request $request)
@@ -185,8 +211,12 @@ public function update(Request $request, Blog $blog)
             $path = $file->store('public/uploads');
             $url = asset('storage/uploads/' . basename($path));
 
+
             return response()->json(['url' => $url]);
         }
         return response()->json(['error' => 'No file uploaded'], 400);
     }
 }
+
+
+
