@@ -1,4 +1,37 @@
 {{--navbar --}}
+
+<style>
+  .upperlogout{
+    display: none;
+  }
+  .sidenav-login{
+    display: none;
+  }
+  
+  .userimage{
+    width:40px;
+    height: 40px;
+    border-radius: 20px;
+    object-fit: cover;
+    
+  }
+   .logoutsection{
+     margin-top:65%;
+  }
+  @media (max-width: 990px) {
+    .logoutsection{
+     margin-top:3% !important;
+  }
+  .upper-login{
+    display: none;
+  }
+
+  }
+
+
+</style>
+
+
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
@@ -16,73 +49,73 @@
         </ul>
       </div>
 
-      <div class="button-collection d-flex flex-column justify-content-center">
+      <div class="button-collection d-flex flex-column justify-content-center top">
         @guest
+        <div class="upper-login">
       <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
       <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+      </div>
     @else
-    <span class="welcome-message sm-text1"> {{ Auth::user()->name }}</span>
+    <span class="welcome-message sm-text1 upperlogout"> {{ Auth::user()->name }}</span>
     {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
     <div class="d-flex">
-      <div class="">
+      <div class="upperlogout">
       <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
         class="btn-buttonyellow reg-logbutton">Logout</a>
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
 
       </div>
-      
       <a href="{{ route('favourite') }}" class="d-flex fav mainitems-fav">
-          <p class="sm-text1 counter">{{ auth()->user()->favorites()->count() }}</p>
-          <i class="fa-solid fa-heart"></i>
-      </a>
-      
-      <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          // Remove localStorage usage
-          let counterElement = document.querySelector('.counter');
-          
-          // Event listener for Add to Favorite button
-          document.querySelector('.favourite').addEventListener('click', function () {
-              var propertyId = this.getAttribute('data-property-id');
-      
-              // AJAX request to add property to favorites
-              $.ajax({
-                  url: '{{ route("favorites.store") }}',
-                  type: 'POST',
-                  data: {
-                      _token: '{{ csrf_token() }}',
-                      properties_id: propertyId
-                  },
-                  success: function (response) {
-                      if (response.status === 'success') {
-                          if (response.count !== undefined) {
-                              // Update the favorite count in the navbar
-                              if (counterElement) {
-                                  counterElement.textContent = response.count;
-                              }
-                          }
-                          alert(response.message);
-                      } else if (response.status === 'already_added') {
-                          alert('Already added to favorites');
-                      } else {
-                          alert('An unexpected error occurred');
-                      }
-                  },
-                  error: function (xhr) {
-                      alert('An error occurred while processing your request');
-                  }
-              });
-          });
-      });
-      </script>
+        <p class="sm-text1 counter">{{ auth()->user()->favorites()->count() }}</p>
+        <i class="fa-solid fa-heart"></i>
+    </a>
     
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove localStorage usage
+        let counterElement = document.querySelector('.counter');
+        
+        // Event listener for Add to Favorite button
+        document.querySelector('.favourite').addEventListener('click', function () {
+            var propertyId = this.getAttribute('data-property-id');
+    
+            // AJAX request to add property to favorites
+            $.ajax({
+                url: '{{ route("favorites.store") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    properties_id: propertyId
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        if (response.count !== undefined) {
+                            // Update the favorite count in the navbar
+                            if (counterElement) {
+                                counterElement.textContent = response.count;
+                            }
+                        }
+                        alert(response.message);
+                    } else if (response.status === 'already_added') {
+                        alert('Already added to favorites');
+                    } else {
+                        alert('An unexpected error occurred');
+                    }
+                },
+                error: function (xhr) {
+                    alert('An error occurred while processing your request');
+                }
+            });
+        });
+    });
+    </script>
     </div>
     </form>
 
   @endguest
       </div>
-      <i class="fa-solid fa-bars customicons mx-4 p-0 m-0" onclick="funmenu()"></i>
+      <i class="fa-solid fa-bars customicons mx-5 p-0 m-0" onclick="funmenu()"></i>
   
 
     </nav>
@@ -123,8 +156,36 @@
       <a href="#"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
       <a href="#"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
       <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+     
   </div>
+  <div class="button-collection d-flex justify-content-center align-items-center logoutsection">
+        @guest
+        <div class="sidenav-login">
+      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+      </div>
+    @else
+    <div class="d-flex gap-1  justify-content-center align-items-center">
+    <img src="{{asset("image/about.jpg")}}" alt="" class="userimage">
+    <span class="welcome-message sm-text1 text-center"> {{ Auth::user()->name }}</span>
+    </div>
+    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+    <div class="d-flex ">
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="btn-buttonyellow  mx-3 logout">Logout</a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+
+  
+    </div>
+    </form>
+
+  @endguest
+      </div>
+
   </div>
+
+
 </section>
 <script>
   function funsearchingon() {

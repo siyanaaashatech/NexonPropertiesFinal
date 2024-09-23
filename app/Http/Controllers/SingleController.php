@@ -5,7 +5,6 @@ use App\Models\Property;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Favorites;
-use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Testimonial;
 use App\Models\Team;
@@ -22,11 +21,12 @@ class SingleController extends Controller
    public function render_about()
     {
         $testimonials=Testimonial::latest()->get();
-         $categories = Category::latest()->get();
+        $properties = Property::latest()->get();
+        $categories = Category::latest()->get();
         $teams=Team::latest()->get();
         $faqs=FAQ::Latest()->get();
         $aboutDescriptions=AboutDescription::latest()->get();
-        return view('frontend.about', compact('aboutDescriptions','teams','testimonials' ,'faqs',"categories"));
+        return view('frontend.about', compact('aboutDescriptions','teams','testimonials' ,'faqs','categories','properties'));
     }
     public function render_blog()
     {
@@ -78,8 +78,9 @@ class SingleController extends Controller
     public function render_contact()
     {
         $siteSettings=SiteSetting::latest()->get();
+        $properties = Property::latest()->get();
         $categories=Category::latest()->get();
-        return view('frontend.contact', compact("categories",'siteSettings'));
+        return view('frontend.contact', compact("categories",'siteSettings','properties'));
     }
 
     public function render_search()
@@ -88,26 +89,16 @@ class SingleController extends Controller
         $categories=Category::latest()->get();
         return view('frontend.searching', compact('properties','categories'));
     }
-    public function render_favourite()
-    {
-        $properties = Property::latest()->get();
-        $categories=Category::latest()->get();
-        return view('frontend.favourite', compact('properties','categories'));
-    }
+    
     public function properties(Request $request, $categoryId = null)
 {
-    // Fetch all categories for the navbar
+    
     $categories = Category::all();
-    $subcategories = SubCategory::all(); // Fetch subcategories here
-
-    // Get the categoryId from the request query
+    $subcategories = SubCategory::all(); 
     $categoryId = $request->query('categoryId');
-
-    // Fetch properties filtered by category and active status
-    $propertiesQuery = Property::where('status', 1); // Ensure properties are active
-
+    $propertiesQuery = Property::where('status', 1); 
     if ($categoryId) {
-        $propertiesQuery->where('category_id', $categoryId); // Filter by category
+        $propertiesQuery->where('category_id', $categoryId); 
     }
 
         $properties = $propertiesQuery->paginate(6);

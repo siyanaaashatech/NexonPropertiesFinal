@@ -209,7 +209,6 @@
     <div class="container-fluid m-0 p-0">
         @if(Auth::check())
             <div class="review-form" style="display: none;">
-            <div class="review-form" style="display: none;">
                 <div class="d-flex row justify-content-center">
                     <div class="col-md-5 p-5 review-form-detail" id="getviewform">
                         <i class="fa-solid fa-circle-xmark" onclick="closeFormFun()"></i>
@@ -226,10 +225,7 @@
                             <input type="text" name="name" class="input" value="{{ Auth::user()->name }}" required readonly>
                             <input type="email" name="email" class="input my-2" value="{{ Auth::user()->email }}" required readonly>
                             <textarea name="reviews" class="input my-2" placeholder="Your Message" required></textarea>
-                            <textarea name="reviews" class="input my-2" placeholder="Your Message" required></textarea>
                             <input type="hidden" name="property_id" value="{{ $properties->id }}">
-                            <input type="hidden" name="ratings" id="ratings-input" value="0">
-                            <input type="hidden" name="status" value="pending">
                             <input type="hidden" name="ratings" id="ratings-input" value="0">
                             <input type="hidden" name="status" value="pending">
                             <button type="submit" class="btn-buttonyellow mx-2">Submit</button>
@@ -237,8 +233,6 @@
                     </div>
                 </div>
             </div>
-        @else
-            <div class="login-message overlay" style="display: none;">
         @else
             <div class="login-message overlay" style="display: none;">
                 <div class="popup-content">
@@ -249,7 +243,7 @@
             </div>
         @endif
     </div>
-   
+    
     <script>
        
 

@@ -28,7 +28,6 @@
                                     <th>Reviews</th>
                                     <th>Ratings</th>
                                     <th>Status</th>
-                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

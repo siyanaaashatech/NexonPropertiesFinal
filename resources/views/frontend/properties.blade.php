@@ -264,8 +264,8 @@
 
 
 <!-- nextpage section -->
-<!-- nextpage section -->
-{{-- <section class="container-fluid">
+
+<section class="container-fluid">
     <div class="container">
         <div class="row  nextpage ">
 
@@ -280,9 +280,9 @@
             </ul>
         </div>
     </div>
-</section> --}}
+</section>
 
-<section class="container-fluid">
+{{-- <section class="container-fluid">
     <div class="container">
       <div class="row nextpage ">
         <div class="d-flex justify-content-center align-content-center flex-wrap">
@@ -290,8 +290,8 @@
         </div>
       </div>
     </div>
-  </section>
-@endsection
+  </section>--}}
+@endsection 
 
 <style>
 

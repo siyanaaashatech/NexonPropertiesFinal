@@ -42,12 +42,11 @@ class FrontViewController extends Controller
         $categories = Category::all();
         $states = Property::distinct('state')->pluck('state');
         $subcategories = Subcategory::all();
-        $suburbs = Property::distinct('suburb')->pluck('suburb');
         $amenities = Amenity::all();
         
 
         return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs','amenities','propertie','subPropertyCount'
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'amenities','propertie','subPropertyCount'
         ]));
     }
     public function properties(Request $request, $categoryId = null)

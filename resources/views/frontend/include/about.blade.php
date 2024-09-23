@@ -1,7 +1,7 @@
 {{-- <!-- about --> --}}
-<section class="container-fluid container-fluid-background about gapbetweensection">
+<section class="container-fluid about gapbetweensection indexaboutsection" style="background-image: url('{{ asset('image/indexabo.jpg') }}');">
   <div class="container d-flex flex-column justify-content-center align-items-center">
-    <div class="row">
+    <div class="row py-4">
       @foreach ($aboutuss as $aboutus)
      
       <div class="col-md-6 d-flex">
@@ -38,6 +38,10 @@
         </div>
         @foreach ($aboutuss as $aboutus)
       <p class="sm-text1">{{$aboutus->description}}</p>
+      <div class="d-flex">
+        <i class="fa-solid fa-hand-point-right customicons mx-2"></i>
+        <p class="sm-text1">{{$aboutus->description}}</p>
+      </div>
       <div class="d-flex">
         <i class="fa-solid fa-hand-point-right customicons mx-2"></i>
         <p class="sm-text1">{{$aboutus->description}}</p>
