@@ -1,5 +1,6 @@
 @extends('admin.layouts.master')
 
+
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -22,6 +23,7 @@
                         </div>
                     @endif
 
+
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -32,12 +34,14 @@
                         </div>
                     @endif
 
+
                     <!-- Property creation form -->
                     <form action="{{ route('property.store') }}" method="POST" enctype="multipart/form-data"
                         id="propertyForm">
                         @csrf
                         <input type="hidden" name="cropData" id="cropData">
                         <input type="hidden" name="main_image_cropped" id="croppedImage">
+
 
                         <!-- Title -->
                         <div class="form-group mb-3">
@@ -46,12 +50,14 @@
                                 required>
                         </div>
 
+
                         <!-- Description -->
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
                             <textarea name="description" id="description" class="form-control" rows="5"
                                 required>{{ old('description') }}</textarea>
                         </div>
+
 
                         <div class="form-group mb-3">
                             <label for="category_id">Category</label>
@@ -64,8 +70,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        
-                        
+                       
                         <!-- Sub Category -->
                         <div class="form-group mb-3">
                             <label for="sub_category_id">Sub Category</label>
@@ -73,7 +78,7 @@
                                 <option value="">Choose Sub Category</option>
                             </select>
                         </div>
-                       
+
 
                        <!-- Amenities -->
                        <div class="form-group">
@@ -89,12 +94,14 @@
                         @endforeach
                     </div>
 
+
                         <!-- Street -->
                         <div class="form-group mb-3">
                             <label for="street">Street</label>
                             <input type="text" name="street" id="street" class="form-control"
                                 value="{{ old('street') }}" required>
                         </div>
+
 
                         <!-- Suburb -->
                         <div class="form-group mb-3">
@@ -103,12 +110,14 @@
                                 value="{{ old('suburb') }}" required>
                         </div>
 
+
                         <!-- State -->
                         <div class="form-group mb-3">
                             <label for="state">State</label>
                             <input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}"
                                 required>
                         </div>
+
 
                         <!-- Post Code -->
                         <div class="form-group mb-3">
@@ -117,6 +126,7 @@
                                 class="form-control" value="{{ old('post_code') }}" required>
                         </div>
 
+
                         <!-- Country -->
                         <div class="form-group mb-3">
                             <label for="country">Country</label>
@@ -124,12 +134,14 @@
                                 value="{{ old('country') }}">
                         </div>
 
+
                         <!-- Price -->
                         <div class="form-group mb-3">
                             <label for="price">Price</label>
                             <input type="number" name="price" id="price" class="form-control" min="0"
                                 value="{{ old('price') }}" required>
                         </div>
+
 
                         <!-- Price Type -->
                         <div class="form-group mb-3">
@@ -143,12 +155,14 @@
                             </select>
                         </div>
 
+
                         <!-- Bedrooms -->
                         <div class="form-group mb-3">
                             <label for="bedrooms">Bedrooms</label>
                             <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0"
                                 value="{{ old('bedrooms') }}" required>
                         </div>
+
 
                         <!-- Bathrooms -->
                         <div class="form-group mb-3">
@@ -157,12 +171,14 @@
                                 value="{{ old('bathrooms') }}" required>
                         </div>
 
+
                         <!-- Area -->
                         <div class="form-group mb-3">
                             <label for="area">Area (sq ft)</label>
                             <input type="number" name="area" id="area" class="form-control" min="0"
                                 value="{{ old('area') }}" required>
                         </div>
+
 
                         <!-- Status -->
                         <div class="form-group mb-3">
@@ -177,6 +193,7 @@
                           </div>
                           </div>
 
+
                         <!-- Availability Status -->
                         <div class="form-group mb-3">
                             <label for="availability_status">Availability Status</label>
@@ -189,6 +206,7 @@
                             </select>
                         </div>
 
+
                         <!-- Rental Period -->
                         <div class="form-group mb-3">
                             <label for="rental_period">Rental Period</label>
@@ -196,11 +214,13 @@
                                 value="{{ old('rental_period') }}">
                         </div>
 
+
                         <!-- Main Image Upload -->
                         <div class="form-group mb-3">
                             <label for="main_image">Main Image</label>
                             <input type="file" id="main_image" class="form-control" required>
                         </div>
+
 
                     <!-- Hidden input to store the base64 string of the main image -->
                        <input type="hidden" name="main_image[0]" id="main_image_base64" required>
@@ -211,11 +231,13 @@
                                 style="max-width: 150px; max-height: 200px; display: block;">
                         </div>
 
+
                         <!-- Other Images Upload -->
                         <div class="form-group mb-3">
                             <label for="other_images">Other Images</label>
                             <input type="file" id="other_images" class="form-control" name="other_images[]" multiple>
                         </div>
+
 
                         <!-- Other Images Preview -->
                         <div class="form-group mb-3" id="other-images-preview-container" style="display: none;">
@@ -226,9 +248,8 @@
                             <label for="keywords">Keywords</label>
                             <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
                                 >
-                            <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
-                                >
                         </div>
+
 
                         <div class="form-group mb-3">
                             <label for="googlemap">Google Map</label>
@@ -236,14 +257,13 @@
                                 >
                         </div>
 
+
                         <div class="form-group mb-3">
                             <label for="update_time">Update Time</label>
                             <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
-                            <label for="update_time">Update Time</label>
-                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
                         </div>
-                        
-                        
+                       
+
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
@@ -255,6 +275,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
@@ -275,13 +296,16 @@
     </div>
 </div>
 
+
 <!-- Include Cropper.js -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
+
 <script>
     let cropper;
     let currentFile;
+
 
     // Main image input change event
     document.getElementById('main_image').addEventListener('change', function (e) {
@@ -293,9 +317,11 @@
             imagePreview.src = url;
             imagePreview.style.display = 'block';
 
+
             // Show the crop modal
             const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
             cropModal.show();
+
 
             if (cropper) {
                 cropper.destroy();
@@ -307,9 +333,11 @@
         }
     });
 
+
     // Save cropped image data and update hidden input fields
     document.getElementById('saveCrop').addEventListener('click', function () {
         if (!cropper) return;
+
 
         const cropData = cropper.getData();
         document.getElementById('cropData').value = JSON.stringify({
@@ -319,6 +347,7 @@
             y: Math.round(cropData.y)
         });
 
+
         cropper.getCroppedCanvas().toBlob((blob) => {
             const reader = new FileReader();
             reader.readAsDataURL(blob);
@@ -326,11 +355,13 @@
                 // Set the base64 string of the cropped image into the hidden input
                 document.getElementById('main_image_base64').value = reader.result;
 
+
                 // Set cropped image preview
                 const croppedImagePreview = document.getElementById('cropped-image-preview');
                 croppedImagePreview.src = reader.result;
                 document.getElementById('cropped-preview-container').style.display = 'block';
             };
+
 
             // Close modal after saving crop
             const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
@@ -339,12 +370,15 @@
     });
 
 
+
+
     // Preview for other images
     document.getElementById('other_images').addEventListener('change', function (e) {
         const files = e.target.files;
         const previewContainer = document.getElementById('other-images-preview');
         previewContainer.innerHTML = ''; // Clear previous previews
         document.getElementById('other-images-preview-container').style.display = 'block';
+
 
         Array.from(files).forEach(file => {
             const reader = new FileReader();
@@ -361,6 +395,7 @@
         });
     });
 
+
     // Show toast message after form submission
     document.addEventListener('DOMContentLoaded', function () {
         if (document.querySelector('.toast')) {
@@ -376,21 +411,23 @@
     //         day: '2-digit',
     //     }).replace(',', ''); // Format to "Y - F - d"
 
+
     //     this.value = `${date.getFullYear()} - ${date.toLocaleString('default', { month: 'long' })} - ${date.getDate().toString().padStart(2, '0')}`;
     // });
     document.addEventListener('DOMContentLoaded', function () {
         const categorySelect = document.getElementById('category_id');
         const subCategorySelect = document.getElementById('sub_category_id');
-        
+       
         // Object to store all subcategories grouped by category ID
         const subCategories = @json($subCategories->groupBy('category_id'));
 
+
         categorySelect.addEventListener('change', function() {
             const selectedCategoryId = this.value;
-            
+           
             // Clear current options
             subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
-            
+           
             if (selectedCategoryId && subCategories[selectedCategoryId]) {
                 subCategories[selectedCategoryId].forEach(function(subCategory) {
                     const option = new Option(subCategory.title, subCategory.id);
@@ -399,40 +436,16 @@
             }
         });
 
-        // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
-        if (categorySelect.value) {
-            categorySelect.dispatchEvent(new Event('change'));
-        }
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const categorySelect = document.getElementById('category_id');
-        const subCategorySelect = document.getElementById('sub_category_id');
-        
-        // Object to store all subcategories grouped by category ID
-        const subCategories = @json($subCategories->groupBy('category_id'));
-
-        categorySelect.addEventListener('change', function() {
-            const selectedCategoryId = this.value;
-            
-            // Clear current options
-            subCategorySelect.innerHTML = '<option value="">Choose Sub Category</option>';
-            
-            if (selectedCategoryId && subCategories[selectedCategoryId]) {
-                subCategories[selectedCategoryId].forEach(function(subCategory) {
-                    const option = new Option(subCategory.title, subCategory.id);
-                    subCategorySelect.add(option);
-                });
-            }
-        });
 
         // Trigger change event on page load if a category is already selected (e.g., old input after validation error)
         if (categorySelect.value) {
             categorySelect.dispatchEvent(new Event('change'));
         }
     });
+
 
 </script>
 @endsection
+
 
 

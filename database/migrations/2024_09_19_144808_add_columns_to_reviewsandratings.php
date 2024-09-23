@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('reviewsandratings', function (Blueprint $table) {
             $table->string('email');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
         });
     }
 

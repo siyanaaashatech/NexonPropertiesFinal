@@ -42,6 +42,7 @@ use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\SearchPropertiesController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ReviewsandRatingsController;
+use App\Http\Controllers\Admin\FavoritesController;
 use App\Models\Offer;
 
 Auth::routes();
@@ -190,11 +191,19 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 
  // Review routes
  Route::prefix('admin')->group(function () {
-    Route::get('/review', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'index'])->name('review.index');
-    Route::post('/review/store', [App\Http\Controllers\Admin\ReviewsandRatingsController::class, 'store'])->name('review.store');
+    Route::get('/review', [ReviewsandRatingsController::class, 'index'])->name('review.index');
+    Route::post('/review/store', [ReviewsandRatingsController::class, 'store'])->name('review.store');
     Route::post('/submit-review', [ReviewsandRatingsController::class, 'store'])->name('submit.review');
-
+    Route::patch('/reviews/{review}', [ReviewsandRatingsController::class, 'update'])->name('admin.reviews.update');
 });
+
+   //Favorites Route
+   Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');
+   
+   Route::post('/favorites', [FavoritesController::class, 'store'])->name('favorites.store');
+   Route::get('/admin/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
+
+  
 
 
 

@@ -22,10 +22,10 @@ class MetadataController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'meta_title' => 'required|string|max:255',
-            'meta_description' => 'required|string|max:260',
+            'meta_title' => 'required|string|max:60',
+            'meta_description' => 'required|string|max:160',
             'meta_keywords' => 'required|string',
-            'slug' => 'required|string|max:255|unique:metadata',
+            'slug' => 'required|string|max:60|unique:metadata',
         ]);
     
         // Split meta_keywords by commas, trim spaces, and convert to JSON array
@@ -58,7 +58,7 @@ class MetadataController extends Controller
             'meta_title' => 'required|string|max:60',
             'meta_description' => 'required|string|max:160',
             'meta_keywords' => 'nullable|string',
-            'slug' => 'required|string|max:140|unique:metadata,slug,' . $metadata->id,
+            'slug' => 'required|string|max:60|unique:metadata,slug,' . $metadata->id,
         ]);
 
         // Split meta_keywords by commas, trim spaces, and convert to JSON array

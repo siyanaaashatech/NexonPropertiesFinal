@@ -94,8 +94,8 @@ class BlogController extends Controller
         return view('admin.blogs.update', compact('blog', 'metadata'));
     }
 
-    // Update blog in the database
-    public function update(Request $request, Blog $blog)
+   // Update blog in the database
+public function update(Request $request, Blog $blog)
 {
     $request->validate([
         'title' => 'required|string|max:255',
@@ -111,6 +111,17 @@ class BlogController extends Controller
 
     // Handle image upload if a new image is provided
     if ($request->hasFile('image')) {
+        // Remove the old image(s) before uploading the new one
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                $oldImagePath = storage_path('app/public/blog_images') . '/' . basename($image);
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath);  // Delete old image
+                }
+            }
+            $images = [];  // Clear the old image array
+        }
+
         $file = $request->file('image');
         $imageName = time() . '-' . Str::uuid() . '.' . $file->getClientOriginalExtension();
         $destinationPath = storage_path('app/public/blog_images');
@@ -122,7 +133,7 @@ class BlogController extends Controller
 
         $file->move($destinationPath, $imageName);
         $relativeImagePath = 'storage/blog_images/' . $imageName;
-        $images[] = $relativeImagePath;
+        $images[] = $relativeImagePath;  // Add new image path to array
     }
 
     // Update metadata for the blog
@@ -140,14 +151,13 @@ class BlogController extends Controller
         'description' => $request->description,
         'author' => $request->author,
         'keywords' => $request->keywords,
-        'image' => json_encode($images),
+        'image' => json_encode($images),  // Save updated images
         'status' => $request->status,
     ]);
 
     session()->flash('success', 'Blog updated successfully.');
     return redirect()->route('admin.blogs.index');
 }
-
 
 
     // Delete a blog from the database

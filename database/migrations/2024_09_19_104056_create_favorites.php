@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
             $table->string('fav_properties');
+            $table->string('name');  
+            $table->string('email'); 
             $table->foreignId('properties_id')->constrained('properties')->onDelete('cascade');
             $table->timestamps();
         });
@@ -27,3 +29,4 @@ return new class extends Migration
         Schema::dropIfExists('favorites');
     }
 };
+

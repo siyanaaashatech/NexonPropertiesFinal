@@ -67,34 +67,6 @@
                   <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
                   value="{{ request('location') }}">
                 </div>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Select Category</label>
-                  <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
-                    <option value="" disabled selected>Select Subcategory</option>
-                  </select>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Select State</label>
-                  <select class="input bannerinput" name="state" id="state">
-                    <option value="" disabled selected>Select State</option>
-                    @foreach($states as $state)
-                      <option value="{{ $state }}">{{ $state }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Select Region</label>
-                  <select class="input bannerinput" name="suburb" id="suburb">
-                    <option value="" disabled selected>Select Region</option>
-                  </select>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Keyword</label>
-                  <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
-                  value="{{ request('location') }}">
-                </div>
-
             <div class="d-flex flex-column col-md-3">
                 <label for="" class="sm-text1 des-text">Search</label>
                 <button type="submit" class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
@@ -149,49 +121,7 @@
     });
     </script>
    
-<script>
-    $(document).ready(function() {
-      $('#category_id').change(function() {
-        var categoryId = $(this).val();
-        if (categoryId) {
-          $.ajax({
-            url: '/get-subcategories/' + categoryId,
-            type: 'GET',
-            success: function(data) {
-              $('#subcategory_id').empty();
-              $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
-              $.each(data, function(key, value) {
-                $('#subcategory_id').append('<option value="' + value.id + '">' + value.title + '</option>');
-              });
-            }
-          });
-        } else {
-          $('#subcategory_id').empty();
-          $('#subcategory_id').append('<option value="" disabled selected>Select Subcategory</option>');
-        }
-      });
-    
-      $('#state').change(function() {
-        var state = $(this).val();
-        if (state) {
-          $.ajax({
-            url: '/get-suburbs/' + state,
-            type: 'GET',
-            success: function(data) {
-              $('#suburb').empty();
-              $('#suburb').append('<option value="" disabled selected>Select Region</option>');
-              $.each(data, function(key, value) {
-                $('#suburb').append('<option value="' + value + '">' + value + '</option>');
-              });
-            }
-          });
-        } else {
-          $('#suburb').empty();
-          $('#suburb').append('<option value="" disabled selected>Select Region</option>');
-        }
-      });
-    });
-    </script>
+
    
 
 {{--
@@ -313,7 +243,7 @@
 
 <!-- nextpage section -->
 <!-- nextpage section -->
-<section class="container-fluid">
+{{-- <section class="container-fluid">
     <div class="container">
         <div class="row  nextpage ">
 
@@ -328,7 +258,17 @@
             </ul>
         </div>
     </div>
-</section>
+</section> --}}
+
+<section class="container-fluid">
+    <div class="container">
+      <div class="row nextpage ">
+        <div class="d-flex justify-content-center align-content-center flex-wrap">
+          {{ $properties->links() }}
+        </div>
+      </div>
+    </div>
+  </section>
 @endsection
 
 <style>

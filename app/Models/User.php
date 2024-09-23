@@ -65,34 +65,43 @@ class User extends Authenticatable
         } else return false;
     }
 
-    public function registration()
+    // public function registration()
+    // {
+    //     return $this->hasMany(Registration::class);
+    // }
+
+    // public function applicants()
+    // {
+    //     return $this->hasMany(Applicant::class);
+    // }
+
+    // public function offenders()
+    // {
+    //     return $this->hasMany(Offender::class);
+    // }
+
+    // public function transactions()
+    // {
+    //     return $this->hasMany(Transaction::class);
+    // }
+
+    // /**
+    //     * Getting the district that the user belongs to.
+    // */
+    // public function district()
+    // {
+    //     return $this->belongsTo(District::class);
+    // }
+
+    public function favorites()
     {
-        return $this->hasMany(Registration::class);
+        return $this->hasMany(Favorites::class, 'email', 'email');
     }
 
-    public function applicants()
+    public function getFavoriteCountAttribute()
     {
-        return $this->hasMany(Applicant::class);
+    return $this->favorites()->count();
     }
-
-    public function offenders()
-    {
-        return $this->hasMany(Offender::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
-    /**
-        * Getting the district that the user belongs to.
-    */
-    public function district()
-    {
-        return $this->belongsTo(District::class);
-    }
-
     
     use SoftDeletes;
 }

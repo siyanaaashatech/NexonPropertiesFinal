@@ -11,13 +11,48 @@
                             $mainImages = !empty($properties->main_image) ? json_decode($properties->main_image, true) : [];
                             $mainImage = !empty($mainImages) ? asset($mainImages[0]) : asset('images/default-placeholder.png');
                         @endphp
-                        <img src="{{ $mainImage }}" alt="Property Image"
-                            class="imagecontroller imagecontrollerheight rounded">
+                        <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller imagecontrollerheight rounded">
+                    
                         <div class="review-addtofavourite d-flex gap-1 mx-1">
-                            <span class=" btn-buttonyellow favourite ">Add to favourite</span>
-                            <span class="btn-buttongreen " onclick="openReviewfun()">Review</span>
+                            <span class="btn-buttonyellow favourite" data-property-id="{{ $properties->id }}">Add to favourite</span>
+                            <span class="btn-buttongreen" onclick="openReviewfun()">Review</span>
                         </div>
                     </div>
+                        
+                    <script>
+                        document.querySelector('.favourite').addEventListener('click', function () {
+    var propertyId = this.getAttribute('data-property-id');
+
+    // Perform the AJAX request to store favorites
+    $.ajax({
+        url: '{{ route("favorites.store") }}', 
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            properties_id: propertyId
+        },
+        success: function (response) {
+            if (response.status === 'success') {
+                // Update the favorite count in the navbar
+                let counterElement = document.querySelector('.counter');
+                if (counterElement) {
+                    counterElement.textContent = response.count;
+                    localStorage.setItem('favoriteCount', response.count);
+                }
+                alert(response.message);
+            } else if (response.status === 'already_added') {
+                alert('Already added to favorites');
+            }
+        },
+        error: function (xhr) {
+            alert('An error occurred while processing your request');
+        }
+    });
+});
+
+                    </script>
+                        
+                    
                     <!-- Property Images -->
                     @php
                         $limitedImages = array_slice($otherImages, 0, 6);
@@ -93,21 +128,28 @@
 
 
                                 <div class="review mx-2">
-                                    <h1 class="admire rounded p-3 lg-text1 greenhighlight">we admire you review</h1>
+                                    <h1 class="admire rounded p-3 lg-text1 greenhighlight">We admire your review</h1>
                                     <div class="row gap-2">
-                                        <div class="show-review col-md-12 m-1 p-3">
-                                                <p class="p-0 m-0 md-text">name</p>
-                                                <p class="p-0 m-0"><i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
+                                        @forelse($acceptedReviews as $review)
+                                            <div class="show-review col-md-12 m-1 p-3">
+                                                <p class="p-0 m-0 md-text">{{ e($review->name) }}</p>
+                                                <p class="p-0 m-0">
+                                                    @for($i = 0; $i < $review->ratings; $i++)
+                                                        <i class="fa-solid fa-star"></i>
+                                                    @endfor
                                                 </p>
-                                            <p class="p-0 m-0 extra-text">description ssssss sss ewr wew23q eq32f ssssssc  hrllo i am fine i ksssss dss sss sssdd ssssssss eeeeeeeeeeeeev eeee</p>
-                                        </div>
+                                                <p class="p-0 m-0 extra-text">{{ e($review->reviews) }}</p>
+                                            </div>
+                                        @empty
+                                            <p class="col-md-12 m-1 p-3">No reviews yet for this property.</p>
+                                        @endforelse
                                     </div>
                                 </div>
                             </div>
-                            <!-- Sidebar Details -->
+
+                                 <!-- Sidebar Details-->
+                                
+                          
                             <div class="col-md-4">
                                 <div class="description-body">
                                     <h3 class="md-text greenhighlight">Nexon Detail Center</h3>
@@ -166,32 +208,33 @@
   
     <div class="container-fluid m-0 p-0">
         @if(Auth::check())
-            <div class="review-form">
+            <div class="review-form" style="display: none;">
                 <div class="d-flex row justify-content-center">
                     <div class="col-md-5 p-5 review-form-detail" id="getviewform">
                         <i class="fa-solid fa-circle-xmark" onclick="closeFormFun()"></i>
                         <h2 class="md-text1">Rating</h2>
-                        <h2 class="md-text1 rating">
+                        <div class="star-rating">
                             <i class="fa-solid fa-star" data-rating="1"></i>
                             <i class="fa-solid fa-star" data-rating="2"></i>
                             <i class="fa-solid fa-star" data-rating="3"></i>
                             <i class="fa-solid fa-star" data-rating="4"></i>
                             <i class="fa-solid fa-star" data-rating="5"></i>
-                        </h2>
+                        </div>
                         <form id="reviewForm" action="{{ route('review.store') }}" method="POST">
                             @csrf
                             <input type="text" name="name" class="input" value="{{ Auth::user()->name }}" required readonly>
                             <input type="email" name="email" class="input my-2" value="{{ Auth::user()->email }}" required readonly>
-                            <input type="reviews" name="reviews" class="input my-2" placeholder="Your Message" required></textarea>
+                            <textarea name="reviews" class="input my-2" placeholder="Your Message" required></textarea>
                             <input type="hidden" name="property_id" value="{{ $properties->id }}">
-                            <input type="hidden" name="ratings" id="ratings-input" value="5">
+                            <input type="hidden" name="ratings" id="ratings-input" value="0">
+                            <input type="hidden" name="status" value="pending">
                             <button type="submit" class="btn-buttonyellow mx-2">Submit</button>
                         </form>
                     </div>
                 </div>
             </div>
-        @else 
-            <div class="login-message overlay">
+        @else
+            <div class="login-message overlay" style="display: none;">
                 <div class="popup-content">
                     <i class="fa-solid fa-circle-xmark popup-close" onclick="closeLoginPopup()"></i>
                     <h2>Please Login First</h2>
@@ -202,74 +245,140 @@
     </div>
     
     <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('reviewForm');
-    const stars = document.querySelectorAll('.rating .fa-star');
-    const ratingsInput = document.getElementById('ratings-input');
+       
 
-    // Star rating functionality
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const rating = star.getAttribute('data-rating');
-            ratingsInput.value = rating;
-            stars.forEach(s => {
-                s.style.color = s.getAttribute('data-rating') <= rating ? 'gold' : 'gray';
+    // For Reviews and Ratings
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star-rating .fa-star');
+            const ratingInput = document.getElementById('ratings-input');
+            let currentRating = 0;
+    
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = this.getAttribute('data-rating');
+                    highlightStars(rating);
+                });
+    
+                star.addEventListener('mouseout', function() {
+                    highlightStars(currentRating);
+                });
+    
+                star.addEventListener('click', function() {
+                    currentRating = this.getAttribute('data-rating');
+                    ratingInput.value = currentRating;
+                    highlightStars(currentRating);
+                });
+            });
+    
+            function highlightStars(rating) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-rating') <= rating) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+            }
+    
+            // Prevent form submission if no rating is selected
+            document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
+                if (ratingInput.value === '0') {
+                    e.preventDefault();
+                    alert('Please select a rating before submitting.');
+                }
+            });
+        });
+    
+        function openReviewfun() {
+            @if(Auth::check())
+                const reviewForm = document.querySelector(".review-form");
+                reviewForm.style.display = reviewForm.style.display === "none" ? "block" : "none";
+            @else
+                const loginMessage = document.querySelector(".login-message");
+                loginMessage.style.display = "block";
+            @endif
+        }
+    
+        function closeFormFun() {
+            document.querySelector(".review-form").style.display = "none";
+        }
+    
+        function closeLoginPopup() {
+            document.querySelector(".login-message").style.display = "none";
+        }
+    </script>
+    
+    <style>
+        .star-rating .fa-star {
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating .fa-star.active {
+            color: #ffd700;
+        }
+        .login-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            position: relative;
+        }
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+    
+    // For Add to Favorites.
+
+
+    $(document).ready(function() {
+        $('.favourite').on('click', function() {
+            let propertyId = $(this).data('property-id');
+            
+            $.ajax({
+                url: '{{ route("favorites.store") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    properties_id: propertyId,
+                },
+                success: function(response) {
+                    if(response.message) {
+                        alert(response.message); // Success message
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = 'An error occurred while adding to favorites.';
+                    
+                    // Check if specific error message is returned
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    
+                    alert(errorMessage); // Error message
+                }
             });
         });
     });
+</script> --}}
 
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate form fields
-            const reviewsTextarea = form.querySelector('textarea[name="reviews"]');
-            if (!reviewsTextarea.value.trim()) {
-                alert('Please write a message before submitting.');
-                return;
-            }
-            
-            fetch(this.action, {
-                method: this.method,
-                body: new FormData(this),
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    closeFormFun();
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        });
-    }
-});
-
-function openReviewfun() {
-    const reviewForm = document.querySelector(".review-form");
-    const loginMessage = document.querySelector(".login-message");
-
-    @if(Auth::check())
-        reviewForm.style.display = reviewForm.style.display === "none" ? "block" : "none";
-    @else
-        loginMessage.style.display = "block";
-    @endif
-}
-
-function closeFormFun() {
-    document.querySelector(".review-form").style.display = "none";
-}
-
-function closeLoginPopup() {
-    document.querySelector(".login-message").style.display = "none";
-}
-    </script>
-    @endsection
+ @endsection

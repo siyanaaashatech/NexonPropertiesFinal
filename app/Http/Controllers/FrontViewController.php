@@ -10,6 +10,9 @@ use App\Models\Whyus;
 use App\Models\AboutUs;
 use App\Models\Subcategory;
 use App\Models\Amenity;
+use App\Models\Favorites;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 class FrontViewController extends Controller
@@ -39,6 +42,7 @@ class FrontViewController extends Controller
         $subcategories = Subcategory::all();
         $suburbs = Property::distinct('suburb')->pluck('suburb');
         $amenities = Amenity::all();
+        
 
         return view('frontend.welcome', compact([
             'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs','amenities'
@@ -59,7 +63,7 @@ class FrontViewController extends Controller
         $states = Property::distinct('state')->pluck('state');
         $amenities = Amenity::all();
 
-        return view('frontend.properties', compact('properties', 'categories', 'states','amenties'));
+        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
     
     // public function singlePost($slug)
@@ -68,4 +72,14 @@ class FrontViewController extends Controller
     //     $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
     //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
     // }
+
+    public function userFavorites()
+    {
+        // Fetch only the authenticated user's favorites with related property details
+        $favorites = Favorites::with('property')
+                              ->where('email', Auth::user()->email)
+                              ->get();
+
+        return view('frontend.favorites.index', compact('favorites'));
+    }
 }

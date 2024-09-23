@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Property;
 use App\Models\SubCategory;
+use App\Models\Favorites;
 use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Testimonial;
 use App\Models\Team;
 use App\Models\FAQ;
 use App\Models\AboutDescription;
+use App\Models\ReviewAndRating;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SingleController extends Controller
 {
@@ -27,7 +30,7 @@ class SingleController extends Controller
 
     public function render_blog()
     {
-        $blogs = Blog::where('status', 1)->latest()->get();
+        $blogs = Blog::where('status', 1)->latest()->paginate(10);
         $properties = Property::where('status', 1)->latest()->get();
         $categories = Category::all();
         
@@ -47,7 +50,7 @@ class SingleController extends Controller
     {
         $categories = Category::all();
         $subcategories = SubCategory::all();
-        $properties = Property::where('status', 1)->latest()->paginate(6);
+        $properties = Property::where('status', 1)->latest()->paginate(1);
         $states = Property::distinct('state')->pluck('state');
         return view('frontend.properties', compact('categories', 'subcategories',  'properties', 'states'));
 
@@ -60,10 +63,13 @@ class SingleController extends Controller
         $subcategories = SubCategory::all(); 
         $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
         $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
+        $acceptedReviews = ReviewAndRating::where('status', 'accepted')
+        ->where('properties_id', $id)
+        ->get();
         
         // Handle the 'other_images' field if it exists
         $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-        return view('frontend.singleproperties', compact('categories', 'properties', 'relatedProperties', 'otherImages'));
+        return view('frontend.singleproperties', compact('categories', 'properties', 'relatedProperties', 'otherImages','acceptedReviews'));
 
     }
 
@@ -102,6 +108,16 @@ class SingleController extends Controller
         $subcategories = SubCategory::all();
     
         return view('frontend.properties', compact('properties', 'categories', 'states', 'subcategories'));
+    }
+
+    public function render_favourite()
+    {
+    
+    $userEmail = Auth::user()->email;
+    $favoritePropertyIds = Favorites::where('email', $userEmail)->pluck('properties_id');
+    $properties = Property::whereIn('id', $favoritePropertyIds)->latest()->get();
+    $categories = Category::latest()->get();
+    return view('frontend.favourite', compact('properties', 'categories'));
     }
 
 }

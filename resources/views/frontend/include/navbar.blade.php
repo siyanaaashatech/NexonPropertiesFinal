@@ -27,10 +27,52 @@
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
       </div>
-<div class="d-flex fav">
-  <p class="sm-text1 counter">1</p>
-  <i class="fa-solid fa-heart "></i>
-      </div>
+      
+      <a href="{{ route('favourite') }}" class="d-flex fav mainitems-fav">
+          <p class="sm-text1 counter">{{ auth()->user()->favorites()->count() }}</p>
+          <i class="fa-solid fa-heart"></i>
+      </a>
+      
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Remove localStorage usage
+          let counterElement = document.querySelector('.counter');
+          
+          // Event listener for Add to Favorite button
+          document.querySelector('.favourite').addEventListener('click', function () {
+              var propertyId = this.getAttribute('data-property-id');
+      
+              // AJAX request to add property to favorites
+              $.ajax({
+                  url: '{{ route("favorites.store") }}',
+                  type: 'POST',
+                  data: {
+                      _token: '{{ csrf_token() }}',
+                      properties_id: propertyId
+                  },
+                  success: function (response) {
+                      if (response.status === 'success') {
+                          if (response.count !== undefined) {
+                              // Update the favorite count in the navbar
+                              if (counterElement) {
+                                  counterElement.textContent = response.count;
+                              }
+                          }
+                          alert(response.message);
+                      } else if (response.status === 'already_added') {
+                          alert('Already added to favorites');
+                      } else {
+                          alert('An unexpected error occurred');
+                      }
+                  },
+                  error: function (xhr) {
+                      alert('An error occurred while processing your request');
+                  }
+              });
+          });
+      });
+      </script>
+    
     </div>
     </form>
   @endguest
