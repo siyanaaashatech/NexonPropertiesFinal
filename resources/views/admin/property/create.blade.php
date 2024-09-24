@@ -244,14 +244,11 @@
                                 >
                         </div>
 
-
                         <div class="form-group mb-3">
-                            <label for="update_time">Update Time</label>
-                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ \Carbon\Carbon::parse(old('update_time', now()))->format('Y-F-d') }}" readonly>
+                            <label for="update_time">Inspection Time</label>
+                            <input type="text" name="update_time" id="update_time" class="form-control" value="{{ old('update_time')}}">
                         </div>
                        
-
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Property</button>
                             <a href="{{ route('property.index') }}" class="btn btn-secondary">Cancel</a>

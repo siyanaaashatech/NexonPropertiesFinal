@@ -149,35 +149,45 @@
 
                                  <!-- Sidebar Details-->
                                 
-                          
-                            <div class="col-md-4">
-                                <div class="description-body">
-                                    <h3 class="md-text greenhighlight">Nexon Detail Center</h3>
-                                    <form action="{{ route('contact.store') }}" method="POST">
-                                        @csrf
-                                        <div class="d-flex flex-column gap-2">
-                                            @auth
-                                                <!-- If the user is logged in, display a message box without input fields -->
-                                                <p class="text-muted">Any queries, {{ Auth::user()->name }}?
-                                                    ({{ Auth::user()->email }})</p>
-                                                <textarea name="message" class="textarea" placeholder="Your Message"
-                                                    required></textarea>
-                                                <button type="submit"
-                                                    class="btn-buttongreen btn-buttonygreenlarge mx-2">Send Message</button>
-                                            @else
-                                                <!-- If the user is a guest, show the form fields -->
-                                                <input type="text" name="person_name" class="input"
-                                                    placeholder="Person Name" required>
-                                                <input type="email" name="email" class="input my-2" placeholder="Email"
-                                                    required>
-                                                <textarea name="message" class="textarea" placeholder="Your Message"
-                                                    required></textarea>
-                                                <button type="submit"
-                                                    class="btn-buttongreen btn-buttonygreenlarge mx-2">Submit</button>
-                                            @endauth
-                                        </div>
-                                    </form>
-                                </div>
+                                 <div class="col-md-4">
+                                    <div class="description-body">
+                                        <h3 class="md-text greenhighlight">Nexon Detail Center</h3>
+                                        <form action="{{ route('contact.store') }}" method="POST">
+                                            @csrf
+                                            <div class="d-flex flex-column gap-2">
+                                                @auth
+                                                    <p class="text-muted">Any queries, {{ Auth::user()->name }}? ({{ Auth::user()->email }})</p>
+                                                    <textarea name="message" class="textarea" placeholder="Your Message" required></textarea>
+                                                    
+                                                    <!-- Conditional "Book an Inspection" shown only for logged-in users and if update_time is set -->
+                                                    @if($properties->update_time)
+                                                        <div class="d-flex align-items-center my-3">
+                                                            <input class="form-check-input me-2" type="checkbox" name="inspection" id="update_time">
+                                                            <label class="form-check-label fw-bold" for="update_time" style="color: #28a745; font-weight: bold;">
+                                                                Book an inspection (Available: {{ $properties->update_time }})
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    <input type="hidden" name="properties_id" value="{{ $properties->id }}"> 
+                                                    
+                                                    <button type="submit" class="btn-buttongreen btn-buttonygreenlarge mx-2">Send Message</button>
+                                                @else
+                                                    <!-- Fields for non-authenticated users -->
+                                                    <input type="text" name="name" class="input" placeholder="Person Name" required>
+                                                    <input type="email" name="email" class="input my-2" placeholder="Email" required>
+                                                    <textarea name="message" class="textarea" placeholder="Your Message" required></textarea>
+                                                    
+                                                    <input type="hidden" name="properties_id" value="{{ $properties->id }}"> 
+                                                    
+                                                    <button type="submit" class="btn-buttongreen btn-buttonygreenlarge mx-2">Submit</button>
+                                                @endauth
+                                            </div>
+                                        </form>
+                                  
+                    </div>
+                                
+
                                 <div class="paddingbox nobackground description-body">
                                     <h2 class="md-text">Feature List</h2>
                                     <div class="featurelist-body">

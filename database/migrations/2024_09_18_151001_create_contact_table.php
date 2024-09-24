@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
+            $table->boolean('inspection');
             $table->longText('message');
+            $table->foreignId('properties_id')->constrained('properties')->onDelete('cascade');
             $table->timestamps();
         });
     }

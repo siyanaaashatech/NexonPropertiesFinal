@@ -30,25 +30,39 @@ class FrontViewController extends Controller
     }
 
     public function index()
-    {
-        $services = Service::where('status', 1)->latest()->take(4)->get();
-        $blogs = Blog::where('status', 1)->latest()->get();
-        $testimonials = Testimonial::where('status', 1)->latest()->get();
-        $whyuss = Whyus::where('status', 1)->latest()->get();
-        $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
-        $properties = Property::where('status', 1)->latest()->take(6)->get();
-        $propertie = Property::where('status', 1)->latest()->take(6)->get();
-        $subPropertyCount = Property::distinct('suburb')->count();
-        $categories = Category::all();
-        $states = Property::distinct('state')->pluck('state');
-        $subcategories = Subcategory::all();
-        $amenities = Amenity::all();
-        
+{
+    $services = Service::where('status', 1)->latest()->take(4)->get();
+    $blogs = Blog::where('status', 1)->latest()->get();
+    $testimonials = Testimonial::where('status', 1)->latest()->get();
+    $whyuss = Whyus::where('status', 1)->latest()->get();
+    $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
+    $properties = Property::where('status', 1)->latest()->take(6)->get();
+    $propertie = Property::where('status', 1)->latest()->take(6)->get();
 
-        return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'amenities','propertie','subPropertyCount'
-        ]));
-    }
+    // Fetch suburb counts
+    $suburbs = Property::select('suburb')
+        ->groupBy('suburb')
+        ->orderByRaw('COUNT(*) DESC')
+        ->take(4)
+        ->get()
+        ->map(function ($suburb) {
+            return [
+                'suburb' => $suburb->suburb,
+                'count' => Property::where('suburb', $suburb->suburb)->count(),
+            ];
+        });
+
+    $categories = Category::all();
+    $states = Property::distinct('state')->pluck('state');
+    $subcategories = Subcategory::all();
+    $amenities = Amenity::all();
+
+    return view('frontend.welcome', compact([
+        'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties',
+        'categories', 'subcategories', 'states', 'amenities', 'propertie', 'suburbs'
+    ]));
+}
+
     public function properties(Request $request, $categoryId = null)
     {
         $categoryId = $request->query('categoryId');

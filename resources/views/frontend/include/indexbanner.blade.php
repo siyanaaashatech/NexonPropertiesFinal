@@ -66,20 +66,6 @@
                     $('#suburb').append('<option value="" disabled selected>Select Region</option>');
                   }
                 });
-
-                function validateForm() {
-  var category = document.getElementById('category_id').value;
-  var subcategory = document.getElementById('subcategory_id').value;
-  var state = document.getElementById('state').value;
-  var suburb = document.getElementById('suburb').value;
-  var location = document.getElementById('location').value.trim();
-
-  if (category === "" && subcategory === "" && state === "" && suburb === "" && location === "") {
-    alert("Please select at least one search criteria before searching.");
-    return false;
-  }
-  return true;
-}
               });
               </script>
              
@@ -108,9 +94,9 @@
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image  property-imageheightbanner">
               <div class="property-details property-detailsbanner px-1">
               <div class="md-text1">
-                {{ strlen($property->title) >28 ? substr($property->title, 0, 28) . "..." : $property->title}}
+                {{ strlen($property->title) >28 ? substr($property->title, 0, 28)  : $property->title}}
               </div>
-              <div class="sm-text highlight text-center p-0 m-0">eedddde</div>
+              <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->state }}-{{ $property->suburb }}-{{ $property->street }}</div>
               <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
                 <span class="sm-text1">13</span><br />
@@ -122,7 +108,7 @@
                 </p>
                 <p class="detail-item sm-text1">
                 <span class="sm-text1">13</span><br />
-                <i class="fa-solid fa-bed detail-icon"></i>
+                <i class="fa-solid fa-chart-area  detail-icon"></i>
                 </p>
               </div>
               <p class="extra-small-text1 px-2">
@@ -150,6 +136,8 @@
 <form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
   <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
     <div class="d-flex flex-wrap gap-md-3 showform">
+    <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+    value="{{ request('location') }}">
       <select class="input bannerinput" name="category_id" id="category_id">
         <option value="" disabled selected>Select Category</option>
         @foreach($categories as $category)
@@ -168,19 +156,19 @@
       <select class="input bannerinput" name="suburb" id="suburb">
         <option value="" disabled selected>Select Region</option>
       </select>
-      <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
-      value="{{ request('location') }}">
+     
       <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced ::</span>
       <button type="submit" class="btn-buttongreen">Search</button>
     </div>
   </div>
 </form>
 
-<section class="container rounded amenities">
+<section class="container rounded amenities py-2">
   <div class="row p-3" id="advanceitems">
+    <h2 class="md-text greenhighlight mx-2">amenities</h2>
     <!-- Amenity Checkboxes -->
     @foreach($amenities as $amenity)
-      <div class="d-flex col-md-2 pt-3">
+      <div class="d-flex col-md-2 pt-1">
         <input type="checkbox" name="amenities[]" id="amenity-{{ $amenity->id }}" value="{{ $amenity->id }}"
                {{ in_array($amenity->id, request('amenities', [])) ? 'checked' : '' }} class="amenity-checkbox">
         <label for="amenity-{{ $amenity->id }}" class="nameofthing">{{ $amenity->title }}</label>
@@ -189,56 +177,42 @@
   </div>
 
   <!-- Bedrooms, Bathrooms, Area, and Price Section -->
-  <div class="row py-4">
+  <div class="row mx-2 d-flex justify-content-between gap-1">
     <div class="col-md-3">
-      <label for="bedrooms" class="sm-text">Bedrooms</label>
-      <select name="bedrooms" id="bedrooms" class="input bannerinput">
-        <option value="" selected>Beds Any</option>
-        @for ($i = 1; $i <= 10; $i++)
-          <option value="{{ $i }}" {{ request('bedrooms') == $i ? 'selected' : '' }}>{{ $i }}</option>
-        @endfor
-      </select>
+        <label for="bedrooms" class="sm-text">Bedrooms</label>
+        <select name="bedrooms" id="bedrooms" class="input bannerinput">
+            <option value="" selected>Beds Any</option>
+            @for ($i = 1; $i <= 10; $i++)
+                <option value="{{ $i }}" {{ request('bedrooms') == $i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor
+        </select>
     </div>
+    <div class="col-md-3">
+        <label for="bathrooms" class="sm-text">Bathrooms</label>
+        <select name="bathrooms" id="bathrooms" class="input bannerinput">
+            <option value="" selected>Baths Any</option>
+            @for ($i = 1; $i <= 10; $i++)
+                <option value="{{ $i }}" {{ request('bathrooms') == $i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="area-range" class="md-text">Area (sq. ft.)</label>
+        <div id="area-slider" class="mt-2"></div>
+        <span id="area-range-display" class="sm-text d-block mt-2"></span>
+        <input type="hidden" name="min_area" id="min_area">
+        <input type="hidden" name="max_area" id="max_area">
+    </div>
+    <div class="col-md-3">
+        <label for="price-range" class="md-text">Price</label>
+        <div id="price-slider" class="mt-2 price-slider"></div>
+        <span id="price-range-display" class="sm-text d-block mt-2"></span>
+        <input type="hidden" name="min_price" id="min_price">
+        <input type="hidden" name="max_price" id="max_price">
+    </div>
+</div>
 
-    <div class="col-md-3">
-      <label for="bathrooms" class="sm-text">Bathrooms</label>
-      <select name="bathrooms" id="bathrooms" class="input bannerinput">
-        <option value="" selected>Baths Any</option>
-        @for ($i = 1; $i <= 10; $i++)
-          <option value="{{ $i }}" {{ request('bathrooms') == $i ? 'selected' : '' }}>{{ $i }}</option>
-        @endfor
-      </select>
-    </div>
-
-    <div class="col-md-3">
-      <label for="area-range" class="sm-text">Area (sq. ft.)</label>
-      <div id="area-slider" class="mt-2"></div>
-      <span id="area-range-display" class="sm-text d-block mt-2"></span>
-      <input type="hidden" name="min_area" id="min_area">
-      <input type="hidden" name="max_area" id="max_area">
-    </div>
-
-    <div class="col-md-3">
-      <label for="price-range" class="sm-text">Price</label>
-      <div id="price-slider" class="mt-2"></div>
-      <span id="price-range-display" class="sm-text d-block mt-2"></span>
-      <input type="hidden" name="min_price" id="min_price">
-      <input type="hidden" name="max_price" id="max_price">
-    </div>
-  </div>
 </section>
-<style>
-  .ui-slider-horizontal {
-    height: 8px;
-  }
-  .ui-slider .ui-slider-handle {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    top: -5px;
-    cursor: pointer;
-  }
-</style>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
@@ -353,45 +327,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-
-{{--
-
-<section class="container-fluid py-4 propertiesfinder propertiesfinderhome">
-  <div class="container">
-    <h1 class="lg-text1 text-center searchhide" onclick="funsearchingon()">
-      <i class="fa-brands fa-searchengin customicons"></i> Find your properties
-    </h1>
-    <form action="{{ route('frontend.searching') }}" method="GET">
-      <div class="justify-content-center align-items-center gap-1 flex-wrap hiddenform hiddenformhome" id="hiddenform">
-        <div class="d-flex flex-column col-md-3">
-          <label class="sm-text1 des-text">Listing type</label>
-          <input type="text" class="input bannerinput" name="list_type" value="{{ request('list_type') }}">
-        </div>
-        <div class="d-flex flex-column col-md-3">
-          <label class="sm-text1 des-text">Properties type</label>
-          <input type="text" class="input bannerinput" name="property_type" value="{{ request('property_type') }}">
-        </div>
-        <div class="d-flex flex-column col-md-3">
-          <label class="sm-text1 des-text">Location</label>
-          <input type="text" class="input bannerinput" name="location" value="{{ request('location') }}">
-        </div>
-        <div class="d-flex flex-column col-md-3">
-          <label class="md-text1 des-text">Price</label>
-          <input type="number" class="input bannerinput" name="min_price" placeholder="Min Price"
-            value="{{ request('min_price') }}">
-          <input type="number" class="input bannerinput" name="max_price" placeholder="Max Price"
-            value="{{ request('max_price') }}">
-        </div>
-        <div class="d-flex flex-column col-md-3">
-          <label class="sm-text1 des-text">Search</label>
-          <button class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
-        </div>
-
-      </div>
-    </form>
-  </div>
-</section>
---}}
 
 
 <script>

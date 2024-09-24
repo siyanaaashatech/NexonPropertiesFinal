@@ -15,5 +15,12 @@ class Contact extends Model
         'name',
         'email',
         'message',
+        'inspection',
+        'properties_id'
     ];
+
+    public function property()
+{
+    return $this->belongsTo(Property::class, 'properties_id');
+}
 }

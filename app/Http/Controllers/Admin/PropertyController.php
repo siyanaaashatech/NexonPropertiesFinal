@@ -86,7 +86,7 @@ class PropertyController extends Controller
     
         // Handle update_time as a Carbon instance
         $updateTime = $request->input('update_time');
-        $parsedUpdateTime = \Carbon\Carbon::createFromFormat('Y-F-d', $updateTime)->format('Y-m-d'); // Convert to 'Y-m-d' for storage
+        // $parsedUpdateTime = \Carbon\Carbon::createFromFormat('Y-F-d', $updateTime)->format('Y-m-d'); // Convert to 'Y-m-d' for storage
     
         // Create new property record and associate with metadata
         Property::create([
@@ -111,7 +111,7 @@ class PropertyController extends Controller
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
             'metadata_id' => $metadata->id,
-            'update_time' => $parsedUpdateTime, // Store in the correct format
+            'update_time' => $request->update_time, // Store in the correct format
         ]);
     
         session()->flash('success', 'Property created successfully.');
@@ -219,7 +219,7 @@ class PropertyController extends Controller
             'other_images' => json_encode($otherImages),
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
-            'update_time' => Carbon::now(),
+            'update_time' => $request->update_time,
         ]);
 
         session()->flash('success', 'Property updated successfully.');

@@ -9,14 +9,12 @@
                     <h4>Messages</h4>
                 </div>
                 <div class="card-body">
-                    <!-- Display success message -->
                     @if(session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
                     @endif
 
-                    <!-- Check if there are any contact entries -->
                     @if($contacts->count() > 0)
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -25,6 +23,8 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Message</th>
+                                    <th>Inspection</th>
+                                    {{-- <th>Property</th> --}}
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -36,12 +36,24 @@
                                         <td>{{ $contact->email }}</td>
                                         <td>{{ Str::limit($contact->message, 50) }}</td>
                                         <td>
-                                            <!-- View full message modal -->
+                                            @if($contact->inspection)
+                                                <span class="badge bg-success">Requested</span>
+                                            @else
+                                                <span class="badge bg-secondary">Not Requested</span>
+                                            @endif
+                                        </td>
+                                        {{-- <td>
+                                            @if($contact->inspection && $contact->property)
+                                                {{ $contact->property->name ?? 'Property #' . $contact->property->id }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td> --}}
+                                        <td>
                                             <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewMessageModal{{ $contact->id }}">
                                                 View
                                             </button>
 
-                                            <!-- Message Modal -->
                                             <div class="modal fade" id="viewMessageModal{{ $contact->id }}" tabindex="-1" aria-labelledby="viewMessageModalLabel{{ $contact->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -52,6 +64,17 @@
                                                         <div class="modal-body">
                                                             <p><strong>Email:</strong> {{ $contact->email }}</p>
                                                             <p><strong>Message:</strong> {{ $contact->message }}</p>
+                                                            <p><strong>Inspection:</strong> 
+                                                                @if($contact->inspection)
+                                                                    <span class="text-success">Requested</span>
+                                                                @else
+                                                                    <span class="text-secondary">Not Requested</span>
+                                                                @endif
+                                                            </p>
+                                                            @if($contact->inspection && $contact->property)
+                                                                <p><strong>Property:</strong> {{ $contact->property->title ?? 'Property #' . $contact->property->id }}</p>
+                                                                <p><strong>Address:</strong> {{ $contact->property->suburb ?? 'N/A' }}</p>
+                                                            @endif
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -59,7 +82,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @endforeach

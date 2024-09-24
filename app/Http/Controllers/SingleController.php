@@ -51,7 +51,7 @@ class SingleController extends Controller
         $properties = Property::latest()->get();
         $categories = Category::latest()->get();
         $subcategories = SubCategory::all();
-        $properties = Property::where('status', 1)->latest()->paginate(1);
+        $properties = Property::where('status', 1)->latest()->get();
         $states = Property::distinct('state')->pluck('state');
         return view('frontend.properties', compact('categories', 'subcategories',  'properties', 'states'));
 
