@@ -68,6 +68,7 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'required|array',
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'update_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
     
         // Handle the main image upload (base64 images)
@@ -75,6 +76,8 @@ class PropertyController extends Controller
     
         // Handle other images upload
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
+
+        $updateTime = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('update_time'));
     
         // Create a metadata entry
         $metadata = Metadata::create([
@@ -111,7 +114,7 @@ class PropertyController extends Controller
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
             'metadata_id' => $metadata->id,
-            'update_time' => $request->update_time, // Store in the correct format
+            'update_time' => $updateTime, // Store in the correct format
         ]);
     
         session()->flash('success', 'Property created successfully.');
@@ -171,7 +174,7 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'nullable|array',
             'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'update_time' => Carbon::now(),
+            'update_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         // Handle main image update if provided
@@ -189,6 +192,9 @@ class PropertyController extends Controller
         } else {
             $otherImages = json_decode($property->other_images, true);
         }
+
+        // Handle update_time as a Carbon instance
+        $updateTime = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('update_time'));
 
         // Update metadata record
         $property->metadata()->updateOrCreate([], [
@@ -219,7 +225,7 @@ class PropertyController extends Controller
             'other_images' => json_encode($otherImages),
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
-            'update_time' => $request->update_time,
+            'update_time' => $updateTime,
         ]);
 
         session()->flash('success', 'Property updated successfully.');
