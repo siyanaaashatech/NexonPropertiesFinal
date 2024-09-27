@@ -249,7 +249,7 @@ class PropertyController extends Controller
                 // Generate unique image name
                 $imageName = time() . '-' . Str::uuid() . '.webp';
                 // Correct destination path
-                $destinationPath = storage_path("app/public/$folder");
+                $destinationPath = public_path("storage/$folder");
 
                 // Create the directory if it does not exist
                 if (!File::exists($destinationPath)) {
@@ -283,7 +283,7 @@ class PropertyController extends Controller
                 // Generate a unique name for each image
                 $imageName = time() . '-' . Str::uuid() . '.webp';
                 // Correct destination path for storage
-                $destinationPath = storage_path("app/public/$folder");
+                $destinationPath = public_path("storage/$folder");
 
                 // Create the directory if it does not exist
                 if (!File::exists($destinationPath)) {
