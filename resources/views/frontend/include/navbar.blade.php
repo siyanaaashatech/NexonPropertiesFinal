@@ -125,8 +125,7 @@
 
 </section>
 <script>
-
-
+// Menu Toggle Function
 function funmenu() {
     const menuIcon = document.querySelector('.crossmenu');
     const menu = document.getElementById('bur-menu');
@@ -142,19 +141,13 @@ function funmenu() {
     }
 }
 
-
-
-
-
-
-
-  function funsearchingon() {
+// Search Form Toggle Function
+function funsearchingon() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
     hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
-  }
-  let lastScrollY = window.scrollY;
-const navSection = document.querySelector('.navsection');
+}
 
+// Scroll Behavior
 let lastScrollY = window.scrollY;
 const navSection = document.querySelector('.navsection');
 
@@ -185,6 +178,24 @@ checkScreenSize();
 // Check again on resize
 window.addEventListener('resize', checkScreenSize);
 
+  function funmenu() {
+    const menuIcon = document.querySelector('.crossmenu');
+    const menu = document.getElementById('bur-menu');
 
+    // Toggle the 'cross' class on the menu icon
+    menuIcon.classList.toggle('cross');
+
+    // Toggle the display of the menu
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+  function funsearchingon() {
+    const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
+    hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
+  }
+ 
 
 </script>

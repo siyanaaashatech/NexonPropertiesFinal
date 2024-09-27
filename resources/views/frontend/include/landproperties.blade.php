@@ -28,7 +28,7 @@
                     <img src="{{ $mainImage }}" alt="" class="cityimage rounded m-0 p-0">
                     <div class="city-description d-flex flex-column justify-content-end align-items-center">
                         <p class="md-text1 m-0">place</p>
-                        <p class="sm-text1">9</p>
+                        {{-- <p class="sm-text1">{{$subPropertyCount}}</p> --}}
                     </div>
                 </div>
                 @endforeach

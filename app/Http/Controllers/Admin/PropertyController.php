@@ -70,15 +70,13 @@ class PropertyController extends Controller
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
             'update_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
-   
+
         // Handle the main image upload (base64 images)
         $images = $this->handleBase64Images($request->input('main_image'), 'property');
-   
+
         // Handle other images upload
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
 
-        $updateTime = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('update_time'));
-   
         // Create a metadata entry
         $metadata = Metadata::create([
             'meta_title' => $request->title,
@@ -86,11 +84,7 @@ class PropertyController extends Controller
             'meta_keywords' => $request->suburb,
             'slug' => Str::slug($request->title),
         ]);
-   
-        // Handle update_time as a Carbon instance
-        $updateTime = $request->input('update_time');
-        // $parsedUpdateTime = \Carbon\Carbon::createFromFormat('Y-F-d', $updateTime)->format('Y-m-d'); // Convert to 'Y-m-d' for storage
-   
+
         // Create new property record and associate with metadata
         Property::create([
             'title' => $request->title,
@@ -114,14 +108,12 @@ class PropertyController extends Controller
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
             'metadata_id' => $metadata->id,
-            'update_time' => $updateTime, // Store in the correct format
+            'update_time' => $request->input('update_time'),
         ]);
-   
+
         session()->flash('success', 'Property created successfully.');
-   
         return redirect()->route('property.index');
     }
-   
 
     /**
      * Display the specified property.
@@ -193,9 +185,6 @@ class PropertyController extends Controller
             $otherImages = json_decode($property->other_images, true);
         }
 
-        // Handle update_time as a Carbon instance
-        $updateTime = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('update_time'));
-
         // Update metadata record
         $property->metadata()->updateOrCreate([], [
             'meta_title' => $request->title,
@@ -225,11 +214,10 @@ class PropertyController extends Controller
             'other_images' => json_encode($otherImages),
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
-            'update_time' => $updateTime,
+            'update_time' => $request->input('update_time'),
         ]);
 
         session()->flash('success', 'Property updated successfully.');
-
         return redirect()->route('property.index');
     }
 
@@ -361,39 +349,41 @@ class PropertyController extends Controller
     /**
      * Update images for the specified property.
      */
-    public function updateImages(Request $request,  $id)
+    public function updateImages(Request $request, $id)
     {
         $request->validate([
-            'main_image.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'main_image_base64' => 'nullable|string',
             'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $property = Property::findOrFail($id);
 
+        // Handle main image update if provided
         if ($request->has('main_image_base64')) {
             $mainImageData = $request->input('main_image_base64');
-   
+
             // Remove the data:image part and decode the image
             $mainImage = str_replace('data:image/jpeg;base64,', '', $mainImageData);
             $mainImage = base64_decode($mainImage);
-   
+            
             // Save the image to the desired location
-            $mainImagePath = '' . time() . '.webp';
-            file_put_contents(public_path($mainImagePath), $mainImage);
-        }    
+            $mainImagePath = 'property/' . time() . '.webp';
+            file_put_contents(storage_path('app/public/' . $mainImagePath), $mainImage);
+            $property->main_image = json_encode([$mainImagePath]);
+        }
 
         // Handle other images update
         if ($request->hasFile('other_images')) {
             // Delete existing other images
             $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
-
             // Handle new other images
             $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
-            $property->update(['other_images' => json_encode($otherImages)]);
+            $property->other_images = json_encode($otherImages);
         }
 
-        session()->flash('success', 'Images updated successfully.');
+        $property->save();
 
+        session()->flash('success', 'Images updated successfully.');
         return redirect()->back();
     }
 }
