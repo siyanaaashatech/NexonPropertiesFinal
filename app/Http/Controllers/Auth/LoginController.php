@@ -69,7 +69,7 @@ class LoginController extends Controller
             'ip_address' => UtilityFunctions::getuserIP()
         ]);
         Auth::logout();
-        return redirect('/login');
+        return redirect('/');
     }
 
     public function __construct()

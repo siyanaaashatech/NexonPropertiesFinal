@@ -1,8 +1,5 @@
 @extends('frontend.layouts.master')
 @section("content")
-
-
-
 <section class="singlepage pt-4">
     <div class="container">
         <div class="row">
@@ -79,10 +76,10 @@
                                                     @endphp
                                                     <img src="{{ $mainImage }}" alt="Property Image" class="feature-smallimg"
                                                         data-src="holder.js/200x250?theme=thumb" />
-
                                                     <div class="featurlist-description mx-3">
                                                         <h3 class="sm-text">{{$property->title}}</h3>
                                                         <p class="sm-text highlight"> {{$property->price}}</p>
+                                                        
                                                     </div>
                                                 </a>
                         @endforeach
@@ -92,22 +89,15 @@
         </div>
     </div>
 </section>
-
-
 @endsection
 <!-- each team des -->
 <!-- banner section -->
-
-
 <script>
-
     function changepage(element) {
         const pageli = document.getElementsByClassName("nextli");
         for (let i = 0; i < pageli.length; i++) {
             pageli[i].classList.remove("activeli");
-
         }
-
         element.classList.add("activeli")
     }
 

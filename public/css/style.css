@@ -385,7 +385,7 @@ a {
 }
 
 .customiconslarge {
-    font-size: 50px;
+    font-size: 54px;
     color: #f5f5f5;
     margin-right: 1rem;
 }
@@ -438,8 +438,9 @@ a {
 .navsection {
     background: var(--green) !important;
     position: sticky;
-    top: 0;
+    top:0;
     z-index: 1000;
+    padding-top:0.8rem ;
 }
 
 
@@ -479,6 +480,29 @@ a {
         width: 100%;
         margin: 0.1rem;
     }
+    .navsection {
+        background: var(--green) !important;
+        position: sticky;
+        top:2rem; /* Ensure it's fully at the top */
+        z-index: 1000;
+        padding-top:0.8rem ;
+        width: 100%; /* Ensure it spans the full width */
+    }
+    
+    /* Optional: To provide a shadow or border to differentiate it from content */
+    .navsection.sticky {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for visibility */
+    }
+    
+    
+}
+@media (max-width:400px) {
+    .logoimg {
+        width: 130px;
+        height: 60px;
+        object-fit: contain;
+    }
+
 }
 
 .reg-logbutton {
@@ -577,6 +601,13 @@ a {
   }
 
   }
+
+
+
+
+
+
+
 
 
 
@@ -692,7 +723,7 @@ a {
 @media (max-width: 600px) {
     .bannercontentinner {
         padding: 0 18px 0 1px;
-        top: 6rem;
+        top: 4rem;
         left: 4%;
     }
 
@@ -1147,6 +1178,7 @@ a {
 .image img {
     width: 100%;
     height: 50vh;
+    object-fit:cover;
     border-radius: var(--border-radius);
 }
 
@@ -1310,7 +1342,7 @@ a {
 @media (max-width: 990px) {
     .bur-menu {
         width: 50vw;
-        top: 6rem !important
+        top: 7rem !important
     }
 
     .activites {
@@ -1381,7 +1413,7 @@ a {
 
 .propertiesfinder {
     position: relative;
-    bottom: 3rem;
+    bottom:4rem;
     background: var(--green);
     cursor: pointer;
 }
@@ -1714,7 +1746,7 @@ a {
     background: rgb(244, 243, 243);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
-    top:42rem;
+    top:41rem;
     left:5%;
     width:58vw;
     z-index: 10;
@@ -1728,7 +1760,6 @@ a {
 
 @media (max-width:500px) {
     .amenities {
-        top: 45rem;
         width:90vw;
         left:3%;
 
@@ -1748,6 +1779,10 @@ a {
 
 }
 
+.city-detail {
+    position: relative;
+}
+
 .city-description {
     background-color: rgba(0, 0, 0, 0.1);
     position: absolute;
@@ -1756,38 +1791,6 @@ a {
     object-fit: cover;
     width: 100%;
     border-radius: var(--border-radius);
-}
-
-
-.city-detail {
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-
-.cityimage:nth-child(1) {
-    order: 1;
-    object-fit: contain;
-    width: 850px; /* Removed !important */
-    background-image: url('../image/abou1.png');
-}
-
-.cityimage:nth-child(2) {
-    order: 2;
-    width: 400px;
-    background-image: url('../image/abou1.png');
-}
-
-.city-detail:nth-child(3) {
-    order: 3;
-    width: 400px;
-    background-image: url('../image/about.jpg');
-}
-
-.city-detail:nth-child(4) {
-    order: 4;
-    width: 850px; 
-    background-image: url('../image/abou1.png');
 }
 
 
@@ -2178,8 +2181,7 @@ extra-small-text1 .fa-trash:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(119, 119, 119, 0.5);
-    /* Adjust for a darker overlay */
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 1;
     /* Above the background image, below content */
 }
@@ -2236,3 +2238,32 @@ extra-small-text1 .fa-trash:hover {
     color: white;
     padding: 10px 12px !important;
 }
+
+
+
+
+
+
+.city-detail:nth-child(1) {
+    order: 1;
+    object-fit: contain;
+    width: 850px !important;
+}
+
+.city-detail:nth-child(2) {
+    order: 2;
+    width: 400px;
+}
+
+.city-detail:nth-child(3) {
+    order:3;
+    width: 400px;
+
+}
+
+.city-detail:nth-child(4) {
+    order:4;
+    width: 850px !important;
+}
+
+

@@ -109,7 +109,6 @@ class BlogController extends Controller
         return view('admin.blogs.update', compact('blog', 'metadata'));
     }
 
-
    // Update blog in the database
 public function update(Request $request, Blog $blog)
 {
@@ -140,7 +139,6 @@ public function update(Request $request, Blog $blog)
             $images = [];  // Clear the old image array
         }
 
-
         $file = $request->file('image');
         $imageName = time() . '-' . Str::uuid() . '.' . $file->getClientOriginalExtension();
         $destinationPath = storage_path('app/public/blog_images');
@@ -154,6 +152,7 @@ public function update(Request $request, Blog $blog)
 
         $file->move($destinationPath, $imageName);
         $relativeImagePath = 'storage/blog_images/' . $imageName;
+        $images[] = $relativeImagePath;  // Add new image path to array
         $images[] = $relativeImagePath;  // Add new image path to array
     }
 
@@ -175,6 +174,7 @@ public function update(Request $request, Blog $blog)
         'author' => $request->author,
         'keywords' => $request->keywords,
         'image' => json_encode($images),  // Save updated images
+        'image' => json_encode($images),  // Save updated images
         'status' => $request->status,
     ]);
 
@@ -182,8 +182,6 @@ public function update(Request $request, Blog $blog)
     session()->flash('success', 'Blog updated successfully.');
     return redirect()->route('admin.blogs.index');
 }
-
-
 
 
     // Delete a blog from the database

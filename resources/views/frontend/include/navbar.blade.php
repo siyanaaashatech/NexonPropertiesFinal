@@ -152,6 +152,39 @@ function funmenu() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
     hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
   }
+  let lastScrollY = window.scrollY;
+const navSection = document.querySelector('.navsection');
+
+let lastScrollY = window.scrollY;
+const navSection = document.querySelector('.navsection');
+
+function handleScroll() {
+    if (window.scrollY > lastScrollY) {
+        // Scrolling down
+        navSection.style.top = '2rem';
+    } else {
+        // Scrolling up
+        navSection.style.top = '0'; // Adjust as needed
+    }
+    lastScrollY = window.scrollY;
+}
+
+function checkScreenSize() {
+    if (window.innerWidth < 900) {
+        window.addEventListener('scroll', handleScroll);
+    } else {
+        // Remove the scroll event listener if the screen size is larger than 900px
+        window.removeEventListener('scroll', handleScroll);
+        navSection.style.top = ''; // Reset top style
+    }
+}
+
+// Initial check
+checkScreenSize();
+
+// Check again on resize
+window.addEventListener('resize', checkScreenSize);
+
 
 
 </script>

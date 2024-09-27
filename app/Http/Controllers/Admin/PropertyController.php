@@ -68,14 +68,17 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'required|array',
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'update_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
-    
+   
         // Handle the main image upload (base64 images)
         $images = $this->handleBase64Images($request->input('main_image'), 'property');
-    
+   
         // Handle other images upload
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
-    
+
+        $updateTime = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('update_time'));
+   
         // Create a metadata entry
         $metadata = Metadata::create([
             'meta_title' => $request->title,
@@ -83,11 +86,11 @@ class PropertyController extends Controller
             'meta_keywords' => $request->suburb,
             'slug' => Str::slug($request->title),
         ]);
-    
+   
         // Handle update_time as a Carbon instance
         $updateTime = $request->input('update_time');
-        $parsedUpdateTime = \Carbon\Carbon::createFromFormat('Y-F-d', $updateTime)->format('Y-m-d'); // Convert to 'Y-m-d' for storage
-    
+        // $parsedUpdateTime = \Carbon\Carbon::createFromFormat('Y-F-d', $updateTime)->format('Y-m-d'); // Convert to 'Y-m-d' for storage
+   
         // Create new property record and associate with metadata
         Property::create([
             'title' => $request->title,
@@ -111,14 +114,14 @@ class PropertyController extends Controller
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
             'metadata_id' => $metadata->id,
-            'update_time' => $parsedUpdateTime, // Store in the correct format
+            'update_time' => $updateTime, // Store in the correct format
         ]);
-    
+   
         session()->flash('success', 'Property created successfully.');
-    
+   
         return redirect()->route('property.index');
     }
-    
+   
 
     /**
      * Display the specified property.
@@ -171,7 +174,7 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'nullable|array',
             'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'update_time' => Carbon::now(),
+            'update_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         // Handle main image update if provided
@@ -189,6 +192,9 @@ class PropertyController extends Controller
         } else {
             $otherImages = json_decode($property->other_images, true);
         }
+
+        // Handle update_time as a Carbon instance
+        $updateTime = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('update_time'));
 
         // Update metadata record
         $property->metadata()->updateOrCreate([], [
@@ -219,7 +225,7 @@ class PropertyController extends Controller
             'other_images' => json_encode($otherImages),
             'availability_status' => $request->availability_status,
             'rental_period' => $request->rental_period,
-            'update_time' => Carbon::now(),
+            'update_time' => $updateTime,
         ]);
 
         session()->flash('success', 'Property updated successfully.');
@@ -366,11 +372,11 @@ class PropertyController extends Controller
 
         if ($request->has('main_image_base64')) {
             $mainImageData = $request->input('main_image_base64');
-    
+   
             // Remove the data:image part and decode the image
             $mainImage = str_replace('data:image/jpeg;base64,', '', $mainImageData);
             $mainImage = base64_decode($mainImage);
-    
+   
             // Save the image to the desired location
             $mainImagePath = '' . time() . '.webp';
             file_put_contents(public_path($mainImagePath), $mainImage);

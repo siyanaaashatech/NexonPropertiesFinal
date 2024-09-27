@@ -5,7 +5,7 @@
         <img src="{{asset("image/logo.png")}}" alt="" class="logoimg ">
         <p class="sm-text1 py-1 pt-3">
           Welcome to pagename where our passion for real estate and dedication to
-          client satisfaction converge to create an  </p>
+          client satisfaction converge to create an unparalleled home-buying experience. Founded </p>
         <div class="d-flex font-collection py-2">
           <i class="fa-brands fa-facebook customicons mx-2"></i>
           <i class="fa-brands fa-linkedin customicons mx-2"></i>
@@ -25,10 +25,10 @@
       <div class="col-md-2 sm-col-12 mx-4 ">
         <h1 class="md-text1 highlight minuspadding">Regions</h1>
         <ul class="d-flex justify-content-around customui flex-column gap-2">
-          @foreach ($properties as $property )
-          <li><a href="">aa</a></li>
+         
+         
           
-          @endforeach
+
         </ul>
       </div>
       <div class="col-md-3 col-sm-12 ">
