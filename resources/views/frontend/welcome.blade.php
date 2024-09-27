@@ -16,8 +16,9 @@
 @include("frontend.include.project")
 
 
-@include("frontend.include.landproperties")
+@include("frontend.include.landproperties");
 
+@includeIf("frontend,include.counter")
 {{-- <!-- testimonial --> --}}
 @include("frontend.include.testimonial")
 

@@ -54,19 +54,132 @@
                         
                     
                     <!-- Property Images -->
-                    @php
-                        $limitedImages = array_slice($otherImages, 0, 6);
-                    @endphp
-                    <div class="col-md-4">
-                        <div class="row">
-                            @foreach ($limitedImages as $image)
-                                <div class="col-md-6 p-1 px-2">
-                                    <img src="{{ asset($image) }}" alt="Property Image"
-                                        class="property-image property-imageheight rounded">
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+
+
+
+
+
+
+<!-- Include Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+    .modal-body {
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+
+    }
+
+    #modalImage {
+        height:50vh;
+        width:90%; 
+        object-fit: cover;
+        
+    }
+
+    .modal-content {
+        background-color:#1F4B43;  
+        border: none;
+        max-width:90%; 
+        width:90%;
+        top:2rem
+        
+    }
+
+    .close {
+        height: 7vh;
+        width: 4vw;
+        font-size: 30px;
+        border-radius: 8px;
+        display: block;
+    }
+</style>
+
+
+@php
+    $limitedImages = array_slice($otherImages, 0, 6);
+@endphp
+<div class="col-md-4">
+    <div class="row">
+        @foreach ($limitedImages as $index => $image)
+            <div class="col-md-6 p-1 px-2">
+                <img src="{{ asset($image) }}" alt="Property Image"
+                    class="property-image property-imageheight rounded" 
+                    data-toggle="modal" data-target="#imageModal" 
+                    data-img="{{ asset($image) }}">
+            </div>
+        @endforeach
+    </div>
+</div>
+
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document"> <!-- Use modal-lg for large size -->
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between">
+                <h5 class="modal-title md-text1" id="imageModalLabel">Property Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Property Image" class="img-fluid">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                <button type="button" id="nextBtn" class="btn btn-secondary">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        let images = [];
+        let currentIndex = 0;
+
+        @foreach ($otherImages as $image)
+            images.push("{{ asset($image) }}");
+        @endforeach
+
+        $('#imageModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget);
+            const imgSrc = button.data('img');
+            currentIndex = images.indexOf(imgSrc);
+            updateModalImage(imgSrc);
+            updateButtonState();
+        });
+
+        function updateModalImage(src) {
+            $('#modalImage').attr('src', src);
+        }
+
+        function updateButtonState() {
+            $('#prevBtn').prop('disabled', currentIndex === 0);
+            $('#nextBtn').prop('disabled', currentIndex === images.length - 1);
+        }
+
+        $('#prevBtn').click(function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateModalImage(images[currentIndex]);
+                updateButtonState();
+            }
+        });
+
+        $('#nextBtn').click(function() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateModalImage(images[currentIndex]);
+                updateButtonState();
+            }
+        });
+    });
+</script>
+
                     <!-- Property Details -->
                     <div class="col-md-8 d-flex justify-content-between pt-3 ">
                         <div class="flex">
@@ -355,40 +468,6 @@
         }
     </style>
 
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js">
-    
-    // For Add to Favorites.
 
-
-    $(document).ready(function() {
-        $('.favourite').on('click', function() {
-            let propertyId = $(this).data('property-id');
-            
-            $.ajax({
-                url: '{{ route("favorites.store") }}',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    properties_id: propertyId,
-                },
-                success: function(response) {
-                    if(response.message) {
-                        alert(response.message); // Success message
-                    }
-                },
-                error: function(xhr) {
-                    let errorMessage = 'An error occurred while adding to favorites.';
-                    
-                    // Check if specific error message is returned
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    
-                    alert(errorMessage); // Error message
-                }
-            });
-        });
-    });
-</script> --}}
 
  @endsection

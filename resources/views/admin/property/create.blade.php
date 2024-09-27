@@ -42,8 +42,11 @@
                         <input type="hidden" name="main_image_cropped" id="croppedImage">
 
 
+                        <div class="row">
+
+
                         <!-- Title -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 ">
                             <label for="title">Title</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
                         </div>
@@ -56,7 +59,7 @@
                         </div>
 
 
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="category_id">Category</label>
                             <select name="category_id" id="category_id" class="form-control" required>
                                 <option value="">Choose Category</option>
@@ -69,7 +72,7 @@
                         </div>
                        
                         <!-- Sub Category -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="sub_category_id">Sub Category</label>
                             <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                 <option value="">Choose Sub Category</option>
@@ -82,65 +85,53 @@
                         </div>
 
 
-                       <!-- Amenities -->
-                       <div class="form-group">
-                        <label for="amenities">Amenities</label>
-                        @foreach($amenities as $amenity)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
-                                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
-                                    {{ $amenity->title }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
+                  
 
 
                         <!-- Street -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="street">Street</label>
-                            <input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}" required>
+                            <input type="text " name="street" id="street" class="form-control " value="{{ old('street') }}" required>
                         </div>
 
 
                         <!-- Suburb -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="suburb">Suburb</label>
                             <input type="text" name="suburb" id="suburb" class="form-control" value="{{ old('suburb') }}" required>
                         </div>
 
 
                         <!-- State -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="state">State</label>
                             <input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
                         </div>
 
 
                         <!-- Post Code -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="post_code">Post Code</label>
                             <input type="number" name="post_code" id="post_code" min="0" minlength="4" class="form-control" value="{{ old('post_code') }}" required>
                         </div>
 
 
                         <!-- Country -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="country">Country</label>
                             <input type="text" name="country" id="country" class="form-control" value="{{ old('country') }}">
                         </div>
 
 
                         <!-- Price -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="price">Price</label>
                             <input type="number" name="price" id="price" class="form-control" min="0" value="{{ old('price') }}" required>
                         </div>
 
 
                         <!-- Price Type -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="price_type">Price Type</label>
                             <select name="price_type" id="price_type" class="form-control" required>
                                 <option value="fixed" {{ old('price_type') == 'fixed' ? 'selected' : '' }}>Fixed</option>
@@ -151,42 +142,32 @@
 
 
                         <!-- Bedrooms -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="bedrooms">Bedrooms</label>
                             <input type="number" name="bedrooms" id="bedrooms" class="form-control" min="0" value="{{ old('bedrooms') }}" required>
                         </div>
 
 
                         <!-- Bathrooms -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="bathrooms">Bathrooms</label>
                             <input type="number" name="bathrooms" id="bathrooms" class="form-control" min="0" value="{{ old('bathrooms') }}" required>
                         </div>
 
 
                         <!-- Area -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="area">Area (sq ft)</label>
                             <input type="number" name="area" id="area" class="form-control" min="0" value="{{ old('area') }}" required>
                         </div>
+     <!-- Amenities -->
 
 
-                        <!-- Status -->
-                        <div class="form-group mb-3">
-                        <label for="status">Status</label>
-                          <div class="form-check">
-                        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
-                        <label for="status_active" class="form-check-label">Active</label>
-                        </div>
-                          <div class="form-check">
-                        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
-                        <label for="status_inactive" class="form-check-label">Inactive</label>
-                          </div>
-                          </div>
+                    
 
 
                         <!-- Availability Status -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="availability_status">Availability Status</label>
                             <select name="availability_status" id="availability_status" class="form-control" required>
                                 <option value="available" {{ old('availability_status') == 'available' ? 'selected' : '' }}>Available</option>
@@ -197,14 +178,49 @@
 
 
                         <!-- Rental Period -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-4">
                             <label for="rental_period">Rental Period</label>
                             <input type="text" name="rental_period" id="rental_period" class="form-control" value="{{ old('rental_period') }}">
                         </div>
 
+                             <!-- Status -->
+                             <div class="form-group mb-3 col-md-4">
+                        <label for="status">Status</label>
+                        <div class="d-flex gap-2">
+                          <div class="form-check">
+                        <input type="radio" name="status" id="status_active" value="1" class="form-check-input" {{ old('status') == '1' ? 'checked' : '' }} required>
+                        <label for="status_active" class="form-check-label">Active</label>
+                        </div>
+                          <div class="form-check">
+                        <input type="radio" name="status" id="status_inactive" value="0" class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }} required>
+                        <label for="status_inactive" class="form-check-label">Inactive</label>
+                          </div>
+                          </div>
+                          </div>
+
+
+
+                          <div class="form-group col-md-12">
+    <label for="amenities">Amenities</label>
+    <div class="d-flex flex-wrap"> <!-- Use flex-wrap to allow multiple rows -->
+        @foreach($amenities as $amenity)
+            <div class="form-check me-3"> <!-- Add margin to the right for spacing -->
+                <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="amenity_{{ $amenity->id }}"
+                       {{ (isset($property) && in_array($amenity->id, $property->amenities ?? [])) ? 'checked' : '' }}>
+                <label class="form-check-label" for="amenity_{{ $amenity->id }}">
+                    {{ $amenity->title }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+
+                   
 
                         <!-- Main Image Upload -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-12">
                             <label for="main_image">Main Image</label>
                             <input type="file" id="main_image" class="form-control" required>
                         </div>
@@ -231,20 +247,20 @@
                             <label>Selected Other Images Preview:</label>
                             <div id="other-images-preview" style="display: flex; flex-wrap: wrap;"></div>
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-12">
                             <label for="keywords">Keywords</label>
                             <input type="text" name="keywords" id="keywords" class="form-control" value="{{ old('keywords') }}"
                                 >
                         </div>
 
 
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="googlemap">Google Map</label>
                             <input type="text" name="googlemap" id="googlemap" class="form-control" value="{{ old('googlemap') }}"
                                 >
                         </div>
 
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="update_time">Inspection Time</label>
                             <input type="text" name="update_time" id="update_time" class="form-control" value="{{ old('update_time')}}">
                         </div>
@@ -253,6 +269,10 @@
                             <button type="submit" class="btn btn-primary">Create Property</button>
                             <a href="{{ route('property.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
+
+                        </div>
+
+
                     </form>
                 </div>
             </div>
