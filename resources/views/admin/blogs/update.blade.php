@@ -1,12 +1,37 @@
 @extends('admin.layouts.master')
 
 @section('content')
-    @include('admin.includes.forms')
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Edit Blog</h4>
+                </div>
+                <div class="card-body">
+                    @if(session('success'))
+                        <div class="toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 p-3"
+                             role="alert" aria-live="assertive" aria-atomic="true" id="toastMessage">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    {{ session('success') }}
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
+                            </div>
+                        </div>
+                    @endif
 
-    <div class="card">
-        <div class="card-header">
-            <h1 class="card-title">Edit Blog</h1>
-        </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                 
 
         <!-- Blog update form -->
         <form id="updateForm" method="POST" action="{{ route('admin.blogs.update', ['blog' => $blog->id]) }}" enctype="multipart/form-data">

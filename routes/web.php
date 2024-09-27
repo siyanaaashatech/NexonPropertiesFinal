@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\PropertyController;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SingleController;
 use App\Http\Controllers\Admin\FaviconController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\WhyusController;
@@ -36,10 +38,22 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\AboutDescriptionController;
+use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\SearchPropertiesController;
-
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ReviewsandRatingsController;
+use App\Http\Controllers\Admin\FavoritesController;
+use App\Models\Offer;
 
 Auth::routes();
+
+Route::get('/login', function () {
+    return view('auth.login'); 
+})->name('login');
+
+// Route to handle form submission
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
 Route::get("/member", function () {
     return view("frontend.member");
 
@@ -63,7 +77,7 @@ Route::get('/hello', function () {
     return view('frontend.singleproperties');
 })->name('hello');
 Route::get('/', [FrontViewController::class, 'index'])->name('index');
-// Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
+Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
 // Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 Auth::routes(['verify' => true]);
@@ -163,6 +177,37 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    //Sociallinks route
    Route::resource('social-links', SocialLinkController::class);
 
+    //Amenity route
+    Route::resource('amenities', AmenityController::class);
+
+   //Offer-Feature route
+   Route::resource('offers', OfferController::class);
+
+   // Contact routes
+    Route::prefix('admin')->group(function () {
+    Route::get('/contact', [App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact/store', [App\Http\Controllers\Admin\ContactController::class, 'store'])->name('contact.store');
+});
+
+ // Review routes
+ Route::prefix('admin')->group(function () {
+    Route::get('/review', [ReviewsandRatingsController::class, 'index'])->name('review.index');
+    Route::post('/review/store', [ReviewsandRatingsController::class, 'store'])->name('review.store');
+    Route::post('/submit-review', [ReviewsandRatingsController::class, 'store'])->name('submit.review');
+    Route::patch('/reviews/{review}', [ReviewsandRatingsController::class, 'update'])->name('admin.reviews.update');
+});
+
+   //Favorites Route
+   Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');
+   
+   Route::post('/favorites', [FavoritesController::class, 'store'])->name('favorites.store');
+   Route::get('/admin/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
+
+  
+
+
+
+
    // Frontend Routes
    Route::view("/member", "frontend.member")->name('member');
    Route::view("/contact", "frontend.contact")->name('contact');
@@ -171,8 +216,11 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
+//    Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
    Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+   Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');
+   
 
 
 Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(function () {
@@ -181,4 +229,10 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
     Route::post('/update/password', [App\Http\Controllers\ProfilesController::class, 'updatePassword'])->name('update.password');
 });
 
+Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
+Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
 
+Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
+Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
+Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);

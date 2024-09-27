@@ -25,7 +25,6 @@ class WhyusController extends Controller
      * Show the form for creating a new WhyUs.
      */
     public function create()
-    
     {
         $metadata = Metadata::all();
         return view('admin.whyus.create', compact('metadata'));
@@ -70,8 +69,6 @@ class WhyusController extends Controller
             }
         }
 
-        // $slug = SlugService::createSlug(Metadata::class, 'slug', $request->title);
-
         // Create a new metadata entry
         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
@@ -104,68 +101,67 @@ class WhyusController extends Controller
         $WhyUs = Whyus::findOrFail($id); 
         return view('admin.whyus.update', compact('WhyUs'));
     }
+
     /**
      * Update the specified whyus in storage.
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request, $id)
     {
-        // Validate the request inputs
         $WhyUs = Whyus::findOrFail($id);
+        
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'keywords' => 'nullable|string',
-            'image' => 'sometimes|array',
-            'image.*' => 'required|string', // Validate each image as a base64 string
+            'croppedImage' => 'sometimes|string',
             'status' => 'required|boolean',
-            'cropData' => 'sometimes|string', // Optional crop data for images
+            'cropData' => 'sometimes|string',
         ]);
-    
-        // Initialize the crop data and existing images
+
         $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
-        $images = !empty($WhyUs->image) ? json_decode($WhyUs->image, true) : [];
-    
-        // Handle new images if provided
-        if ($request->has('image')) {
-            foreach ($request->input('image') as $base64Image) {
-                // Ensure the base64 string is valid and has a valid header
-                if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
-                    $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-                    $decodedImage = base64_decode($base64Image);
-     
-                    if ($decodedImage === false) {
-                        continue; // Skip invalid base64 string
-                    }
-    
-                    $imageType = strtolower($type[1]); // jpeg, png, gif, etc.
-                    if (!in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                        continue; // Skip unsupported image types
-                    }
-                    // Create image resource from decoded data
-                    $imageResource = imagecreatefromstring($decodedImage);
-                    if ($imageResource !== false) {
-                        $imageName = time() . '-' . Str::uuid() . '.webp'; // Use WebP format
-                        $destinationPath = storage_path('app/public/whyus');
-    
-                        // Ensure the directory exists
-                        if (!File::exists($destinationPath)) {
-                            File::makeDirectory($destinationPath, 0755, true, true);
+        $images = $WhyUs->image ? json_decode($WhyUs->image, true) : [];
+        
+        // Handle new image
+        if ($request->has('croppedImage')) {
+            $base64Image = $request->input('croppedImage');
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+                $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+                $decodedImage = base64_decode($base64Image);
+
+                if ($decodedImage !== false) {
+                    $imageType = strtolower($type[1]);
+                    if (in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
+                        $imageResource = imagecreatefromstring($decodedImage);
+                        if ($imageResource !== false) {
+                            $imageName = time() . '-' . Str::uuid() . '.webp';
+                            $destinationPath = storage_path('app/public/whyus');
+
+                            if (!File::exists($destinationPath)) {
+                                File::makeDirectory($destinationPath, 0755, true, true);
+                            }
+
+                            $savedPath = $destinationPath . '/' . $imageName;
+                            imagewebp($imageResource, $savedPath);
+                            imagedestroy($imageResource);
+
+                            $relativeImagePath = 'storage/whyus/' . $imageName;
+                            $images[] = $relativeImagePath;  // Add new image to the array
+
+                            // Delete old image if exists
+                            if (!empty($images)) {
+                                $oldImagePath = storage_path('app/public/' . $images[0]);
+                                if (file_exists($oldImagePath)) {
+                                    unlink($oldImagePath);
+                                }
+                                array_shift($images);  // Remove the old image from the array
+                            }
                         }
-    
-                        // Save the image and destroy the resource
-                        $savedPath = $destinationPath . '/' . $imageName;
-                        imagewebp($imageResource, $savedPath);
-                        imagedestroy($imageResource);
-    
-                        // Store the relative path
-                        $relativeImagePath = 'storage/whyus/' . $imageName;
-                        $images[] = $relativeImagePath;
                     }
                 }
             }
         }
-    
-        // Update metadata record
+
+        // Update metadata
         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $WhyUs->metadata()->updateOrCreate([], [
             'meta_title' => $request->title,
@@ -173,41 +169,37 @@ class WhyusController extends Controller
             'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title)
         ]);
-    
-        // Update whyusrecord
+
+        // Update WhyUs record
         $WhyUs->update([
             'title' => $request->title,
             'description' => $request->description,
             'keywords' => $request->keywords,
-            'image' => json_encode($images), // Store updated images as JSON
+            'image' => json_encode($images),  // Store as JSON string
             'status' => $request->status,
         ]);
-    
-        // Flash success message and redirect
+
         session()->flash('success', 'WhyUs updated successfully.');
-    
+
         return redirect()->route('whyus.index');
     }
-    
-
     /**
      * Remove the specified whyus from storage.
      */
     public function destroy(Whyus $WhyUs)
-{
-    $images = json_decode($WhyUs->image, true);
-    if ($images) {
-        foreach ($images as $image) {
-            $filePath = storage_path('app/' . $image);
-            if (file_exists($filePath)) {
-                unlink($filePath);
+    {
+        $images = json_decode($WhyUs->image, true);
+        if ($images) {
+            foreach ($images as $image) {
+                $filePath = storage_path('app/' . $image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
         }
+
+        $WhyUs->delete();
+
+        return redirect()->route('whyus.index')->with('success', 'WhyUs deleted successfully.');
     }
-
-    $WhyUs->delete();
-
-    return redirect()->route('whyus.index')->with('success', 'WhyUs deleted successfully.');
-}
-
 }

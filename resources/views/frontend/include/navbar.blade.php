@@ -1,107 +1,199 @@
 {{--navbar --}}
+
 <style>
-.nav-link.active-red {
-    color: red;
-}
+  .upperlogout{
+    display: none;
+  }
+  .sidenav-login{
+    display: none;
+  }
+  
+  .userimage{
+    width:40px;
+    height: 40px;
+    border-radius: 20px;
+    object-fit: cover;
+    
+  }
+   .logoutsection{
+     margin-top:65%;
+  }
+  @media (max-width: 990px) {
+    .logoutsection{
+     margin-top:3% !important;
+  }
+  .upper-login{
+    display: none;
+  }
+
+  }
+
 
 </style>
-
-
 
 
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
       <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo" class="logoimg" /></a>
+     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
           @foreach($categories as $category)
         <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('properties') && request()->get('categoryId') == $category->id ? 'active-red' : '' }}"
+        <a class="nav-link"
           href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a>
         </li>
       @endforeach
+    
         </ul>
       </div>
 
-      <div class="button-collection  flex-column ">
-        <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">register</a>
-        <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton ">login</a>
+      <div class="button-collection d-flex flex-column justify-content-center top">
+        @guest
+        <div class="upper-login">
+      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
       </div>
-      <i class="fa-solid fa-bars customicons mx-4 " onclick="funmenu()"></i>
+    @else
+    <span class="welcome-message sm-text1 upperlogout"> {{ Auth::user()->name }}</span>
+    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+    <div class="d-flex">
+      <div class="upperlogout">
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="btn-buttonyellow reg-logbutton">Logout</a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+
+      </div>
+      <a href="{{ route('favourite') }}" class="d-flex fav mainitems-fav">
+        <p class="sm-text1 counter">{{ auth()->user()->favorites()->count() }}</p>
+        <i class="fa-solid fa-heart"></i>
+    </a>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove localStorage usage
+        let counterElement = document.querySelector('.counter');
+        
+        // Event listener for Add to Favorite button
+        document.querySelector('.favourite').addEventListener('click', function () {
+            var propertyId = this.getAttribute('data-property-id');
+    
+            // AJAX request to add property to favorites
+            $.ajax({
+                url: '{{ route("favorites.store") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    properties_id: propertyId
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        if (response.count !== undefined) {
+                            // Update the favorite count in the navbar
+                            if (counterElement) {
+                                counterElement.textContent = response.count;
+                            }
+                        }
+                        alert(response.message);
+                    } else if (response.status === 'already_added') {
+                        alert('Already added to favorites');
+                    } else {
+                        alert('An unexpected error occurred');
+                    }
+                },
+                error: function (xhr) {
+                    alert('An error occurred while processing your request');
+                }
+            });
+        });
+    });
+    </script>
+    </div>
+    </form>
+
+  @endguest
+      </div>
+      <i class="fa-solid fa-bars customicons mx-5 p-0 m-0" onclick="funmenu()"></i>
+  
+
     </nav>
   </div>
   <div class="bur-menu py-3" id="bur-menu">
     <div class="activites">
-      <h2 class="navdestext pt-3">activities section</h2>
+      <h2 class="navdestext pt-3">Activities Section</h2>
       <li class="nav-item">
-        <i class="fa-solid fa-house customiconssmall "></i>
-        <a class="nav-link " aria-current="page" href="/">Introduction</a>
+        <i class="fa-solid fa-house customiconssmall"></i>
+        <a class="nav-link" aria-current="page" href="/">Introduction</a>
       </li>
-      <li class="nav-item active ">
-
-        <i class="fa-solid fa-truck-moving  customiconssmall"></i>
-        <a class="nav-link " aria-current="page" href="{{route('properties')}}">Rent</a>
+      <li class="nav-item">
+        <i class="fa-solid fa-truck-moving customiconssmall"></i>
+        <a class="nav-link" aria-current="page" href="{{ route('properties') }}">Rent</a>
       </li>
       <li class="nav-item">
         <i class="fa-solid fa-cart-shopping customiconssmall"></i>
-        <a class="nav-link" aria-current="page" href="{{route('properties')}}">Buy</a>
+        <a class="nav-link" aria-current="page" href="{{ route('properties') }}">Buy</a>
       </li>
     </div>
     <div class="information">
-      <h2 class="navdestext">Information section</h2>
+      <h2 class="navdestext">Information Section</h2>
       <li class="nav-item d-flex">
         <i class="fa-solid fa-circle-question customiconssmall"></i>
-        <a class="nav-link" aria-current="page" href="{{route("about")}}">About</a>
+        <a class="nav-link" aria-current="page" href="{{ route('about') }}">About</a>
       </li>
       <li class="nav-item">
         <i class="fa-solid fa-blog customiconssmall"></i>
-        <a class="nav-link active" aria-current="page" href="{{route("blog")}}">Blog</a>
+        <a class="nav-link active" aria-current="page" href="{{ route('blog') }}">Blog</a>
       </li>
       <li class="nav-item">
         <i class="fa-solid fa-address-book customiconssmall"></i>
-        <a class="nav-link active" aria-current="page" href="{{route('contact')}}">contact</a>
+        <a class="nav-link active" aria-current="page" href="{{ route('contact') }}">Contact</a>
       </li>
     </div>
-    <h2 class="navdestext">follow us</h2>
+    <h2 class="navdestext">Follow Us</h2>
     <div class="d-flex font-collection py-2">
-      <i class="fa-brands fa-facebook customicons mx-2"></i>
-      <i class="fa-brands fa-linkedin customicons mx-2"></i>
-      <i class="fa-brands fa-youtube customicons mx-2"></i>
-
-    </div>
+      <a href="#"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+     
   </div>
+  <div class="button-collection d-flex justify-content-center align-items-center logoutsection">
+        @guest
+        <div class="sidenav-login">
+      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+      </div>
+    @else
+    <div class="d-flex gap-1  justify-content-center align-items-center">
+    <img src="{{asset("image/about.jpg")}}" alt="" class="userimage">
+    <span class="welcome-message sm-text1 text-center"> {{ Auth::user()->name }}</span>
+    </div>
+    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+    <div class="d-flex ">
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="btn-buttonyellow  mx-3 logout">Logout</a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+
+  
+    </div>
+    </form>
+
+  @endguest
+      </div>
+
+  </div>
+
+
 </section>
-
-
-<!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button> -->
-
-
-
-
-
-{{--navbar --}}
 <script>
   function funsearchingon() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
-    if (hiddenformdata.style.display === "block") {
-      hiddenformdata.style.display = "none";
-    }
-    hiddenformdata.style.display = "block";
-
+    hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
   }
-
   function funmenu() {
     const burmenu = document.getElementById("bur-menu");
-
-    if (burmenu.style.display === "block") {
-      burmenu.style.display = "none";
-    } else {
-      burmenu.style.display = "block";
-
-    }
+    burmenu.style.display = burmenu.style.display === "block" ? "none" : "block";
   }
 </script>

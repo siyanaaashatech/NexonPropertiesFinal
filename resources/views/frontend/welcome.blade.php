@@ -15,12 +15,15 @@
 {{--our properties --}}
 @include("frontend.include.project")
 
+
+@include("frontend.include.landproperties")
+
 {{-- <!-- testimonial --> --}}
 @include("frontend.include.testimonial")
 
 {{--blog --}}
 @include("frontend.include.blog")
-@include("frontend.include.landproperties")
+
 
 @endsection
 

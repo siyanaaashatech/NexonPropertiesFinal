@@ -20,6 +20,7 @@ class SuperAdminCheck
         if (Auth::check()) {
             switch (Auth::user()->role) {
                 case 1:
+                    case 2:
                     return next($request);
                     break;
                 default:

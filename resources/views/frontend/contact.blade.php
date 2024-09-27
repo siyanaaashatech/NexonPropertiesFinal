@@ -25,33 +25,54 @@
 <!-- detailsection -->
 <section class="container-fluid contact">
   <div class="container">
-    <div class="row d-flex  justify-content-center align-items-center gap-2">
-    @foreach ($siteSettings as $siteSetting)
-      <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-        <i class="fa-solid fa-location-dot customiconslarge"></i>
-        <div class="information">
-          <h2 class="md-text1">office address</h2>
-          <h2 class="extra-small-text1">{{$siteSetting ->office_address}}</h2>
+    <div class="row d-flex justify-content-center align-items-center gap-2">
+      @foreach ($siteSettings as $siteSetting)
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-location-dot customiconslarge"></i>
+          <div class="information">
+            <h2 class="md-text1">Office Address</h2>
+            <h2 class="extra-small-text1">
+              @if(is_array(json_decode($siteSetting->office_address, true)))
+                {{ implode(', ', json_decode($siteSetting->office_address)) }}
+              @else
+                {{ $siteSetting->office_address }}
+              @endif
+            </h2>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-        <i class="fa-solid fa-envelope  customiconslarge"></i>
-        <div class="information">
-        <h2 class="md-text1">office Contact</h2>
-        <h2 class="extra-small-text1">{{$siteSetting ->office_contact}}</h2>
+
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-envelope customiconslarge"></i>
+          <div class="information">
+            <h2 class="md-text1">Office Contact</h2>
+            <h2 class="extra-small-text1">
+              @if(is_array(json_decode($siteSetting->office_contact, true)))
+                {{ implode(', ', json_decode($siteSetting->office_contact)) }}
+              @else
+                {{ $siteSetting->office_contact }}
+              @endif
+            </h2>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-        <i class="fa-solid fa-phone customiconslarge"></i>
-        <div class="information">
-        <h2 class="md-text1">office email </h2>
-        <h2 class="extra-small-text1">{{$siteSetting ->office_email}}</h2>
+
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-phone customiconslarge"></i>
+          <div class="information">
+            <h2 class="md-text1">Office Email</h2>
+            <h2 class="extra-small-text1">
+              @if(is_array(json_decode($siteSetting->office_email, true)))
+                {{ implode(', ', json_decode($siteSetting->office_email)) }}
+              @else
+                {{ $siteSetting->office_email }}
+              @endif
+            </h2>
+          </div>
         </div>
-      </div>
+      @endforeach
     </div>
-    @endforeach
   </div>
 </section>
+
 
 
 <section class="container-fluid  my-5 form-map py-4 ">

@@ -162,6 +162,10 @@
                                                             class="btn btn-primary d-block w-100 mt-3" type="submit"
                                                             name="submit">Log in</button></div>
                                                 </form>
+
+                                                <a href="/register" class="text-center">Don't have account? Create One</a>
+                                          <a href="{{ route('password.request') }}">
+                                    {{ __('Forgot Your Password?') }}</a>
                                                 {{-- <div class="position-relative mt-4">
                     <hr>
                     <div class="divider-content-center">or log in with</div>

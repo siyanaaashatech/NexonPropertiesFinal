@@ -57,6 +57,7 @@
                         <input type="hidden" name="cropData" id="cropData">
                         <!-- Hidden input to simulate array submission -->
                         <input type="hidden" name="croppedImage" id="croppedImage">
+
                         <!-- Image Preview -->
                         <div class="form-group mb-3" id="cropped-preview-container">
                             <label>Current Images:</label>
@@ -91,6 +92,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal for Image Cropping -->
 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -101,6 +103,7 @@
             </div>
             <div class="modal-body">
                 <img id="image-preview" style="width: 100%; height: auto;">
+                <img id="image-preview" style="width: 100%; height: auto;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -109,15 +112,19 @@
         </div>
     </div>
 </div>
+
 <!-- Include Cropper.js -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 <script>
     let cropper;
     let imagesToProcess = [];
     let processedImages = [];
     let cropDataArray = [];
+
     document.getElementById('image').addEventListener('change', function (e) {
         imagesToProcess = Array.from(e.target.files);
         processedImages = [];
@@ -126,17 +133,21 @@
             processNextImage();
         }
     });
+
     function processNextImage() {
         if (imagesToProcess.length === 0) {
             document.getElementById('cropped-preview-container').style.display = 'block';
             return;
         }
+
         const file = imagesToProcess.shift();
         const url = URL.createObjectURL(file);
         const imagePreview = document.getElementById('image-preview');
         imagePreview.src = url;
+
         const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
         cropModal.show();
+
         if (cropper) {
             cropper.destroy();
         }
@@ -144,8 +155,10 @@
             aspectRatio: 16 / 9,
             viewMode: 1,
         });
+
         document.getElementById('saveCrop').onclick = function () {
             if (!cropper) return;
+
             const cropData = cropper.getData();
             cropDataArray.push(JSON.stringify({
                 width: Math.round(cropData.width),
@@ -153,11 +166,13 @@
                 x: Math.round(cropData.x),
                 y: Math.round(cropData.y)
             }));
+
             cropper.getCroppedCanvas().toBlob((blob) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(blob);
                 reader.onloadend = function () {
                     processedImages.push(reader.result);
+
                     // Show cropped image preview
                     const croppedImagesPreview = document.getElementById('cropped-images-preview');
                     const img = document.createElement('img');
@@ -165,7 +180,9 @@
                     img.style.maxWidth = '150px';
                     img.style.maxHeight = '200px';
                     croppedImagesPreview.appendChild(img);
+
                     cropModal.hide();
+                    
                     // Process next image or finish
                     if (imagesToProcess.length > 0) {
                         processNextImage();
@@ -176,17 +193,20 @@
             }, 'image/png');
         };
     }
+
     function finishImageProcessing() {
         document.getElementById('cropData').value = JSON.stringify(cropDataArray);
         document.getElementById('croppedImage').value = JSON.stringify(processedImages);
         document.getElementById('cropped-preview-container').style.display = 'block';
     }
+
     document.getElementById('aboutUsForm').addEventListener('submit', function(e) {
         if (imagesToProcess.length > 0) {
             e.preventDefault();
             alert('Please wait until all images are processed.');
         }
     });
+
     document.addEventListener('DOMContentLoaded', function() {
         $('.summernote').summernote();
     });
