@@ -64,10 +64,10 @@ class SingleController extends Controller
     
 
     public function render_contact()
-    {
+    {  $properties = Property::latest()->get();
         $siteSettings=SiteSetting::latest()->get();
         $categories=Category::latest()->get();
-        return view('frontend.contact', compact("categories",'siteSettings'));
+        return view('frontend.contact', compact("categories",'siteSettings','properties'));
     }
 
     public function render_search()

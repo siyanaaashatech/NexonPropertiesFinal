@@ -56,6 +56,12 @@
       <i class="fa-brands fa-searchengin customicons"></i> Find your properties
     </h1>
     <div class="justify-content-center align-items-center gap-2 flex-wrap hiddenform" id="hiddenform">
+    <div class="d-flex flex-column col-md-3">
+        <label for="" class="sm-text1 des-text">Keyword</label>
+        <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+          value="{{ request('location') }}">
+      </div>
+
       <div class="d-flex flex-column col-md-3">
         <label for="" class="sm-text1 des-text">Listing type</label>
         <select class="input bannerinput" name="category_id" id="category_id">
@@ -65,12 +71,14 @@
       @endforeach
         </select>
       </div>
+
       <div class="d-flex flex-column col-md-3">
         <label for="" class="sm-text1 des-text">Select Category</label>
         <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
           <option value="" disabled selected>Select Subcategory</option>
         </select>
       </div>
+
       <div class="d-flex flex-column col-md-3">
         <label for="" class="sm-text1 des-text">Select State</label>
         <select class="input bannerinput" name="state" id="state">
@@ -86,12 +94,6 @@
           <option value="" disabled selected>Select Region</option>
         </select>
       </div>
-      <div class="d-flex flex-column col-md-3">
-        <label for="" class="sm-text1 des-text">Keyword</label>
-        <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
-          value="{{ request('location') }}">
-      </div>
-
       <div class="d-flex flex-column col-md-3">
         <label for="" class="sm-text1 des-text">Search</label>
         <button type="submit" class="btn-buttonyellow btn-buttonyellowlg">Find properties</button>
@@ -245,6 +247,7 @@
 --}}
 
 <!-- multiple properties section -->
+ {{--
 <section class="container-fluid multipost mb-3 pb-4">
   <div class="container">
     <div class="row ">
@@ -303,7 +306,7 @@
     </div>
   </div>
 </section>
-
+--}}
 
 
 <!-- nextpage section -->
@@ -323,15 +326,6 @@
   </div>
 </section>
 @endsection
-
-<style>
-
-
-
-
-</style>
-
-
 <script>
   function funsearchingon() {
     const hiddenformdata = document.querySelector(".hiddenform");
@@ -352,8 +346,5 @@
     // Add 'next-button' class to the clicked list item
     clickedElement.classList.add('next-button');
   }
-
-
-
 
 </script>

@@ -15,7 +15,7 @@
         @endphp
             @if (!empty($images))
         @foreach ($images as $image)
-      <img class="imagecontroller imagecontrollermd" src="{{ asset('storage/blog_images/' . basename($image)) }}"
+      <img class="imagecontroller imagecontrollermd imagecontrollerheightextra" src="{{ asset('storage/blog_images/' . basename($image)) }}"
         alt="Blog image">
     @endforeach
       @else
@@ -44,8 +44,9 @@
         </div>
       </div>
       <div class="col-md-4 sidebar  ">
-        <div class="paddingbox">
+        <div class="paddingbox d-flex gap-2">
           <input type="text" name="" id="" class="input">
+          <button class="btn-buttonyellow py-2">search</button>
         </div>
         <div class="paddingbox ">
           <h2 class="md-text1">Recent post</h2>

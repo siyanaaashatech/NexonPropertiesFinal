@@ -7,7 +7,7 @@
       <div class="carousel-inner mb-3">
         <div class="row d-flex">
           <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-            <img src="{{ asset('image/contact.png') }}" alt="" srcset="" class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
+            <img src="{{ asset('image/contact.jpg') }}" alt="" srcset="" class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
             <div class="flex bannercontentheight">
               <div class="bannercontentinnerheight ">
                 <h4 class="lg-text1">Contact</h4>
@@ -20,40 +20,54 @@
         </div>
       </div>
 </section>
-
-
 <!-- detailsection -->
 <section class="container-fluid contact">
   <div class="container">
-    <div class="row d-flex  justify-content-center align-items-center gap-2">
-    @foreach ($siteSettings as $siteSetting)
-      <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-        <i class="fa-solid fa-location-dot customiconslarge"></i>
-        <div class="information">
-          <h2 class="md-text1">office address</h2>
-          <h2 class="extra-small-text1">{{$siteSetting ->office_address}}</h2>
+    <div class="row d-flex justify-content-center align-items-center gap-2">
+      @foreach ($siteSettings as $siteSetting)
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-location-dot customiconslarge"></i>
+          <div class="information">
+            <h2 class="md-text1">Office Address</h2>
+            <h2 class="sm-text1">
+              @if(is_array(json_decode($siteSetting->office_address, true)))
+                {{ implode(', ', json_decode($siteSetting->office_address)) }}
+              @else
+                {{ $siteSetting->office_address }}
+              @endif
+            </h2>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-        <i class="fa-solid fa-envelope  customiconslarge"></i>
-        <div class="information">
-        <h2 class="md-text1">office Contact</h2>
-        <h2 class="extra-small-text1">{{$siteSetting ->office_contact}}</h2>
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-envelope customiconslarge"></i>
+          <div class="information">
+            <h2 class="md-text1">Office Contact</h2>
+            <h2 class="sm-text1">
+              @if(is_array(json_decode($siteSetting->office_contact, true)))
+                {{ implode(', ', json_decode($siteSetting->office_contact)) }}
+              @else
+                {{ $siteSetting->office_contact }}
+              @endif
+            </h2>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3 greenbackground d-flex  justify-content-center align-items-center">
-        <i class="fa-solid fa-phone customiconslarge"></i>
-        <div class="information">
-        <h2 class="md-text1">office email </h2>
-        <h2 class="extra-small-text1">{{$siteSetting ->office_email}}</h2>
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-phone customiconslarge"></i>
+          <div class="information">
+            <h2 class="md-text1">Office Email</h2>
+            <h2 class="sm-text1">
+              @if(is_array(json_decode($siteSetting->office_email, true)))
+                {{ implode(', ', json_decode($siteSetting->office_email)) }}
+              @else
+                {{ $siteSetting->office_email }}
+              @endif
+            </h2>
+          </div>
         </div>
-      </div>
+      @endforeach
     </div>
-    @endforeach
   </div>
 </section>
-
-
 <section class="container-fluid  my-5 form-map py-4 ">
   <div class="row d-flex  justify-content-center align-items-center mx-2">
     <div class="col-md-4 contentbackground px-4 m-2">
@@ -82,66 +96,14 @@
     </div>
   </div>
 </section>
-
-
 @endsection
-
-
-
-
-
-
-
-<!-- <style>
-  
-@keyframes moveImages {
-     0% {
-       transform: translatey(0);
-     }
-     100% {
-       transform: translatey(100px);
-     }
-   }
-   
-   .propertype-subimage {
-     transition: transform 1s ease-in-out;
-  
-   }
-   
-   .propertype-subimage.animate {
-     animation: moveImages 6s forwards;
-   }
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(function() {
-    document.querySelectorAll('.propertype-subimage').forEach(function(item) {
-      item.classList.add('animate');
-    });
-  }, 3000); // 3 seconds delay
-});
-</script> -->
-
-
-
 <script>
   function funmenu() {
     const burmenu = document.getElementById("bur-menu");
-
     if (burmenu.style.display === "block") {
       burmenu.style.display = "none";
     } else {
       burmenu.style.display = "block";
-
     }
   }
-
-
 </script>
-
-
-
-
-</body>
-
-</html>

@@ -1,4 +1,5 @@
-{{--navbar --}}
+
+
 <section class="container-fluid navsection">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light navcustom">
@@ -16,15 +17,17 @@
         </ul>
       </div>
 
-      <div class="button-collection d-flex flex-column justify-content-center">
+      <div class="button-collection d-flex flex-column justify-content-center top">
         @guest
+        <div class="upper-login">
       <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
       <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+      </div>
     @else
-    <span class="welcome-message sm-text1"> {{ Auth::user()->name }}</span>
+    <span class="welcome-message sm-text1 upperlogout"> {{ Auth::user()->name }}</span>
     {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
     <div class="d-flex">
-      <div class="">
+      <div class="upperlogout">
       <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
         class="btn-buttonyellow reg-logbutton">Logout</a>
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -40,8 +43,12 @@
 
   @endguest
       </div>
-      <i class="fa-solid fa-bars customicons mx-4 p-0 m-0" onclick="funmenu()"></i>
-  
+      
+      <i class="customicons crossmenu mx-4 p-1 m-0 d-flex" onclick="funmenu()">
+    <div class="linea line1"></div>
+    <div class="linea line2"></div>
+    <div class="linea line3"></div>
+</i>
 
     </nav>
   </div>
@@ -81,16 +88,70 @@
       <a href="#"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
       <a href="#"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
       <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+     
   </div>
+  <div class="button-collection d-flex justify-content-center align-items-center logoutsection">
+        @guest
+        <div class="sidenav-login">
+      <a href="{{ route('register') }}" class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+      <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+      </div>
+    @else
+    <div class="d-flex gap-1  justify-content-center align-items-center">
+    <img src="{{asset("image/about.jpg")}}" alt="" class="userimage">
+    <span class="welcome-message sm-text1 text-center"> {{ Auth::user()->name }}</span>
+    </div>
+    {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+    <div class="d-flex ">
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="btn-buttonyellow  mx-3 logout">Logout</a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+
+  
+    </div>
+    </form>
+
+  @endguest
+      </div>
+
+
+
+
+
+
   </div>
+
+
 </section>
 <script>
+
+
+function funmenu() {
+    const menuIcon = document.querySelector('.crossmenu');
+    const menu = document.getElementById('bur-menu');
+
+    // Toggle the 'cross' class on the menu icon
+    menuIcon.classList.toggle('cross');
+
+    // Toggle the display of the menu
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+
+
+
+
+
+
+
   function funsearchingon() {
     const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
     hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
   }
-  function funmenu() {
-    const burmenu = document.getElementById("bur-menu");
-    burmenu.style.display = burmenu.style.display === "block" ? "none" : "block";
-  }
+
+
 </script>
