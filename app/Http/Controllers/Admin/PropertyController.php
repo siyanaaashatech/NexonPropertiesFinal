@@ -68,7 +68,7 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'required|array',
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'update_time' => 'required|date_format:Y-m-d H:i:s',
+            'update_time' => 'nullable|date_format:Y-m-d H:i:s',
         ]);
 
         // Handle the main image upload (base64 images)
@@ -243,7 +243,10 @@ class PropertyController extends Controller
                 // Generate unique image name
                 $imageName = time() . '-' . Str::uuid() . '.webp';
                 // Correct destination path
-                $destinationPath = storage_path("app/public/$folder");
+                // $destinationPath = storage_path("app/public/$folder");
+
+                //To save the data in the public folder inside the storage
+                $destinationPath = public_path("storage/$folder");
 
                 // Create the directory if it does not exist
                 if (!File::exists($destinationPath)) {
@@ -277,7 +280,10 @@ class PropertyController extends Controller
                 // Generate a unique name for each image
                 $imageName = time() . '-' . Str::uuid() . '.webp';
                 // Correct destination path for storage
-                $destinationPath = storage_path("app/public/$folder");
+                // $destinationPath = storage_path("app/public/$folder");
+
+                //To save the data inside public folder
+                $destinationPath = public_path("storage/$folder");
 
                 // Create the directory if it does not exist
                 if (!File::exists($destinationPath)) {

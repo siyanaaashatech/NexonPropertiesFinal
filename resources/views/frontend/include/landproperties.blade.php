@@ -1,5 +1,5 @@
 
-{{--
+
 <section class="container-fluid landproperties py-5">
     <div class="container">
         <div class="d-flex flex-column title pb-2">
@@ -18,7 +18,7 @@
                 @endforeach
 
                 <!-- Display Properties -->
-                $properties = \App\Models\Property::latest()->take(4)->get(); 
+                {{-- $properties = \App\Models\Property::latest()->take(4)->get();  --}}
                 @foreach ($propertie as $property)
                 <div class="city-detail rounded m-0 p-0"> 
                     @php
@@ -38,7 +38,6 @@
     </div>
 </section>
 
---}}
 
 
 
