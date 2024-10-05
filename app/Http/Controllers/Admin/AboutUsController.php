@@ -15,8 +15,7 @@ class AboutUsController extends Controller
     {
         $aboutUs = AboutUs::with('metadata')->latest()->get();
         return view('admin.aboutus.index', compact('aboutUs'));
-        return view('admin.aboutus.index', compact('aboutUs'));
-        return view('admin.aboutus.index', compact('aboutUs'));
+       
     }
     /**
      * Show the form for creating a new AboutUs.
@@ -26,8 +25,7 @@ class AboutUsController extends Controller
         
         $metadata = Metadata::all();
         return view('admin.aboutus.create', compact('metadata'));
-        return view('admin.aboutus.create', compact('metadata'));
-        return view('admin.aboutus.create', compact('metadata'));
+      
     }
     /**
      * Store a newly created AboutUs in storage.
@@ -55,7 +53,7 @@ class AboutUsController extends Controller
         $imageData = base64_decode($base64Image);
 
         $imageName = time() . '-' . Str::uuid() . '.webp';
-        $destinationPath = storage_path('app/public/aboutus');
+        $destinationPath = public_path('storage/aboutus');
 
         if (!File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true, true);
@@ -99,7 +97,7 @@ class AboutUsController extends Controller
      */
     public function edit($id)
     {
-        $aboutUs = AboutUs::findOrFail($id);
+       
         $aboutUs = AboutUs::findOrFail($id);
         return view('admin.aboutus.update', compact('aboutUs'));
     }
@@ -140,7 +138,7 @@ class AboutUsController extends Controller
                                 $imageResource = imagecreatefromstring($decodedImage);
                                 if ($imageResource !== false) {
                                     $imageName = time() . '-' . Str::uuid() . '.webp';
-                                    $destinationPath = storage_path('app/public/aboutus');
+                                    $destinationPath = public_path('storage/aboutus/');
     
                                     if (!File::exists($destinationPath)) {
                                         File::makeDirectory($destinationPath, 0755, true, true);

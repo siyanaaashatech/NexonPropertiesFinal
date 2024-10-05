@@ -30,11 +30,13 @@
           <div class="information">
             <h2 class="md-text1">Office Address</h2>
             <h2 class="sm-text1">
-              @if(is_array(json_decode($siteSetting->office_address, true)))
-                {{ implode(', ', json_decode($siteSetting->office_address)) }}
-              @else
-                {{ $siteSetting->office_address }}
-              @endif
+              @if(is_array($addresses = json_decode($siteSetting->office_address, true)) && !empty($addresses))
+              {{ implode(', ', $addresses) }}
+          @else
+              {{ $siteSetting->office_address ?? 'No address available' }}
+          @endif
+          
+            
             </h2>
           </div>
         </div>
@@ -43,11 +45,13 @@
           <div class="information">
             <h2 class="md-text1">Office Contact</h2>
             <h2 class="sm-text1">
-              @if(is_array(json_decode($siteSetting->office_contact, true)))
-                {{ implode(', ', json_decode($siteSetting->office_contact)) }}
-              @else
-                {{ $siteSetting->office_contact }}
-              @endif
+            
+              @if(is_array($contacts = json_decode($siteSetting->office_contact, true)) && !empty($contacts))
+              {{ implode(', ', $contacts) }}
+          @else
+              {{ $siteSetting->office_contact ?? 'No contact available' }}
+          @endif
+          
             </h2>
           </div>
         </div>
@@ -56,16 +60,26 @@
           <div class="information">
             <h2 class="md-text1">Office Email</h2>
             <h2 class="sm-text1">
-              @if(is_array(json_decode($siteSetting->office_email, true)))
+              {{-- @if(is_array(json_decode($siteSetting->office_email, true)))
                 {{ implode(', ', json_decode($siteSetting->office_email)) }}
               @else
                 {{ $siteSetting->office_email }}
-              @endif
+              @endif --}}
+
+
+
+              @if(is_array($email = json_decode($siteSetting->office_email, true)) && !empty($email))
+              {{ implode(', ', $email) }}
+          @else
+              {{ $siteSetting->office_email?? 'No email available' }}
+          @endif
+          
+
             </h2>
           </div>
         </div>
       @endforeach
-      @endforeach
+
     </div>
   </div>
 </section>

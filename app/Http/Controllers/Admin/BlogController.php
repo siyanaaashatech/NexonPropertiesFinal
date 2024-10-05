@@ -57,7 +57,7 @@ class BlogController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/public/blog_images');
+                $destinationPath = public_path('storage/blog_images');
 
 
                 if (!File::exists($destinationPath)) {
@@ -131,7 +131,7 @@ public function update(Request $request, Blog $blog)
         // Remove the old image(s) before uploading the new one
         if (!empty($images)) {
             foreach ($images as $image) {
-                $oldImagePath = storage_path('app/public/blog_images') . '/' . basename($image);
+                $oldImagePath = public_path('storage/blog_images') . '/' . basename($image);
                 if (File::exists($oldImagePath)) {
                     File::delete($oldImagePath);  // Delete old image
                 }
@@ -141,7 +141,7 @@ public function update(Request $request, Blog $blog)
 
         $file = $request->file('image');
         $imageName = time() . '-' . Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $destinationPath = storage_path('app/public/blog_images');
+        $destinationPath =  public_path('storage/blog_images');
 
 
         // Create directory if it doesn't exist
@@ -190,7 +190,7 @@ public function update(Request $request, Blog $blog)
         $images = json_decode($blog->image, true);
         if ($images) {
             foreach ($images as $image) {
-                $filePath = storage_path('app/public/blog_images') . '/' . basename($image);
+                $filePath =  public_path('storage/blog_images') . '/' . basename($image);
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }

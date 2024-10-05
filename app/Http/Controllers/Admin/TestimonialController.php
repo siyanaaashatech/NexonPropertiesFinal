@@ -56,7 +56,7 @@ class TestimonialController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/public/testimonials');
+                $destinationPath = public_path('storage/testimonials');
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
@@ -156,7 +156,7 @@ class TestimonialController extends Controller
                     }
 
                     $imageName = time() . '-' . Str::uuid() . '.webp';
-                    $destinationPath = storage_path('app/public/testimonials');
+                    $destinationPath = public_path('storage/testimonials');
 
                     if (!File::exists($destinationPath)) {
                         File::makeDirectory($destinationPath, 0755, true, true);
@@ -176,7 +176,7 @@ class TestimonialController extends Controller
             $oldImages = json_decode($testimonial->image, true);
             if (is_array($oldImages)) {
                 foreach ($oldImages as $oldImage) {
-                    $oldImagePath = storage_path('app/public/' . str_replace('storage/', '', $oldImage));
+                    $oldImagePath = public_path('storage/' . str_replace('storage/', '', $oldImage));
                     if (File::exists($oldImagePath)) {
                         File::delete($oldImagePath);
                     }

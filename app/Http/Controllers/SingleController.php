@@ -54,8 +54,13 @@ class SingleController extends Controller
         $properties = Property::where('status', 1)->latest()->get();
         $states = Property::distinct('state')->pluck('state');
         return view('frontend.properties', compact('categories', 'subcategories',  'properties', 'states'));
-
     }
+
+    // public function render_catProperty($slug){
+    //     $categories = Property::findOrFail($slug);
+
+    //     return view ('frontend.')
+    // }
 
     public function render_singleProperties($id)
     {
@@ -90,25 +95,25 @@ class SingleController extends Controller
         return view('frontend.searching', compact('properties','categories'));
     }
     
-    public function properties(Request $request, $categoryId = null)
-{
-    
-    $categories = Category::all();
-    $subcategories = SubCategory::all(); 
-    $categoryId = $request->query('categoryId');
-    $propertiesQuery = Property::where('status', 1); 
-    if ($categoryId) {
-        $propertiesQuery->where('category_id', $categoryId); 
-    }
+    // public function properties(Request $request, $categoryId = null)
+    // {
+        
+    //     $categories = Category::all();
+    //     $subcategories = SubCategory::all(); 
+    //     $categoryId = $request->query('categoryId');
+    //     $propertiesQuery = Property::where('status', 1); 
+    //     if ($categoryId) {
+    //         $propertiesQuery->where('category_id', $categoryId); 
+    //     }
 
-        $properties = $propertiesQuery->paginate(6);
+    //         $properties = $propertiesQuery->latest()->get();
 
-        $states = Property::distinct('state')->pluck('state');
+    //         $states = Property::distinct('state')->pluck('state');
 
-        $subcategories = SubCategory::all();
-    
-        return view('frontend.properties', compact('properties', 'categories', 'states', 'subcategories'));
-    }
+    //         $subcategories = SubCategory::all();
+        
+    //         return view('frontend.properties', compact('properties', 'categories', 'states', 'subcategories'));
+    // }
 
     public function render_favourite()
     {

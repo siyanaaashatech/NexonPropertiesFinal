@@ -16,7 +16,7 @@ class CreatePropertiesTable extends Migration
             $table->foreignId('sub_category_id')->constrained('sub_categories')->onDelete('cascade');
             $table->string('street');
             $table->string('suburb');
-            $table->string('state');
+            $table->string('state')->nullable();
             $table->string('post_code');
             $table->string('country')->nullable();
             $table->decimal('price', 15, 2);

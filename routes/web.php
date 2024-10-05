@@ -216,7 +216,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
    Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
-//    Route::get('/properties', [SingleController::class, 'properties'])->name('properties');
+   Route::get('/propertycategories/{id}', [SingleController::class, 'properties'])->name('catProperties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');
    Route::get('/properties/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
    Route::get('/favourite', [SingleController::class, 'render_favourite'])->name('favourite');

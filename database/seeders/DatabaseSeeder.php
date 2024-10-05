@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             SocialLinksTableSeeder::class,
             SiteSettingsTableSeeder::class,
             FaviconsTableSeeder::class,
+            CategorySeeder::class,
+            SubCategorySeeder::class,
+            AmenitySeeder::class,
         ]);
     }
 }

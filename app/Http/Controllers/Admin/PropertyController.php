@@ -54,7 +54,7 @@ class PropertyController extends Controller
             'amenities.*' => 'exists:amenities,id',
             'street' => 'required|string|max:255',
             'suburb' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
+            'state' => 'nullable|string|max:255',
             'post_code' => 'required|string|max:20',
             'country' => 'nullable|string|max:255',
             'price' => 'required|numeric',
@@ -68,7 +68,7 @@ class PropertyController extends Controller
             'keywords' => 'nullable|string',
             'other_images' => 'required|array',
             'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'update_time' => 'nullable|date_format:Y-m-d H:i:s',
+            'update_time' => 'nullable',
         ]);
 
         // Handle the main image upload (base64 images)
@@ -152,7 +152,7 @@ class PropertyController extends Controller
             'amenities.*' => 'exists:amenities,id',
             'street' => 'required|string|max:255',
             'suburb' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
+            'state' => 'nullable|string|max:255',
             'post_code' => 'required|string|max:20',
             'country' => 'nullable|string|max:255',
             'price' => 'required|numeric',

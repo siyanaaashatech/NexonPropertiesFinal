@@ -35,7 +35,7 @@ class FrontViewController extends Controller
     $blogs = Blog::where('status', 1)->latest()->get();
     $testimonials = Testimonial::where('status', 1)->latest()->get();
     $whyuss = Whyus::where('status', 1)->latest()->get();
-    $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
+    $aboutuss = AboutUs::where('status', 1)->first();
     $properties = Property::where('status', 1)->latest()->take(6)->get();
     $propertie = Property::where('status', 1)->latest()->take(6)->get();
 
@@ -73,12 +73,12 @@ class FrontViewController extends Controller
         if ($categoryId) {
             $propertiesQuery->where('category_id', $categoryId);
         }
-        $properties = $propertiesQuery->paginate(1);
+        $properties = $propertiesQuery->paginate(24);
         $states = Property::distinct('state')->pluck('state');
         $amenities = Amenity::all();
 
-        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
-        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
+        return view('frontend.searching', compact('properties', 'categories', 'states','amenities'));
+        // return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
     
     // public function singlePost($slug)
