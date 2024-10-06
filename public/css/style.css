@@ -1082,6 +1082,7 @@ a {
 .card {
     position: relative;
     cursor: pointer;
+
 }
 
 .card:hover {

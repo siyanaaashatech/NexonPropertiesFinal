@@ -15,8 +15,8 @@
                             class="imagecontroller imagecontrollerheight rounded">
 
                         <div class="review-addtofavourite d-flex gap-1 mx-1">
-                            <span class="btn-buttonyellow favourite" data-property-id="{{ $properties->id }}">Add to
-                                favourite</span>
+                            <span class="btn-buttonyellow favourite" data-property-id="{{ $properties->id }}">Add
+                                Favourite</span>
                             <span class="btn-buttongreen" onclick="openReviewfun()">Review</span>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
                             <h3 class="md-text">{{ $properties->title }}</h3>
                             <h4 class="sm-text">
                                 <i class="fa-solid fa-location-dot"></i>
-                                <span>{{ $properties->state }}-{{ $properties->suburb }}-{{ $properties->street }}</span>
+                                <span>{{ $properties->street }}, {{ $properties->address->suburb }}, {{ $properties->address->state }}</span>
                             </h4>
                         </div>
                         <div class="d-flex py-2">
@@ -223,8 +223,9 @@
                                         </div> -->
                                         <div
                                             class="col-md-2 col-5 small-details d-flex align-items-center justify-content-center flex-column">
-                                            <i class="fa-solid fa-house detail-icon-dup mt-1"></i>
-                                            <h2 class="sm-text">Residential</h2>
+                                            <i class="fa-solid fa-list detail-icon-dup mt-1"></i>
+                                            {{-- <i class="fa-solid fa-house detail-icon-dup mt-1"></i> --}}
+                                            <h2 class="sm-text">{{ $properties->category->title }}</h2>
                                         </div>
                                         <div
                                            class="col-md-2 col-5 small-details d-flex flex-column align-items-center justify-content-center gap-1 ">
@@ -256,10 +257,10 @@
                                     <p class="sm-text">{{ $properties->description }}</p>
                                 </div>
                                 <!-- Additional Information -->
-                                <div class="description-body">
+                                {{-- <div class="description-body">
                                     <h3 class="md-text greenhighlight">More Information if Any</h3>
                                     <p class="sm-text">{{ $properties->description }}</p>
-                                </div>
+                                </div> --}}
 
 
 

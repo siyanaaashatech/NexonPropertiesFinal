@@ -34,8 +34,8 @@
             {{-- @endforeach --}}
             <div class="col-md-5 mx-md-4">
                 <div class="title">
-                    <div class="xs-text dashline">Trusted Real estate Care</div>
-                    <div class="lg-text1">Dream living Spaces Setting New Build</div>
+                    <div class="xs-text dashline">{{ $aboutuss->subtitle }}</div>
+                    <div class="lg-text1">{{ $aboutuss->title }}</div>
                 </div>
                 {{-- @foreach ($aboutuss as $aboutus) --}}
                 <p class="sm-text1">{!! Str::substr($aboutuss->description, 0, 500) !!}

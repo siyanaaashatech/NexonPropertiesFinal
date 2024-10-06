@@ -75,10 +75,13 @@ class FrontViewController extends Controller
             $propertiesQuery->where('category_id', $categoryId);
         }
         $properties = $propertiesQuery->paginate(24);
-        $states = Property::distinct('state')->pluck('state');
+        $states = Address::distinct('state')->pluck('state');
         $amenities = Amenity::all();
 
-        return view('frontend.searching', compact('properties', 'categories', 'states','amenities'));
+        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+
+
+        return view('frontend.properties', compact('properties', 'categories', 'states','amenities','otherImages'));
         // return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
     

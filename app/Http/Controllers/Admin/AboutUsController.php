@@ -107,7 +107,7 @@ class AboutUsController extends Controller
     public function update(Request $request, $id)
     {
         $aboutUs = AboutUs::findOrFail($id);
-        
+    
         $request->validate([
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
@@ -118,56 +118,9 @@ class AboutUsController extends Controller
             'status' => 'required|boolean',
         ]);
     
-        $cropData = $request->input('cropData') ? json_decode($request->input('cropData'), true) : null;
-        $images = $aboutUs->image ? json_decode($aboutUs->image, true) : [];
-        
-        // Handle new images
-        if ($request->has('croppedImage') && $request->input('croppedImage')) {
-            $croppedImages = json_decode($request->input('croppedImage'), true);
-            
-            if (!empty($croppedImages)) {
-                $newImages = [];
-                foreach ($croppedImages as $base64Image) {
-                    if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
-                        $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
-                        $decodedImage = base64_decode($base64Image);
+        // Handle image processing
+        $newImages = $this->handleImages($request->input('croppedImage'), $aboutUs->image);
     
-                        if ($decodedImage !== false) {
-                            $imageType = strtolower($type[1]);
-                            if (in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
-                                $imageResource = imagecreatefromstring($decodedImage);
-                                if ($imageResource !== false) {
-                                    $imageName = time() . '-' . Str::uuid() . '.webp';
-                                    $destinationPath = public_path('storage/aboutus/');
-    
-                                    if (!File::exists($destinationPath)) {
-                                        File::makeDirectory($destinationPath, 0755, true, true);
-                                    }
-    
-                                    $savedPath = $destinationPath . '/' . $imageName;
-                                    imagewebp($imageResource, $savedPath);
-                                    imagedestroy($imageResource);
-    
-                                    $relativeImagePath = 'storage/aboutus/' . $imageName;
-                                    $newImages[] = $relativeImagePath;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                // Delete old images
-                foreach ($images as $oldImage) {
-                    $oldImagePath = storage_path('app/public/' . $oldImage);
-                    if (file_exists($oldImagePath)) {
-                        unlink($oldImagePath);
-                    }
-                }
-                
-                $images = $newImages;  // Replace old images with new ones
-            }
-        }
-        
         // Update or create metadata record
         $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $aboutUs->metadata()->updateOrCreate([], [
@@ -177,20 +130,87 @@ class AboutUsController extends Controller
             'slug' => Str::slug($request->title),
         ]);
     
-        // Update aboutus record
+        // Update AboutUs record
         $aboutUs->update([
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'description' => $request->description,
             'keywords' => $request->keywords,
-            'image' => json_encode($images),
+            'image' => json_encode($newImages),
             'status' => $request->status,
         ]);
     
         session()->flash('success', 'AboutUs updated successfully.');
         return redirect()->route('aboutus.index');
     }
-
+    
+    /**
+     * Handle the processing of images.
+     *
+     * @param string|null $croppedImage
+     * @param string|null $currentImageJson
+     * @return array
+     */
+    protected function handleImages($croppedImage, $currentImageJson)
+    {
+        $currentImages = is_string($currentImageJson) ? json_decode($currentImageJson, true) : [];
+        $newImages = [];
+    
+        if ($croppedImage) {
+            $croppedImages = json_decode($croppedImage, true);
+            foreach ($croppedImages as $base64Image) {
+                $imagePath = $this->saveBase64Image($base64Image);
+                if ($imagePath) {
+                    $newImages[] = $imagePath;
+                }
+            }
+    
+            // Delete old images
+            foreach ($currentImages as $oldImage) {
+                $this->deleteImage($oldImage);
+            }
+        }
+    
+        return $newImages;
+    }
+    
+    /**
+     * Save a base64 image and return its path.
+     *
+     * @param string $base64Image
+     * @return string|null
+     */
+    protected function saveBase64Image($base64Image)
+    {
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+            $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+            $decodedImage = base64_decode($base64Image);
+    
+            if ($decodedImage !== false) {
+                $imageType = strtolower($type[1]);
+                if (in_array($imageType, ['jpg', 'jpeg', 'gif', 'png', 'webp'])) {
+                    $imageResource = imagecreatefromstring($decodedImage);
+                    if ($imageResource !== false) {
+                        $imageName = time() . '-' . Str::uuid() . '.webp';
+                        $destinationPath = public_path('storage/aboutus/');
+    
+                        if (!File::exists($destinationPath)) {
+                            File::makeDirectory($destinationPath, 0755, true, true);
+                        }
+    
+                        $savedPath = $destinationPath . '/' . $imageName;
+                        imagewebp($imageResource, $savedPath);
+                        imagedestroy($imageResource);
+    
+                        return 'storage/aboutus/' . $imageName;
+                    }
+                }
+            }
+        }
+    
+        return null;
+    }
+    
     /* Remove the specified aboutus from storage.
      */
     public function destroy($id)
