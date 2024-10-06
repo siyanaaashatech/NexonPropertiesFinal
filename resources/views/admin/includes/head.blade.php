@@ -56,12 +56,10 @@
     <link rel="stylesheet" href="{{ asset('adminasset/css/custom.css') }}" asp-append-version="true" />
 
 
-
-    
-<link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.1.min.css" rel="stylesheet" type="text/css"/>
+    {{-- For Summer Note --}}
 
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> --}}
 
     
     <link rel="stylesheet" href="{{ asset('css/chosen.css') }}">

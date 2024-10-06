@@ -54,7 +54,7 @@
                 <!-- Keywords -->
                 <div class="form-group mb-3">
                     <label for="keywords">Keywords</label>
-                    <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords', $blog->keywords) }}</textarea>
+                    <textarea name="keywords" id="keywords" class="form-control" rows="5" required>{{ old('keywords', $blog->metadata->meta_keywords) }}</textarea>
                 </div>
                
                 <!-- Author -->

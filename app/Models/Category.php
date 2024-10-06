@@ -19,6 +19,10 @@ class Category extends Model
         return $this->belongsTo(Metadata::class);
     }
 
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
     public function properties()
     {
         return $this->hasMany(Property::class);

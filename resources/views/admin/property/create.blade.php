@@ -71,19 +71,22 @@
                                         <label for="description">Description</label>
                                         <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
                                     </div>
-                                 <!-- Main Image Upload -->
-                                 <div class="form-group mb-3 col-md-12">
-                                    <label for="main_image">Main Image</label>
-                                    <input type="file" id="main_image" class="form-control" required>
-                                </div>
-                                <!-- Hidden input to store the base64 string of the main image -->
-                                <input type="hidden" name="main_image[0]" id="main_image_base64" required>
-                                <!-- Cropped Main Image Preview -->
-                                <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
-                                    <label>Cropped Main Image Preview:</label>
-                                    <img id="cropped-image-preview"
-                                        style="max-width: 150px; max-height: 200px; display: block;">
-                                </div>
+                                    <!-- Main Image Upload -->
+                                    <!-- Main Image Upload -->
+                                    <div class="form-group mb-3 col-md-12">
+                                        <label for="main_image">Main Image</label>
+                                        <input type="file" id="main_image" class="form-control" required>
+                                    </div>
+
+
+                                    <!-- Hidden input to store the base64 string of the main image -->
+                                    <input type="hidden" name="main_image[0]" id="main_image_base64" required>
+                                    <!-- Cropped Main Image Preview -->
+                                    <div class="form-group mb-3" id="cropped-preview-container" style="display: none;">
+                                        <label>Cropped Main Image Preview:</label>
+                                        <img id="cropped-image-preview"
+                                            style="max-width: 150px; max-height: 200px; display: block;">
+                                    </div>
 
 
                                     <!-- Other Images Upload -->

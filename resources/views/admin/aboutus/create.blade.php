@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea class="form-control summernote" id="description" name="description" rows="10" required>{{ old('description') }}</textarea>
+                            <textarea class="form-control" id="summernote" name="description" rows="10" required>{{ old('description') }}</textarea>
                         </div>
                         <div class="form-group mb-3">
                             <label for="keywords">Keywords</label>
@@ -186,6 +186,17 @@
             const toast = new bootstrap.Toast(document.querySelector('.toast'));
             toast.show();
         }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 300, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: true // set focus to editable area after initializing summernote
+        });
     });
 </script>
 @endsection

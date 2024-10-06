@@ -108,8 +108,7 @@ class BlogController extends Controller
         $metadata = Metadata::all();
         return view('admin.blogs.update', compact('blog', 'metadata'));
     }
-
-   // Update blog in the database
+// Update blog in the database
 public function update(Request $request, Blog $blog)
 {
     $request->validate([
@@ -122,16 +121,14 @@ public function update(Request $request, Blog $blog)
         'cropData' => 'nullable|string',
     ]);
 
-
     $images = !empty($blog->image) ? json_decode($blog->image, true) : [];
-
 
     // Handle image upload if a new image is provided
     if ($request->hasFile('image')) {
         // Remove the old image(s) before uploading the new one
         if (!empty($images)) {
             foreach ($images as $image) {
-                $oldImagePath = public_path('storage/blog_images') . '/' . basename($image);
+                $oldImagePath = public_path($image);
                 if (File::exists($oldImagePath)) {
                     File::delete($oldImagePath);  // Delete old image
                 }
@@ -141,21 +138,17 @@ public function update(Request $request, Blog $blog)
 
         $file = $request->file('image');
         $imageName = time() . '-' . Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $destinationPath =  public_path('storage/blog_images');
-
+        $destinationPath = public_path('storage/blog_images');
 
         // Create directory if it doesn't exist
         if (!File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true, true);
         }
 
-
         $file->move($destinationPath, $imageName);
         $relativeImagePath = 'storage/blog_images/' . $imageName;
         $images[] = $relativeImagePath;  // Add new image path to array
-        $images[] = $relativeImagePath;  // Add new image path to array
     }
-
 
     // Update metadata for the blog
     $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
@@ -166,7 +159,6 @@ public function update(Request $request, Blog $blog)
         'slug' => Str::slug($request->title)
     ]);
 
-
     // Update the blog record
     $blog->update([
         'title' => $request->title,
@@ -174,10 +166,8 @@ public function update(Request $request, Blog $blog)
         'author' => $request->author,
         'keywords' => $request->keywords,
         'image' => json_encode($images),  // Save updated images
-        'image' => json_encode($images),  // Save updated images
         'status' => $request->status,
     ]);
-
 
     session()->flash('success', 'Blog updated successfully.');
     return redirect()->route('admin.blogs.index');
