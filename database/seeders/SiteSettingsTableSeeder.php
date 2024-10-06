@@ -21,13 +21,13 @@ class SiteSettingsTableSeeder extends Seeder
             if ($siteSetting) {
                 // Update the existing SiteSetting record with metadata and other fields
                 $siteSetting->update([
-                    'office_title' => 'Sample Office',
-                    'office_address' => json_encode(['Street' => '123 Sample St', 'City' => 'Sample City', 'Country' => 'Sample Country']),
+                    'office_title' => 'Nexon Properties',
+                    'office_address' => json_encode(['Street' => '123 Sample St', 'City' => 'Sydney, NSW', 'Country' => 'Australia']),
                     'office_contact' => json_encode(['Phone' => '+123456789', 'Fax' => '+987654321']),
-                    'office_email' => json_encode(['info@example.com', 'support@example.com']),
-                    'office_description' => 'This is a sample office description.',
+                    'office_email' => json_encode(['info@nexonproperty.com', 'nexonproperty@gmail.com']),
+                    'office_description' => 'Nexon Property is a real estate company based in Sydney, Australia.',
                     'established_year' => '2000',
-                    'slogan' => 'Sample Slogan',
+                    'slogan' => 'Your Dream Home, Our Commitment.',
                     'main_logo' => 'logo.png',
                     'side_logo' => 'side_logo.png',
                     'status' => true,
@@ -37,13 +37,13 @@ class SiteSettingsTableSeeder extends Seeder
             } else {
                 // If the SiteSetting record does not exist, create it
                 SiteSetting::create([
-                    'office_title' => 'Sample Office',
-                    'office_address' => json_encode(['Street' => '123 Sample St', 'City' => 'Sample City', 'Country' => 'Sample Country']),
+                   'office_title' => 'Nexon Properties',
+                    'office_address' => json_encode(['Street' => '123 Sample St', 'City' => 'Sydney, NSW', 'Country' => 'Australia']),
                     'office_contact' => json_encode(['Phone' => '+123456789', 'Fax' => '+987654321']),
-                    'office_email' => json_encode(['info@example.com', 'support@example.com']),
-                    'office_description' => 'This is a sample office description.',
+                    'office_email' => json_encode(['info@nexonproperty.com', 'nexonproperty@gmail.com']),
+                    'office_description' => 'Nexon Property is a real estate company based in Sydney, Australia.',
                     'established_year' => '2000',
-                    'slogan' => 'Sample Slogan',
+                    'slogan' => 'Your Dream Home, Our Commitment.',
                     'main_logo' => 'logo.png',
                     'side_logo' => 'side_logo.png',
                     'status' => true,

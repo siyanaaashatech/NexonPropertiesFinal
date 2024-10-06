@@ -102,16 +102,73 @@
                         <!-- Suburb -->
                         <div class="form-group mb-3">
                             <label for="suburb">Suburb</label>
-                            <input type="text" name="suburb" id="suburb" class="form-control"
-                                value="{{ old('suburb', $property->suburb) }}" required>
+                            <select name="suburb" id="suburb" class="form-control" required>
+                                <option value="">Select Suburb</option>
+                                <option value="Sydney" {{ old('suburb') == 'Sydney' ? 'selected' : '' }}>Sydney
+                                </option>
+                                <option value="Parramatta" {{ old('suburb') == 'Parramatta' ? 'selected' : '' }}>
+                                    Parramatta</option>
+                                <option value="Penrith" {{ old('suburb') == 'Penrith' ? 'selected' : '' }}>Penrith
+                                </option>
+                                <option value="Manly" {{ old('suburb') == 'Manly' ? 'selected' : '' }}>Manly
+                                </option>
+                                <option value="Bondi" {{ old('suburb') == 'Bondi' ? 'selected' : '' }}>Bondi
+                                </option>
+                                <option value="Coogee" {{ old('suburb') == 'Coogee' ? 'selected' : '' }}>Coogee
+                                </option>
+                                <option value="Randwick" {{ old('suburb') == 'Randwick' ? 'selected' : '' }}>
+                                    Randwick</option>
+                                <option value="Maroubra" {{ old('suburb') == 'Maroubra' ? 'selected' : '' }}>
+                                    Maroubra</option>
+                                <option value="Blacktown" {{ old('suburb') == 'Blacktown' ? 'selected' : '' }}>
+                                    Blacktown</option>
+                                <option value="Liverpool" {{ old('suburb') == 'Liverpool' ? 'selected' : '' }}>
+                                    Liverpool</option>
+                                <option value="Fairfield" {{ old('suburb') == 'Fairfield' ? 'selected' : '' }}>
+                                    Fairfield</option>
+                                <option value="Dee Why" {{ old('suburb') == 'Dee Why' ? 'selected' : '' }}>Dee Why
+                                </option>
+                                <option value="Narrabeen" {{ old('suburb') == 'Narrabeen' ? 'selected' : '' }}>
+                                    Narrabeen</option>
+                                <option value="Palm Beach" {{ old('suburb') == 'Palm Beach' ? 'selected' : '' }}>
+                                    Palm Beach</option>
+                                <option value="Newtown" {{ old('suburb') == 'Newtown' ? 'selected' : '' }}>Newtown
+                                </option>
+                                <option value="Balmain" {{ old('suburb') == 'Balmain' ? 'selected' : '' }}>Balmain
+                                </option>
+                                <option value="Glebe" {{ old('suburb') == 'Glebe' ? 'selected' : '' }}>Glebe
+                                </option>
+                                <option value="Ashfield" {{ old('suburb') == 'Ashfield' ? 'selected' : '' }}>
+                                    Ashfield</option>
+                                <option value="Strathfield" {{ old('suburb') == 'Strathfield' ? 'selected' : '' }}>
+                                    Strathfield</option>
+                                <option value="North Sydney"
+                                    {{ old('suburb') == 'North Sydney' ? 'selected' : '' }}>North Sydney</option>
+                                <option value="Mosman" {{ old('suburb') == 'Mosman' ? 'selected' : '' }}>Mosman
+                                </option>
+                                <option value="Chatswood" {{ old('suburb') == 'Chatswood' ? 'selected' : '' }}>
+                                    Chatswood</option>
+                                <option value="Hornsby" {{ old('suburb') == 'Hornsby' ? 'selected' : '' }}>Hornsby
+                                </option>
+                                <option value="Turramurra" {{ old('suburb') == 'Turramurra' ? 'selected' : '' }}>
+                                    Turramurra</option>
+                                <option value="Hurstville" {{ old('suburb') == 'Hurstville' ? 'selected' : '' }}>
+                                    Hurstville</option>
+                                <option value="Kogarah" {{ old('suburb') == 'Kogarah' ? 'selected' : '' }}>Kogarah
+                                </option>
+                                <option value="Rockdale" {{ old('suburb') == 'Rockdale' ? 'selected' : '' }}>
+                                    Rockdale</option>
+                            </select>
                         </div>
-
                         <!-- State -->
                         <div class="form-group mb-3">
                             <label for="state">State</label>
-                            <input type="text" name="state" id="state" class="form-control"
-                                value="{{ old('state', $property->state) }}" required>
-                        </div>
+                            <select name="state" id="state" class="form-control" required>
+                                <option value="">Select State</option>
+                                <option value="NSW"
+                                    {{ old('state', $property->state) == 'NSW' ? 'selected' : '' }}>New South Wales
+                                    (NSW)</option>
+                            </select>
 
                         <!-- Post Code -->
                         <div class="form-group mb-3">

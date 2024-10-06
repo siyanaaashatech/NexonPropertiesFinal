@@ -82,7 +82,7 @@
               @endif
               <div class="item-desc mx-1">
                 <h3 class="md-text1 mb-2">{{ $whyus->title }}</h3>
-                <p class="extra-small-text1">{{ $whyus->description }}</p>
+                <p class="extra-small-text1">{!! Str::substr($whyus->description, 0, 100) !!}</p>
               </div>
             </div>
           @endforeach

@@ -55,7 +55,7 @@ class WhyusController extends Controller
 
             if ($imageResource !== false) {
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path('app/public/whyus');
+                $destinationPath = public_path('storage/whyus');
 
                 if (!File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true, true);
@@ -134,7 +134,7 @@ class WhyusController extends Controller
                         $imageResource = imagecreatefromstring($decodedImage);
                         if ($imageResource !== false) {
                             $imageName = time() . '-' . Str::uuid() . '.webp';
-                            $destinationPath = storage_path('app/public/whyus');
+                            $destinationPath = public_path('storage/whyus');
 
                             if (!File::exists($destinationPath)) {
                                 File::makeDirectory($destinationPath, 0755, true, true);
@@ -149,7 +149,7 @@ class WhyusController extends Controller
 
                             // Delete old image if exists
                             if (!empty($images)) {
-                                $oldImagePath = storage_path('app/public/' . $images[0]);
+                                $oldImagePath = public_path('storage/whyus/' . $images[0]);
                                 if (file_exists($oldImagePath)) {
                                     unlink($oldImagePath);
                                 }

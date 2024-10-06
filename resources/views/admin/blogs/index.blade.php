@@ -60,12 +60,12 @@
                                         <td>
                                             <div style="display: flex; flex-direction: row; gap: 5px;">
                                                 <!-- Edit Button -->
-                                                <a href="{{ route('admin.blogs.edit', ['blog' => $blog->id]) }}" class="btn btn-outline-primary btn-sm">
+                                                <a href="{{ route('admin.blogs.edit', ['blog' => $blog->id]) }}" class="btn btn-outline-primary btn-sm" onclick="return confirm('Are you sure you want to edit this blog?');">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             
                                                 <!-- Delete Button -->
-                                                <form action="{{ route('admin.blogs.destroy', ['blog' => $blog->id]) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('admin.blogs.destroy', ['blog' => $blog->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this blog?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger btn-sm">

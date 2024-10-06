@@ -99,6 +99,11 @@
         the luxury waterfront markets, Simone serves an extensive and elite worldwide client base. </p>
     </div>
     <div class="row py-1 property-body">
+
+    @php
+    $properties = \App\Models\Property::latest()->take(5)->get(); 
+
+@endphp
       @if(count($properties) > 0)
         @php
         $firstPropeties = $properties->shift();
@@ -114,8 +119,7 @@
           class="imagecontroller imagecontrollerheight imagecontrollermd " data-src="holder.js/200x250?theme=thumb" />
           <div class="property-details">
           <div class="md-text1 p-0 m-0"> {{ $firstPropeties->title}}</div>
-          <div class="md-text highlight text-center p-0 m-0">{{ $firstPropeties->state}}-{{ $firstPropeties->street}}
-          </div>
+          <div class="md-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $firstPropeties->state }}-{{ $firstPropeties->suburb }}-{{ $firstPropeties->street }}</div>
           <div class="d-flex justify-content-between gap-3 p-0 mx-4">
             <p class="detail-item sm-text1">
             <span class="sm-text1">{{ $firstPropeties->bedrooms}}</span><br />
@@ -127,7 +131,7 @@
             </p>
             <p class="detail-item sm-text1">
             <span class="sm-text1">{{ $firstPropeties->area}}</span><br />
-            <i class="fa-solid fa-bed detail-icon"></i>
+            <i class="fa-solid fa-chart-area  detail-icon"></i>
             </p>
           </div>
           <p class="extra-small-text1 px-2">{{ $firstPropeties->description}} </p>
@@ -137,6 +141,7 @@
       </a>
       <div class="col-md-6 sub-image-content">
         <div class="row ">
+          
           @foreach ($properties as $property)
             <div class="col-md-6 mb-1 gap-sm-1">
             <a class="col-md-4 mb-4" href="{{route('singleproperties', ['id' => $property->id])}}">
@@ -147,8 +152,8 @@
          @endphp
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
               <div class="property-details">
-                <div class="md-text1 p-0 m-0">{{ $property->title }}</div>
-                <div class="sm-text highlight text-center p-0 m-0">{{ $property->title }}</div>
+                <div class="md-text1 p-0 m-0"> {{ strlen($property->title) >27 ? substr($property->title, 0, 27)  : $property->title}}</div>
+                <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->state }}-{{ $property->suburb }}-{{ $property->street }}</div>
                 <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
                   <span class="sm-text1">{{ $property->bedrooms }}</span><br />
@@ -160,7 +165,7 @@
                 </p>
                 <p class="detail-item sm-text1">
                   <span class="sm-text1">{{ $property->area }}</span><br />
-                  <i class="fa-solid fa-bed detail-icon"></i>
+                  <i class="fa-solid fa-chart-area  detail-icon"></i>
                 </p>
                 </div>
                 <p class="extra-small-text1 px-2 text-center">

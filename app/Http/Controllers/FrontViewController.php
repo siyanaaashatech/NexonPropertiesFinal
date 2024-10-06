@@ -10,6 +10,9 @@ use App\Models\Whyus;
 use App\Models\AboutUs;
 use App\Models\Subcategory;
 use App\Models\Amenity;
+use App\Models\Favorites;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 class FrontViewController extends Controller
@@ -27,25 +30,39 @@ class FrontViewController extends Controller
     }
 
     public function index()
-    {
-        $services = Service::where('status', 1)->latest()->take(4)->get();
-        $blogs = Blog::where('status', 1)->latest()->get();
-        $testimonials = Testimonial::where('status', 1)->latest()->get();
-        $whyuss = Whyus::where('status', 1)->latest()->get();
-        $aboutuss = AboutUs::where('status', 1)->latest()->take(1)->get();
-        $properties = Property::where('status', 1)->latest()->take(6)->get();
-        $propertie = Property::where('status', 1)->latest()->take(6)->get();
-        $subPropertyCount = Property::distinct('suburb')->count();
-        $categories = Category::all();
-        $states = Property::distinct('state')->pluck('state');
-        $subcategories = Subcategory::all();
-        $suburbs = Property::distinct('suburb')->pluck('suburb');
-        $amenities = Amenity::all();
+{
+    $services = Service::where('status', 1)->latest()->take(4)->get();
+    $blogs = Blog::where('status', 1)->latest()->get();
+    $testimonials = Testimonial::where('status', 1)->latest()->get();
+    $whyuss = Whyus::where('status', 1)->latest()->get();
+    $aboutuss = AboutUs::where('status', 1)->first();
+    $properties = Property::where('status', 1)->latest()->take(6)->get();
+    $propertie = Property::where('status', 1)->latest()->take(6)->get();
 
-        return view('frontend.welcome', compact([
-            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties', 'categories','subcategories', 'states', 'suburbs','amenities','propertie','subPropertyCount'
-        ]));
-    }
+    // Fetch suburb counts
+    $suburbs = Property::select('suburb')
+        ->groupBy('suburb')
+        ->orderByRaw('COUNT(*) DESC')
+        ->take(4)
+        ->get()
+        ->map(function ($suburb) {
+            return [
+                'suburb' => $suburb->suburb,
+                'count' => Property::where('suburb', $suburb->suburb)->count(),
+            ];
+        });
+
+    $categories = Category::all();
+    $states = Property::distinct('state')->pluck('state');
+    $subcategories = Subcategory::all();
+    $amenities = Amenity::all();
+
+    return view('frontend.welcome', compact([
+        'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties',
+        'categories', 'subcategories', 'states', 'amenities', 'propertie', 'suburbs'
+    ]));
+}
+
     public function properties(Request $request, $categoryId = null)
     {
         $categoryId = $request->query('categoryId');
@@ -56,11 +73,12 @@ class FrontViewController extends Controller
         if ($categoryId) {
             $propertiesQuery->where('category_id', $categoryId);
         }
-        $properties = $propertiesQuery->paginate(1);
+        $properties = $propertiesQuery->paginate(24);
         $states = Property::distinct('state')->pluck('state');
         $amenities = Amenity::all();
 
-        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
+        return view('frontend.searching', compact('properties', 'categories', 'states','amenities'));
+        // return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
     
     // public function singlePost($slug)
@@ -69,4 +87,14 @@ class FrontViewController extends Controller
     //     $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
     //     return view('singleblogpost', compact('blogs', 'relatedPosts'));
     // }
+
+    public function userFavorites()
+    {
+        // Fetch only the authenticated user's favorites with related property details
+        $favorites = Favorites::with('property')
+                              ->where('email', Auth::user()->email)
+                              ->get();
+
+        return view('frontend.favorites.index', compact('favorites'));
+    }
 }

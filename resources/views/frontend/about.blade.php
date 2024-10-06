@@ -9,7 +9,7 @@
                 <div class="row d-flex">
                     <div
                         class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                        <img src="{{ asset('image/abou1.png') }}" alt="" srcset=""
+                        <img src="{{ asset('image/about.jpg') }}" alt="" srcset=""
                             class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
                         <div class="flex bannercontentheight">
                             <div class="bannercontentinnerheight ">
@@ -63,22 +63,6 @@
         @endif
     </div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- team member -->

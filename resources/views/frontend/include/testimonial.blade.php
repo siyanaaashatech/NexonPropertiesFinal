@@ -1,11 +1,12 @@
-<section class="container-fluid container-fluid-background gapbetweensection">
+<section class="container-fluid indextestimonial">
   <div class="container  d-flex flex-column justify-content-center align-items-center">
     <div class="title">
-      <div class="xs-text dashline">Trusted Real estate Care</div>
-      <div class="lg-text1">Testimonials we give</div>
+      <div class="xs-text1 dashline">Trusted Real estate Care</div>
+      <div class="lg-text">Testimonials we give</div>
     </div>
     <div class="content-body d-md-flex justify-content-center align-items-center pt-3">
-      <div class="col-md-8">
+    <button class="next-button mx-3 mt-2 largescr" id="forward" onclick="forward()"><i class="fa-solid fa-arrow-right "></i></button>    
+    <div class="col-md-7">
         @foreach ($testimonials as $testimonial)
           <div class="card flex-md-row box-shadow  py-4 testimonialcard" id="grabcard">
             <div class="row px-4 rounded">
@@ -49,10 +50,11 @@
           </div>
     @endforeach
       </div>
-      <div class="col-md-2 mx-md-4 d-flex gap-2 pt-2">
-        <button class="next-button" id="forward" onclick="forward()"><i class="fa-solid fa-arrow-right "></i></button>
-        <button class="next-button" id="backward" onclick="backward()"><i class="fa-solid fa-arrow-left "></i></button>
-      </div>
+
+      <div class="d-flex mt-2 mx-2">
+      <button class="next-button mx-2 smallscr" id="forward" onclick="forward()"><i class="fa-solid fa-arrow-right "></i></button>    
+        <button class="next-button mx-2" id="backward" onclick="backward()"><i class="fa-solid fa-arrow-left "></i></button>
+    </div>
     </div>
   </div>
 </section>

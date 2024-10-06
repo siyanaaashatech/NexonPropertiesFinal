@@ -59,7 +59,7 @@
                         aria-expanded="{{ Request::segment(2) == 'site-settings' ? 'true' : 'false' }}"
                         aria-controls="dashboard1">
                         <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                            <span class="nav-link-icon"><i class="fas fa-cogs"></i></span>
                             <span class="nav-link-text ps-1">Site Settings</span>
                         </div>
                     </a>
@@ -69,7 +69,8 @@
                             <a class="nav-link {{ Request::segment(2) == 'site-settings' ? 'active' : '' }}"
                                 href="{{ route('sitesettings.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <i class="fa fa-angle-double-right"></i> Site Setting
+                                    <span class="nav-link-icon"><i class="fas fa-cog"></i></span>
+                            <span class="nav-link-text ps-1">Sitesetting</span>
                                 </div>
                             </a>
                         </li>
@@ -78,20 +79,21 @@
                             <a class="nav-link {{ Request::segment(2) == 'favicons' ? 'active' : '' }}"
                                 href="{{ route('favicons.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <i class="fa fa-angle-double-right"></i> Favicon
+                                    <span class="nav-link-icon"><i class="fas fa-globe"></i></span>
+                            <span class="nav-link-text ps-1">Favicons</span>
                                 </div>
                             </a>
                         </li>
 
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link {{ Request::segment(2) == 'social-links' ? 'active' : '' }}"
                                 href="{{ route('social-links.index') }}">
                                 <div class="d-flex align-items-center">
                                     <i class="fa fa-angle-double-right"></i> Social Links
                                 </div>
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
                 </li>
@@ -115,7 +117,7 @@
                         aria-expanded="{{ Request::segment(2) == 'information' ? 'true' : 'false' }}"
                         aria-controls="dashboard2">
                         <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                            <span class="nav-link-icon"><i class="fas fa-info"></i></span>
                             <span class="nav-link-text ps-1">Informations</span>
                         </div>
                     </a>
@@ -126,7 +128,7 @@
                             <a class="nav-link {{ Request::is('admin/aboutus*') ? 'active' : '' }}"
                                 href="{{ route('aboutus.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-icon"><i class="fas fa-history"></i></span>
                                     <span class="nav-link-text ps-1">About Us</span>
                                 </div>
                             </a>
@@ -138,7 +140,7 @@
                             <a class="nav-link {{ Request::is('admin/about_descriptions*') ? 'active' : '' }}"
                                 href="{{ route('admin.about_descriptions.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-icon"><i class="fas fa-balance-scale"></i></span>
                                     <span class="nav-link-text ps-1">MVC</span>
                                 </div>
                             </a>
@@ -150,7 +152,7 @@
                             <a class="nav-link {{ Request::is('admin/whyus*') ? 'active' : '' }}"
                                 href="{{ route('whyus.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-icon"><i class="fas fa-handshake"></i></span>
                                     <span class="nav-link-text ps-1">Why Us</span>
                                 </div>
                             </a>
@@ -163,7 +165,7 @@
                             <a class="nav-link {{ Request::is('admin/team*') ? 'active' : '' }}"
                                 href="{{ route('admin.team.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-icon"><i class="fas fa-user-friends"></i></span>
                                     <span class="nav-link-text ps-1">Team</span>
                                 </div>
                             </a>
@@ -174,7 +176,7 @@
                             <a class="nav-link {{ Request::is('admin/services*') ? 'active' : '' }}"
                                 href="{{ route('services.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"><i class="fas fa-concierge-bell"></i></span>
+                                    <span class="nav-link-icon"><i class="fas fa-bullhorn"></i></span>
                                     <span class="nav-link-text ps-1">Services</span>
                                 </div>
                             </a>
@@ -185,7 +187,7 @@
                             <a class="nav-link {{ Request::is('admin/faqs*') ? 'active' : '' }}"
                                 href="{{ route('admin.faqs.index') }}">
                                 <div class="d-flex align-items-center">
-                                    <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                    <span class="nav-link-icon"><i class="fas fa-question-circle"></i></span>
                                     <span class="nav-link-text ps-1">FAQS</span>
                                 </div>
                             </a>
@@ -196,7 +198,7 @@
                         <a class="nav-link {{ Request::is('admin/contact*') ? 'active' : '' }}"
                         href="{{ route('contact.index') }}">
                          <div class="d-flex align-items-center">
-                             <span class="nav-link-icon"><i class="fas fa-address-book"></i></span>
+                             <span class="nav-link-icon"><i class="fas fa-phone"></i></span>
                              <span class="nav-link-text ps-1">Contact</span>
                          </div>
                      </a>
@@ -208,14 +210,28 @@
                      <a class="nav-link {{ Request::is('admin/review*') ? 'active' : '' }}"
                         href="{{ route('review.index') }}">
                          <div class="d-flex align-items-center">
-                             <span class="nav-link-icon"><i class="fas fa-address-book"></i></span>
-                             <span class="nav-link-text ps-1">Review</span>
+                             <span class="nav-link-icon"><i class="fas fa-star"></i></span>
+                             <span class="nav-link-text ps-1">Reviews/Ratings</span>
                          </div>
                      </a>
                  </li>
+
+                 <li class="nav-item">
+                    <!-- Top-level link for Favorites -->
+                    <a class="nav-link {{ Request::is('admin/favorites*') ? 'active' : '' }}"
+                       href="{{ route('favorites.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><i class="fas fa-heart"></i></span>
+                            <span class="nav-link-text ps-1">User's Favorite</span>
+                        </div>
+                    </a>
+                </li>
+
                     </ul>
                 </li>
                 </li>
+
+
 
                 {{-- For Properties Management --}}
 
@@ -232,7 +248,7 @@
                             aria-expanded="{{ Request::segment(2) == 'information' ? 'true' : 'false' }}"
                             aria-controls="dashboard3">
                             <div class="d-flex align-items-center">
-                                <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                <span class="nav-link-icon"><i class="fas fa-map-marker-alt"></i></span>
                                 <span class="nav-link-text ps-1">Properties</span>
                             </div>
                         </a>
@@ -242,7 +258,7 @@
                                 <a class="nav-link {{ Request::is('admin/categories*') ? 'active' : '' }}"
                                     href="{{ route('categories.index') }}">
                                     <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                        <span class="nav-link-icon"><i class="fas fa-project-diagram"></i></span>
                                         <span class="nav-link-text ps-1">Category</span>
                                     </div>
                                 </a>
@@ -254,7 +270,7 @@
                                 <a class="nav-link {{ Request::is('admin/subcategories*') ? 'active' : '' }}"
                                     href="{{ route('subcategories.index') }}">
                                     <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                        <span class="nav-link-icon"><i class="fas fa-tags"></i></span>
                                         <span class="nav-link-text ps-1">Subcategories</span>
                                     </div>
                                 </a>
@@ -264,7 +280,7 @@
                                 <a class="nav-link {{ Request::is('admin/amenities*') ? 'active' : '' }}"
                                     href="{{ route('amenities.index') }}">
                                     <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                        <span class="nav-link-icon"><i class="fas fa-shower"></i></span>
                                         <span class="nav-link-text ps-1">Amenities</span>
                                     </div>
                                 </a>
@@ -275,7 +291,7 @@
                                 <a class="nav-link {{ Request::is('admin/property*') ? 'active' : '' }}"
                                     href="{{ route('property.index') }}">
                                     <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon"><i class="fas fa-info-circle"></i></span>
+                                        <span class="nav-link-icon"><i class="fas fa-building"></i></span>
                                         <span class="nav-link-text ps-1">Properties</span>
                                     </div>
                                 </a>
@@ -306,7 +322,7 @@
                             aria-expanded="{{ Request::segment(2) == 'users' ? 'true' : 'false' }}"
                             aria-controls="dashboard4">
                             <div class="d-flex align-items-center">
-                                <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                <span class="nav-link-icon"><i class="fas fa-folder"></i></span>
                                 <span class="nav-link-text ps-1">Content Management</span>
                             </div>
                         </a>
@@ -328,7 +344,7 @@
                                 <a class="nav-link {{ Request::is('admin/testimonials*') ? 'active' : '' }}"
                                     href="{{ route('testimonials.index') }}">
                                     <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon"><i class="fas fa-users"></i></span>
+                                        <span class="nav-link-icon"><i class="fas fa-comments"></i></span>
                                         <span class="nav-link-text ps-1">Testimonials</span>
                                     </div>
                                 </a>
@@ -366,7 +382,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.permissions.index') }}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon">
-                                            <i class="fas fa-sort-alpha-up"></i>
+                                            <i class="fas fa-user-shield"></i>
                                             <!-- <span class="fas fa-comments"></span> Font Awesome fontawesome.com --></span><span
                                             class="nav-link-text ps-1">Permissions</span></div>
                                 </a>
@@ -374,7 +390,7 @@
                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.roles.index') }}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon">
-                                            <i class="fas fa-sort-alpha-up"></i>
+                                            <i class="fas fa-user-tag"></i>
                                             <!-- <span class="fas fa-comments"></span> Font Awesome fontawesome.com --></span><span
                                             class="nav-link-text ps-1">Roles</span></div>
                                 </a>
@@ -385,7 +401,7 @@
                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.users.index') }}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon">
-                                            <i class="fas fa-sort-alpha-up"></i>
+                                            <i class="fas fa-users"></i>
                                             <!-- <span class="fas fa-comments"></span> Font Awesome fontawesome.com --></span><span
                                             class="nav-link-text ps-1">Users</span></div>
                                 </a>
@@ -427,5 +443,4 @@
         </div>
     </div>
 </nav>
-
 

@@ -35,19 +35,29 @@
                             </thead>
                             <tbody>
                                 @foreach($siteSettings as $setting)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $setting->office_title }}</td>
-                                        <td>{{ $setting->office_address }}</td>
-                                        <td>{{ $setting->office_contact }}</td>
-                                        <td>
-                                            @if($setting->status)
-                                                <span class="badge bg-success">Active</span>
-                                            @else
-                                                <span class="badge bg-danger">Inactive</span>
-                                            @endif
-                                        </td>
-                                        <td>
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $setting->office_title }}</td>
+                                    <td>
+                                        @if(is_array(json_decode($setting->office_address, true)))
+                                            {{ implode(', ', json_decode($setting->office_address, true)) }}
+                                        @else
+                                            {{ $setting->office_address }}
+                                        @endif
+                                    </td>
+                                    <td>@if(is_array(json_decode($setting->office_contact, true)))
+                                        {{ implode(', ', json_decode($setting->office_contact, true)) }}
+                                    @else
+                                        {{ $setting->office_contact }}
+                                    @endif</td>
+                                    <td>
+                                        @if($setting->status)
+                                            <span class="badge bg-success">Active</span>
+                                        @else
+                                            <span class="badge bg-danger">Inactive</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                             <a href="{{ route('sitesettings.edit', $setting->id) }}" class="btn btn-outline-primary btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -75,7 +85,6 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
 
-                                                            
                                                             <div class="modal-body">
                                                                 <form action="{{ route('sitesettings.update', $setting->metadata->id) }}" method="POST">
                                                                     @csrf

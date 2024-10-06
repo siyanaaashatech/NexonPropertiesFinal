@@ -1,20 +1,22 @@
 @extends('frontend.layouts.master')
 @section("content")
-
-
-
 <section class="singlepage pt-4">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
+                <style>
+                    .delted:hover{
+                        background: red;
+                    }
+                </style>
         
                 <div class="row">
             @foreach ($properties as $property)
+          
                                         <a class="col-md-5 my-2" href="{{route('singleproperties', ['id' => $property->id])}}">
-                                      
-                                            <div class="card">
-                                            <i class="fa-solid fa-trash"></i>
-                                           
+                                    
+                                            <div class="card deletecard">    
+                                            <i class="fa-solid fa-trash delted" onclick="deletefav(this)"></i>                                   
                                                 @php
                                                     $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
                                                     $mainImage = !empty($mainImages) ? asset('' . $mainImages[0]) : asset('images/default-placeholder.png');
@@ -55,7 +57,7 @@
                     <ul class="customui">
                         @foreach ($properties as $property)
                             <li class="py-1">
-                                <a href="{{ route('singleblogpost', ["id" => $property->id])}}" class="md-text"> <i
+                                <a href="#" class="md-text"> <i
                                         class="fa-solid fa-hand-point-right customicons customiconssmall "></i>
                                     {{$property->title}}</a>
                             </li>
@@ -74,10 +76,10 @@
                                                     @endphp
                                                     <img src="{{ $mainImage }}" alt="Property Image" class="feature-smallimg"
                                                         data-src="holder.js/200x250?theme=thumb" />
-
                                                     <div class="featurlist-description mx-3">
                                                         <h3 class="sm-text">{{$property->title}}</h3>
                                                         <p class="sm-text highlight"> {{$property->price}}</p>
+                                                        
                                                     </div>
                                                 </a>
                         @endforeach
@@ -87,22 +89,24 @@
         </div>
     </div>
 </section>
-
-
 @endsection
 <!-- each team des -->
 <!-- banner section -->
-
-
 <script>
-
     function changepage(element) {
         const pageli = document.getElementsByClassName("nextli");
         for (let i = 0; i < pageli.length; i++) {
             pageli[i].classList.remove("activeli");
-
         }
-
         element.classList.add("activeli")
     }
+
+    function deletefav(icon) {
+    const card = icon.closest('.deletecard');
+    if (card) {
+        card.remove();
+    }
+}
+
+
 </script>

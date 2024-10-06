@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.info_box{
+  height: 300px;
+  border: 1px solid #232e3c;
+}

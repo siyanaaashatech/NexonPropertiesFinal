@@ -130,7 +130,7 @@ class TeamController extends Controller
             if ($imageResource !== false) {
                 // Generate unique image name
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath = storage_path("app/public/$folder");
+                $destinationPath =  public_path('storage/$folder');
 
                 // Create the directory if it does not exist
                 if (!File::exists($destinationPath)) {
@@ -164,7 +164,7 @@ class TeamController extends Controller
     private function deleteImage($image, $folderPath)
     {
         if ($image) {
-            $imagePath = storage_path('app/public/' . $folderPath . basename($image));
+            $imagePath =  public_path('storage/' . $folderPath . basename($image));
 
             // Check if the image exists and delete it
             if (file_exists($imagePath)) {

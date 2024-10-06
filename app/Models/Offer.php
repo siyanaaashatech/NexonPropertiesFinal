@@ -13,5 +13,5 @@ class Offer extends Model
     public function property()
     {
         return $this->belongsTo(Property::class, 'properties_id');
-    }
+    } 
 }
