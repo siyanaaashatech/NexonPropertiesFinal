@@ -78,10 +78,7 @@ class FrontViewController extends Controller
         $states = Address::distinct('state')->pluck('state');
         $amenities = Amenity::all();
 
-        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-
-
-        return view('frontend.properties', compact('properties', 'categories', 'states','amenities','otherImages'));
+        return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
         // return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
     }
     
