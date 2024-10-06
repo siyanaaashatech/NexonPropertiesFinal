@@ -50,22 +50,25 @@
                 $('#state').change(function() {
                   var state = $(this).val();
                   if (state) {
-                    $.ajax({
-                      url: '/get-suburbs/' + state,
-                      type: 'GET',
-                      success: function(data) {
-                        $('#suburb').empty();
-                        $('#suburb').append('<option value="" disabled selected>Select Region</option>');
-                        $.each(data, function(key, value) {
-                          $('#suburb').append('<option value="' + value + '">' + value + '</option>');
-                        });
-                      }
-                    });
+                      $.ajax({
+                          url: '/get-suburbs-by-state/' + encodeURIComponent(state),
+                          type: 'GET',
+                          success: function(data) {
+                              $('#suburb').empty();
+                              $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+                              $.each(data, function(key, value) {
+                                  $('#suburb').append('<option value="' + value + '">' + value + '</option>');
+                              });
+                          },
+                          error: function(xhr, status, error) {
+                              console.error("Error fetching suburbs:", error);
+                          }
+                      });
                   } else {
-                    $('#suburb').empty();
-                    $('#suburb').append('<option value="" disabled selected>Select Region</option>');
+                      $('#suburb').empty();
+                      $('#suburb').append('<option value="" disabled selected>Select Region</option>');
                   }
-                });
+              });
               });
               </script>
              
@@ -213,6 +216,18 @@
 </div>
 
 </section>
+<style>
+  .ui-slider-horizontal {
+    height: 8px;
+  }
+  .ui-slider .ui-slider-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    top: -5px;
+    cursor: pointer;
+  }
+</style>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
