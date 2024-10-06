@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
     checkbox.addEventListener('change', updateSearch);
   });
 
-  // Attach event listeners to all filters
+
   ['bedrooms', 'bathrooms', 'min_area', 'max_area', 'min_price', 'max_price'].forEach(filterName => {
     const filterElement = document.getElementById(filterName);
     if (filterElement) {
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
     slide: function(event, ui) {
       updatePriceDisplay(ui.values[0], ui.values[1]);
     },
-    change: updateSearch // Add this line to trigger updateSearch on slider change
+    change: updateSearch 
   });
 
   function updatePriceDisplay(minPrice, maxPrice) {
@@ -318,12 +318,11 @@ document.addEventListener('DOMContentLoaded', function () {
     $("#max_price").val(maxPrice);
   }
 
-  // Initialize the price display
+
   updatePriceDisplay($("#price-slider").slider("values", 0), $("#price-slider").slider("values", 1));
 
-  // Update hidden inputs when form is submitted
   searchForm.addEventListener('submit', function(e) {
-    updateSearch(); // Ensure all current values are included
+    updateSearch(); 
   });
 });
 </script>
@@ -412,4 +411,3 @@ document.addEventListener('DOMContentLoaded', function () {
         categorySelect.addEventListener('change', filterSubcategories);
     });
 </script>
-

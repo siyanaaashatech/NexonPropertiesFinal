@@ -73,6 +73,16 @@
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@elseif (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
     <main class="main" id="top">
         <div class="container" data-layout="container">
             <script>
@@ -131,6 +141,16 @@
                                                         <h3>Account Login</h3>
                                                     </div>
                                                 </div>
+                                                <!-- Error Message Display -->
+                                                    @if ($errors->any())
+                                                        <div class="alert alert-danger">
+                                                            <ul class="mb-0">
+                                                                @foreach ($errors->all() as $error)
+                                                                    <li>{{ $error }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                     @endif
                                                 <form method="post" action="{{ url('login') }}">
                                                     @csrf
                                                     <div class="mb-3">
@@ -298,6 +318,19 @@
                         }
                     })
                 })
+                var isRTL = JSON.parse(localStorage.getItem('isRTL'));
+                if (isRTL) {
+                    var linkDefault = document.getElementById('style-default');
+                    var userLinkDefault = document.getElementById('user-style-default');
+                    linkDefault.setAttribute('disabled', true);
+                    userLinkDefault.setAttribute('disabled', true);
+                    document.querySelector('html').setAttribute('dir', 'rtl');
+                } else {
+                    var linkRTL = document.getElementById('style-rtl');
+                    var userLinkRTL = document.getElementById('user-style-rtl');
+                    linkRTL.setAttribute('disabled', true);
+                    userLinkRTL.setAttribute('disabled', true);
+                }
             </script>
 </body>
 

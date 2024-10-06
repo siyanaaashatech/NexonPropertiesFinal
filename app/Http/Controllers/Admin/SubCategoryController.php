@@ -76,7 +76,7 @@ class SubCategoryController extends Controller
     {
         $subCategory = SubCategory::with('metadata')->findOrFail($id);
         $categories = Category::all();
-        return view('admin.subcategories.edit', compact('subCategory', 'categories'));
+        return view('subcategories.edit', compact('subCategory', 'categories'));
     }
 
 
