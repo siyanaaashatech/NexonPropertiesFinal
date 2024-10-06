@@ -71,26 +71,35 @@ class FrontViewController extends Controller
     }
 
 
-    public function properties(Request $request, $categoryId = null)
-    {
-        $categoryId = $request->query('categoryId');
-        // Fetch all categories for the navbar
-        $categories = Category::all();
-        // Fetch properties, optionally filtered by category, and where status is active
-        $propertiesQuery = Property::where('status', '1');
-        if ($categoryId) {
-            $propertiesQuery->where('category_id', $categoryId);
-        }
-        $properties = $propertiesQuery->paginate(24);
-        $states = Address::distinct('state')->pluck('state');
-        $amenities = Amenity::all();
+    public function properties(Request $request)
+{
+    $categoryId = $request->query('categoryId');
+    $suburb = $request->query('suburb');
 
-        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+    // Fetch all categories for the navbar
+    $categories = Category::all();
 
+    // Fetch properties, optionally filtered by category and/or suburb, and where status is active
+    $propertiesQuery = Property::where('status', '1');
 
-        return view('frontend.properties', compact('properties', 'categories', 'states','amenities','otherImages'));
-        // return view('frontend.properties', compact('properties', 'categories', 'states','amenities'));
+    if ($categoryId) {
+        $propertiesQuery->where('category_id', $categoryId);
     }
+
+    if ($suburb) {
+        $propertiesQuery->whereHas('address', function($query) use ($suburb) {
+            $query->where('suburb', $suburb);
+        });
+    }
+
+    $properties = $propertiesQuery->paginate(24);
+    $states = Address::distinct('state')->pluck('state');
+    $amenities = Amenity::all();
+
+    $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+
+    return view('frontend.properties', compact('properties', 'categories', 'states', 'amenities', 'otherImages', 'suburb'));
+}
     
     // public function singlePost($slug)
     // {
@@ -108,27 +117,4 @@ class FrontViewController extends Controller
 
         return view('frontend.favorites.index', compact('favorites'));
     }
-
-    public function showBySuburb($suburb)
-{
-    // Fetch properties based on the suburb
-    $properties = Property::whereHas('address', function($query) use ($suburb) {
-        $query->where('suburb', $suburb);
-    })->where('status', 1)->get();
-
-    // Handle empty property collection
-    if ($properties->isEmpty()) {
-        return redirect()->back()->with('error', 'No properties found in this suburb.');
-    }
-
-    // Pass additional data if necessary (like categories, amenities)
-    $categories = Category::all();
-    $subcategories = Subcategory::all();
-    $amenities = Amenity::all();
-    $states = Address::distinct('state')->pluck('state');
-
-    return view('frontend.suburb-properties', compact('properties', 'categories', 'subcategories', 'states', 'amenities', 'suburb'));
-}
-
-
 }
