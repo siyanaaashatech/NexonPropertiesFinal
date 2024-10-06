@@ -4,29 +4,42 @@
       <div class="col-md-3 flex-col sm-col-12">
         <img src="{{asset("image/logo.png")}}" alt="" class="logoimg ">
         <p class="sm-text1 py-1 pt-3">
-          Welcome to pagename where our passion for real estate and dedication to
-          client satisfaction converge to create an unparalleled home-buying experience. Founded </p>
+          {{ $sitesetting->office_description }}
+         </p>
         <div class="d-flex font-collection py-2">
-          <i class="fa-brands fa-facebook customicons mx-2"></i>
-          <i class="fa-brands fa-linkedin customicons mx-2"></i>
-          <i class="fa-brands fa-youtube customicons mx-2"></i>
-          <i class="fa-brands fa-instagram customicons mx-2"></i>
+          <a href="{{ $sitesetting->socialLinks->facebook_link }}" target="_blank"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
+          <a href="{{ $sitesetting->socialLinks->linkedin_link }}" target="_blank"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
+          <a href="{{ $sitesetting->socialLinks->instagram_link }}" target="_blank"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+          <a href="{{ $sitesetting->socialLinks->tiktok_link }}" target="_blank"><i class="fa-brands fa-youtube customicons mx-2"></i></a>
+
         </div>
       </div>
       <div class="col-md-2 sm-col-12 mx-4 ">
         <h1 class="md-text1 highlight minuspadding">Quick link</h1>
         <ul class="d-flex justify-content-around  customui flex-column gap-2">
-          <li><a href=""> Rent</a></li>
-          <li><a href="">Buy</a></li>
-          <li><a href="">About</a></li>
-          <li><a href="">Blog</a></li>
+
+          @foreach ($categories as $category)
+          <li><a href="{{ route('properties', ['categoryId' => $category->id]) }}">{{ $category->title }}</a></li>
+
+          @endforeach
+          <li><a href="{{ route('about') }}">About</a></li>
+          <li><a href="{{ route('blog') }}">Blog</a></li>
+          <li><a href="{{ route('contact') }}">Contact</a></li>
+         
         </ul>
       </div>
       <div class="col-md-2 sm-col-12 mx-4 ">
-        <h1 class="md-text1 highlight minuspadding">Regions</h1>
+        <h1 class="md-text1 highlight minuspadding">Sub Categories</h1>
         <ul class="d-flex justify-content-around customui flex-column gap-2">
          
-         
+          @foreach ($footerSubCategories as $subCategory)
+          <li>
+            <a href="{{ route('properties', ['categoryId' => $subCategory->category_id, 'subcategoryId' => $subCategory->id]) }}">
+              {{ $subCategory->title }}
+          </a>
+          </li>
+
+          @endforeach
           
 
         </ul>

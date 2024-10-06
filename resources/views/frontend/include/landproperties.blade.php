@@ -56,7 +56,7 @@
                                 ? asset('' . $mainImages[0])
                                 : asset('images/default-placeholder.png');
                         @endphp
-                        <img src="{{ $mainImage }}" alt="" srcset="" class="  cityimage rounded m-0 p-0">
+                        <img src="{{ $mainImage }}" alt="" srcset="" class=" cityimage rounded m-0 p-0">
                         <div class="city-description d-flex flex-column  justify-content-end align-items-center">
                             <p class="md-text1 m-0">place</p>
                             <p class="sm-text1">ppp</p>

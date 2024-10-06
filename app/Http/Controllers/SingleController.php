@@ -12,6 +12,7 @@ use App\Models\FAQ;
 use App\Models\AboutDescription;
 use App\Models\ReviewAndRating;
 use App\Models\SiteSetting;
+use App\Models\AboutUs;
 // use App\Models\ReviewAndRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,9 @@ class SingleController extends Controller
         $categories = Category::latest()->get();
         $teams=Team::latest()->get();
         $faqs=FAQ::Latest()->get();
+        $aboutuss = AboutUs::where('status', 1)->first();
         $aboutDescriptions=AboutDescription::latest()->get();
-        return view('frontend.about', compact('aboutDescriptions','teams','testimonials' ,'faqs','categories','properties'));
+        return view('frontend.about', compact('aboutDescriptions','teams','testimonials' ,'faqs','categories','properties','aboutuss'));
     }
     public function render_blog()
     {

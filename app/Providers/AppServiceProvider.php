@@ -3,12 +3,15 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use App\Models\Favorites;
+use App\Models\SiteSetting;
+use App\Models\Favicon;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -53,6 +56,55 @@ class AppServiceProvider extends ServiceProvider
             // Share the favorite count with all views
             $view->with('favoritesCount', $favoritesCount);
         });       
+    }
+
+
+
+    if (!app()->runningInCOnsole()){
+        $favicon = Favicon::latest()->first();
+        View::share('favicon', $favicon);
+
+        $sitesetting = SiteSetting::first();
+        View::share('sitesetting', $sitesetting);
+
+
+        View::composer('frontend.include.navbar', function ($view) {
+         
+            $categories = Category::all();
+           
+            $sitesetting = SiteSetting::first();
+
+
+            $view->with([
+             
+                'categories' => $categories,
+           
+                'sitesetting' => $sitesetting
+            ]);
+
+        });
+
+
+
+        View::composer('frontend.include.footer', function ($view) {
+          
+            $categories = Category::all();
+            $footerSubCategories = SubCategory::all();
+        
+            // $sitesetting = SiteSetting::first();
+       
+
+
+            $view->with([
+               
+                // 'siteSettings' => $sitesetting,
+                'categories' => $categories,
+                'footerSubCategories' => $footerSubCategories,
+               
+              
+            ]);
+
+        });
     }
 }
        

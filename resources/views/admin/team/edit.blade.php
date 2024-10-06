@@ -58,7 +58,7 @@
                             <div id="socialMediaLinksContainer">
                                 @foreach(json_decode($team->social_media_links) as $link)
                                     <div class="input-group mb-2">
-                                        <input type="text" name="social_media_links[]" class="form-control" value="{{ $link }}" placeholder="Enter social media link" required>
+                                        <input type="text" name="social_media_links[]" class="form-control" value="{{ $link }}" placeholder="Enter social media link">
                                         <button type="button" class="btn btn-danger" onclick="removeSocialMediaLink(this)">-</button>
                                     </div>
                                 @endforeach

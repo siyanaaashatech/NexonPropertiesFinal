@@ -56,7 +56,7 @@
                             <label for="social_media_links">Social Media Links</label>
                             <div id="socialMediaLinksContainer">
                                 <div class="input-group mb-2">
-                                    <input type="text" name="social_media_links[]" class="form-control" placeholder="Enter social media link" required>
+                                    <input type="text" name="social_media_links[]" class="form-control" placeholder="Enter social media link">
                                     <button type="button" class="btn btn-success" onclick="addSocialMediaLink()">+</button>
                                 </div>
                             </div>
