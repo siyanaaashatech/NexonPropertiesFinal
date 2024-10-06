@@ -16,11 +16,12 @@ class Property extends Model
         'sub_category_id',
         'amenities',
         'amenities',
-        'street',
-        'suburb',
-        'state',
-        'post_code',
-        'country',
+        'address_id',
+        // 'street',
+        // 'suburb',
+        // 'state',
+        // 'post_code',
+        // 'country',
         'price',
         'price_type',
         'bedrooms',
@@ -69,5 +70,8 @@ public function amenities()
     return $this->hasMany(Amenity::class);
 }
 
+public function address(){
+    return $this->belongsTo(Address::class);
+}
 
 }

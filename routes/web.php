@@ -43,6 +43,7 @@ use App\Http\Controllers\SearchPropertiesController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ReviewsandRatingsController;
 use App\Http\Controllers\Admin\FavoritesController;
+use App\Http\Controllers\AddressController;
 use App\Models\Offer;
 
 Auth::routes();
@@ -70,6 +71,10 @@ Route::get("testimonials", function () {
     return view("frontend.testimonial.blade.php"); });
 Route::get("service", function () {
     return view("frontend.include.project.blade.php"); });
+
+
+
+    Route::get('/get-postcode/{id}', [AddressController::class, 'getPostcode']);
 
 
 

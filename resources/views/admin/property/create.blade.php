@@ -199,7 +199,25 @@
                                         <!-- Suburb -->
                                         <div class="form-group mb-3 col-md-6">
                                             <label for="suburb">Suburb</label>
-                                            <select name="suburb" id="suburb" class="form-control" required>
+                                            <select name="address_id" id="suburb" class="form-control" required>
+                                                <option value="">Select Suburb</option>
+                                                @foreach ($addresses as $address)
+                                                <option value="{{ $address->id }}" {{ old('address_id') == $address->id ? 'selected' : '' }}>
+                                                    {{ $address->suburb }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- Post Code -->
+                                        <div class="form-group mb-3 col-md-6">
+                                            <label for="post_code">Post Code</label>
+                                            <input type="number" name="post_code" id="post_code" min="0" minlength="4" class="form-control"
+                                                value="{{ old('post_code') }}" required>
+                                        </div>
+
+
+                                            {{-- <select name="suburb" id="suburb" class="form-control" required>
                                                 <option value="">Select Suburb</option>
                                                 <option value="Sydney" {{ old('suburb') == 'Sydney' ? 'selected' : '' }}>
                                                     Sydney
@@ -282,18 +300,7 @@
                                                 <option value="Rockdale"
                                                     {{ old('suburb') == 'Rockdale' ? 'selected' : '' }}>
                                                     Rockdale</option>
-                                            </select>
-                                        </div>
-
-
-                                        <!-- Post Code -->
-                                        <div class="form-group mb-3 col-md-6">
-                                            <label for="post_code">Post Code</label>
-                                            <input type="number" name="post_code" id="post_code" min="0"
-                                                minlength="4" class="form-control" value="{{ old('post_code') }}"
-                                                required>
-                                        </div>
-
+                                            </select> --}}
 
                                         <!-- State -->
                                         <div class="form-group mb-3 col-md-6">
@@ -444,6 +451,35 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
+
+
+    <script>
+      $('#suburb').change(function() {
+    var addressId = $(this).val();
+    if (addressId) {
+        $.ajax({
+            url: '/get-postcode/' + addressId,
+            type: 'GET',
+            success: function(data) {
+                console.log(data); // Log the data to confirm it's correct
+                if (data.postcode) {
+                    $('#post_code').val(data.postcode); // Update postcode field
+                } else {
+                    alert('No postcode found');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText); // Log any errors
+                alert('Failed to retrieve postcode');
+            }
+        });
+    } else {
+        $('#post_code').val(''); // Clear postcode if no suburb is selected
+    }
+});
+
+
+    </script>
 
     <script>
         let cropper;

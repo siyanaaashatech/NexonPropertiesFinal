@@ -102,9 +102,10 @@
         </div>
         <h2 class="navdestext">Follow Us</h2>
         <div class="d-flex font-collection py-2">
-            <a href="#"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
-            <a href="#"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+            <a href="{{ $sitesetting->socialLinks->facebook_link }}" target="_blank"><i class="fa-brands fa-facebook customicons mx-2"></i></a>
+            <a href="{{ $sitesetting->socialLinks->linkedin_link }}" target="_blank"><i class="fa-brands fa-linkedin customicons mx-2"></i></a>
+            <a href="{{ $sitesetting->socialLinks->instagram_link }}" target="_blank"><i class="fa-brands fa-instagram customicons mx-2"></i></a>
+            <a href="{{ $sitesetting->socialLinks->tiktop_link }}" target="_blank"><i class="fa-brands fa-youtube customicons mx-2"></i></a>
 
         </div>
         <div class="button-collection d-flex justify-content-center align-items-center logoutsection">

@@ -9,7 +9,7 @@
                 <div class="row d-flex">
                     <div
                         class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                        <img src="{{ asset('image/about.jpg') }}" alt="" srcset=""
+                        <img src="{{ asset('image/newabout.png') }}" alt="" srcset=""
                             class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
                         <div class="flex bannercontentheight">
                             <div class="bannercontentinnerheight ">
@@ -29,8 +29,66 @@
 
 <section class="container">
     <div class="row d-flex align-items-start justify-content-center gap-1">
+
+        <div class="container d-flex flex-column justify-content-center align-items-center">
+            <div class="row py-4">
+                {{-- @foreach ($aboutuss as $aboutus) --}}
+    
+
+                <div class="col-md-12 mx-md-4 mb-3">
+                    <div class="title">
+                        <div class="xs-text dashline text-black">Trusted Real estate Care</div>
+                        <div class="lg-text1 text-success">Dream living Spaces Setting New Build</div>
+                    </div>
+                    {{-- @foreach ($aboutuss as $aboutus) --}}
+                    <p class="sm-text1 text-black">{{ $aboutuss->description }}</p>
+                    {{-- <div class="d-flex">
+                        <i class="fa-solid fa-hand-point-right customicons mx-2"></i>
+                        <p class="sm-text1">{{$aboutus->description}}</p>
+                      </div>
+                  
+                      <div class="d-flex">
+                        <i class="fa-solid fa-hand-point-right customicons mx-2"></i>
+                        <p class="sm-text1">{{$aboutus->description}}</p>
+                      </div> --}}
+                    {{-- @endforeach --}}
+                </div>
+
+                    <div class="col-md-12 d-flex mb-4">
+                        <div class="image col-md-6 first">
+                            @php
+                                $images = json_decode($aboutuss->image, true);
+                            @endphp
+    
+                            @if (!empty($images) && isset($images[0]))
+                                <img src="{{ asset('storage/aboutus/' . basename($images[0])) }}" alt="aboutus">
+                            @else
+                                <p>No image available</p>
+                            @endif
+                        </div>
+    
+                        <div class="image col-md-6 my-2 mx-1 second">
+                            @php
+                                $images = json_decode($aboutuss->image, true);
+                            @endphp
+    
+                            @if (!empty($images) && isset($images[1]))
+                                <img src="{{ asset('storage/aboutus/' . basename($images[1])) }}" alt="aboutus">
+                            @else
+                                <p>No image available</p>
+                            @endif
+                        </div>
+                    </div>
+    
+                {{-- @endforeach --}}
+             
+            </div>
+        </div>
+
+
+
         <!-- First Column -->
-        <div class="col-md-6">
+        {{-- <div class="col-md-6">
             @if(count($aboutDescriptions) > 0)
                         @php
                             // Get the first item and remove it from the collection
@@ -39,10 +97,10 @@
                         <h1 class="md-text text-center">{{ $firstDescription->title }}</h1>
                         <p class="extra-small-text text-center">{{ $firstDescription->description }}</p>
             @endif
-        </div>
+        </div> --}}
 
         <!-- Second Column with Flexbox -->
-        <div class="col-12">
+        {{-- <div class="col-12">
             <div class="d-flex flex-wrap  justify-content-center">
                 @foreach($aboutDescriptions->take(4) as $description)
                     <div class="col-md-5 m-1">
@@ -53,7 +111,7 @@
                     </div>
                 @endforeach
             </div>
-        </div>
+        </div> --}}
 
         <!-- Remaining Data -->
         @if($aboutDescriptions->count() > 5)
@@ -66,7 +124,7 @@
 
 
 <!-- team member -->
-
+{{-- 
 <section class="container-fluid teammember py-5 mt-4">
     <div class="container">
         <div class="row d-flex flex-column justify-content-center align-items-center ">
@@ -94,7 +152,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 
 
 

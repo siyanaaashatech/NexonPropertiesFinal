@@ -130,7 +130,7 @@ class TeamController extends Controller
             if ($imageResource !== false) {
                 // Generate unique image name
                 $imageName = time() . '-' . Str::uuid() . '.webp';
-                $destinationPath =  public_path('storage/$folder');
+                $destinationPath =  public_path('storage/team');
 
                 // Create the directory if it does not exist
                 if (!File::exists($destinationPath)) {
