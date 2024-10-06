@@ -77,26 +77,25 @@ class SearchPropertiesController extends Controller
         if ($request->filled('bathrooms')) {
             $query->where('bathrooms', $request->input('bathrooms'));
         }
-    
-       // Area range filter
-    if ($request->filled('min_area') && $request->filled('max_area')) {
-        $minArea = $request->input('min_area');
-        $maxArea = $request->input('max_area');
-        $query->where('area', '>=', $minArea)
-              ->where('area', '<=', $maxArea);
-    }
 
-    // Price range filter
-    if ($request->filled('min_price') && $request->filled('max_price')) {
-        $minPrice = $request->input('min_price');
-        $maxPrice = $request->input('max_price');
-        $query->whereBetween('price', [$minPrice, $maxPrice]);
-    }
-    
-    
-        $properties = $query->get();
-        $categories = Category::all(); 
-        $amenities = Amenity::all();
+        if ($request->filled('min_area') && $request->filled('max_area')) {
+            $minArea = $request->input('min_area');
+            $maxArea = $request->input('max_area');
+            $query->where('area', '>=', $minArea)
+                ->where('area', '<=', $maxArea);
+        }
+
+
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $minPrice = $request->input('min_price');
+            $maxPrice = $request->input('max_price');
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        }
+        
+        
+            $properties = $query->get();
+            $categories = Category::all(); 
+            $amenities = Amenity::all();
         
         return view('frontend.searching', compact('properties', 'categories', 'amenities'));
     }
