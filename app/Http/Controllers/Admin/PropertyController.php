@@ -66,8 +66,8 @@ class PropertyController extends Controller
             'availability_status' => 'required|in:available,sold,rental',
             'rental_period' => 'nullable|string',
             'keywords' => 'nullable|string',
-            'other_images' => 'required|array',
-            'other_images.*' => 'required|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'other_images' => 'nullable|array',
+            'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'update_time' => 'nullable',
         ]);
 

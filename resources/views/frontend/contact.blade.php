@@ -25,7 +25,7 @@
   <div class="container">
     <div class="row d-flex justify-content-center align-items-center gap-2">
       @foreach ($siteSettings as $siteSetting)
-        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center p-3">
           <i class="fa-solid fa-location-dot customiconslarge"></i>
           <div class="information">
             <h2 class="md-text1">Office Address</h2>
@@ -40,7 +40,7 @@
             </h2>
           </div>
         </div>
-        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center p-3">
           <i class="fa-solid fa-envelope customiconslarge"></i>
           <div class="information">
             <h2 class="md-text1">Office Contact</h2>
@@ -55,7 +55,7 @@
             </h2>
           </div>
         </div>
-        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center">
+        <div class="col-md-3 greenbackground d-flex justify-content-center align-items-center p-3">
           <i class="fa-solid fa-phone customiconslarge"></i>
           <div class="information">
             <h2 class="md-text1">Office Email</h2>
@@ -87,17 +87,17 @@
   <div class="row d-flex  justify-content-center align-items-center mx-2">
     <div class="col-md-4 contentbackground px-4 m-2">
       <div class="d-flex flex-column gap-2">
-        <p class="extra-small-text1">Are you ready to embark on a journey of self-discovery, inner peace, and holistic
-          well-being?
-          Join our Yoga and Meditation class, and connect with us to explore the transformative power of
-          mindfulness and movement.</p>
+        <p class="extra-small-text1">Ready to find your dream property or need assistance with buying, selling, or renting?
+          Reach out to us today! Our team of real estate experts is here to guide you through every step of your journey. Whether you're looking for your next home or a prime investment opportunity, we’re just a message away.
+          
+          Contact us and let's make your real estate goals a reality!</p>
         <div class="d-flex flex-column">
           <label for="" class="xs-text pb-1">Your full Name</label>
-          <input type="text" name="" id="" class="input" placeholder="Person name" />
+          <input type="text" name="" id="" class="input" placeholder="Your Full name" />
         </div>
         <div class="d-flex flex-column">
           <label for="" class="xs-text pb-1">Email Address</label>
-          <input type="text" name="" id="" class="input" placeholder="Person name" />
+          <input type="text" name="" id="" class="input" placeholder="Your Email Address" />
         </div>
         <div class="d-flex flex-column">
           <label for="" class="xs-text pb-1">Message</label>
