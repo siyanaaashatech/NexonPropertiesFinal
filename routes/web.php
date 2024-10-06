@@ -255,8 +255,4 @@ Route::prefix('/profile')->name('profile.')->middleware(['web', 'auth'])->group(
 
 Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
 Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
-Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
-
-Route::get('/search', [SearchPropertiesController::class, 'filterProperties'])->name('frontend.searching');
-Route::get('/get-subcategories/{categoryId}', [SearchPropertiesController::class, 'getSubcategories']);
-Route::get('/get-suburbs/{state}', [SearchPropertiesController::class, 'getSuburbs']);
+Route::get('/get-suburbs-by-state/{state}', [SearchPropertiesController::class, 'getSuburbsByState'])->name('get.suburbs.by.state');
