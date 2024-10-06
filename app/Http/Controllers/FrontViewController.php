@@ -13,13 +13,12 @@ use App\Models\Amenity;
 use App\Models\Address;
 use App\Models\Favorites;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+
 class FrontViewController extends Controller
 {
-  
-
     private function extractAmenities($amenities)
     {
         if (is_string($amenities)) {
@@ -31,38 +30,46 @@ class FrontViewController extends Controller
     }
 
     public function index()
-{
-    $services = Service::where('status', 1)->latest()->take(4)->get();
-    $blogs = Blog::where('status', 1)->latest()->get();
-    $testimonials = Testimonial::where('status', 1)->latest()->get();
-    $whyuss = Whyus::where('status', 1)->latest()->get();
-    $aboutuss = AboutUs::where('status', 1)->first();
-    $properties = Property::where('status', 1)->latest()->take(6)->get();
-    $propertie = Property::where('status', 1)->latest()->take(6)->get();
-    // Fetch suburb counts using the relationship
-    $suburbs = Property::with('address')
-    ->whereHas('address') // Ensure the property has an associated address
-    ->get()
-    ->groupBy('address.suburb')
-    ->map(function ($group, $suburb) {
-        return [
-            'suburb' => $suburb,
-            'count' => $group->count(),
-        ];
-    })
-    ->sortByDesc('count')
-    ->take(4);
+    {
+        // Fetch necessary data for the view
+        $services = Service::where('status', 1)->latest()->take(4)->get();
+        $blogs = Blog::where('status', 1)->latest()->get();
+        $testimonials = Testimonial::where('status', 1)->latest()->get();
+        $whyuss = Whyus::where('status', 1)->latest()->get();
+        $aboutuss = AboutUs::where('status', 1)->first();
+        $properties = Property::where('status', 1)->latest()->take(6)->get();
 
-    $categories = Category::all();
-    $states = Address::distinct('state')->pluck('state');
-    $subcategories = Subcategory::all();
-    $amenities = Amenity::all();
+        $suburbCounts = Property::join('addresses', 'properties.address_id', '=', 'addresses.id')
+            ->select('addresses.suburb', DB::raw('count(*) as count'))
+            ->groupBy('addresses.suburb')
+            ->orderByDesc('count')
+            ->take(4)
+            ->get();
 
-    return view('frontend.welcome', compact([
-        'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 'properties',
-        'categories', 'subcategories', 'states', 'amenities', 'propertie', 'suburbs'
-    ]));
-}
+        $suburbProperties = Property::join('addresses', 'properties.address_id', '=', 'addresses.id')
+            ->whereIn('addresses.suburb', $suburbCounts->pluck('suburb'))
+            ->select('properties.*', 'addresses.suburb')
+            ->whereIn(DB::raw('(addresses.suburb, properties.id)'), function ($query) {
+                $query->select('addresses.suburb', DB::raw('MIN(properties.id) as id'))
+                    ->from('properties')
+                    ->join('addresses', 'properties.address_id', '=', 'addresses.id')
+                    ->groupBy('addresses.suburb');
+                })
+            ->get()
+            ->keyBy('suburb');
+
+        $categories = Category::all();
+        $states = Address::distinct('state')->pluck('state');
+        $subcategories = Subcategory::all();
+        $amenities = Amenity::all();
+
+        return view('frontend.welcome', compact([
+            'services', 'blogs', 'aboutuss', 'testimonials', 'whyuss', 
+            'properties', 'categories', 'subcategories', 'states', 
+            'amenities', 'suburbCounts' ,'suburbProperties'
+        ]));
+    }
+
 
     public function properties(Request $request, $categoryId = null)
     {
