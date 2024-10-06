@@ -82,14 +82,21 @@ Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties
 
 Auth::routes(['verify' => true]);
 
-Route::get('/email/verify', 'Auth\VerificationController@show')
-    ->name('verification.notice');
-Route::post('/email/resend', 'Auth\VerificationController@resend')
-    ->name('verification.resend');
 
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
+
+// Route to handle the verification when the user clicks the link in the email
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
     ->middleware(['auth', 'signed'])
     ->name('verification.verify');
+
+// Route to resend the verification email
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
+    Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 
     Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {

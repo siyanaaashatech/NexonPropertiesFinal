@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'email/verify/*',   // Exclude email verification routes
+        'email/resend'      // Exclude email resend route
     ];
 }
