@@ -49,6 +49,9 @@ class PermissionSeeder extends Seeder
             'update_categories',
             'delete_categories',
             'create_subcatergories',
+            'view_subcatergories',
+            'update_subcatergories',
+            'delete_subcatergories',
             'create_faqs',
             'view_faqs',
             'update_faqs',
@@ -86,6 +89,17 @@ class PermissionSeeder extends Seeder
             'view_team',
             'update_team',
             'delete_team',
+            'review_list',
+            'user_favourite_list',
+            'view_contact',
+            'create_whyus',
+            'view_whyus',
+            'update_whyus',
+            'delete_whyus',
+            'create_amenities',
+            'view_amenities',
+            'update_amenities',
+            'delete_amenities',
         ];
         
         foreach ($permissions as $permission) {

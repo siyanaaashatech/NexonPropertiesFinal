@@ -1,5 +1,3 @@
-
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -66,9 +64,9 @@
 </style>
 
 <!-- JavaScript to redirect after 5 seconds -->
-<script>
+{{-- <script>
    
     setTimeout(function() {
-        window.location.href = "{{ route('login') }}"; 
+        window.location.href = "{{ route('index') }}"; 
     }, 5000);
-</script>
+</script> --}}
