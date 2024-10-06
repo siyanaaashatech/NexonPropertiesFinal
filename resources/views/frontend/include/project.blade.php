@@ -153,7 +153,7 @@
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
               <div class="property-details">
                 <div class="md-text1 p-0 m-0"> {{ strlen($property->title) >27 ? substr($property->title, 0, 27)  : $property->title}}</div>
-                <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->street }}, {{ $property->address->suburb }}, {{ $property->addess->state }}-</div>
+                <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->street }}, {{ $property->address->suburb }}, {{ $property->address->state }}-</div>
                 <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
                   <span class="sm-text1">{{ $property->bedrooms }}</span><br />
