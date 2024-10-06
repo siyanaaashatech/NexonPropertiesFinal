@@ -58,8 +58,18 @@
                         @endphp
                         <img src="{{ $mainImage }}" alt="" srcset="" class=" cityimage rounded m-0 p-0">
                         <div class="city-description d-flex flex-column  justify-content-end align-items-center">
-                            <p class="md-text1 m-0">place</p>
-                            <p class="sm-text1">ppp</p>
+                            @if ($suburbs->isNotEmpty())
+                    @foreach ($suburbs as $suburb)
+                        <div class="suburb-detail rounded m-0 p-0">
+                            <div class="suburb-description d-flex flex-column justify-content-center align-items-center">
+                                <p class="md-text1 m-0">{{ $suburb['suburb'] }}</p>
+                                <p class="sm-text1">{{ $suburb['count'] }} properties</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p>No properties available in the suburbs.</p>
+                @endif
                         </div>
                     </div>
                 @endforeach
