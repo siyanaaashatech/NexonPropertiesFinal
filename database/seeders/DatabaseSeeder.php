@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             SubCategorySeeder::class,
             AmenitySeeder::class,
             AddressSeeder::class,
+            AboutUsSeeder::class,
         ]);
     }
 }

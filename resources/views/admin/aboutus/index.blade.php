@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4>About Us List</h4>
-                    <a href="{{ route('aboutus.create') }}" class="btn btn-primary float-end">Add About Us</a>
+                    {{-- <a href="{{ route('aboutus.create') }}" class="btn btn-primary float-end">Add About Us</a> --}}
                 </div>
                 <div class="card-body">
                     <!-- Display success message -->

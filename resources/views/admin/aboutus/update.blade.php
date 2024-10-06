@@ -63,11 +63,17 @@
                             <label>Current Images:</label>
                             <div id="current-images-preview">
                                 @if($aboutUs->image)
-                                    @foreach(json_decode($aboutUs->image) as $image)
+                                    @php
+                                        // Ensure the image data is treated as a string for json_decode
+                                        $images = is_array($aboutUs->image) ? $aboutUs->image : json_decode($aboutUs->image, true);
+                                    @endphp
+                            
+                                    @foreach($images as $image)
                                         <img src="{{ asset($image) }}" alt="Current Image" style="max-width: 150px; max-height: 200px; margin-right: 10px;">
                                     @endforeach
                                 @endif
                             </div>
+                            
                             <label>New Cropped Images:</label>
                             <div id="cropped-images-preview"></div>
                         </div>

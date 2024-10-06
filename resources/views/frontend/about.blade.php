@@ -37,8 +37,8 @@
 
                 <div class="col-md-12 mx-md-4 mb-3">
                     <div class="title">
-                        <div class="xs-text dashline text-black">Trusted Real estate Care</div>
-                        <div class="lg-text1 text-success">Dream living Spaces Setting New Build</div>
+                        <div class="xs-text dashline text-black">{{ $aboutuss->subtitle }}</div>
+                        <div class="lg-text1 text-success">{{ $aboutuss->title }}</div>
                     </div>
                     {{-- @foreach ($aboutuss as $aboutus) --}}
                     <p class="sm-text1 text-black">{{ $aboutuss->description }}</p>
