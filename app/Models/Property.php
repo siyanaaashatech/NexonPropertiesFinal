@@ -17,7 +17,7 @@ class Property extends Model
         'amenities',
         'amenities',
         'address_id',
-        // 'street',
+        'street',
         // 'suburb',
         // 'state',
         // 'post_code',

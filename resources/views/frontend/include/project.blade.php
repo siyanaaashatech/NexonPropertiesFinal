@@ -119,7 +119,7 @@
           class="imagecontroller imagecontrollerheight imagecontrollermd " data-src="holder.js/200x250?theme=thumb" />
           <div class="property-details">
           <div class="md-text1 p-0 m-0"> {{ $firstPropeties->title}}</div>
-          <div class="md-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $firstPropeties->state }}-{{ $firstPropeties->suburb }}-{{ $firstPropeties->street }}</div>
+          <div class="md-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $firstPropeties->street }}, {{ $firstPropeties->address->suburb }}, {{ $firstPropeties->address->state }}</div>
           <div class="d-flex justify-content-between gap-3 p-0 mx-4">
             <p class="detail-item sm-text1">
             <span class="sm-text1">{{ $firstPropeties->bedrooms}}</span><br />
@@ -153,7 +153,7 @@
               <img src="{{ $mainImage }}" alt="Property Image" class="property-image">
               <div class="property-details">
                 <div class="md-text1 p-0 m-0"> {{ strlen($property->title) >27 ? substr($property->title, 0, 27)  : $property->title}}</div>
-                <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->state }}-{{ $property->suburb }}-{{ $property->street }}</div>
+                <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->street }}, {{ $property->address->suburb }}, {{ $property->addess->state }}-</div>
                 <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
                   <span class="sm-text1">{{ $property->bedrooms }}</span><br />

@@ -96,18 +96,18 @@
               <div class="md-text1">
                 {{ strlen($property->title) >28 ? substr($property->title, 0, 28)  : $property->title}}
               </div>
-              <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->state }}-{{ $property->suburb }}-{{ $property->street }}</div>
+              <div class="sm-text highlight text-center p-0 m-0"> <i class="fa-solid fa-location-dot mx-2"></i>{{ $property->street }}, {{ $property->address->suburb }}{{ $property->address->state }}-</div>
               <div class="d-flex justify-content-between gap-3 p-0 mx-4">
                 <p class="detail-item sm-text1">
-                <span class="sm-text1">13</span><br />
+                <span class="sm-text1">{{$property->bedrooms}}</span><br />
                 <i class="fa-solid fa-bed detail-icon"></i>
                 </p>
                 <p class="detail-item sm-text1">
-                <span class="detail-number">02</span><br />
+                <span class="detail-number">{{ $property->bathrooms }}</span><br />
                 <i class="fa-solid fa-bath detail-icon"></i>
                 </p>
                 <p class="detail-item sm-text1">
-                <span class="sm-text1">13</span><br />
+                <span class="sm-text1">{{ $property->area }}</span><br />
                 <i class="fa-solid fa-chart-area  detail-icon"></i>
                 </p>
               </div>
