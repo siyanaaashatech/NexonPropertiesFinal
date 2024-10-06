@@ -108,4 +108,27 @@ class FrontViewController extends Controller
 
         return view('frontend.favorites.index', compact('favorites'));
     }
+
+    public function showBySuburb($suburb)
+{
+    // Fetch properties based on the suburb
+    $properties = Property::whereHas('address', function($query) use ($suburb) {
+        $query->where('suburb', $suburb);
+    })->where('status', 1)->get();
+
+    // Handle empty property collection
+    if ($properties->isEmpty()) {
+        return redirect()->back()->with('error', 'No properties found in this suburb.');
+    }
+
+    // Pass additional data if necessary (like categories, amenities)
+    $categories = Category::all();
+    $subcategories = Subcategory::all();
+    $amenities = Amenity::all();
+    $states = Address::distinct('state')->pluck('state');
+
+    return view('frontend.suburb-properties', compact('properties', 'categories', 'subcategories', 'states', 'amenities', 'suburb'));
+}
+
+
 }
