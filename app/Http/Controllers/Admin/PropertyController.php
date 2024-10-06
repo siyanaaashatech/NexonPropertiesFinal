@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Amenity;
 use App\Models\Metadata;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -32,9 +33,10 @@ class PropertyController extends Controller
     {
         $categories = Category::all();
         $subCategories = SubCategory::all();
+        $addresses = Address::all();
         $metadata = Metadata::all();
         $amenities = Amenity::all();  
-        return view('admin.property.create', compact('categories', 'subCategories', 'metadata', 'amenities'));
+        return view('admin.property.create', compact('categories', 'subCategories', 'metadata', 'amenities', 'addresses'));
     }
 
     /**
@@ -52,11 +54,12 @@ class PropertyController extends Controller
             'sub_category_id' => 'required|exists:sub_categories,id',
             'amenities' => 'required|array',
             'amenities.*' => 'exists:amenities,id',
-            'street' => 'required|string|max:255',
-            'suburb' => 'required|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'post_code' => 'required|string|max:20',
-            'country' => 'nullable|string|max:255',
+            // 'street' => 'required|string|max:255',
+            // 'suburb' => 'required|string|max:255',
+            // 'state' => 'nullable|string|max:255',
+            // 'post_code' => 'required|string|max:20',
+            // 'country' => 'nullable|string|max:255',
+            'address_id' => 'required|exists:addresses,id', // Validate the address_id
             'price' => 'required|numeric',
             'price_type' => 'required|in:fixed,negotiable,on_request',
             'bedrooms' => 'required|integer',
@@ -78,10 +81,11 @@ class PropertyController extends Controller
         $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
 
         // Create a metadata entry
+        $metaKeywordsArray = array_map('trim', explode(',', $request->keywords));
         $metadata = Metadata::create([
             'meta_title' => $request->title,
             'meta_description' => $request->description,
-            'meta_keywords' => $request->suburb,
+            'meta_keywords' => json_encode($metaKeywordsArray),
             'slug' => Str::slug($request->title),
         ]);
 
@@ -92,11 +96,12 @@ class PropertyController extends Controller
             'category_id' => $request->category_id,
             'sub_category_id' => $request->sub_category_id,
             'amenities' => $request->amenities,
-            'street' => $request->street,
-            'suburb' => $request->suburb,
-            'state' => $request->state,
-            'post_code' => $request->post_code,
-            'country' => $request->country,
+            // 'street' => $request->street,
+            // 'suburb' => $request->suburb,
+            // 'state' => $request->state,
+            // 'post_code' => $request->post_code,
+            // 'country' => $request->country,
+            'address_id' => $request->address_id, // Link the property to the selected address
             'price' => $request->price,
             'price_type' => $request->price_type,
             'bedrooms' => $request->bedrooms,

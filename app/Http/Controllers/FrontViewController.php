@@ -10,6 +10,7 @@ use App\Models\Whyus;
 use App\Models\AboutUs;
 use App\Models\Subcategory;
 use App\Models\Amenity;
+use App\Models\Address;
 use App\Models\Favorites;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,22 +39,22 @@ class FrontViewController extends Controller
     $aboutuss = AboutUs::where('status', 1)->first();
     $properties = Property::where('status', 1)->latest()->take(6)->get();
     $propertie = Property::where('status', 1)->latest()->take(6)->get();
-
-    // Fetch suburb counts
-    $suburbs = Property::select('suburb')
-        ->groupBy('suburb')
-        ->orderByRaw('COUNT(*) DESC')
-        ->take(4)
-        ->get()
-        ->map(function ($suburb) {
-            return [
-                'suburb' => $suburb->suburb,
-                'count' => Property::where('suburb', $suburb->suburb)->count(),
-            ];
-        });
+    // Fetch suburb counts using the relationship
+    $suburbs = Property::with('address')
+    ->whereHas('address') // Ensure the property has an associated address
+    ->get()
+    ->groupBy('address.suburb')
+    ->map(function ($group, $suburb) {
+        return [
+            'suburb' => $suburb,
+            'count' => $group->count(),
+        ];
+    })
+    ->sortByDesc('count')
+    ->take(4);
 
     $categories = Category::all();
-    $states = Property::distinct('state')->pluck('state');
+    $states = Address::distinct('state')->pluck('state');
     $subcategories = Subcategory::all();
     $amenities = Amenity::all();
 

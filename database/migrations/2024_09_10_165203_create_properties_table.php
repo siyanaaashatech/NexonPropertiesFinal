@@ -14,11 +14,13 @@ class CreatePropertiesTable extends Migration
             $table->text('description');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('sub_category_id')->constrained('sub_categories')->onDelete('cascade');
-            $table->string('street');
-            $table->string('suburb');
-            $table->string('state')->nullable();
-            $table->string('post_code');
-            $table->string('country')->nullable();
+            $table->foreignId('address_id')->constrained('addresses')->onDelete('cascade');
+            // $table->string('street');
+            // $table->string('suburb');
+            // $table->string('state')->nullable();
+            // $table->string('post_code');
+            // $table->string('country')->nullable();
+
             $table->decimal('price', 15, 2);
             $table->enum('price_type', ['fixed', 'negotiable', 'on_request']);
             $table->integer('bedrooms');
