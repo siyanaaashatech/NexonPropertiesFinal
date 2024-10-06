@@ -101,13 +101,25 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 Route::post('/email/resend', [VerificationController::class, 'resend'])
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.send');
+
     Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 
-    Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
+    Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth', 'prevent.admin.access'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
+
+    // Middleware to check user role and redirect accordingly
+        Route::middleware(['auth'])->group(function () {
+            Route::get('/home', function () {
+                if (Auth::user()->role == 3) {
+                    return redirect()->route('index');
+                } else {
+                    return redirect()->route('admin.dashboard');
+                }
+            })->name('home');
+        });
 
 
     // User Routes

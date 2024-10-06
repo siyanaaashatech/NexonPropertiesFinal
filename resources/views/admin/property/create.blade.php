@@ -89,7 +89,6 @@
                                     </div>
 
 
-
                                     <!-- Other Images Upload -->
                                     <div class="form-group mb-3">
                                         <label for="other_images">Other Images</label>
