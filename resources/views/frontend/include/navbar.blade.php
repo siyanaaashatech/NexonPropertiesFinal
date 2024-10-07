@@ -1,4 +1,10 @@
 <section class="container-fluid navsection">
+     <style>
+
+    .dropdown-item:hover{
+        background:var(--offgreen) !important;
+    }
+ </style>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light navcustom">
             <a class="navbar-brand" href="/"> <img src="{{ asset('image/logo.png') }}" alt="Logo"
@@ -166,36 +172,7 @@
         hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
     }
 
-    // Scroll Behavior
-    let lastScrollY = window.scrollY;
-    const navSection = document.querySelector('.navsection');
-
-    function handleScroll() {
-        if (window.scrollY > lastScrollY) {
-            // Scrolling down
-            navSection.style.top = '2rem';
-        } else {
-            // Scrolling up
-            navSection.style.top = '0'; // Adjust as needed
-        }
-        lastScrollY = window.scrollY;
-    }
-
-    function checkScreenSize() {
-        if (window.innerWidth < 900) {
-            window.addEventListener('scroll', handleScroll);
-        } else {
-            // Remove the scroll event listener if the screen size is larger than 900px
-            window.removeEventListener('scroll', handleScroll);
-            navSection.style.top = ''; // Reset top style
-        }
-    }
-
-    // Initial check
-    checkScreenSize();
-
-    // Check again on resize
-    window.addEventListener('resize', checkScreenSize);
+  
 
     function funmenu() {
         const menuIcon = document.querySelector('.crossmenu');
@@ -212,8 +189,63 @@
         }
     }
 
-    function funsearchingon() {
-        const hiddenformdata = document.getElementsByClassName("hiddenform")[0];
-        hiddenformdata.style.display = hiddenformdata.style.display === "block" ? "none" : "block";
+
+
+// Scroll Behavior
+let lastScrollY = window.scrollY;
+const navSection = document.querySelector('.navsection');
+
+function handleScroll() {
+    if (window.scrollY > lastScrollY) {
+        // Scrolling down
+        navSection.style.top = '2rem'; // Adjust if needed
+    } else {
+        // Scrolling up
+        navSection.style.top = '0';
     }
+    lastScrollY = window.scrollY;
+}
+
+function checkScreenSize() {
+    if (window.innerWidth < 900) {
+        window.addEventListener('scroll', handleScroll);
+    } else {
+        // Remove the scroll event listener if the screen size is larger than 900px
+        window.removeEventListener('scroll', handleScroll);
+        navSection.style.top = ''; // Reset top style
+    }
+}
+
+// Hover behavior to fix nav at the top
+function handleMouseEnter() {
+    navSection.style.position = 'fixed';
+    navSection.style.top = '0'; // Set to top
+    navSection.style.margin = '0'; // Ensure no margin
+}
+
+function handleMouseLeave() {
+    navSection.style.position = ''; // Reset position
+    navSection.style.margin = ''; // Reset margin
+    // Adjust based on scroll position
+    if (window.scrollY > lastScrollY) {
+        navSection.style.top = '2rem'; // Adjust if needed
+    } else {
+        navSection.style.top = '0';
+    }
+}
+
+// Initial check
+checkScreenSize();
+
+// Check again on resize
+window.addEventListener('resize', checkScreenSize);
+
+// Add mouseenter and mouseleave events
+navSection.addEventListener('mouseenter', handleMouseEnter);
+navSection.addEventListener('mouseleave', handleMouseLeave);
+
+
+
+
+
 </script>

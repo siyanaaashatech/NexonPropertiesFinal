@@ -3,31 +3,31 @@
 
 @section('content')
 
-
-<section class="container-fluid otherpagebanner">
-    <div class="row">
-        <div class="col-md-12 p-0">
-            <div class="carousel-inner mb-3">
-                <div class="row d-flex">
-                    <div
-                        class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
-                        <img src="{{ asset('image/abou1.png') }}" alt="" srcset="" class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
-                        <div class="flex bannercontentheight">
-                            <div class="bannercontentinnerheight ">
-                                <h4 class="lg-text1">Search Results</h4>
-                                <h5 class="md-text1"><a href="">Home</a> <i class="fa-solid fa-angle-right "></i>
-                                    <span class="highlight">Search Results</span>
-                                </h5>
+   <section class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 p-0">
+                <div class="carousel-inner mb-3">
+                    <div class="row d-flex">
+                        <div
+                            class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
+                            <img src="{{ asset('image/house3.png') }}" alt="" srcset=""
+                                class="imagecontroller imagecontrollerheight">
+                            <div class="flex bannercontentheight">
+                                <div class="bannercontentinnerheight ">
+                                    <h4 class="lg-text1">properties</h4>
+                                    <h5 class="md-text1">home <i class="fa-solid fa-angle-right "></i>
+                                        <span class="highlight">properties</span>
+                                    </h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
-@include("frontend.include.categorysearchbox")
+
+
+    @include("frontend.include.categorysearchbox")
 
 <section class="container-fluid pb-4">
     <div class="container">
