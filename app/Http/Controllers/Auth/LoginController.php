@@ -60,7 +60,7 @@ class LoginController extends Controller
             Auth::logout();
             return redirect()->route('login')->withErrors(['email' => 'Please verify your email before logging in.']);
         }
-    
+
         // Log the login event if the email is verified
         History::create([
             'description' => 'Logged in',
@@ -68,7 +68,7 @@ class LoginController extends Controller
             'type' => 0,
             'ip_address' => UtilityFunctions::getuserIP()
         ]);
-    
+
         // Redirect based on user role
         if ($user->role_id == 3) {
             return redirect()->route('index'); 

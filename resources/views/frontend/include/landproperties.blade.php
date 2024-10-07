@@ -10,7 +10,7 @@
                     @endphp
                     @if ($property)
                         <div class="city-detail rounded m-0 p-0">
-                            <a href="{{ route('filterproperties', ['suburb' => $suburbCount['suburb']]) }}" class="city-detail-link" style="text-decoration: none; color: inherit; display: block;">
+                            <a href="{{ route('properties', ['suburb' => $suburbCount['suburb']]) }}" class="city-detail-link" style="text-decoration: none; color: inherit; display: block;">
                                 @php
                                     $mainImages = !empty($property->main_image) ? json_decode($property->main_image, true) : [];
                                     $mainImage = !empty($mainImages)
