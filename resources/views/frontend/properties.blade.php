@@ -86,14 +86,14 @@
 
 
 
-    @include('frontend.include.searchbox')
+    @include('frontend.include.categorysearchbox')
 
 
     <!-- multiple properties section -->
     <section class="container-fluid multipost mb-3 pb-4">
         <div class="container">
             <div class="row ">
-                {{-- <div class="col-md-12">
+            {{-- <div class="col-md-12">
               <div class="property-container d-flex justify-content-center align-self-center gap-3 flex-wrap">
                   <div class="btn-buttongreen"> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
                   </div>
@@ -119,6 +119,13 @@
                                         $mainImage = !empty($mainImages)
                                             ? asset('' . $mainImages[0])
                                             : asset('images/default-placeholder.png');
+
+
+                                                                    // Decode other_images for the current property
+                                        $otherImages = !empty($property->other_images)
+                                            ? json_decode($property->other_images, true)
+                                            : [];
+                                        $limitedImages = array_slice($otherImages, 0, ); // Limit to 1 image
                                     @endphp
                                     <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                     <div class="sell_rent_button d-flex justify-content-between ">
@@ -155,16 +162,10 @@
                                                 <div class=" sm-text"> <span class="md-text"> ${{ $property->price }}
                                                         /</span>{{ $property->rental_period }} </div>
 
-                                                    @php
-                                                        $limitedImages = array_slice($otherImages, 0, 6);
-                                                    @endphp
-                                                  
-                                                            @foreach ($limitedImages as $index => $image)
-                                                               
-                                                                    <img src="{{ asset($image) }}" alt="Property Image"
-                                                                        class="feature-smallimg feature-smallimgdup">
-                                                          
-                                                            @endforeach
+                                                    {{-- Display the limited other images --}}
+                                                        @foreach ($limitedImages as $image)
+                                                        <img src="{{ asset($image) }}" alt="Property Image" class="feature-smallimg feature-smallimgdup">
+                                                    @endforeach
                                                     
 
                                                 {{-- <img src="{{ asset('image/blog.png') }}" alt="" sizes=""
