@@ -734,7 +734,7 @@ a {
 
 .bannercontentinnerheight {
     position: absolute;
-    bottom: 6rem;
+    top: 6rem;
     left: 10%;
 }
 

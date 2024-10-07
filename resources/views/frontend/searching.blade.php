@@ -2,12 +2,15 @@
 @extends('frontend.layouts.master')
 
 @section('content')
+
+
 <section class="container-fluid otherpagebanner">
     <div class="row">
         <div class="col-md-12 p-0">
-            <div class="carousel-inner ">
+            <div class="carousel-inner mb-3">
                 <div class="row d-flex">
-                    <div class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
+                    <div
+                        class="col-md-12 text-center d-flex flex-column justify-content-center align-items-center mb-2 ">
                         <img src="{{ asset('image/abou1.png') }}" alt="" srcset="" class="imagecontroller imagecontrollerheight imagecontrollerheightextra">
                         <div class="flex bannercontentheight">
                             <div class="bannercontentinnerheight ">
@@ -23,6 +26,8 @@
         </div>
     </div>
 </section>
+
+@include("frontend.include.categorysearchbox")
 
 <section class="container-fluid pb-4">
     <div class="container">

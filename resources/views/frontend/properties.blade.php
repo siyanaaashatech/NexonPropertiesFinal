@@ -86,14 +86,14 @@
 
 
 
-    @include('frontend.include.searchbox')
+    @include('frontend.include.categorysearchbox')
 
 
     <!-- multiple properties section -->
     <section class="container-fluid multipost mb-3 pb-4">
         <div class="container">
             <div class="row ">
-                {{-- <div class="col-md-12">
+            {{-- <div class="col-md-12">
               <div class="property-container d-flex justify-content-center align-self-center gap-3 flex-wrap">
                   <div class="btn-buttongreen"> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
                   </div>
@@ -125,7 +125,7 @@
                                         $otherImages = !empty($property->other_images)
                                             ? json_decode($property->other_images, true)
                                             : [];
-                                        $limitedImages = array_slice($otherImages, 0, 2); // Limit to 1 image
+                                        $limitedImages = array_slice($otherImages, 0, ); // Limit to 1 image
                                     @endphp
                                     <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                     <div class="sell_rent_button d-flex justify-content-between ">
