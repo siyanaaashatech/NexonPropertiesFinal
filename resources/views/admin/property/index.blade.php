@@ -102,95 +102,110 @@
                                                             <div class="modal-body">
                                                                 <form action="{{ route('metadata.update', $property->metadata->id) }}" method="POST">
                                                                     @csrf
-                                                                    @method('PUT')
-
-                                                        <div class="form-group mb-3">
-                                                            <label for="main_image">Main Image</label>
-                                                            <input type="file" id="main_image" class="form-control" >
+                                                                   @method('PUT')
+                                   
+                                                                  <div class="form-group mb-3">
+                                                                  <label for="meta_title">Meta Title</label>
+                                                                  <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ old('meta_title', $property->metadata->meta_title) }}" required>
+                                                                 </div>
+                                   
+                                                                <div class="form-group mb-3">
+                                                                <label for="meta_description">Meta Description</label>
+                                                                <textarea name="meta_description" id="meta_description" class="form-control" rows="3" required>{{ old('meta_description', $property->metadata->meta_description) }}</textarea>
+                                                            </div>
+                                   
+                                                           <div class="form-group mb-3">
+                                                           <label for="meta_keywords">Meta Keywords</label>
+                                                           @php
+                                                               // Decode JSON and prepare keywords for display
+                                                               $metaKeywords = json_decode($property->metadata->meta_keywords, true);
+                                                               $metaKeywords = is_array($metaKeywords) ? implode("\n", $metaKeywords) : $property->metadata->meta_keywords;
+                                                           @endphp
+                                                           <textarea name="meta_keywords" id="meta_keywords" class="form-control" rows="3" required>{{ old('meta_keywords', $metaKeywords) }}</textarea>
+                                                       </div>
+                                   
+                                                       <div class="form-group mb-3">
+                                                           <label for="slug">Slug</label>
+                                                           <input type="text" name="slug" id="slug" class="form-control" value="{{ old('slug', $property->metadata->slug) }}" required>
+                                                       </div>
+                                   
+                                                       <div class="form-group">
+                                                           <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                       </div>
+                                                               </form>
+                                                            </div>
                                                         </div>
+                                                    </div>
+                                                </div>
 
-                                                        <!-- Cropped Main Image Preview -->
-                                                        <div class="form-group mb-3" id="cropped-preview-container"
+                                            <!-- Image Modal -->
+
+                                                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal{{ $property->id }}">
+                                                    I
+                                                </button>
+    
+                                            <div class="modal fade" id="imageModal{{ $property->id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ $property->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="imageModalLabel{{ $property->id }}">Edit Property Images</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('property.updateImages', $property->id) }}" method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT')
+    <div class="form-group mb-3">
+        <label for="main_image">Main Image</label>
+        <input type="file" id="main_image" name="main_image" class="form-control">
+    </div>
+
+    <!-- Cropped Main Image Preview -->
+    <div class="form-group mb-3" id="cropped-preview-container"
                                                             style="display: none;">
                                                             <label>Cropped Main Image Preview:</label>
                                                             <img id="cropped-image-preview"
                                                                 style="max-width: 150px; max-height: 200px; display: block;">
                                                         </div>
 
-                                                        <!-- Hidden input to store the base64 string of the cropped image -->
-                                                        <input type="hidden" name="main_image_base64" id="main_image_base64"
-                                                            required>
+    <!-- Hidden input to store the base64 string of the cropped image -->
+    <input type="hidden" name="main_image_base64" id="main_image_base64">
 
-                                                        <!-- Cropping Modal -->
-                                                        <div class="modal fade" id="cropModal" tabindex="-1"
-                                                            aria-labelledby="cropModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="cropModalLabel">Crop Image
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <img id="image-preview"
-                                                                            style="width: 100%; height: auto; display: none;">
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="button" id="saveCrop"
-                                                                            class="btn btn-primary">Save Crop</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+    <!-- Cropping Modal -->
+    <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cropModalLabel">Crop Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="image-preview" style="width: 100%; height: auto; display: none;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="saveCrop" class="btn btn-primary">Save Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="form-group mb-3">
+        <label for="other_images">Other Images</label>
+        <input type="file" id="other_images" class="form-control" name="other_images[]" multiple>
+    </div>
 
-
-                                                        <!-- Other Images Section -->
-                                                        @php        $otherImages = json_decode($property->other_images, true); @endphp
-                                                        @if(!empty($otherImages))
-                                                            <div id="otherImagesPreview" class="mb-3">
-                                                                @foreach($otherImages as $image)
-                                                                    <div class="card me-2 mb-2"
-                                                                        style="max-width: 150px; display: inline-block;">
-                                                                        <img src="{{ asset('/' . $image) }}" alt="Other Image"
-                                                                            class="card-img-top"
-                                                                            style="max-height: 150px; object-fit: cover;">
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        @endif
-
-                                                        <div class="form-group mb-3">
-                                                            <label for="other_images">Other Images</label>
-                                                            <input type="file" id="other_images" class="form-control"
-                                                                name="other_images[]" multiple>
-                                                        </div>
-
-                                                        <!-- Preview Container for the Other Images -->
-                                                        <div class="form-group mb-3" id="other-images-preview-container"
-                                                            style="display: none;">
-                                                            <label>Selected Other Images Preview:</label>
-                                                            <div id="other-images-preview"
-                                                                style="display: flex; flex-wrap: wrap;"></div>
-                                                        </div>
-
-
-
-
-
-                                                                    <div class="form-group">
-                                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+   <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            </div>
+                                        @endif
 
                                      <!-- Button to trigger Offer Modal -->
                                    <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#offerModal{{ $property->id }}">

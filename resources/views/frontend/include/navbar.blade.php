@@ -12,7 +12,7 @@
                                   <a class="nav-link" href="{{ route('properties', ['categoryId' => $category->id]) }}"
                                       id="navbarDropdown{{ $category->id }}" role="button">
                                       {{ $category->title }}
-                                  </a>
+                                  </a> 
       
                                   <!-- Check if category has subcategories -->
                                   @if ($category->subcategories->count() > 0)

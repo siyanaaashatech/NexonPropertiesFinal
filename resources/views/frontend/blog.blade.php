@@ -34,7 +34,7 @@
               </div>
               <h5 class="md-text">{{ $blog->title }}</h5>
               <p class="sm-text py-1"> {!! Str::limit(strip_tags($blog->description), 200, '...') !!}</p>
-              <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttonyellow">Read more</a>
+              <a href="{{ route('singleblogpost', ['slug' => $blog->slug]) }}" class="btn-buttonyellow">Read more</a>
             </div>
           @endforeach
         </div>
@@ -47,9 +47,10 @@
         <div class="paddingbox">
           <h2 class="md-text1">Recent post</h2>
           <ul class="customui">
+           
             @foreach ($blogs as $blog)
               <li class="py-1">
-                <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="md-text">
+                <a href="{{ route('singleblogpost', ['slug' => $blog->slug]) }}" class="md-text">
                   <i class="fa-solid fa-hand-point-right customicons customiconssmall"></i> {{ $blog->title }}
                 </a>
               </li>

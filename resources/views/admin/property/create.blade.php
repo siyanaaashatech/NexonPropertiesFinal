@@ -71,11 +71,16 @@
                                         <label for="description">Description</label>
                                         <textarea name="description" id="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
                                     </div>
-                                    <!-- Main Image Upload -->
+                                    
                                     <!-- Main Image Upload -->
                                     <div class="form-group mb-3 col-md-12">
                                         <label for="main_image">Main Image</label>
                                         <input type="file" id="main_image" class="form-control" required>
+                                        @if (old('main_image'))
+                                        <div class="mt-2">
+                                            <img src="{{ old('main_image') }}" alt="Main Image Preview" class="img-thumbnail" style="max-height: 150px;">
+                                        </div>
+                                    @endif
                                     </div>
 
 
@@ -94,6 +99,13 @@
                                         <label for="other_images">Other Images</label>
                                         <input type="file" id="other_images" class="form-control" name="other_images[]"
                                             multiple>
+                                            @if (old('other_images'))
+                                            <div class="mt-2">
+                                                @foreach (old('other_images') as $otherImage)
+                                                    <img src="{{ $otherImage }}" alt="Other Image Preview" class="img-thumbnail" style="max-height: 100px; margin-right: 5px;">
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
 
 

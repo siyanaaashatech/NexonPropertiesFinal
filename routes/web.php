@@ -172,6 +172,7 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
    Route::resource('admin/subcategories', SubCategoryController::class);
    Route::get('/subcategories/{categoryId}', [PropertyController::class, 'getSubcategories'])->name('subcategories');
 
+   Route::put('/admin/property/{id}/update-images', [PropertyController::class, 'updateImages'])->name('property.updateImages');
 
    //Testimonial Routes 
    Route::resource('admin/testimonials', TestimonialController::class);
@@ -238,7 +239,7 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
    Route::get('/about', [SingleController::class, 'render_about'])->name('about');
    Route::get('/contact', [SingleController::class, 'render_contact'])->name('contact');
    Route::get('/blog', [SingleController::class, 'render_blog'])->name('blog');
-   Route::get('/singleblogpost/{id}', [SingleController::class, 'singlePost'])->name('singleblogpost');
+Route::get('/singleblogpost/{slug}', [SingleController::class, 'singlePost'])->name('singleblogpost');
    Route::get('/properties', [SingleController::class, 'render_properties'])->name('properties');
    Route::get('/propertycategories/{id}', [SingleController::class, 'properties'])->name('catProperties');
    Route::get('/singleproperties/{id}', [SingleController::class, 'render_singleProperties'])->name('singleproperties');

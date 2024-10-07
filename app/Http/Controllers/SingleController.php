@@ -38,13 +38,18 @@ class SingleController extends Controller
         
         return view('frontend.blog', compact('blogs', 'properties', 'categories'));
     }
-    public function singlePost($id)
+
+    public function singlePost($slug)
     {
-        $blogs = Blog::where('id', $id)->firstOrFail();
+        $blogs = Blog::whereHas('metadata', function($query) use ($slug) {
+            $query->where('slug', $slug);
+        })->firstOrFail();
+
         $properties = Property::latest()->get();
-        $relatedPosts = blog::where('id', '!=', $blogs->id)->get();
-        $categories=Category::latest()->get();
-        return view('frontend.singleblogpost', compact('blogs','relatedPosts','properties','categories'));
+        $relatedPosts = Blog::where('id', '!=', $blogs->id)->get();
+        $categories = Category::latest()->get();
+
+        return view('frontend.singleblogpost', compact('blogs', 'relatedPosts', 'properties', 'categories'));
     }
 
 
@@ -65,21 +70,25 @@ class SingleController extends Controller
     // }
 
     public function render_singleProperties($id)
-    {
-        // Fetch the property by ID and ensure it's active
-        $categories = Category::all(); 
-        $subcategories = SubCategory::all(); 
-        $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
-        $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
-        $acceptedReviews = ReviewAndRating::where('status', 'accepted')
-        ->where('properties_id', $id)
-        ->get();
-        
-        // Handle the 'other_images' field if it exists
-        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-        return view('frontend.singleproperties', compact('categories', 'properties', 'relatedProperties', 'otherImages','acceptedReviews'));
+{
+    // Fetch the property by slug and ensure it's active
+    $categories = Category::all(); 
+    $subcategories = SubCategory::all(); 
 
-    }
+   
+    $properties = Property::where('id', $id)->where('status', 1)->firstOrFail();
+
+    $relatedProperties = Property::where('id', '!=', $properties->id)->where('status', 1)->get();
+    $acceptedReviews = ReviewAndRating::where('status', 'accepted')
+        ->where('properties_id', $properties->id)
+        ->get();
+    
+    // Handle the 'other_images' field if it exists
+    $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+
+    return view('frontend.singleproperties', compact('categories', 'properties', 'relatedProperties', 'otherImages', 'acceptedReviews'));
+}
+
     
 
     public function render_contact()

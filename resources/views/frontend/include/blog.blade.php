@@ -29,7 +29,7 @@
                 <p class="sm-text">
                   {{ strlen($blog->description) > 150 ? substr($blog->description, 0, 150) . '...' : $blog->description }}
                 </p>
-                <a href="{{ route('singleblogpost', ['id' => $blog->id]) }}" class="btn-buttongreen">Read more</a>
+                <a href="{{ route('singleblogpost', ['slug' => $blog->metadata->slug]) }}" class="btn-buttongreen">Read more</a>
               </div>
             </div>
           </div>

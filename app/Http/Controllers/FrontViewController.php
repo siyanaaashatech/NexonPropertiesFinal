@@ -33,7 +33,7 @@ class FrontViewController extends Controller
     {
         // Fetch necessary data for the view
         $services = Service::where('status', 1)->latest()->take(4)->get();
-        $blogs = Blog::where('status', 1)->latest()->get();
+        $blogs = Blog::with('metadata')->where('status', 1)->latest()->get();
         $testimonials = Testimonial::where('status', 1)->latest()->get();
         $whyuss = Whyus::where('status', 1)->latest()->get();
         $aboutuss = AboutUs::where('status', 1)->first();

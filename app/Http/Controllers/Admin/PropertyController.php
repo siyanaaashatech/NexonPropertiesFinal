@@ -361,40 +361,44 @@ class PropertyController extends Controller
      * Update images for the specified property.
      */
     public function updateImages(Request $request, $id)
-    {
-        $request->validate([
-            'main_image_base64' => 'nullable|string',
-            'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+{
+    $request->validate([
+        'main_image_base64' => 'nullable|string',
+        'other_images.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
 
-        $property = Property::findOrFail($id);
+    $property = Property::findOrFail($id);
 
-        // Handle main image update if provided
-        if ($request->has('main_image_base64')) {
-            $mainImageData = $request->input('main_image_base64');
-
-            // Remove the data:image part and decode the image
-            $mainImage = str_replace('data:image/jpeg;base64,', '', $mainImageData);
-            $mainImage = base64_decode($mainImage);
-            
-            // Save the image to the desired location
-            $mainImagePath = 'property/' . time() . '.webp';
-            file_put_contents(storage_path('app/public/' . $mainImagePath), $mainImage);
-            $property->main_image = json_encode([$mainImagePath]);
-        }
-
-        // Handle other images update
-        if ($request->hasFile('other_images')) {
-            // Delete existing other images
-            $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
-            // Handle new other images
-            $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
-            $property->other_images = json_encode($otherImages);
-        }
-
-        $property->save();
-
-        session()->flash('success', 'Images updated successfully.');
-        return redirect()->back();
+    // Handle main image update if provided
+    if ($request->has('main_image_base64')) {
+        $mainImageData = $request->input('main_image_base64');
+        
+        // Remove the data:image part and decode the image
+        $mainImage = preg_replace('/^data:image\/\w+;base64,/', '', $mainImageData);
+        $mainImage = base64_decode($mainImage);
+        
+        // Generate a unique filename
+        $filename = 'main_' . time() . '.webp';
+        $path = 'property/' . $filename;
+        
+        // Save the image
+        Storage::disk('public')->put($path, $mainImage);
+        
+        // Update the property's main_image field
+        $property->main_image = json_encode([$path]);
     }
+
+    // Handle other images update
+    if ($request->hasFile('other_images')) {
+        // Delete existing other images
+        $this->deleteImages(json_decode($property->other_images, true), 'property/other_images/');
+        // Handle new other images
+        $otherImages = $this->handleUploadedImages($request->file('other_images'), 'property/other_images');
+        $property->other_images = json_encode($otherImages);
+    }
+
+    $property->save();
+
+    return redirect()->route('property.index')->with('success', 'Images updated successfully.');
+}
 }
