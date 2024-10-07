@@ -22,78 +22,15 @@
                 </div>
     </section>
 
-    {{--
 
 
-<form action="{{ route('frontend.searching') }}" method="GET" class="container-fluid py-5 propertiesfinder">
-    <div class="container">
-        <h1 class="md-text1 text-center searchhide" onclick="funsearchingon()">
-            <i class="fa-brands fa-searchengin customicons"></i> Find your properties
-        </h1>
-        <div class="justify-content-center align-items-center gap-2 flex-wrap hiddenform" id="hiddenform">
-
-        <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Keyword</label>
-                  <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
-                  value="{{ request('location') }}">
-                </div>
-
-
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Listing type</label>
-                    <select class="input bannerinput" name="category_id" id="category_id">
-                        <option value="" disabled selected>Select Category</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->title }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Select Category</label>
-                  <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
-                    <option value="" disabled selected>Select Subcategory</option>
-                  </select>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Select State</label>
-                  <select class="input bannerinput" name="state" id="state">
-                    <option value="" disabled selected>Select State</option>
-                    @foreach ($states as $state)
-                      <option value="{{ $state }}">{{ $state }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="d-flex flex-column col-md-3">
-                    <label for="" class="sm-text1 des-text">Select Region</label>
-                  <select class="input bannerinput" name="suburb" id="suburb">
-                    <option value="" disabled selected>Select Region</option>
-                  </select>
-                </div>
-                
-                <span class="sm-text mt-2 whitehighlight advance mx-2" onclick="funOpenadvance()">Advanced ::</span>
-            <div class="d-flex flex-column col-md-3">
-                <label for="" class="sm-text1 des-text">Search</label>
-                <button type="submit" class="btn-buttonyellow ">Searsch</button>
-            </div>
-
-        </div>
-    </div>
-</form>
-  
-
-
---}}
-
-
-
-    @include('frontend.include.categorysearchbox')
-
+    @include("frontend.include.categorysearchbox")
 
     <!-- multiple properties section -->
     <section class="container-fluid multipost mb-3 pb-4">
         <div class="container">
             <div class="row ">
-            {{-- <div class="col-md-12">
+                {{-- <div class="col-md-12">
               <div class="property-container d-flex justify-content-center align-self-center gap-3 flex-wrap">
                   <div class="btn-buttongreen"> <i class="fa-solid fa-house customicons customiconssmall"></i> sale
                   </div>
@@ -119,13 +56,6 @@
                                         $mainImage = !empty($mainImages)
                                             ? asset('' . $mainImages[0])
                                             : asset('images/default-placeholder.png');
-
-
-                                                                    // Decode other_images for the current property
-                                        $otherImages = !empty($property->other_images)
-                                            ? json_decode($property->other_images, true)
-                                            : [];
-                                        $limitedImages = array_slice($otherImages, 0, ); // Limit to 1 image
                                     @endphp
                                     <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                     <div class="sell_rent_button d-flex justify-content-between ">
@@ -157,21 +87,31 @@
                                             </div>
                                         </div>
 
+                                        {{--
+
                                         <div class="price-person ">
                                             <div class="d-flex justify-content-between align-content-center">
                                                 <div class=" sm-text"> <span class="md-text"> ${{ $property->price }}
-                                                        /</span>{{ $property->rental_period }} </div>
+                                                        </span>{{ $property->rental_period }} </div>
 
-                                                    {{-- Display the limited other images --}}
-                                                        @foreach ($limitedImages as $image)
-                                                        <img src="{{ asset($image) }}" alt="Property Image" class="feature-smallimg feature-smallimgdup">
-                                                    @endforeach
+                                                    @php
+                                                        $limitedImages = array_slice($otherImages, 0, 6);
+                                                    @endphp
+                                                  
+                                                            @foreach ($limitedImages as $index => $image)
+                                                               
+                                                                    <img src="{{ asset($image) }}" alt="Property Image"
+                                                                        class="feature-smallimg feature-smallimgdup">
+                                                          
+                                                            @endforeach
                                                     
 
-                                                {{-- <img src="{{ asset('image/blog.png') }}" alt="" sizes=""
-                                                    srcset="" class="feature-smallimg feature-smallimgdup"> --}}
+                                              <img src="{{ asset('image/blog.png') }}" alt="" sizes=""
+                                                    srcset="" class="feature-smallimg feature-smallimgdup">
                                             </div>
                                         </div>
+
+                                        --}}
                                     </div>
                                 </div>
                             </a>

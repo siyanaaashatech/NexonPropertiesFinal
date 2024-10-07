@@ -1,7 +1,7 @@
 
 
 <form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
-    <div class="formsection flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
+    <div class="formsection searchingform flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
         <div class="d-flex flex-wrap gap-md-3 showform">
             <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
                 value="{{ request('location') }}">
@@ -30,24 +30,27 @@
     </div>
 </form>
 
-<section class="container rounded amenities py-2">
+<section class="container rounded amenities  py-4">
     <div class="row p-3" id="advanceitems">
-        <h2 class="md-text greenhighlight mx-2">amenities</h2>
+        <h2 class="md-text greenhighlight mx-2 mb-4">Amenities</h2>
+        
         <!-- Amenity Checkboxes -->
-        @foreach ($amenities as $amenity)
-            <div class="d-flex col-md-2 pt-1">
-                <input type="checkbox" name="amenities[]" id="amenity-{{ $amenity->id }}" value="{{ $amenity->id }}"
-                    {{ in_array($amenity->id, request('amenities', [])) ? 'checked' : '' }} class="amenity-checkbox">
-                <label for="amenity-{{ $amenity->id }}" class="nameofthing">{{ $amenity->title }}</label>
-            </div>
-        @endforeach
+        <div class="row">
+            @foreach ($amenities as $amenity)
+                <div class="col-md-3 mb-2 d-flex align-items-center">
+                    <input type="checkbox" name="amenities[]" id="amenity-{{ $amenity->id }}" value="{{ $amenity->id }}"
+                        {{ in_array($amenity->id, request('amenities', [])) ? 'checked' : '' }} class="amenity-checkbox me-2">
+                    <label for="amenity-{{ $amenity->id }}" class="nameofthing">{{ $amenity->title }}</label>
+                </div>
+            @endforeach
+        </div>
     </div>
 
     <!-- Bedrooms, Bathrooms, Area, and Price Section -->
-    <div class="row mx-2 d-flex justify-content-between gap-1">
+    <div class="row mx-2 d-flex justify-content-between gap-3">
         <div class="col-md-3">
             <label for="bedrooms" class="sm-text">Bedrooms</label>
-            <select name="bedrooms" id="bedrooms" class="input bannerinput">
+            <select name="bedrooms" id="bedrooms" class="form-select">
                 <option value="" selected>Beds Any</option>
                 @for ($i = 1; $i <= 10; $i++)
                     <option value="{{ $i }}" {{ request('bedrooms') == $i ? 'selected' : '' }}>
@@ -57,7 +60,7 @@
         </div>
         <div class="col-md-3">
             <label for="bathrooms" class="sm-text">Bathrooms</label>
-            <select name="bathrooms" id="bathrooms" class="input bannerinput">
+            <select name="bathrooms" id="bathrooms" class="form-select">
                 <option value="" selected>Baths Any</option>
                 @for ($i = 1; $i <= 10; $i++)
                     <option value="{{ $i }}" {{ request('bathrooms') == $i ? 'selected' : '' }}>
@@ -80,8 +83,8 @@
             <input type="hidden" name="max_price" id="max_price">
         </div>
     </div>
-
 </section>
+
 <style>
     .ui-slider-horizontal {
         height: 8px;
