@@ -149,7 +149,7 @@
 
 
 </section>
-<script>
+ <script>
     // Menu Toggle Function
     function funmenu() {
         const menuIcon = document.querySelector('.crossmenu');
@@ -188,9 +188,9 @@
             menu.style.display = "block";
         }
     }
+</script>
 
-
-
+{{-- <script>
 // Scroll Behavior
 let lastScrollY = window.scrollY;
 const navSection = document.querySelector('.navsection');
@@ -248,4 +248,4 @@ navSection.addEventListener('mouseleave', handleMouseLeave);
 
 
 
-</script>
+</script> --}}
