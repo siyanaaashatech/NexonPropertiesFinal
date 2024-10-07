@@ -81,10 +81,7 @@ Route::get("service", function () {
 Route::get('/hello', function () {
     return view('frontend.singleproperties');
 })->name('hello');
-Route::middleware('auth:web')->group(function () {
-    Route::get('/', [FrontViewController::class, 'index'])->name('index');
-});
-
+Route::get('/', [FrontViewController::class, 'index'])->name('index');
 Route::get('/properties/{categoryId?}', [FrontViewController::class, 'properties'])->name('properties');
 // Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
@@ -108,7 +105,7 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
     Route::get('/properties/search', [FrontViewController::class, 'search'])->name('frontend.search');
 
 
-    Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth:admin', 'prevent.admin.access'])->group(function () {
+    Route::prefix('/admin')->name('admin.')->middleware(['web', 'auth', 'prevent.admin.access'])->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/dashboard', [AdminController::class, 'index'])->middleware('verified');
