@@ -44,13 +44,22 @@
 
         </ul>
       </div>
-      <div class="col-md-3 col-sm-12 ">
-        <h1 class="md-text1 highlight">Message us</h1>
-        <input type="text" class="input" placeholder="Your email id here">
-        <textarea name="" id="" rows="1" cols="" class="textarea my-1 "></textarea>
-        <a href="{{ route('login') }}" class="btn-buttonyellow  footer-button">send message</a>
-      </div>
+      <div class="col-md-3 col-sm-12">
+        <form id="contactForm" action="{{ route('contact.store') }}" method="POST">
+            @csrf
+            <h1 class="md-text1 highlight">Message us</h1>
+            @if (!Auth::check())
+                <input type="text" name="name" class="input" placeholder="Your name here" required>
+            @endif
+            
+            <input type="text" name="email" class="input" placeholder="Your email id here" required>
+            <textarea name="message" id="" rows="3" cols="" class="textarea my-1"  placeholder="Your message here" required></textarea>
+            <button type="submit" class="btn-buttonyellow footer-button">Send Message</button>
+        </form>
     </div>
+    
+    
+  </div>
   </div>
 </footer>
 

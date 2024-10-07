@@ -20,7 +20,7 @@ class ContactController extends Controller
         // Common validation rules
         $rules = [
             'message' => 'required|string',
-            'properties_id' => 'required|exists:properties,id', // Add this line
+            'properties_id' => 'nullable|exists:properties,id', // Changed to nullable
         ];
 
         // For logged-in users
@@ -30,7 +30,6 @@ class ContactController extends Controller
                 'email' => Auth::user()->email,
                 'message' => $request->input('message'),
                 'inspection' => $request->has('inspection'),
-                'properties_id' => $request->input('properties_id'), // Add this line
             ];
         }
         // For guests
@@ -43,17 +42,18 @@ class ContactController extends Controller
                 'email' => $request->input('email'),
                 'message' => $request->input('message'),
                 'inspection' => false, // Guests can't book inspections
-                'properties_id' => $request->input('properties_id'), // Add this line
             ];
         }
 
         // Validate the request
-        $request->validate($rules);
+        $validatedData = $request->validate($rules);
+
+        // Add properties_id to data, use null if not provided
+        $data['properties_id'] = $validatedData['properties_id'] ?? null;
 
         // Create the contact
         Contact::create($data);
 
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }
-
 }

@@ -72,34 +72,37 @@ class FrontViewController extends Controller
 
 
     public function properties(Request $request)
-{
-    $categoryId = $request->query('categoryId');
-    $suburb = $request->query('suburb');
-
-    // Fetch all categories for the navbar
-    $categories = Category::all();
-
-    // Fetch properties, optionally filtered by category and/or suburb, and where status is active
-    $propertiesQuery = Property::where('status', '1');
-
-    if ($categoryId) {
-        $propertiesQuery->where('category_id', $categoryId);
+    {
+        $categoryId = $request->query('categoryId');
+        $suburb = $request->query('suburb');
+    
+        // Fetch all categories for the navbar
+        $categories = Category::all();
+    
+        // Fetch properties, optionally filtered by category and/or suburb, and where status is active
+        $propertiesQuery = Property::where('status', '1');
+    
+        if ($categoryId) {
+            $propertiesQuery->where('category_id', $categoryId);
+        }
+    
+        if ($suburb) {
+            $propertiesQuery->whereHas('address', function($query) use ($suburb) {
+                $query->where('suburb', $suburb);
+            });
+        }
+    
+        // Eager load the 'offer' relationship
+        $propertiesQuery->with('offer');
+    
+        $properties = $propertiesQuery->paginate(24);
+    
+        $states = Address::distinct('state')->pluck('state');
+        $amenities = Amenity::all();
+        $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
+    
+        return view('frontend.properties', compact('properties', 'categories', 'states', 'amenities', 'otherImages', 'suburb'));
     }
-
-    if ($suburb) {
-        $propertiesQuery->whereHas('address', function($query) use ($suburb) {
-            $query->where('suburb', $suburb);
-        });
-    }
-
-    $properties = $propertiesQuery->paginate(24);
-    $states = Address::distinct('state')->pluck('state');
-    $amenities = Amenity::all();
-
-    $otherImages = !empty($properties->other_images) ? json_decode($properties->other_images, true) : [];
-
-    return view('frontend.properties', compact('properties', 'categories', 'states', 'amenities', 'otherImages', 'suburb'));
-}
     
     // public function singlePost($slug)
     // {

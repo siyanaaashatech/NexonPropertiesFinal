@@ -122,7 +122,21 @@
                                     @endphp
                                     <img src="{{ $mainImage }}" alt="Property Image" class="p-2">
                                     <div class="sell_rent_button d-flex justify-content-between ">
-                                        <div class="btn-buttonxs btn-buttonxsyellow ">{{ $property->status }}</div>
+                                        <div class="btn-buttonxs btn-buttonxsyellow mx-1">
+                                            @if($property->offer)
+                                                @if($property->offer->featured_properties == 'yes')
+                                                    Featured 
+                                                @elseif($property->offer->offered_properties == 'yes')
+                                                    Offered 
+                                                @else
+                                                    Regular 
+                                                @endif
+                                            @else
+                                                Regular 
+                                            @endif
+                                        </div>
+                                        
+                                        
                                         <div class="btn-buttonxs btn-buttonxsgreen mx-1">
                                             {{ $property->availability_status }}
                                         </div>

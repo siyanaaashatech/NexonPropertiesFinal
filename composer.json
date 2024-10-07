@@ -6,9 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "anhskohbo/no-captcha": "*",
         "cviebrock/eloquent-sluggable": "^11.0",
         "cyrildewit/eloquent-viewable": "^7.0.3",
         "ernilambar/nepali-date": "^1.0",
+        "google/recaptcha": "*",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^11.0",
         "laravel/ui": "^4.5.2",

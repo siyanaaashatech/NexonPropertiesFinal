@@ -20,29 +20,21 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:web')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
 
-    /**
-     * Override credentials method to include email verification check
-     */
     protected function credentials(Request $request)
     {
-        // Check if the email_verified_at field is not null
         return $request->only($this->username(), 'password');
     }
 
-    /**
-     * Customize the login failed response to give specific feedback
-     */
     protected function sendFailedLoginResponse(Request $request)
     {
         $errors = [$this->username() => trans('auth.failed')];
 
-        // Check if the user exists but is not verified
         if ($user = \App\Models\User::where($this->username(), $request->{$this->username()})->first()) {
             if (is_null($user->email_verified_at)) {
-                // Provide a specific message when the email is not verified
                 $errors = [$this->username() => 'Your email is not verified. Please verify your email to continue.'];
             }
         }
@@ -50,46 +42,49 @@ class LoginController extends Controller
         throw ValidationException::withMessages($errors);
     }
 
-    /**
-     * Custom handling after successful authentication
-     */
     protected function authenticated(Request $request, $user)
     {
-        // Ensure the email is verified before allowing login
         if (is_null($user->email_verified_at)) {
-            Auth::logout();
+            Auth::guard('web')->logout();
+            Auth::guard('admin')->logout();
             return redirect()->route('login')->withErrors(['email' => 'Please verify your email before logging in.']);
         }
-    
-        // Log the login event if the email is verified
+
         History::create([
             'description' => 'Logged in',
             'user_id' => $user->id,
             'type' => 0,
             'ip_address' => UtilityFunctions::getuserIP()
         ]);
-    
-        // Redirect based on user role
+
         if ($user->role_id == 3) {
-            return redirect()->route('index'); 
+            Auth::guard('web')->login($user);
+            return redirect()->route('index');
         } else {
-            return redirect()->route('admin.index'); 
+            Auth::guard('admin')->login($user);
+            return redirect()->route('admin.index');
         }
     }
-    /**
-     * Logout the user and log the event
-     */
-    public function logout()
+
+    public function logout(Request $request)
     {
-        if (Auth::check()) {
+        $this->logoutUser('web');
+        $this->logoutUser('admin');
+
+        return redirect('/login')->with('status', 'Successfully logged out.');
+    }
+
+    protected function logoutUser($guard)
+    {
+        if (Auth::guard($guard)->check()) {
+            $user = Auth::guard($guard)->user();
             History::create([
                 'description' => 'Logged out',
-                'user_id' => Auth::user()->id,
+                'user_id' => $user->id,
                 'type' => 0,
                 'ip_address' => UtilityFunctions::getuserIP()
             ]);
+            Auth::guard($guard)->logout();
         }
-        Auth::logout();
-        return redirect('/login')->with('status', 'Successfully logged out.');
     }
 }

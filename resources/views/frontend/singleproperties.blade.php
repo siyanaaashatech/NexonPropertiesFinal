@@ -1,5 +1,21 @@
 @extends("frontend.layouts.master")
 @section("content")
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <section class="container-fluid singleprojectpage">
     <div class="container">
         <div class="row">
@@ -289,7 +305,7 @@
                             <div class="col-md-4">
                                 <div class="description-body">
                                     <h3 class="md-text greenhighlight">Nexon Detail Center</h3>
-                                    <form action="{{ route('contact.store') }}" method="POST">
+                                    <form id="contactForm" action="{{ route('contact.store') }}" method="POST">
                                         @csrf
                                         <div class="d-flex flex-column gap-2">
                                             @auth
@@ -311,6 +327,12 @@
                                                 @endif
 
                                                 <input type="hidden" name="properties_id" value="{{ $properties->id }}">
+                                                <div class="mb-3 recaptcha-container">
+                                                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div id="recaptchaError" class="text-danger" style="display:none;"></div>
+                                                </div>
 
                                                 <button type="submit"
                                                     class="btn-buttongreen btn-buttonygreenlarge mx-2">Send Message</button>
@@ -324,12 +346,39 @@
                                                     required></textarea>
 
                                                 <input type="hidden" name="properties_id" value="{{ $properties->id }}">
-
+                                                <div class="mb-3 recaptcha-container">
+                                                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div id="recaptchaError" class="text-danger" style="display:none;"></div>
+                                                </div>
                                                 <button type="submit"
                                                     class="btn-buttongreen btn-buttonygreenlarge mx-2">Submit</button>
                                             @endauth
                                         </div>
                                     </form>
+                                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                                    <script>
+                                        document.getElementById('contactForm').addEventListener('submit', function(event) {
+                                            console.log("Form submit event triggered");
+                                    
+                                            var response = grecaptcha.getResponse();
+                                            var recaptchaError = document.getElementById('recaptchaError');
+                                    
+                                            if (response.length == 0) {
+                                                event.preventDefault(); 
+                                                console.log("reCAPTCHA not verified"); 
+                                    
+                                                recaptchaError.textContent = "Please verify that you are not a robot.";
+                                                recaptchaError.style.display = "block"; 
+                                            } else {
+                                                recaptchaError.textContent = ""; 
+                                                recaptchaError.style.display = "none"; 
+                                                console.log("reCAPTCHA verified"); 
+                                            }
+                                        });
+                                    </script>
+                                    
 
                                 </div>
 
