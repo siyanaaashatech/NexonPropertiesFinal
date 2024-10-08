@@ -1,9 +1,12 @@
+
+
 <section class="container-fluid navsection">
      <style>
 
     .dropdown-item:hover{
         background:var(--offgreen) !important;
     }
+
  </style>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light navcustom">
@@ -114,15 +117,16 @@
             <a href="{{ $sitesetting->socialLinks->tiktop_link }}" target="_blank"><i class="fa-brands fa-youtube customicons mx-2"></i></a>
 
         </div>
-        <div class="button-collection d-flex justify-content-center align-items-center logoutsection">
+        <div class="forless600">
+        <div class="button-collection d-flex align-items-center justify-content-center  ">
             @guest
-                <div class="sidenav-login">
+                <div class="d-flex gap-1">
                     <a href="{{ route('register') }}"
                         class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
                     <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
                 </div>
             @else
-                <div class="d-flex gap-1  justify-content-center align-items-center">
+                <div class="d-flex gap-1 ">
                     <img src="{{ asset('image/about.jpg') }}" alt="" class="userimage">
                     <span class="welcome-message sm-text1 text-center"> {{ Auth::user()->name }}</span>
                 </div>
@@ -141,6 +145,40 @@
         </div>
 
 
+
+        </div>
+
+        <div class="button-collection d-flex justify-content-center align-items-center logoutsection">
+            @guest
+                <div class="sidenav-login">
+                    <a href="{{ route('register') }}"
+                        class="btn-buttonyellow reg-logbutton reg-logbutton-white mb-1">Register</a>
+                    <a href="{{ route('login') }}" class="btn-buttonyellow reg-logbutton">Login</a>
+                </div>
+            @else
+            <div class="lessthan600">
+                <div class="d-flex gap-1  justify-content-center align-items-center ">
+                    <img src="{{ asset('image/about.jpg') }}" alt="" class="userimage">
+                    <span class="welcome-message sm-text1 text-center"> {{ Auth::user()->name }}</span>
+                </div>
+                </div>
+                {{-- <a href="{{ route('profile') }}" class="btn-buttonyellow reg-logbutton">Profile</a> --}}
+                <div class="lessthan600">
+                <div class="d-flex ">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="btn-buttonyellow  mx-3 logout">Logout</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+
+
+                </div>
+                </div>
+                </form>
+
+            @endguest
+        </div>
+
+      
 
 
 
@@ -188,84 +226,6 @@
             menu.style.display = "block";
         }
     }
-
-
-// Scroll Behavior
-let lastScrollY = window.scrollY;
-const navSection = document.querySelector('.navsection');
-
-// Function to handle scroll
-function handleScroll() {
-    if (window.scrollY > lastScrollY) {
-        // Scrolling down
-        navSection.classList.add('scroll-down');
-        navSection.classList.remove('scroll-up');
-    } else {
-        // Scrolling up
-        navSection.classList.add('scroll-up');
-        navSection.classList.remove('scroll-down');
-    }
-    lastScrollY = window.scrollY;
-}
-
-// Function to check screen size
-function checkScreenSize() {
-    if (window.innerWidth < 600) {
-        // Add scroll listener
-        window.addEventListener('scroll', handleScroll);
-        navSection.classList.remove('scroll-down', 'scroll-up'); // Reset classes
-    } else {
-        // Remove scroll listener if the screen size is larger than 600px
-        window.removeEventListener('scroll', handleScroll);
-        navSection.classList.remove('scroll-down', 'scroll-up'); // Reset classes
-    }
-}
-
-// Hover behavior to fix nav at the top
-function handleMouseEnter() {
-    navSection.classList.add('fixed');
-}
-
-function handleMouseLeave() {
-    navSection.classList.remove('fixed');
-    // Adjust based on scroll position
-    if (window.scrollY > lastScrollY) {
-        navSection.classList.add('scroll-down');
-    } else {
-        navSection.classList.add('scroll-up');
-    }
-}
-
-// Initial check
-checkScreenSize();
-
-// Check again on resize
-window.addEventListener('resize', checkScreenSize);
-
-// Add mouseenter and mouseleave events if on small screens
-if (window.innerWidth < 600) {
-    navSection.addEventListener('mouseenter', handleMouseEnter);
-    navSection.addEventListener('mouseleave', handleMouseLeave);
-}
-
-// Debouncing function
-function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-        const context = this;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-}
-
-// Debounced scroll handler
-const debouncedScroll = debounce(handleScroll, 100);
-window.addEventListener('scroll', debouncedScroll);
-
-
-
-
-
 
 
 </script>
