@@ -14,7 +14,11 @@
 
         </div>
       </div>
-      <div class="col-md-2 sm-col-12 mx-4 ">
+      <div class="col-md-5">
+        <div class="row d-flex  justify-content-around">
+        <div class="col-md-3 sm-col-12 mx-4 ">
+
+
         <h1 class="md-text1 highlight minuspadding">Quick link</h1>
         <ul class="d-flex justify-content-around  customui flex-column gap-2">
 
@@ -28,7 +32,7 @@
          
         </ul>
       </div>
-      <div class="col-md-2 sm-col-12 mx-4 ">
+      <div class="col-md-4 sm-col-12 mx-4 ">
         <h1 class="md-text1 highlight minuspadding">Sub Categories</h1>
         <ul class="d-flex justify-content-around customui flex-column gap-2">
          
@@ -44,6 +48,10 @@
 
         </ul>
       </div>
+        </div>
+
+      </div>
+     
       <div class="col-md-3 col-sm-12 ">
         <h1 class="md-text1 highlight">Message us</h1>
         <input type="text" class="input" placeholder="Your email id here">

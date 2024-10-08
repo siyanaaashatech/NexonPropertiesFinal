@@ -1,6 +1,6 @@
-<section class="container-fluid">
+<section class="container-fluid mt-md-4 pt-md-5 mt-1">
     <div class="row">
-        <div class="col-md-9 p-0 m-0">
+        <div class="col-md-9 p-0 m-0 mb-2">
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner mb-2">
                     <!-- Carousel Items -->
@@ -19,21 +19,6 @@
                                             : asset('images/default-placeholder.png');
                                     @endphp
                                     <img src="{{ $mainImage }}" alt="Property Image" class="imagecontroller">
-                                    <div class="flex bannercontent">
-                                        <div class="bannercontentinner">
-                                            <p class="sm-text1 mb-3 text-center forhidden">
-                                                More than <span class="highlight">1000+</span> houses available for sale
-                                                & rent in the country
-                                            </p>
-                                            <h4 class="lg-text1 mb-4">{{ $property->title }}</h4>
-                                            <!-- <div class="d-flex justify-content-center mb-1">
-              <div class="btn-buttonyellow btn-buttonyellowsmall">Buy</div>
-              <div class="btn-buttongreen mx-2">Rent</div>
-              </div> -->
-                                         
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -41,9 +26,6 @@
                 </div>
             </div>
         </div>
-
-
-
         <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12 p-0 ">

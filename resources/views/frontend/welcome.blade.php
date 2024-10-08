@@ -13,7 +13,8 @@
 @include("frontend.include.about")
 
 {{--our properties --}}
-@include("frontend.include.project")
+@include("frontend.include.project")@include("frontend.include.counter");
+
 
 
 @include("frontend.include.landproperties");

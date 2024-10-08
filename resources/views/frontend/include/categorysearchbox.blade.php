@@ -2,8 +2,14 @@
 
 <form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
     <div class="formsection formsectiondup flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
-        <div class="d-flex flex-wrap gap-md-3 showform">
-            <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+
+    <p class="sm-text1 mb-3 r forhidden text-center">
+                                                More than <span class="highlight">1000+</span> houses available for sale
+                                                & rent in the country
+                                            </p>
+    
+        <div class="d-flex flex-wrap gap-md-2 showform row">
+            <input type="text" class="input bannerinput col-md-3" name="location" placeholder="Keyword"
                 value="{{ request('location') }}">
             <select class="input bannerinput" name="category_id" id="category_id">
                 <option value="" disabled selected>Select Category</option>
@@ -24,8 +30,10 @@
                 <option value="" disabled selected>Select Region</option>
             </select>
 
-            <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced ::</span>
-            <button type="submit" class="btn-buttongreen">Search</button>
+            <div class="col-md-3 d-flex">
+            <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced:</span>
+            <button type="submit" class="btn-buttongreen searching">Search</button>
+            </div>
         </div>
     </div>
 </form>

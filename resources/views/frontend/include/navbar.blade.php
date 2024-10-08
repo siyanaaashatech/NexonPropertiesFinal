@@ -190,47 +190,49 @@
     }
 
 
-
 // Scroll Behavior
 let lastScrollY = window.scrollY;
 const navSection = document.querySelector('.navsection');
 
+// Function to handle scroll
 function handleScroll() {
     if (window.scrollY > lastScrollY) {
         // Scrolling down
-        navSection.style.top = '2rem'; // Adjust if needed
+        navSection.classList.add('scroll-down');
+        navSection.classList.remove('scroll-up');
     } else {
         // Scrolling up
-        navSection.style.top = '0';
+        navSection.classList.add('scroll-up');
+        navSection.classList.remove('scroll-down');
     }
     lastScrollY = window.scrollY;
 }
 
+// Function to check screen size
 function checkScreenSize() {
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 600) {
+        // Add scroll listener
         window.addEventListener('scroll', handleScroll);
+        navSection.classList.remove('scroll-down', 'scroll-up'); // Reset classes
     } else {
-        // Remove the scroll event listener if the screen size is larger than 900px
+        // Remove scroll listener if the screen size is larger than 600px
         window.removeEventListener('scroll', handleScroll);
-        navSection.style.top = ''; // Reset top style
+        navSection.classList.remove('scroll-down', 'scroll-up'); // Reset classes
     }
 }
 
 // Hover behavior to fix nav at the top
 function handleMouseEnter() {
-    navSection.style.position = 'fixed';
-    navSection.style.top = '0'; // Set to top
-    navSection.style.margin = '0'; // Ensure no margin
+    navSection.classList.add('fixed');
 }
 
 function handleMouseLeave() {
-    navSection.style.position = ''; // Reset position
-    navSection.style.margin = ''; // Reset margin
+    navSection.classList.remove('fixed');
     // Adjust based on scroll position
     if (window.scrollY > lastScrollY) {
-        navSection.style.top = '2rem'; // Adjust if needed
+        navSection.classList.add('scroll-down');
     } else {
-        navSection.style.top = '0';
+        navSection.classList.add('scroll-up');
     }
 }
 
@@ -240,9 +242,27 @@ checkScreenSize();
 // Check again on resize
 window.addEventListener('resize', checkScreenSize);
 
-// Add mouseenter and mouseleave events
-navSection.addEventListener('mouseenter', handleMouseEnter);
-navSection.addEventListener('mouseleave', handleMouseLeave);
+// Add mouseenter and mouseleave events if on small screens
+if (window.innerWidth < 600) {
+    navSection.addEventListener('mouseenter', handleMouseEnter);
+    navSection.addEventListener('mouseleave', handleMouseLeave);
+}
+
+// Debouncing function
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
+
+// Debounced scroll handler
+const debouncedScroll = debounce(handleScroll, 100);
+window.addEventListener('scroll', debouncedScroll);
+
+
 
 
 

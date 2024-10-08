@@ -2,30 +2,37 @@
 
 <form action="{{ route('frontend.searching') }}" method="GET" id="propertySearchForm">
     <div class="formsection searchingform flex-column justify-content-center align-items-center py-md-3 py-2 gap-2 col-md-7 px-4 ">
-        <div class="d-flex flex-wrap gap-md-3 showform">
-            <input type="text" class="input bannerinput" name="location" placeholder="Keyword"
+    <p class="sm-text1 mb-3 text-center forhidden">
+                                                More than <span class="highlight">1000+</span> houses available for sale
+                                                & rent in the country
+                                            </p>
+        <h1 class="lg-text1">Connecting people to places they love.</h1>
+        <div class="d-flex flex-wrap gap-md-2 showform row">
+            <input type="text" class="input bannerinput col-md-3" name="location" placeholder="Keyword"
                 value="{{ request('location') }}">
-            <select class="input bannerinput" name="category_id" id="category_id">
+            <select class="input bannerinput col-md-3" name="category_id" id="category_id">
                 <option value="" disabled selected>Select Category</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
             </select>
-            <select class="input bannerinput" name="subcategory_id" id="subcategory_id">
+            <select class="input bannerinput col-md-3" name="subcategory_id" id="subcategory_id">
                 <option value="" disabled selected>Select Subcategory</option>
             </select>
-            <select class="input bannerinput" name="state" id="state">
+            <select class="input bannerinput col-md-3" name="state" id="state">
                 <option value="" disabled selected>Select State</option>
                 @foreach ($states as $state)
                     <option value="{{ $state }}">{{ $state }}</option>
                 @endforeach
             </select>
-            <select class="input bannerinput" name="suburb" id="suburb">
+            <select class="input bannerinput col-md-3" name="suburb" id="suburb">
                 <option value="" disabled selected>Select Region</option>
             </select>
-
-            <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced ::</span>
-            <button type="submit" class="btn-buttongreen">Search</button>
+               <div class="col-md-3 d-flex">
+               <span class="sm-text mt-2 greenhighlight advance mx-2" onclick="funOpenadvance()">Advanced:</span>
+               <button type="submit" class="btn-buttongreen">Search</button>
+               </div>
+          
         </div>
     </div>
 </form>
