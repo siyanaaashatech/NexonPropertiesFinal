@@ -759,16 +759,6 @@ a {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /* footer */
     
     .button-footer {
@@ -1462,21 +1452,7 @@ a {
         z-index: 1;
     }
     
-    .bur-menu li:hover {
-        background: var(--off-yellow);
-        border-radius: var(--border-radius);
-    }
-    
-    @media (max-width: 700px) {
-        .bur-menu {
-            top: 20%;
-            width: 90vw;
-        }
-    
-        .bur-menu li {
-            width: 62%;
-        }
-    }
+   
     
     .navdestext {
         color: rgb(211, 208, 208);
@@ -3184,7 +3160,7 @@ a {
     height: 84vh;
     width: 25vw;
     position: absolute;
-    top: 7rem;
+    top:6rem;
     right: 0.1rem;
     color: white;
     flex-direction: column;
@@ -3247,12 +3223,22 @@ a {
 
 @media (max-width: 700px) {
     .bur-menu {
-        top: 20%;
+        position: absolute;
+        top:8rem !important;
         width: 90vw;
     }
 
     .bur-menu li {
         width: 62%;
+    }
+}
+
+
+@media (max-width:550px) {
+    .bur-menu {
+        position: absolute;
+        top:9.5rem !important;
+        width: 90vw;
     }
 }
 
