@@ -3,16 +3,10 @@
 
 
 :root {
-    /* --green: ; */
-    /* --green: #0e593c; */
-    /* --green:#049a5cc5; */
+
     --green: #1F4B43;
-    /* --offgreen: ; */
-    /* --offgreen: #049a5b; */
-    /* --offgreen:#05b069; */
     --offgreen: #049a5cc5;
     --freegreen: #49a48137;
-    /* --yellow: #FFBF00; */
     --yellow: #ffbf00;
     --off-yellow: rgba(255, 207, 64, 0.878);
     --off-white: #f5f5f5;
@@ -37,8 +31,19 @@ body {
 }
 
 a {
-    color: white;
+    color: white; /* Sets the link color */
+    text-decoration: none; /* Optional: Removes underline */
 }
+
+/* Optional: Hover and visited states */
+a:hover {
+    color: lightgray; /* Change color on hover */
+}
+
+a:visited {
+    color: gray; /* Change color for visited links */
+}
+
 
 .btn-buttongreensmall {
     width: 10px;
@@ -541,7 +546,7 @@ a {
        
        
            .navsection {
-               position: fixed;
+               position: sticky;
                top: 0;
                width: 100%;
                z-index: 1000;
@@ -571,7 +576,7 @@ a {
            @media (max-width: 600px) {
         
                .navsection{
-                   padding-top:2.8rem;
+                   padding-top:0.5rem;
                }
        
                
